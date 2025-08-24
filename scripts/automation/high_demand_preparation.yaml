@@ -1,0 +1,35 @@
+high_demand_preparation:
+  alias: High Demand Preparation
+  description: "Prepares systems for periods of high resource demand"
+  icon: mdi:gauge-full
+  sequence:
+    # Enable high demand optimization mode
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.high_demand_optimization_mode
+    
+    # Pre-allocate resources
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.system_performance_target
+      data:
+        value: 90  # High performance target
+    
+    # Activate priority resource scheduling
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.automation_execution_priority
+      data:
+        value: 3  # Maximum priority
+    
+    # Log high demand preparation
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.resource_priority_matrix
+      data:
+        value: "HIGH DEMAND PREP: {{ now().strftime('%H:%M') }} - Systems pre-allocated for peak usage"
+    
+    # Preparation notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "⚡ High demand preparation complete. Systems optimized for peak performance."

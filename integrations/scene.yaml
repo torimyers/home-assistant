@@ -4,7 +4,5 @@
 # https://www.home-assistant.io/integrations/scene
 #
 
-# This include is for the scene editor/UI
-scene: !include ../scenes.yaml
 # Load scenes from organized folder structure
-scene_split: !include_dir_named ../scenes
+scene: !include_dir_named ../scenes

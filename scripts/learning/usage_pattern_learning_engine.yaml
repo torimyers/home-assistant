@@ -1,0 +1,190 @@
+usage_pattern_learning_engine:
+  alias: Usage Pattern Learning Engine
+  description: "Advanced learning engine that tracks device usage patterns and optimizes system behavior"
+  icon: mdi:school
+  sequence:
+    # Collect current usage data
+    - variables:
+        current_time: "{{ now().strftime('%H:%M') }}"
+        day_type: >
+          {% set day = now().strftime('%A') %}
+          {% if day in ['Saturday', 'Sunday'] %}
+            weekend
+          {% else %}
+            weekday
+          {% endif %}
+        activity_level: "{{ states('sensor.fremen_activity_level') | int }}"
+        occupancy_pattern: "{{ states('sensor.sietch_occupancy_distribution') }}"
+        
+        # Calculate usage learning score
+        usage_learning_score: >
+          {% set activity = states('sensor.fremen_activity_level') | int %}
+          {% set hour = now().hour %}
+          {% set day = now().strftime('%A') %}
+          
+          {# Base learning score calculation #}
+          {% set base_score = 50 %}
+          
+          {# Time-based learning patterns #}
+          {% if day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] %}
+            {% if 7 <= hour <= 9 %}  {# Morning routine #}
+              {% set base_score = base_score + 30 %}
+            {% elif 17 <= hour <= 22 %}  {# Evening routine #}
+              {% set base_score = base_score + 25 %}
+            {% elif 12 <= hour <= 14 %}  {# Lunch period #}
+              {% set base_score = base_score + 15 %}
+            {% endif %}
+          {% else %}  {# Weekends are more variable #}
+            {% set base_score = base_score + 10 %}
+          {% endif %}
+          
+          {# Activity level correlation #}
+          {% if activity > 70 %}
+            {% set base_score = base_score + 15 %}
+          {% elif activity < 30 %}
+            {% set base_score = base_score - 10 %}
+          {% endif %}
+          
+          {{ [base_score, 100] | min | max(0) }}
+    
+    # Log usage pattern learning
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.predictive_analytics_log
+      data:
+        value: >
+          USAGE LEARNING: {{ current_time }} {{ day_type | title }} -
+          Activity: {{ activity_level }}% -
+          Occupancy: {{ occupancy_pattern }} -
+          Learning Score: {{ usage_learning_score }}% -
+          Pattern Type: {% if usage_learning_score | int > 80 %}PREDICTABLE{% elif usage_learning_score | int > 60 %}REGULAR{% elif usage_learning_score | int > 40 %}VARIABLE{% else %}CHAOTIC{% endif %}
+    
+    # Apply learned optimizations based on usage patterns
+    - choose:
+        # Highly predictable patterns - aggressive optimization
+        - conditions:
+            - condition: template
+              value_template: "{{ usage_learning_score | int > 80 }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.predictive_analytics_log
+              data:
+                value: "PREDICTABLE PATTERN DETECTED: Enabling aggressive predictive optimizations"
+            
+            # Enable maximum automation complexity
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.automation_complexity_level
+              data:
+                value: 3
+            
+            # Set high execution priority
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.automation_execution_priority
+              data:
+                value: 3
+            
+            # Pre-optimize scenes based on time patterns
+            - condition: template
+              value_template: >
+                {% set hour = now().hour %}
+                {{ 7 <= hour <= 9 or 17 <= hour <= 22 }}
+            - service: script.turn_on
+              target:
+                entity_id: script.pattern_optimized_scene_selection
+        
+        # Regular patterns - standard optimization
+        - conditions:
+            - condition: template
+              value_template: "{{ 60 <= (usage_learning_score | int) <= 80 }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.predictive_analytics_log
+              data:
+                value: "REGULAR PATTERN DETECTED: Enabling standard predictive features"
+            
+            # Standard automation settings
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.automation_complexity_level
+              data:
+                value: 2
+            
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.automation_execution_priority
+              data:
+                value: 2
+        
+        # Variable patterns - conservative approach
+        - conditions:
+            - condition: template
+              value_template: "{{ 40 <= (usage_learning_score | int) < 60 }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.predictive_analytics_log
+              data:
+                value: "VARIABLE PATTERN: Using conservative automation approach"
+            
+            # Conservative settings
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.automation_complexity_level
+              data:
+                value: 1
+            
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.automation_execution_priority
+              data:
+                value: 1
+      
+      # Chaotic patterns - minimal automation
+      default:
+        - service: input_text.set_value
+          target:
+            entity_id: input_text.predictive_analytics_log
+          data:
+            value: "CHAOTIC PATTERN: Minimal automation - focusing on data collection"
+        
+        # Minimal automation settings
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.automation_complexity_level
+          data:
+            value: 1
+    
+    # Update pattern learning confidence
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.prediction_accuracy_score
+      data:
+        value: >
+          {% set current = states('input_number.prediction_accuracy_score') | int %}
+          {% set learning = usage_learning_score | int %}
+          {% if learning > 85 %}
+            {{ [current + 4, 100] | min }}
+          {% elif learning > 70 %}
+            {{ [current + 2, 100] | min }}
+          {% elif learning < 30 %}
+            {{ [current - 2, 0] | max }}
+          {% else %}
+            {{ current }}
+          {% endif %}
+    
+    # Learning-based notifications
+    - condition: template
+      value_template: "{{ usage_learning_score | int > 85 or usage_learning_score | int < 25 }}"
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: >
+          📚 Usage Learning Update: {{ usage_learning_score }}% pattern confidence.
+          {% if usage_learning_score | int > 85 %}
+          High predictability detected - enhanced automation active.
+          {% else %}
+          Low predictability - collecting more usage data.
+          {% endif %}

@@ -6,7 +6,7 @@ use_blueprint:
     pet_name: Shadow
     dune_name: Stilgar
     care_type: medication
-    schedule_times: "19:30"
+    schedule_time: "19:30"
     datetime_helper: input_datetime.shadow_last_steroid
     check_interval_hours: 23
     medication_type: ""

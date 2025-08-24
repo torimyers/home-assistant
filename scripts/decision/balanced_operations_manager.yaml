@@ -1,0 +1,256 @@
+balanced_operations_manager:
+  alias: Balanced Operations Manager
+  description: "AI system that balances competing priorities like comfort vs conservation vs security"
+  icon: mdi:scale-balance
+  sequence:
+    # Analyze competing priorities
+    - variables:
+        # Current system states
+        comfort_score: >
+          {% set activity = states('sensor.fremen_activity_level') | int %}
+          {% set temp = state_attr('climate.sietch_main', 'current_temperature') | float %}
+          {% set target_temp = state_attr('climate.sietch_main', 'temperature') | float %}
+          {% set temp_diff = (temp - target_temp) | abs %}
+          
+          {# Calculate comfort based on activity level and temperature comfort #}
+          {% set activity_comfort = activity if activity <= 100 else 100 %}
+          {% set temp_comfort = 100 - (temp_diff * 10) %}
+          {% set temp_comfort = [temp_comfort, 100] | min | max(0) %}
+          
+          {{ (activity_comfort * 0.6 + temp_comfort * 0.4) | round }}
+        
+        conservation_priority: "{{ states('sensor.water_conservation_index') | int }}"
+        security_priority: "{{ states('sensor.night_security_effectiveness') | int }}"
+        
+        # Calculate balance optimization strategy
+        balance_strategy: >
+          {% set comfort = comfort_score | int %}
+          {% set conservation = states('sensor.water_conservation_index') | int %}
+          {% set security = states('sensor.night_security_effectiveness') | int %}
+          
+          {# Determine which priority needs attention #}
+          {% set priorities = [] %}
+          {% if comfort < 60 %}
+            {% set priorities = priorities + ['comfort'] %}
+          {% endif %}
+          {% if conservation > 80 %}
+            {% set priorities = priorities + ['conservation'] %}
+          {% endif %}
+          {% if security < 70 %}
+            {% set priorities = priorities + ['security'] %}
+          {% endif %}
+          
+          {% if priorities | length == 0 %}
+            maintain_balance
+          {% elif priorities | length == 1 %}
+            focus_{{ priorities[0] }}
+          {% elif priorities | length == 2 %}
+            dual_priority
+          {% else %}
+            crisis_balancing
+          {% endif %}
+    
+    # Log balance analysis
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.resource_management_log
+      data:
+        value: >
+          BALANCE ANALYSIS: {{ now().strftime('%H:%M') }} -
+          Comfort: {{ comfort_score }}% -
+          Conservation: {{ conservation_priority }}% -
+          Security: {{ security_priority }}% -
+          Strategy: {{ balance_strategy | upper }}
+    
+    # Execute balanced operations strategy
+    - choose:
+        # Focus on comfort - low comfort detected
+        - conditions:
+            - condition: template
+              value_template: "{{ balance_strategy == 'focus_comfort' }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.resource_management_log
+              data:
+                value: "COMFORT FOCUS: Prioritizing user comfort while maintaining essential conservation and security"
+            
+            # Optimize climate for comfort
+            - service: climate.set_temperature
+              target:
+                entity_id: climate.sietch_main
+              data:
+                temperature: 22  # Comfort temperature
+            
+            # Adjust lighting for comfort
+            - service: scene.turn_on
+              target:
+                entity_id: >
+                  {% set hour = now().hour %}
+                  {% if 6 <= hour < 12 %}
+                    scene.morning_awakening
+                  {% elif 12 <= hour < 18 %}
+                    scene.office_work_mode
+                  {% elif 18 <= hour < 22 %}
+                    scene.evening_routine
+                  {% else %}
+                    scene.system_goodnight
+                  {% endif %}
+            
+            # Reduce conservation slightly for comfort
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.system_performance_target
+              data:
+                value: 75  # Balanced performance
+        
+        # Focus on conservation - high conservation needed
+        - conditions:
+            - condition: template
+              value_template: "{{ balance_strategy == 'focus_conservation' }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.resource_management_log
+              data:
+                value: "CONSERVATION FOCUS: Prioritizing resource conservation with minimal comfort impact"
+            
+            # Enable conservation scene
+            - service: scene.turn_on
+              target:
+                entity_id: scene.energy_conservation
+            
+            # Reduce climate energy usage
+            - service: climate.set_temperature
+              target:
+                entity_id: climate.sietch_main
+              data:
+                temperature: 20  # Conservation temperature
+            
+            # Enable resource conservation mode
+            - service: input_boolean.turn_on
+              target:
+                entity_id: input_boolean.resource_conservation_mode
+        
+        # Focus on security - low security effectiveness
+        - conditions:
+            - condition: template
+              value_template: "{{ balance_strategy == 'focus_security' }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.resource_management_log
+              data:
+                value: "SECURITY FOCUS: Enhancing security while maintaining comfort and conservation balance"
+            
+            # Enhance security systems
+            - service: script.turn_on
+              target:
+                entity_id: script.predictive_security_enhancement
+            
+            # Increase motion sensitivity
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.motion_sensitivity
+              data:
+                value: 75  # Enhanced sensitivity
+        
+        # Dual priority - handle two competing needs
+        - conditions:
+            - condition: template
+              value_template: "{{ balance_strategy == 'dual_priority' }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.resource_management_log
+              data:
+                value: "DUAL PRIORITY: Balancing two competing priorities with intelligent compromises"
+            
+            # Apply moderate settings for all systems
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.system_performance_target
+              data:
+                value: 70  # Moderate performance
+            
+            # Balanced climate setting
+            - service: climate.set_temperature
+              target:
+                entity_id: climate.sietch_main
+              data:
+                temperature: 21  # Balanced temperature
+            
+            # Moderate security settings
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.motion_sensitivity
+              data:
+                value: 65  # Moderate sensitivity
+        
+        # Crisis balancing - all three priorities need attention
+        - conditions:
+            - condition: template
+              value_template: "{{ balance_strategy == 'crisis_balancing' }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.resource_management_log
+              data:
+                value: "CRISIS BALANCING: Multiple priority conflicts - applying emergency balance protocols"
+            
+            # Emergency water conservation
+            - service: scene.turn_on
+              target:
+                entity_id: scene.water_emergency
+            
+            # Enhanced security
+            - service: script.turn_on
+              target:
+                entity_id: script.emergency_security_lockdown
+            
+            # Minimal comfort settings
+            - service: climate.set_temperature
+              target:
+                entity_id: climate.sietch_main
+              data:
+                temperature: 19  # Emergency conservation temperature
+            
+            # Crisis notification
+            - service: notify.mobile_app_tori_phone_2
+              data:
+                message: "⚠️ CRISIS BALANCING: Multiple system priorities in conflict. Emergency balance protocols active."
+                data:
+                  priority: high
+      
+      # Maintain balance - all systems optimal
+      default:
+        - service: input_text.set_value
+          target:
+            entity_id: input_text.resource_management_log
+          data:
+            value: "BALANCE MAINTAINED: All priorities optimal - maintaining current balanced state"
+        
+        # Optimal balanced settings
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.system_performance_target
+          data:
+            value: 80  # Good balanced performance
+    
+    # Log balance operation completion
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.resource_management_log
+      data:
+        value: >
+          BALANCE OPERATION COMPLETE: {{ balance_strategy | upper }} strategy executed -
+          Final State: Comfort[{{ comfort_score }}%] Conservation[{{ conservation_priority }}%] Security[{{ security_priority }}%]
+    
+    # Balance success notification (only for significant changes)
+    - condition: template
+      value_template: "{{ balance_strategy != 'maintain_balance' }}"
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: >
+          ⚖️ Balance Manager: {{ balance_strategy | title | replace('_', ' ') }} strategy applied.
+          System priorities rebalanced for optimal harmony.

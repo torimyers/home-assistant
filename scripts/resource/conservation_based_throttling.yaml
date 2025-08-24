@@ -1,0 +1,39 @@
+conservation_based_throttling:
+  alias: Conservation Based Throttling
+  description: "Adjusts system throttling based on conservation index"
+  icon: mdi:leaf
+  sequence:
+    # Activate conservation mode
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.resource_conservation_mode
+    
+    # Apply conservation-based throttling
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ states('sensor.water_conservation_index') | int > 85 }}
+          sequence:
+            # Aggressive conservation
+            - service: automation.turn_off
+              target:
+                entity_id:
+                  - automation.non_essential_lighting
+                  - automation.comfort_adjustments
+                  - automation.entertainment_system_control
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ states('sensor.water_conservation_index') | int > 70 }}
+          sequence:
+            # Moderate conservation
+            - service: automation.turn_off
+              target:
+                entity_id:
+                  - automation.non_essential_lighting
+    
+    # Conservation notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "💧 Conservation throttling active. Water preservation protocols engaged."

@@ -1,0 +1,53 @@
+intelligent_scene_selector:
+  alias: Intelligent Scene Selector
+  description: "Intelligently selects scenes based on context and conditions"
+  icon: mdi:lightbulb-group-outline
+  sequence:
+    # Analyze current context
+    - variables:
+        time_of_day: >
+          {% set hour = now().hour %}
+          {% if 5 <= hour < 12 %}
+            morning
+          {% elif 12 <= hour < 17 %}
+            afternoon
+          {% elif 17 <= hour < 22 %}
+            evening
+          {% else %}
+            night
+          {% endif %}
+        activity_level: "{{ states('sensor.fremen_activity_level') | int }}"
+        atmospheric_conditions: "{{ states('sensor.atmospheric_conditions') | int }}"
+    
+    # Select appropriate scene based on context
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ time_of_day == 'morning' }}"
+          sequence:
+            - service: scene.turn_on
+              target:
+                entity_id: scene.morning_awakening
+        - conditions:
+            - condition: template
+              value_template: "{{ time_of_day == 'evening' }}"
+          sequence:
+            - service: scene.turn_on
+              target:
+                entity_id: scene.evening_routine
+        - conditions:
+            - condition: template
+              value_template: "{{ time_of_day == 'night' }}"
+          sequence:
+            - service: scene.turn_on
+              target:
+                entity_id: scene.system_goodnight
+      default:
+        - service: scene.turn_on
+          target:
+            entity_id: scene.energy_conservation
+    
+    # Scene selection notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🎭 Intelligent scene selected: {{ time_of_day | title }} mode active."

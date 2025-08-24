@@ -1,0 +1,34 @@
+evening_routine_prediction:
+  alias: Evening Routine Prediction
+  description: "Predicts and prepares for evening routine activities"
+  icon: mdi:weather-sunset
+  sequence:
+    # Prepare evening environment
+    - service: scene.turn_on
+      target:
+        entity_id: scene.evening_routine
+    
+    # Adjust security preparation
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.motion_sensitivity
+      data:
+        value: >
+          {% set activity_level = states('sensor.fremen_activity_level') | int %}
+          {% if activity_level < 30 %}
+            70  # Higher sensitivity for quiet evenings
+          {% else %}
+            50  # Normal sensitivity
+          {% endif %}
+    
+    # Evening preparation log
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.predictive_analytics_log
+      data:
+        value: "Evening routine prediction: {{ now().strftime('%H:%M') }} - Preparing for twilight activities"
+    
+    # Notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🌅 Evening routine preparation initiated. Twilight protocols active."
