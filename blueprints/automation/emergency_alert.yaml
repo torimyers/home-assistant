@@ -130,7 +130,7 @@ blueprint:
     schedule_minutes:
       name: Schedule Minutes Pattern
       description: Minute pattern for scheduled checks (optional)
-      default: ""
+      default: "0"
       selector:
         text:
 
@@ -303,16 +303,16 @@ trigger:
     id: "sensor_threshold_below"
 
   # Weather Condition Monitoring
-  - platform: state
-    entity_id: !input weather_entity
-    attribute: !input weather_attribute
-    to: !input weather_conditions
+  - platform: template
+    value_template: >
+      {% set conditions = weather_conditions %}
+      {% set current_condition = state_attr(weather_entity, weather_attribute) %}
+      {{ current_condition in conditions }}
     id: "weather_condition"
 
   # Scheduled Health Check
   - platform: time_pattern
     hours: !input schedule_hours
-    minutes: !input schedule_minutes
     id: "scheduled_check"
 
 condition:
