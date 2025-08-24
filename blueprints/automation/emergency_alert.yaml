@@ -261,7 +261,7 @@ blueprint:
     recovery_scene:
       name: Recovery Scene
       description: Scene to activate when emergency clears
-      default: ""
+      default: "scene.none"
       selector:
         entity:
           filter:
@@ -285,63 +285,68 @@ mode: single
 max_exceeded: silent
 
 trigger:
-  - choose:
-      # Binary Sensor Monitoring
-      - conditions:
-          - condition: template
-            value_template: "{{ monitoring_type == 'binary_sensor' }}"
-        sequence:
-          - platform: state
-            entity_id: !input binary_sensors
-            to: !input binary_trigger_state
+  # Binary Sensor Monitoring
+  - platform: state
+    entity_id: !input binary_sensors
+    to: !input binary_trigger_state
+    id: "binary_sensor"
 
-      # Numeric Sensor Threshold Monitoring
-      - conditions:
-          - condition: template
-            value_template: "{{ monitoring_type == 'sensor_threshold' }}"
-        sequence:
-          - platform: numeric_state
-            entity_id: !input numeric_sensors
-            above: >
-              {% if threshold_condition == 'above' %}
-                {{ threshold_value }}
-              {% endif %}
-            below: >
-              {% if threshold_condition == 'below' %}
-                {{ threshold_value }}
-              {% endif %}
+  # Numeric Sensor Threshold Monitoring  
+  - platform: numeric_state
+    entity_id: !input numeric_sensors
+    above: !input threshold_value
+    id: "sensor_threshold_above"
+    
+  - platform: numeric_state
+    entity_id: !input numeric_sensors
+    below: !input threshold_value
+    id: "sensor_threshold_below"
 
-      # Weather Condition Monitoring
-      - conditions:
-          - condition: template
-            value_template: "{{ monitoring_type == 'weather_condition' }}"
-        sequence:
-          - platform: state
-            entity_id: !input weather_entity
-            attribute: !input weather_attribute
-            to: !input weather_conditions
+  # Weather Condition Monitoring
+  - platform: state
+    entity_id: !input weather_entity
+    attribute: !input weather_attribute
+    to: !input weather_conditions
+    id: "weather_condition"
 
-      # Scheduled Health Check
-      - conditions:
-          - condition: template
-            value_template: "{{ monitoring_type == 'scheduled_check' }}"
-        sequence:
-          - platform: time_pattern
-            hours: !input schedule_hours
-            minutes: >
-              {% if schedule_minutes %}
-                {{ schedule_minutes }}
-              {% endif %}
+  # Scheduled Health Check
+  - platform: time_pattern
+    hours: !input schedule_hours
+    minutes: !input schedule_minutes
+    id: "scheduled_check"
 
 condition:
-  - choose:
-      - conditions:
+  # Check if the trigger matches the monitoring type
+  - condition: or
+    conditions:
+      # Binary sensor monitoring
+      - condition: and
+        conditions:
           - condition: template
-            value_template: "{{ enable_condition }}"
-        sequence:
-          - condition: state
-            entity_id: !input condition_entity
-            state: !input condition_state
+            value_template: "{{ monitoring_type == 'binary_sensor' }}"
+          - condition: template
+            value_template: "{{ trigger.id == 'binary_sensor' }}"
+      # Sensor threshold monitoring  
+      - condition: and
+        conditions:
+          - condition: template
+            value_template: "{{ monitoring_type == 'sensor_threshold' }}"
+          - condition: template
+            value_template: "{{ trigger.id in ['sensor_threshold_above', 'sensor_threshold_below'] }}"
+      # Weather condition monitoring
+      - condition: and
+        conditions:
+          - condition: template
+            value_template: "{{ monitoring_type == 'weather_condition' }}"
+          - condition: template
+            value_template: "{{ trigger.id == 'weather_condition' }}"
+      # Scheduled check
+      - condition: and
+        conditions:
+          - condition: template
+            value_template: "{{ monitoring_type == 'scheduled_check' }}"
+          - condition: template
+            value_template: "{{ trigger.id == 'scheduled_check' }}"
 
 action:
   - choose:
@@ -444,7 +449,7 @@ action:
           - choose:
               - conditions:
                   - condition: template
-                    value_template: "{{ recovery_scene != '' }}"
+                    value_template: "{{ recovery_scene != '' and recovery_scene != 'scene.none' }}"
                 sequence:
                   - service: scene.turn_on
                     target:

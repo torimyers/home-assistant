@@ -3,7 +3,6 @@
 
 alias: "Advanced Threat Detection System"
 description: "AI-powered security monitoring with anomaly detection and predictive alerts"
-icon: mdi:shield-alert
 mode: parallel
 max: 10
 

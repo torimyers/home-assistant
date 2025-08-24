@@ -199,15 +199,15 @@ variables:
 trigger:
   # Time-based trigger
   - platform: time
-    at: !input trigger_time_var
+    at: !input trigger_time
   # Sunrise trigger
   - platform: sun
     event: sunrise
-    offset: !input sun_offset_var
+    offset: !input sun_offset
   # Sunset trigger  
   - platform: sun
     event: sunset
-    offset: !input sun_offset_var
+    offset: !input sun_offset
 
 condition:
   # Check if the correct trigger type was activated

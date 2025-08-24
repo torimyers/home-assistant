@@ -3,7 +3,6 @@
 
 alias: "Intelligent Climate Optimization System"
 description: "AI-powered climate control with desert survival principles and energy efficiency"
-icon: mdi:thermostat-auto
 mode: parallel
 max: 5
 
