@@ -23,4 +23,4 @@ backups/
 # HACS managed content (don't version control these)
 www/community/
 custom_components/hacs/
-/www/community/
+/www/community/s
