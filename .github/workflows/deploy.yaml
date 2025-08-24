@@ -56,10 +56,18 @@ jobs:
             --no-owner --no-group \
             --include='*.yaml' \
             --include='*.yml' \
-            --include='automations.yaml' \
-            --include='scripts.yaml' \
-            --include='scenes.yaml' \
-            --include='configuration.yaml' \
+            --include='automations/' \
+            --include='automations/**' \
+            --include='scenes/' \
+            --include='scenes/**' \
+            --include='scripts/' \
+            --include='scripts/**' \
+            --include='integrations/' \
+            --include='integrations/**' \
+            --include='customizations/' \
+            --include='customizations/**' \
+            --include='entities/' \
+            --include='entities/**' \
             --exclude='*' \
             ./ /mnt/user/appdata/Home-Assistant-Container/
             
