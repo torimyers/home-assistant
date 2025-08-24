@@ -1,0 +1,249 @@
+blueprint:
+  name: Motion-Activated Room Lighting (Dune Edition)
+  description: Comprehensive motion lighting control with configurable scenes, timeouts, and Dune-themed notifications
+  domain: automation
+  input:
+    motion_entity:
+      name: Motion Sensor
+      description: The binary sensor that detects motion
+      selector:
+        entity:
+          filter:
+            device_class: motion
+            domain: binary_sensor
+    
+    room_name:
+      name: Room Name
+      description: Name of the room for notifications (e.g., "bathroom", "office")
+      selector:
+        text:
+    
+    dune_description:
+      name: Dune Theme Description
+      description: The Dune-themed description for this automation
+      selector:
+        text:
+    
+    # Scene or Light Control
+    activation_type:
+      name: Activation Type
+      description: How to turn on the lights
+      default: scene
+      selector:
+        select:
+          options:
+            - label: "Scene"
+              value: "scene"
+            - label: "Light Entity"
+              value: "light"
+            - label: "Area"
+              value: "area"
+    
+    scene_entity:
+      name: Scene to Activate
+      description: Scene to turn on when motion is detected (only used if Activation Type is Scene)
+      default: {}
+      selector:
+        entity:
+          domain: scene
+    
+    light_entity:
+      name: Light to Control
+      description: Light entity to control (only used if Activation Type is Light Entity)
+      default: {}
+      selector:
+        entity:
+          domain: light
+    
+    area_id:
+      name: Area ID
+      description: Area to control lights in (only used if Activation Type is Area)
+      default: ""
+      selector:
+        text:
+    
+    # Condition Settings
+    check_light_state:
+      name: Check Light State Before Activation
+      description: Only activate if specified light/entity is currently off
+      default: false
+      selector:
+        boolean:
+    
+    condition_entity:
+      name: Condition Entity
+      description: Entity to check state of before activation (used when Check Light State is enabled)
+      default: {}
+      selector:
+        entity:
+    
+    # Timeout Settings
+    timeout_minutes:
+      name: Timeout (Minutes)
+      description: Time to wait after motion stops before turning lights off
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 120
+          unit_of_measurement: minutes
+    
+    # Notification Settings
+    enable_notifications:
+      name: Enable Notifications
+      description: Send notifications for motion events
+      default: true
+      selector:
+        boolean:
+    
+    notification_device:
+      name: Notification Device
+      description: Mobile app to send notifications to
+      default: "mobile_app_tori_phone_2"
+      selector:
+        text:
+    
+    activation_message:
+      name: Activation Message
+      description: Message to send when motion activates lights
+      selector:
+        text:
+    
+    deactivation_message:
+      name: Deactivation Message  
+      description: Message to send when lights turn off after timeout
+      selector:
+        text:
+    
+    # Additional Actions
+    enable_additional_actions:
+      name: Enable Additional Actions
+      description: Enable additional custom actions (like setting input_text values)
+      default: false
+      selector:
+        boolean:
+    
+    additional_service:
+      name: Additional Service
+      description: Additional service to call (e.g., input_text.set_value)
+      default: ""
+      selector:
+        text:
+    
+    additional_entity:
+      name: Additional Entity
+      description: Entity for additional service call
+      default: ""
+      selector:
+        text:
+    
+    additional_data:
+      name: Additional Data
+      description: Data for additional service call (e.g., 'value: navigator_absent')
+      default: ""
+      selector:
+        text:
+
+# Use restart mode so if motion is detected again during timeout, we restart
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input motion_entity
+    from: "off"
+    to: "on"
+
+condition:
+  - condition: template
+    value_template: >
+      {% if check_light_state %}
+        {% set condition_entity = condition_entity %}
+        {% if condition_entity %}
+          {{ states(condition_entity) == 'off' }}
+        {% else %}
+          true
+        {% endif %}
+      {% else %}
+        true
+      {% endif %}
+
+action:
+  # Turn on lights based on activation type
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ activation_type == 'scene' }}"
+        sequence:
+          - service: scene.turn_on
+            target:
+              entity_id: !input scene_entity
+      
+      - conditions:
+          - condition: template
+            value_template: "{{ activation_type == 'light' }}"
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: !input light_entity
+      
+      - conditions:
+          - condition: template
+            value_template: "{{ activation_type == 'area' }}"
+        sequence:
+          - service: light.turn_on
+            target:
+              area_id: !input area_id
+  
+  # Send activation notification
+  - condition: template
+    value_template: !input enable_notifications
+  - service: notify.{{ notification_device }}
+    data:
+      message: !input activation_message
+  
+  # Wait for motion to stop
+  - wait_for_trigger:
+      platform: state
+      entity_id: !input motion_entity
+      from: "on"
+      to: "off"
+  
+  # Wait for timeout period
+  - delay:
+      minutes: !input timeout_minutes
+  
+  # Turn off lights based on activation type
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ activation_type == 'scene' or activation_type == 'light' }}"
+        sequence:
+          - service: light.turn_off
+            target:
+              area_id: !input area_id
+      
+      - conditions:
+          - condition: template
+            value_template: "{{ activation_type == 'area' }}"
+        sequence:
+          - service: light.turn_off
+            target:
+              area_id: !input area_id
+  
+  # Additional actions if enabled
+  - condition: template
+    value_template: !input enable_additional_actions
+  - condition: template
+    value_template: "{{ additional_service != '' and additional_entity != '' }}"
+  - service: "{{ additional_service }}"
+    target:
+      entity_id: "{{ additional_entity }}"
+    data: "{{ additional_data | from_yaml }}"
+  
+  # Send deactivation notification
+  - condition: template
+    value_template: !input enable_notifications
+  - service: notify.{{ notification_device }}
+    data:
+      message: !input deactivation_message

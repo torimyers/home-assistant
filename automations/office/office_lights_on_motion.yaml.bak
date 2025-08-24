@@ -12,7 +12,7 @@ condition:
 action:
 - service: scene.turn_on
   target:
-    entity_id: scene.spice_trance_mode
+    entity_id: scene.office_focus
 - service: notify.mobile_app_tori_phone_2
   data:
     message: Navigator enters the chamber. Spice trance initiated for prescient

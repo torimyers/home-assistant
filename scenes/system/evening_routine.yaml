@@ -1,0 +1,22 @@
+evening_routine:
+  name: "Evening Routine"
+  description: "Sunset Over Arrakis Evening Routine - Gradual transition to nighttime settings"
+  icon: mdi:weather-sunset
+  entities:
+    light.living_room_ceiling_light:
+      state: on
+      brightness: 120
+      color_temp: 480
+    light.kitchen_under_cabinet_lights:
+      state: on
+      brightness: 80
+    light.bedroom_ceiling_light:
+      state: off
+    light.bedside_lamp_left:
+      state: on
+      brightness: 60
+      color_temp: 500
+    climate.home:
+      temperature: 69
+    switch.bedroom_air_purifier:
+      state: on

@@ -1,0 +1,20 @@
+energy_conservation:
+  name: "Energy Conservation"
+  description: "Water Conservation Mode - Minimal energy usage during late night hours"
+  icon: mdi:water-outline
+  entities:
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: on
+      brightness: 30
+      color_temp: 500
+    light.kitchen_under_cabinet_lights:
+      state: on
+      brightness: 20
+    light.living_room_ceiling_light:
+      state: off
+    light.dining_room_lights:
+      state: off
+    switch.coffee_maker:
+      state: off
+    climate.home:
+      temperature: 68

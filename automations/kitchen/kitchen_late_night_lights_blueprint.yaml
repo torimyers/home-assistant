@@ -1,0 +1,39 @@
+automation:
+  - alias: Kitchen Late Night Lights
+    description: Water Conservation - Late Night Protocol
+    use_blueprint:
+      path: time_based_room_control.yaml
+      input:
+        # Basic Configuration
+        room_name: "kitchen"
+        dune_description: "Water Conservation - Late Night Protocol"
+        
+        # Trigger Configuration
+        trigger_type: "motion_time"
+        motion_entity: binary_sensor.kitchen_occupancy
+        
+        # Time Conditions
+        enable_time_conditions: true
+        time_after: "22:15:00"
+        time_before: "06:00:00"
+        
+        # Presence Detection - not needed for this automation
+        enable_presence_check: false
+        
+        # State Check - not needed for this automation
+        enable_state_check: false
+        
+        # Action Configuration - sequential: scene activation, delay, then lights off
+        action_type: "sequential"
+        scene_entity: scene.energy_conservation
+        area_id: "kitchen"
+        
+        # Sequential action settings
+        enable_delay: true
+        delay_minutes: 10
+        secondary_action: "light_off_area"
+        
+        # Notification Settings
+        enable_notifications: true
+        notification_device: "mobile_app_tori_phone_2"
+        notification_message: "Water discipline observed. Night conservation protocol active."

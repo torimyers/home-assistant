@@ -1,0 +1,204 @@
+blueprint:
+  name: Pet Care Schedule (Dune Edition)
+  description: Comprehensive pet care automation for medication and feeding reminders with Dune-themed notifications
+  domain: automation
+  input:
+    pet_name:
+      name: Pet Name
+      description: Name of the pet for notifications
+      selector:
+        text:
+    
+    dune_name:
+      name: Dune Character Name
+      description: The Dune-themed character name for this pet (e.g., "Chani", "Stilgar")
+      selector:
+        text:
+    
+    care_type:
+      name: Care Type
+      description: Type of care this automation handles
+      default: medication
+      selector:
+        select:
+          options:
+            - label: "Medication"
+              value: "medication"
+            - label: "Feeding"
+              value: "feeding"
+            - label: "General Care"
+              value: "care"
+    
+    # Schedule Settings
+    schedule_times:
+      name: Schedule Times
+      description: Times when care is needed (one per line in HH:MM format)
+      selector:
+        text:
+          multiline: true
+    
+    # Tracking Settings
+    datetime_helper:
+      name: Last Care DateTime Helper
+      description: Input datetime helper that tracks when care was last provided
+      selector:
+        entity:
+          domain: input_datetime
+    
+    # Condition Settings
+    check_interval_hours:
+      name: Minimum Hours Between Care
+      description: Minimum hours that must pass before next care reminder
+      default: 23
+      selector:
+        number:
+          min: 1
+          max: 48
+          unit_of_measurement: hours
+    
+    # Medication Specific Settings
+    medication_type:
+      name: Medication Type
+      description: Type of medication (used for medication care type)
+      default: ""
+      selector:
+        text:
+    
+    dual_medication:
+      name: Dual Medication Mode
+      description: Enable if this pet requires multiple medications
+      default: false
+      selector:
+        boolean:
+    
+    second_datetime_helper:
+      name: Second Medication DateTime Helper
+      description: Input datetime helper for second medication (dual medication mode only)
+      default: {}
+      selector:
+        entity:
+          domain: input_datetime
+    
+    # Notification Settings
+    notification_device:
+      name: Notification Device
+      description: Mobile app to send notifications to
+      default: "mobile_app_tori_phone_2"
+      selector:
+        text:
+    
+    custom_message:
+      name: Custom Notification Message
+      description: Custom message template (leave empty for default Dune-themed messages)
+      default: ""
+      selector:
+        text:
+          multiline: true
+    
+    # Additional Actions
+    enable_additional_actions:
+      name: Enable Additional Actions
+      description: Enable additional actions like turning on lights or switches
+      default: false
+      selector:
+        boolean:
+    
+    additional_entity:
+      name: Additional Entity
+      description: Entity to control (switch, light, etc.)
+      default: {}
+      selector:
+        entity:
+    
+    additional_action:
+      name: Additional Action
+      description: Action to perform on additional entity
+      default: "turn_on"
+      selector:
+        select:
+          options:
+            - label: "Turn On"
+              value: "turn_on"
+            - label: "Turn Off"
+              value: "turn_off"
+    
+    update_datetime_helper:
+      name: Update DateTime Helper
+      description: Automatically update the datetime helper when care is provided
+      default: false
+      selector:
+        boolean:
+
+mode: single
+max_exceeded: silent
+
+trigger:
+  - platform: time
+    at: !input schedule_times
+
+condition:
+  - condition: template
+    value_template: >
+      {% set care_type = care_type %}
+      {% set dual_medication = dual_medication %}
+      {% set datetime_helper = datetime_helper %}
+      {% set second_datetime_helper = second_datetime_helper %}
+      {% set check_interval_hours = check_interval_hours %}
+      
+      {% if care_type == 'medication' and dual_medication %}
+        {% set last_care_1 = states(datetime_helper) | as_datetime | as_local %}
+        {% set last_care_2 = states(second_datetime_helper) | as_datetime | as_local %}
+        {% set hours_since_1 = (now() - last_care_1).total_seconds() / 3600 %}
+        {% set hours_since_2 = (now() - last_care_2).total_seconds() / 3600 %}
+        {{ hours_since_1 >= check_interval_hours or hours_since_2 >= check_interval_hours }}
+      {% else %}
+        {% set last_care = states(datetime_helper) | as_datetime | as_local %}
+        {% set hours_since = (now() - last_care).total_seconds() / 3600 %}
+        {{ hours_since >= check_interval_hours }}
+      {% endif %}
+
+action:
+  # Additional actions if enabled
+  - condition: template
+    value_template: !input enable_additional_actions
+  - condition: template
+    value_template: "{{ additional_entity != {} }}"
+  - service: "{{ additional_action }}"
+    target:
+      entity_id: !input additional_entity
+  
+  # Update datetime helper if enabled
+  - condition: template
+    value_template: !input update_datetime_helper
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: !input datetime_helper
+    data:
+      datetime: "{{ now() }}"
+  
+  # Send notification
+  - service: notify.{{ notification_device }}
+    data:
+      message: >
+        {% set pet_name = pet_name %}
+        {% set dune_name = dune_name %}
+        {% set care_type = care_type %}
+        {% set medication_type = medication_type %}
+        {% set custom_message = custom_message %}
+        {% set dual_medication = dual_medication %}
+        
+        {% if custom_message != "" %}
+          {{ custom_message }}
+        {% elif care_type == 'medication' %}
+          {% if dual_medication %}
+            {{ dune_name }} ({{ pet_name }}) requires dual medication. Strength enhancement and comfort medicine due.
+          {% elif medication_type != "" %}
+            {{ dune_name }} ({{ pet_name }}) requires {{ medication_type }}. Desert warrior healing protocol due.
+          {% else %}
+            {{ dune_name }} ({{ pet_name }}) requires medication. Healing protocol due.
+          {% endif %}
+        {% elif care_type == 'feeding' %}
+          Fremen warriors gather for sustenance. The pack bond strengthens through shared feast.
+        {% else %}
+          {{ dune_name }} ({{ pet_name }}) requires attention. Care protocol due.
+        {% endif %}

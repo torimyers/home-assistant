@@ -1,0 +1,19 @@
+kitchen_morning_ration:
+  name: "Kitchen Morning Ration"
+  description: "Morning Water Ration - Early morning sustenance preparation lighting"
+  icon: mdi:coffee
+  entities:
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: on
+      brightness: 150
+      color_temp: 420
+    light.kitchen_under_cabinet_lights:
+      state: on
+      brightness: 120
+    switch.coffee_maker:
+      state: on
+    switch.kitchen_exhaust_fan:
+      state: off
+    media_player.kitchen_echo:
+      state: playing
+      source: "Radio"

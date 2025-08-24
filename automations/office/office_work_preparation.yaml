@@ -8,7 +8,7 @@ trigger:
 action:
 - service: scene.turn_on
   target:
-    entity_id: scene.guild_calculation_mode
+    entity_id: scene.office_productivity
 - service: cover.close_cover
   target:
     entity_id:

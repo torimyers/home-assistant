@@ -1,0 +1,17 @@
+id: bedroom_lights_away_mode
+alias: Bedroom Lights Away Mode
+description: Stilltent Away Conservation - Energy Discipline
+trigger:
+- platform: time
+  at: '23:00:00'
+condition:
+- condition: state
+  entity_id: person.tori_myers
+  state: not_home
+action:
+- service: light.turn_off
+  target:
+    entity_id: light.tori_light_light
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: Stilltent secured for desert patrol absence. Energy conserved.

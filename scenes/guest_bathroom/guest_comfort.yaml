@@ -1,0 +1,13 @@
+guest_comfort:
+  name: "Guest Comfort"
+  description: "Outworlder Hospitality - Welcoming lighting for guest comfort"
+  icon: mdi:account-heart
+  entities:
+    light.guest_bathroom_lights:
+      state: on
+      brightness: 180
+      color_temp: 350
+    switch.guest_bathroom_exhaust_fan:
+      state: on
+    switch.guest_bathroom_night_light:
+      state: on

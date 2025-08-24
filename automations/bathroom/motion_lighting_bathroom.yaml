@@ -1,0 +1,19 @@
+alias: Sacred Water Ritual - Motion Lighting
+description: Sacred Water Ritual - Temple Activation and Conservation
+use_blueprint:
+  path: motion_lighting.yaml
+  input:
+    motion_entity: binary_sensor.master_bathroom_motion
+    room_name: bathroom
+    dune_description: Sacred Water Ritual - Temple Activation
+    activation_type: scene
+    scene_entity: scene.bathroom_bright_lights
+    area_id: master_bathroom
+    check_light_state: true
+    condition_entity: light.master_bathroom_lights
+    timeout_minutes: 10
+    enable_notifications: true
+    notification_device: mobile_app_tori_phone_2
+    activation_message: Sacred water ritual begins. Each drop is precious as life itself.
+    deactivation_message: Sacred ceremony complete. Water discipline observed in the temple.
+    enable_additional_actions: false

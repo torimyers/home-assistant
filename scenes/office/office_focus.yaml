@@ -1,0 +1,19 @@
+office_focus:
+  name: "Office Focus Mode"
+  description: "Spice Trance Mode - Optimal lighting for focused work sessions"
+  icon: mdi:meditation
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: on
+      brightness: 220
+      color_temp: 320
+      rgb_color: [255, 240, 200]
+    light.office_desk_lamp:
+      state: on
+      brightness: 200
+    switch.office_air_purifier:
+      state: on
+    switch.office_white_noise_machine:
+      state: on
+    climate.home:
+      temperature: 70

@@ -1,0 +1,23 @@
+office_productivity:
+  name: "Office Productivity Mode"
+  description: "Guild Calculation Mode - Precise lighting and environment for detailed work"
+  icon: mdi:calculator
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: on
+      brightness: 255
+      color_temp: 300
+    light.office_desk_lamp:
+      state: on
+      brightness: 255
+    light.office_ceiling_light:
+      state: on
+      brightness: 200
+    cover.left_office_roller_blind:
+      state: closed
+    cover.right_office_roller_blind:
+      state: closed
+    switch.office_air_purifier:
+      state: on
+    climate.home:
+      temperature: 72

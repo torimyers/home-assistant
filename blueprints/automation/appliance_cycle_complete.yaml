@@ -1,0 +1,60 @@
+blueprint:
+  name: Appliance Cycle Complete Tracking
+  description: Track when appliance cycles complete with Dune-themed notifications
+  domain: automation
+  input:
+    appliance_name:
+      name: Appliance Name
+      description: Display name of the appliance (e.g., "Laundry")
+      selector:
+        text:
+    washer_boolean:
+      name: Washer Boolean Entity
+      description: The input boolean entity for the washer
+      selector:
+        entity:
+          domain: input_boolean
+    dryer_boolean:
+      name: Dryer Boolean Entity
+      description: The input boolean entity for the dryer
+      selector:
+        entity:
+          domain: input_boolean
+    notification_target:
+      name: Notification Target
+      description: Mobile app notification target
+      default: mobile_app_tori_phone_2
+      selector:
+        text:
+    custom_message:
+      name: Custom Message
+      description: Custom Dune-themed notification message
+      selector:
+        text:
+          multiline: true
+    dune_description:
+      name: Dune Description
+      description: Dune-themed description for the automation
+      selector:
+        text:
+
+trigger:
+  - platform: state
+    entity_id: !input washer_boolean
+    to: 'off'
+  - platform: state
+    entity_id: !input dryer_boolean
+    to: 'off'
+
+condition: []
+
+action:
+  - service: !input notification_target
+    data:
+      message: !input custom_message
+
+variables:
+  appliance_name: !input appliance_name
+  notification_target: !input notification_target
+
+mode: single
