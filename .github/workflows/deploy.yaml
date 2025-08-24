@@ -18,7 +18,15 @@ jobs:
     name: Validate Before Deploy
     runs-on: self-hosted  # Changed from ubuntu-latest
     steps:
+      - name: Clean workspace
+        run: |
+          # Force remove any problematic cache files
+          sudo find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+          sudo find . -name "*.pyc" -delete 2>/dev/null || true
+          
       - uses: actions/checkout@v4
+        with:
+          clean: true
       - name: Create test secrets
         run: |
           cp secrets.yaml.example secrets.yaml
@@ -36,8 +44,16 @@ jobs:
     if: needs.validate.result == 'success'
     
     steps:
+      - name: Clean workspace  
+        run: |
+          # Force remove any problematic cache files
+          sudo find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+          sudo find . -name "*.pyc" -delete 2>/dev/null || true
+          
       - name: 📥 Check out repository
         uses: actions/checkout@v4
+        with:
+          clean: true
         
       # REMOVED: SSH Setup (not needed for local deployment)
       
