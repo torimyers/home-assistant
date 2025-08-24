@@ -1,0 +1,42 @@
+---
+# Lovelace Dashboard Configuration - Multiple Dashboard Setup
+# https://www.home-assistant.io/integrations/lovelace/
+
+lovelace:
+  # Main dashboard configuration - Mobile Responsive
+  mode: yaml
+  filename: responsive-dashboard.yaml
+  
+  # Additional dashboards
+  dashboards:
+    # Navigation hub dashboard
+    lovelace-dashboard-nav:
+      mode: yaml
+      title: "Dashboard Navigation"
+      icon: mdi:view-dashboard
+      show_in_sidebar: true
+      filename: dashboard.yaml
+      
+    # Sietch command center - advanced analytics
+    dashboards-sietch_command:
+      mode: yaml  
+      title: "Sietch Command Center"
+      icon: mdi:console-network
+      show_in_sidebar: true
+      filename: dashboards/sietch_command.yaml
+      
+    # Performance monitoring dashboard
+    dashboards-performance_monitoring:
+      mode: yaml
+      title: "Mentat Analytics"
+      icon: mdi:speedometer
+      show_in_sidebar: true
+      filename: dashboards/performance_monitoring.yaml
+      
+    # Mobile command dashboard  
+    dashboards-mobile_command:
+      mode: yaml
+      title: "Mobile Command"
+      icon: mdi:cellphone
+      show_in_sidebar: true
+      filename: dashboards/mobile_command.yaml
