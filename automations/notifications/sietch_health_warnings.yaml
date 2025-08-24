@@ -1,0 +1,226 @@
+---
+# Sietch Health Warning System - Multi-Level Alerts
+alias: "Sietch Health Warning System"
+description: "Intelligent health monitoring with escalating alerts based on severity levels"
+trigger:
+  - platform: numeric_state
+    entity_id: sensor.sietch_health_score
+    below: 75
+    for:
+      minutes: 5
+    id: health_warning
+  - platform: numeric_state
+    entity_id: sensor.sietch_health_score
+    below: 50
+    for:
+      minutes: 2
+    id: health_critical
+  - platform: numeric_state
+    entity_id: sensor.sietch_health_score
+    below: 30
+    for:
+      seconds: 30
+    id: health_emergency
+  - platform: numeric_state
+    entity_id: sensor.sietch_health_score
+    above: 85
+    for:
+      minutes: 10
+    id: health_recovery
+condition:
+  - condition: state
+    entity_id: input_boolean.notification_system_enabled
+    state: "on"
+action:
+  - choose:
+      # CRITICAL EMERGENCY - Immediate Attention Required
+      - conditions:
+          - condition: trigger
+            id: health_emergency
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🚨 SIETCH EMERGENCY - CRITICAL SYSTEMS FAILURE"
+              message: >-
+                IMMEDIATE FREMEN ATTENTION REQUIRED!
+                
+                🆘 **CRITICAL STATUS**: {{ states('sensor.sietch_health_score') }}% Health Score
+                ⚠️ **THREAT LEVEL**: MAXIMUM
+                
+                **Failed Systems:**
+                • Motion Network: {{ state_attr('sensor.sietch_health_score', 'motion_sensor_status') }}
+                • Device Network: {{ state_attr('sensor.sietch_health_score', 'device_connectivity') }}
+                • Automation Core: {{ state_attr('sensor.sietch_health_score', 'automation_status') }}
+                
+                **Desert Survival Status**: {{ states('sensor.desert_survival_status') }} {{ state_attr('sensor.desert_survival_status', 'survival_rating') }}
+                
+                🛡️ **Shield Status**: {{ state_attr('sensor.energy_shield_status', 'shield_strength') }}
+                ⚡ **Emergency Protocol**: {{ state_attr('sensor.energy_shield_status', 'emergency_protocol') }}
+                
+                "Fear is the mind-killer. Fear is the little-death that brings total obliteration."
+                
+                ACT NOW OR THE SIETCH FALLS!
+              data:
+                actions:
+                  - action: "EMERGENCY_DIAGNOSTICS"
+                    title: "🔧 Emergency Repair"
+                  - action: "SYSTEM_RESTART"
+                    title: "🔄 System Restart"
+                  - action: "MANUAL_OVERRIDE"
+                    title: "⚡ Manual Override"
+                group: "critical_alerts"
+                tag: "health_emergency"
+                notification_icon: "mdi:alert-octagon"
+                color: "#E74C3C"
+                channel: "Emergency Alerts"
+                importance: max
+                sticky: true
+                timeout: 0
+                sound: "alarm_stream_max_5"
+          
+          - service: persistent_notification.create
+            data:
+              title: "🚨 SIETCH EMERGENCY ACTIVE"
+              message: >-
+                **CRITICAL SYSTEM FAILURE DETECTED**
+                
+                Health Score: {{ states('sensor.sietch_health_score') }}%
+                Status: {{ state_attr('sensor.sietch_health_score', 'status_level') }}
+                
+                **IMMEDIATE ACTION REQUIRED**
+                
+                Time: {{ now().strftime('%H:%M:%S') }}
+              notification_id: "health_emergency"
+
+      # HIGH PRIORITY WARNING 
+      - conditions:
+          - condition: trigger
+            id: health_critical
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "⚠️ CRITICAL: Sietch Health Degradation"
+              message: >-
+                Critical systems require immediate attention, Muad'Dib.
+                
+                🆘 **Health Score**: {{ states('sensor.sietch_health_score') }}% - {{ state_attr('sensor.sietch_health_score', 'status_level') }}
+                ⏰ **Alert Time**: {{ now().strftime('%H:%M on %B %d') }}
+                
+                **System Analysis:**
+                • Motion Sensors: {{ state_attr('sensor.sietch_health_score', 'motion_sensor_status') }}
+                • Device Network: {{ state_attr('sensor.sietch_health_score', 'device_connectivity') }}
+                • Automation Status: {{ state_attr('sensor.sietch_health_score', 'automation_status') }}
+                
+                **Related Impacts:**
+                • Desert Survival: {{ states('sensor.desert_survival_status') }}
+                • Water Conservation: {{ states('sensor.water_conservation_index') }}%
+                • Security Effectiveness: {{ states('sensor.night_security_effectiveness') }}%
+                
+                {% if states('sensor.system_response_time') | float < 75 %}⚠️ System response degraded to {{ state_attr('sensor.system_response_time', 'response_grade') }}{% endif %}
+                
+                "The beginning is a very delicate time." Swift action preserves the sietch.
+              data:
+                actions:
+                  - action: "SYSTEM_DIAGNOSTICS"
+                    title: "🔍 Run Diagnostics"
+                  - action: "RESTART_FAILING_SYSTEMS"
+                    title: "🔄 Restart Systems"
+                  - action: "VIEW_HEALTH_DETAILS"
+                    title: "📊 Health Details"
+                group: "health_alerts"
+                tag: "health_critical"
+                notification_icon: "mdi:shield-alert"
+                color: "#E67E22"
+                channel: "System Alerts"
+                importance: high
+                sticky: true
+                timeout: 1800
+
+      # STANDARD WARNING
+      - conditions:
+          - condition: trigger
+            id: health_warning
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "⚠️ Sietch Health Below Optimal"
+              message: >-
+                Your sietch requires attention, Duke Atreides.
+                
+                📊 **Current Health**: {{ states('sensor.sietch_health_score') }}% - {{ state_attr('sensor.sietch_health_score', 'status_level') }}
+                📉 **Trend**: Declining performance detected
+                
+                **System Status Check:**
+                • Motion Network: {{ state_attr('sensor.sietch_health_score', 'motion_sensor_status') }}
+                • Devices: {{ state_attr('sensor.sietch_health_score', 'device_connectivity') }}
+                • Automations: {{ state_attr('sensor.sietch_health_score', 'automation_status') }}
+                
+                **Contributing Factors:**
+                {% if states('sensor.system_response_time') | float < 85 %}• System Response: {{ state_attr('sensor.system_response_time', 'response_grade') }} performance{% endif %}
+                {% if states('sensor.automation_success_rate') | float < 85 %}• Automation Efficiency: {{ states('sensor.automation_success_rate') }}% success rate{% endif %}
+                
+                **Recommendations:**
+                • Review offline devices and sensors
+                • Check automation configurations
+                • Monitor system load and performance
+                
+                "He who controls the spice controls the universe." Maintain your control through vigilance.
+              data:
+                actions:
+                  - action: "QUICK_SYSTEM_CHECK"
+                    title: "🔍 Quick Check"
+                  - action: "VIEW_OFFLINE_DEVICES"
+                    title: "📱 Offline Devices"
+                  - action: "HEALTH_TRENDING"
+                    title: "📈 View Trends"
+                group: "health_alerts"
+                tag: "health_warning"
+                notification_icon: "mdi:shield-half-full"
+                color: "#F39C12"
+                channel: "System Alerts"
+                importance: default
+                sticky: false
+                timeout: 1200
+
+      # RECOVERY NOTIFICATION
+      - conditions:
+          - condition: trigger
+            id: health_recovery
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "✅ Sietch Health Restored"
+              message: >-
+                Excellent work, Muad'Dib. Your sietch returns to optimal performance.
+                
+                🎉 **Health Recovery**: {{ states('sensor.sietch_health_score') }}% - {{ state_attr('sensor.sietch_health_score', 'status_level') }}
+                ⏰ **Recovery Time**: {{ now().strftime('%H:%M on %B %d') }}
+                
+                **System Status:**
+                • All critical systems operational
+                • Automation success rate: {{ states('sensor.automation_success_rate') }}%
+                • Desert survival status: {{ states('sensor.desert_survival_status') }}
+                
+                The spice flows freely once again. Your leadership maintains the balance of Arrakis.
+                
+                "The sleeper has awakened." Your vigilance preserves the sietch.
+              data:
+                actions:
+                  - action: "VIEW_RECOVERY_SUMMARY"
+                    title: "📊 Recovery Report"
+                group: "health_alerts"
+                tag: "health_recovery"
+                notification_icon: "mdi:shield-check"
+                color: "#27AE60"
+                channel: "System Alerts"
+                importance: default
+                sticky: false
+                timeout: 900
+
+          - service: persistent_notification.dismiss
+            data:
+              notification_id: "health_emergency"
+
+mode: queued
+max: 10
+max_exceeded: silent

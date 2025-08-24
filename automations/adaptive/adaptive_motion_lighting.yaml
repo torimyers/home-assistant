@@ -1,0 +1,138 @@
+# Advanced Adaptive Motion Lighting System
+# Uses multiple template sensors for intelligent decision-making and adaptive behavior
+#
+# Pattern 1: Adaptive Motion Lighting
+# - Uses Fremen Activity Level to adjust sensitivity
+# - Uses Motion Pattern Analysis to optimize timeout durations  
+# - Uses Energy Shield Status to balance power consumption
+# - Uses Sietch Health Score to determine response priorities
+
+alias: "Adaptive Motion Lighting - Sietch Intelligence"
+description: "Advanced motion lighting with adaptive thresholds and learning behavior"
+trigger:
+  # Multiple trigger points for comprehensive motion detection
+  - platform: state
+    entity_id: 
+      - binary_sensor.office_motion_detected
+      - binary_sensor.kitchen_occupancy
+      - binary_sensor.living_room_motion_detected
+    to: "on"
+    id: "motion_detected"
+  
+  # Adaptive timeout trigger based on pattern analysis
+  - platform: state
+    entity_id:
+      - binary_sensor.office_motion_detected
+      - binary_sensor.kitchen_occupancy
+      - binary_sensor.living_room_motion_detected
+    to: "off"
+    for:
+      minutes: >-
+        {% set pattern = states('sensor.motion_pattern_analysis') %}
+        {% set activity = states('sensor.fremen_activity_level') | int %}
+        {% set base_timeout = 5 %}
+        {% if pattern == 'Full Activity' %}
+          {{ base_timeout * 0.5 }}
+        {% elif pattern == 'Distributed' %}
+          {{ base_timeout * 0.8 }}
+        {% elif pattern == 'Focused' %}
+          {{ base_timeout * 1.2 }}
+        {% else %}
+          {{ base_timeout * 2 }}
+        {% endif %}
+    id: "adaptive_timeout"
+
+condition:
+  # Multi-condition decision tree with weighted factors
+  - condition: template
+    value_template: >-
+      {% set health = states('sensor.sietch_health_score') | int %}
+      {% set activity = states('sensor.fremen_activity_level') | int %}
+      {% set energy_shield = states('sensor.energy_shield_status') | int %}
+      {% set conservation = states('sensor.water_conservation_index') | int %}
+      
+      {# Calculate weighted decision score #}
+      {% set health_weight = 0.3 %}
+      {% set activity_weight = 0.25 %}
+      {% set energy_weight = 0.25 %}
+      {% set conservation_weight = 0.2 %}
+      
+      {% set decision_score = 
+        (health * health_weight) + 
+        (activity * activity_weight) + 
+        (energy_shield * energy_weight) + 
+        (conservation * conservation_weight) %}
+      
+      {# Dynamic threshold based on time and conditions #}
+      {% set hour = now().hour %}
+      {% set base_threshold = 50 if 6 <= hour <= 22 else 40 %}
+      {% set threshold = base_threshold + (10 if states('sensor.desert_survival_status') == 'Critical' else 0) %}
+      
+      {{ decision_score >= threshold }}
+
+  # Secondary condition: Prevent excessive cycling during high activity
+  - condition: template
+    value_template: >-
+      {% if trigger.id == 'adaptive_timeout' %}
+        {% set pattern = states('sensor.motion_pattern_analysis') %}
+        {% set activity = states('sensor.fremen_activity_level') | int %}
+        {% if pattern == 'Full Activity' and activity > 80 %}
+          {{ false }}  {# Keep lights on during high activity #}
+        {% else %}
+          {{ true }}
+        {% endif %}
+      {% else %}
+        {{ true }}
+      {% endif %}
+
+action:
+  # Branched actions based on trigger and conditions
+  - choose:
+      # Motion Detected Branch
+      - conditions:
+          - condition: trigger
+            id: "motion_detected"
+        sequence:
+          - service: script.turn_on
+            target:
+              entity_id: script.adaptive_lighting_activation
+            data:
+              variables:
+                trigger_zone: "{{ trigger.entity_id.split('.')[1].replace('_motion_detected', '').replace('_occupancy', '') }}"
+                activity_level: "{{ states('sensor.fremen_activity_level') | int }}"
+                pattern_type: "{{ states('sensor.motion_pattern_analysis') }}"
+                energy_status: "{{ states('sensor.energy_shield_status') | int }}"
+
+      # Adaptive Timeout Branch  
+      - conditions:
+          - condition: trigger
+            id: "adaptive_timeout"
+        sequence:
+          - service: script.turn_on
+            target:
+              entity_id: script.adaptive_lighting_deactivation
+            data:
+              variables:
+                trigger_zone: "{{ trigger.entity_id.split('.')[1].replace('_motion_detected', '').replace('_occupancy', '') }}"
+                conservation_index: "{{ states('sensor.water_conservation_index') | int }}"
+                security_mode: "{{ 'active' if now().hour >= 22 or now().hour <= 6 else 'day' }}"
+
+  # Learning and adaptation logging
+  - service: logbook.log
+    data:
+      name: "Sietch Intelligence"
+      message: >-
+        Adaptive lighting decision: {{ trigger.id }} | 
+        Zone: {{ trigger.entity_id.split('.')[1] }} | 
+        Activity: {{ states('sensor.fremen_activity_level') }}% |
+        Pattern: {{ states('sensor.motion_pattern_analysis') }} |
+        Health: {{ states('sensor.sietch_health_score') }}% |
+        Decision Score: {{
+          (states('sensor.sietch_health_score')|int * 0.3) +
+          (states('sensor.fremen_activity_level')|int * 0.25) +
+          (states('sensor.energy_shield_status')|int * 0.25) +
+          (states('sensor.water_conservation_index')|int * 0.2)
+        }}
+
+mode: parallel
+max: 10

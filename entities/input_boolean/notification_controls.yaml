@@ -1,0 +1,78 @@
+---
+# Notification System Controls - Dune Intelligence Center
+# Master controls for the comprehensive notification and automation system
+
+input_boolean:
+  # ============================================================================
+  # NOTIFICATION CONTROLS
+  # ============================================================================
+  notification_system_enabled:
+    name: "Notification System Enabled"
+    initial: on
+    icon: mdi:bell-circle
+  
+  daily_reports_enabled:
+    name: "Daily Reports Enabled"
+    initial: on
+    icon: mdi:calendar-today
+  
+  threshold_alerts_enabled:
+    name: "Threshold Alerts Enabled"
+    initial: on
+    icon: mdi:alert-circle
+    
+  achievement_notifications_enabled:
+    name: "Achievement Notifications Enabled"
+    initial: on
+    icon: mdi:trophy-award
+    
+  context_messaging_enabled:
+    name: "Context Messaging Enabled"
+    initial: on
+    icon: mdi:message-cog
+    
+  emergency_alerts_enabled:
+    name: "Emergency Alerts Enabled"
+    initial: on
+    icon: mdi:alert-octagon
+    
+  night_mode_notifications:
+    name: "Night Mode Notifications"
+    initial: off
+    icon: mdi:weather-night
+
+  # ============================================================================
+  # SYSTEM MODES
+  # ============================================================================
+  vacation_mode:
+    name: "Vacation Mode"
+    initial: off
+    icon: mdi:airplane
+
+  guest_mode:
+    name: "Guest Mode"
+    initial: off
+    icon: mdi:account-group
+
+  maintenance_mode:
+    name: "Maintenance Mode"
+    initial: off
+    icon: mdi:wrench
+
+  # ============================================================================
+  # AUTOMATION CONTROLS  
+  # ============================================================================
+  motion_lighting_enabled:
+    name: "Motion Lighting Enabled"
+    initial: on
+    icon: mdi:lightbulb-auto
+
+  security_monitoring_enabled:
+    name: "Security Monitoring Enabled"
+    initial: on
+    icon: mdi:shield-check
+
+  climate_automation_enabled:
+    name: "Climate Automation Enabled"
+    initial: on
+    icon: mdi:thermostat-auto

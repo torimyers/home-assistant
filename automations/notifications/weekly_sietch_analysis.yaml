@@ -1,0 +1,127 @@
+---
+# Weekly Sietch Analysis - Comprehensive Performance Review
+alias: "Weekly Sietch Analysis"
+description: "Deep analytical report with trends, efficiency metrics, and strategic recommendations"
+trigger:
+  - platform: time
+    at: "08:00:00"
+    id: weekly_report
+  - platform: template
+    value_template: "{{ now().weekday() == 6 }}"  # Sunday = 6
+    id: sunday_trigger
+condition:
+  - condition: and
+    conditions:
+      - condition: time
+        weekday:
+          - sun
+      - condition: state
+        entity_id: input_boolean.notification_system_enabled
+        state: "on"
+        for:
+          minutes: 5
+action:
+  - service: notify.mobile_app_toris_iphone
+    data:
+      title: "📊 Weekly Sietch Analysis - Strategic Review"
+      message: >-
+        Greetings, Muad'Dib. The desert week concludes. Behold your domain's evolution.
+        
+        🏆 **Performance Highlights:**
+        • Average Health Score: {% set health = states('sensor.sietch_health_score') | float %}{{ "%.1f"|format(health) }}%
+        • Peak Spice Production: {{ states('sensor.spice_production_level') }} units
+        • Guild Rating Achieved: {{ state_attr('sensor.spice_production_level', 'guild_rating') }}
+        
+        💧 **Conservation Analysis:**
+        • Weekly Average: {{ states('sensor.water_conservation_index') }}%
+        • Status: {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+        • {% if states('sensor.water_conservation_index') | float >= 80 %}Exceptional desert adaptation{% elif states('sensor.water_conservation_index') | float >= 60 %}Adequate conservation practices{% else %}Improvement required for true Fremen status{% endif %}
+        
+        🤖 **Automation Intelligence Review:**
+        • Success Rate: {{ states('sensor.automation_success_rate') }}% - {{ state_attr('sensor.automation_success_rate', 'success_grade') }}
+        • Blueprint Efficiency: {{ states('sensor.blueprint_efficiency_score') }}% - {{ state_attr('sensor.blueprint_efficiency_score', 'efficiency_rating') }}
+        • System Response: {{ state_attr('sensor.system_response_time', 'response_grade') }}
+        
+        🏠 **Occupancy Patterns:**
+        • Primary Zone: {{ states('sensor.sietch_occupancy_distribution') }}
+        • Activity Distribution: {{ state_attr('sensor.sietch_occupancy_distribution', 'activity_distribution') }}
+        • Motion Efficiency: {{ state_attr('sensor.motion_pattern_analysis', 'efficiency_score') }}
+        
+        🛡️ **Security Assessment:**
+        • Night Watch Effectiveness: {{ states('sensor.night_security_effectiveness') }}%
+        • Threat Assessment: {{ state_attr('sensor.night_security_effectiveness', 'threat_level') }}
+        • Shield Network: {{ state_attr('sensor.energy_shield_status', 'shield_strength') }}
+        
+        ⚡ **Energy & Environmental:**
+        • Harvester Performance: {{ states('sensor.harvester_efficiency') }}% - {{ state_attr('sensor.harvester_efficiency', 'efficiency_grade') }}
+        • Atmospheric Quality: {{ state_attr('sensor.atmospheric_conditions', 'atmosphere_quality') }}
+        • Energy Shield Status: {{ states('sensor.energy_shield_status') }}%
+        
+        📈 **Strategic Recommendations:**
+        {% set health_score = states('sensor.sietch_health_score') | float %}
+        {% set conservation = states('sensor.water_conservation_index') | float %}
+        {% set automation = states('sensor.automation_success_rate') | float %}
+        
+        {% if health_score >= 90 and conservation >= 85 and automation >= 95 %}
+        🌟 **Excellence Achieved**: Your sietch operates at peak Fremen efficiency. Consider expansion or advanced optimization protocols.
+        
+        {% elif health_score >= 80 and conservation >= 70 and automation >= 80 %}
+        📊 **Strong Performance**: Your domain thrives. Focus on maintaining consistency and identifying growth opportunities.
+        
+        {% elif health_score >= 70 %}
+        ⚠️ **Optimization Needed**: 
+        - {% if conservation < 70 %}Enhance water conservation protocols{% endif %}
+        - {% if automation < 80 %}Review and optimize automation workflows{% endif %}
+        - {% if health_score < 80 %}Investigate system health factors{% endif %}
+        
+        {% else %}
+        🚨 **Immediate Attention Required**:
+        - Critical system review needed
+        - Conservation protocols must be enhanced
+        - Automation systems require maintenance
+        {% endif %}
+        
+        *"The mystery of life isn't a problem to solve, but a reality to experience."* - Frank Herbert
+        
+        May your name be eternal in the desert chronicles.
+      data:
+        actions:
+          - action: "WEEKLY_DETAILED_REPORT"
+            title: "📋 Full Analytics Report"
+          - action: "OPTIMIZATION_SUGGESTIONS"
+            title: "🔧 Optimization Guide"
+          - action: "NEXT_WEEK_PLANNING"
+            title: "📅 Week Planning"
+        group: "strategic_reports"
+        tag: "weekly_analysis"
+        notification_icon: "mdi:chart-timeline-variant"
+        color: "#E67E22"
+        channel: "Strategic Analysis"
+        importance: max
+        sticky: true
+        timeout: 3600
+
+  # Create comprehensive persistent notification with action buttons
+  - service: persistent_notification.create
+    data:
+      title: "📊 Weekly Strategic Analysis Complete"
+      message: >-
+        **Sietch Performance Week {{ now().strftime('%W') }}:**
+        
+        🏆 **Achievements:**
+        - Health: {{ states('sensor.sietch_health_score') }}% ({{ state_attr('sensor.sietch_health_score', 'status_level') }})
+        - Conservation: {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+        - Production: {{ state_attr('sensor.spice_production_level', 'guild_rating') }}
+        
+        🎯 **Focus Areas:**
+        {% if states('sensor.sietch_health_score') | float < 80 %}• System Health Optimization{% endif %}
+        {% if states('sensor.water_conservation_index') | float < 70 %}• Conservation Enhancement{% endif %}
+        {% if states('sensor.automation_success_rate') | float < 85 %}• Automation Tuning{% endif %}
+        
+        **Next Review:** {{ (now() + timedelta(days=7)).strftime('%B %d, %Y') }}
+        
+        *The spice must flow, and under your guidance, it flows magnificently.*
+      notification_id: "weekly_analysis_{{ now().strftime('%Y_W%W') }}"
+
+mode: single
+max_exceeded: silent

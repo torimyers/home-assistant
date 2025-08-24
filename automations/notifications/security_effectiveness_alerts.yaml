@@ -1,0 +1,371 @@
+---
+# Security Effectiveness Alert System - Night Watch Intelligence
+alias: "Security Effectiveness Alert System"  
+description: "Advanced night security monitoring with threat assessment and defensive protocols"
+trigger:
+  - platform: numeric_state
+    entity_id: sensor.night_security_effectiveness
+    below: 80
+    for:
+      minutes: 5
+    id: security_degradation
+  - platform: numeric_state
+    entity_id: sensor.night_security_effectiveness
+    below: 60
+    for:
+      minutes: 2
+    id: security_critical
+  - platform: numeric_state
+    entity_id: sensor.night_security_effectiveness
+    below: 40
+    for:
+      seconds: 30
+    id: security_emergency
+  - platform: template
+    value_template: >-
+      {{ (now().hour >= 22 or now().hour <= 6) and 
+         states('sensor.night_security_effectiveness') | float < 70 }}
+    for:
+      minutes: 3
+    id: night_security_weakness
+  - platform: template
+    value_template: >-
+      {{ states('sensor.night_security_effectiveness') | float >= 95 and
+         (now().hour >= 22 or now().hour <= 6) }}
+    for:
+      minutes: 10
+    id: fortress_security_achieved
+  - platform: template
+    value_template: >-
+      {{ state_attr('sensor.night_security_effectiveness', 'sensor_network').split('/')[0] | int < 
+         state_attr('sensor.night_security_effectiveness', 'sensor_network').split('/')[1] | int }}
+    id: perimeter_breach_risk
+condition:
+  - condition: state
+    entity_id: input_boolean.notification_system_enabled
+    state: "on"
+action:
+  - choose:
+      # SECURITY EMERGENCY - Critical Defense Failure
+      - conditions:
+          - condition: trigger
+            id: security_emergency
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🚨 SECURITY EMERGENCY: Defense Systems Failing!"
+              message: >-
+                IMMEDIATE THREAT RESPONSE REQUIRED! SIETCH DEFENSES COMPROMISED!
+                
+                🛡️ **CRITICAL SECURITY FAILURE**: {{ states('sensor.night_security_effectiveness') }}%
+                ⚠️ **THREAT LEVEL**: {{ state_attr('sensor.night_security_effectiveness', 'threat_level') }}
+                🌙 **Night Status**: {{ state_attr('sensor.night_security_effectiveness', 'security_mode') }}
+                
+                **DEFENSE NETWORK ANALYSIS:**
+                • Perimeter Sensors: {{ state_attr('sensor.night_security_effectiveness', 'sensor_network') }}
+                • Response Devices: {{ state_attr('sensor.night_security_effectiveness', 'response_devices') }}
+                
+                **CRITICAL VULNERABILITIES:**
+                {% if state_attr('sensor.night_security_effectiveness', 'sensor_network').split('/')[0] | int < 2 %}
+                🚨 CRITICAL: Insufficient perimeter sensor coverage
+                {% endif %}
+                {% if state_attr('sensor.night_security_effectiveness', 'response_devices').split('/')[0] | int < 1 %}
+                🚨 CRITICAL: Response device network compromised
+                {% endif %}
+                
+                **RELATED SYSTEM IMPACT:**
+                • Energy Shields: {{ states('sensor.energy_shield_status') }}% - {{ state_attr('sensor.energy_shield_status', 'shield_strength') }}
+                • Desert Survival: {{ states('sensor.desert_survival_status') }}
+                
+                🏜️ "A breached sietch is a dead sietch. The desert offers no mercy to the unprepared."
+                
+                **EMERGENCY PROTOCOLS:**
+                🚨 Activate all backup security systems immediately
+                🔍 Conduct full perimeter diagnostic
+                🛡️ Implement manual security overrides
+                📡 Test all sensor communications
+                ⚡ Verify power supply to all security devices
+                
+                THE NIGHT WATCHES. THE NIGHT WAITS. THE NIGHT STRIKES THE UNPREPARED!
+                ACT NOW OR FACE THE DESERT'S JUDGMENT!
+              data:
+                actions:
+                  - action: "EMERGENCY_LOCKDOWN"
+                    title: "🔒 Emergency Lockdown"
+                  - action: "SECURITY_DIAGNOSTICS"
+                    title: "🔍 Full Diagnostics"
+                  - action: "MANUAL_SECURITY_OVERRIDE"
+                    title: "⚡ Manual Override"
+                group: "security_emergency"
+                tag: "security_critical"
+                notification_icon: "mdi:shield-alert"
+                color: "#B71C1C"
+                channel: "Security Emergency"
+                importance: max
+                sticky: true
+                timeout: 0
+                sound: "alarm_stream_max_5"
+
+          - service: persistent_notification.create
+            data:
+              title: "🚨 SECURITY EMERGENCY ACTIVE"
+              message: >-
+                **CRITICAL DEFENSE SYSTEM FAILURE**
+                
+                Security Effectiveness: {{ states('sensor.night_security_effectiveness') }}%
+                Threat Assessment: {{ state_attr('sensor.night_security_effectiveness', 'threat_level') }}
+                
+                **IMMEDIATE FREMEN RESPONSE REQUIRED**
+                
+                "The desert remembers the careless." - Fremen Warning
+              notification_id: "security_emergency"
+
+      # CRITICAL SECURITY ALERT
+      - conditions:
+          - condition: trigger
+            id: security_critical
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "⚠️ CRITICAL: Security System Degradation"
+              message: >-
+                Critical security weaknesses detected, Muad'Dib. The sietch grows vulnerable.
+                
+                🛡️ **Security Effectiveness**: {{ states('sensor.night_security_effectiveness') }}%
+                ⚠️ **Threat Assessment**: {{ state_attr('sensor.night_security_effectiveness', 'threat_level') }}
+                🌙 **Security Mode**: {{ state_attr('sensor.night_security_effectiveness', 'security_mode') }}
+                
+                **DEFENSE NETWORK STATUS:**
+                • Sensor Coverage: {{ state_attr('sensor.night_security_effectiveness', 'sensor_network') }}
+                • Response Capability: {{ state_attr('sensor.night_security_effectiveness', 'response_devices') }}
+                
+                **VULNERABILITY ANALYSIS:**
+                {% if state_attr('sensor.night_security_effectiveness', 'sensor_network').split('/')[0] | int < 
+                     state_attr('sensor.night_security_effectiveness', 'sensor_network').split('/')[1] | int %}
+                🔍 Perimeter sensor network compromised - blind spots detected
+                {% endif %}
+                {% if state_attr('sensor.night_security_effectiveness', 'response_devices').split('/')[0] | int < 2 %}
+                🚨 Insufficient response devices for adequate coverage
+                {% endif %}
+                
+                **SUPPORTING SYSTEM STATUS:**
+                • Energy Shields: {{ states('sensor.energy_shield_status') }}% strength
+                • Sietch Health: {{ states('sensor.sietch_health_score') }}%
+                • System Response: {{ state_attr('sensor.system_response_time', 'response_grade') }}
+                
+                🏜️ "A wise Fremen prepares for the night while the sun still shines. Your defenses show cracks that invite disaster."
+                
+                **CRITICAL ACTIONS REQUIRED:**
+                • Investigate and repair non-responsive sensors
+                • Verify response device operational status
+                • Test communication links between security components
+                • Implement backup security protocols
+                
+                The desert tests your vigilance. Do not fail this test.
+              data:
+                actions:
+                  - action: "CRITICAL_SECURITY_REPAIR"
+                    title: "🔧 Repair Systems"
+                  - action: "SECURITY_BACKUP_PROTOCOLS"
+                    title: "🛡️ Backup Protocols"
+                  - action: "PERIMETER_DIAGNOSTIC"
+                    title: "🔍 Perimeter Check"
+                group: "security_alerts"
+                tag: "security_critical"
+                notification_icon: "mdi:shield-half-full"
+                color: "#D32F2F"
+                channel: "Security Alerts"
+                importance: high
+                sticky: true
+                timeout: 2400
+
+      # SECURITY DEGRADATION WARNING
+      - conditions:
+          - condition: trigger
+            id: security_degradation
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "⚠️ Security Effectiveness Declining"
+              message: >-
+                Security systems show degraded performance, Duke. Vigilance is required.
+                
+                🛡️ **Security Status**: {{ states('sensor.night_security_effectiveness') }}% - {{ state_attr('sensor.night_security_effectiveness', 'threat_level') }}
+                📊 **Performance**: Below optimal security standards
+                
+                **Security Network Assessment:**
+                • Perimeter Sensors: {{ state_attr('sensor.night_security_effectiveness', 'sensor_network') }}
+                • Response Systems: {{ state_attr('sensor.night_security_effectiveness', 'response_devices') }}
+                • Mode Status: {{ state_attr('sensor.night_security_effectiveness', 'security_mode') }}
+                
+                **POTENTIAL CAUSES:**
+                • Sensor network may have offline components
+                • Response devices might be non-operational
+                • Communication systems could be degraded
+                • Power supply issues to security network
+                
+                🏜️ "The desert whispers warnings to those who listen. Your security systems echo those whispers."
+                
+                **RECOMMENDED ACTIONS:**
+                • Perform security system health check
+                • Verify all sensor communications
+                • Test response device functionality  
+                • Review recent security event logs
+                
+                Strengthen your defenses before they are needed. The prepared sietch survives the desert's tests.
+              data:
+                actions:
+                  - action: "SECURITY_HEALTH_CHECK"
+                    title: "🔍 Health Check"
+                  - action: "TEST_ALL_SENSORS"
+                    title: "📡 Test Sensors"
+                  - action: "SECURITY_OPTIMIZATION"
+                    title: "⚙️ Optimize Security"
+                group: "security_alerts"
+                tag: "security_warning"
+                notification_icon: "mdi:shield-outline"
+                color: "#FF9800"
+                channel: "Security Alerts"
+                importance: default
+                sticky: false
+                timeout: 1800
+
+      # NIGHT SECURITY WEAKNESS
+      - conditions:
+          - condition: trigger
+            id: night_security_weakness
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🌙 Night Watch Security Concern"
+              message: >-
+                The deep night hours reveal security weaknesses, Muad'Dib.
+                
+                🌙 **Night Security**: {{ states('sensor.night_security_effectiveness') }}% effectiveness
+                ⏰ **Critical Hours**: Night watch period active
+                🛡️ **Threat Level**: {{ state_attr('sensor.night_security_effectiveness', 'threat_level') }}
+                
+                **Night Defense Status:**
+                • Sensor Network: {{ state_attr('sensor.night_security_effectiveness', 'sensor_network') }}
+                • Response Readiness: {{ state_attr('sensor.night_security_effectiveness', 'response_devices') }}
+                
+                🏜️ "The desert night hides both friend and foe. Weak defenses invite the wrong visitors."
+                
+                **Night Security Protocols:**
+                • Verify all perimeter sensors for night operation
+                • Ensure response devices are night-ready
+                • Check backup power systems
+                • Test night vision and detection capabilities
+                
+                {% if now().hour >= 2 and now().hour <= 5 %}
+                **DEEP NIGHT ALERT**: This is the most vulnerable time. Maximum security vigilance required.
+                {% endif %}
+                
+                The night watches those who watch the night. Ensure you are the watcher, not the watched.
+              data:
+                actions:
+                  - action: "NIGHT_SECURITY_BOOST"
+                    title: "🌙 Boost Night Security"
+                  - action: "PERIMETER_NIGHT_CHECK"
+                    title: "🔦 Night Perimeter Check"
+                group: "night_security"
+                tag: "night_weakness"
+                notification_icon: "mdi:shield-moon"
+                color: "#424242"
+                channel: "Night Security"
+                importance: high
+                sticky: false
+                timeout: 1800
+
+      # FORTRESS SECURITY ACHIEVED
+      - conditions:
+          - condition: trigger
+            id: fortress_security_achieved
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🏰 Fortress-Level Security Achieved!"
+              message: >-
+                Outstanding security mastery, Muad'Dib! Your night defenses achieve fortress standards.
+                
+                🏰 **Fortress Security**: {{ states('sensor.night_security_effectiveness') }}% - {{ state_attr('sensor.night_security_effectiveness', 'threat_level') }}
+                ⭐ **Security Excellence**: Peak night watch performance
+                
+                **Perfect Defense Metrics:**
+                • Sensor Network: {{ state_attr('sensor.night_security_effectiveness', 'sensor_network') }} (Full Coverage)
+                • Response Systems: {{ state_attr('sensor.night_security_effectiveness', 'response_devices') }} (Optimal Readiness)
+                • Mode Status: {{ state_attr('sensor.night_security_effectiveness', 'security_mode') }}
+                
+                🏜️ **Desert Guardian Status**: "Your sietch has become an impenetrable fortress. Even the sand respects such preparation."
+                
+                **Fortress Benefits:**
+                ⚡ Maximum threat detection capability
+                🛡️ Optimal response coordination
+                🎯 Perfect perimeter coverage
+                🌙 Elite night watch protection
+                
+                {% if states('sensor.night_security_effectiveness') | float >= 98 %}
+                🌟 **LEGENDARY ACHIEVEMENT**: Security effectiveness approaches theoretical perfection!
+                {% endif %}
+                
+                Your vigilance transforms the sietch into an unassailable stronghold. The desert acknowledges your mastery.
+              data:
+                actions:
+                  - action: "FORTRESS_CELEBRATION"
+                    title: "🏰 Celebrate Fortress Status"
+                  - action: "SECURITY_MASTERY_REPORT"
+                    title: "📊 Mastery Analysis"
+                group: "security_achievements"
+                tag: "fortress_security"
+                notification_icon: "mdi:castle"
+                color: "#1B5E20"
+                channel: "Security Achievements"
+                importance: default
+                sticky: false
+                timeout: 1200
+
+      # PERIMETER BREACH RISK
+      - conditions:
+          - condition: trigger
+            id: perimeter_breach_risk
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🔍 Perimeter Breach Risk Detected"
+              message: >-
+                Perimeter sensor network shows gaps, Duke. Breach risk elevated.
+                
+                🔍 **Sensor Status**: {{ state_attr('sensor.night_security_effectiveness', 'sensor_network') }}
+                ⚠️ **Breach Risk**: Elevated due to sensor gaps
+                
+                **Gap Analysis:**
+                • Some perimeter sensors are non-operational
+                • Coverage zones may have blind spots
+                • Detection capability is compromised
+                
+                🏜️ "A single gap in the wall invites the entire desert inside."
+                
+                **IMMEDIATE ACTIONS:**
+                • Identify and repair non-responsive sensors
+                • Deploy backup detection methods for gap coverage
+                • Increase manual monitoring of vulnerable areas
+                
+                Close the gaps before they become doorways for trouble.
+              data:
+                actions:
+                  - action: "REPAIR_SENSOR_GAPS"
+                    title: "🔧 Repair Sensors"
+                  - action: "DEPLOY_BACKUP_DETECTION"
+                    title: "📡 Backup Detection"
+                group: "security_alerts"
+                tag: "perimeter_breach"
+                notification_icon: "mdi:shield-search"
+                color: "#FF5722"
+                channel: "Security Alerts"  
+                importance: high
+                sticky: false
+                timeout: 1800
+
+mode: queued
+max: 15
+max_exceeded: silent

@@ -1,0 +1,349 @@
+# Mobile Command Dashboard - Pocket-Sized Sietch Control
+# Optimized for mobile devices with touch-friendly controls
+
+title: "Mobile Command"
+theme: dune_theme
+
+views:
+  - title: "Home"
+    icon: mdi:home
+    path: home
+    badges:
+      - entity: sensor.sietch_health_score
+        name: "Health"
+      - entity: binary_sensor.house_occupied
+        name: "Occupied"
+    cards:
+      # Mobile Header - Compact
+      - type: custom:mushroom-title-card
+        title: "🏜️ House Atreides"
+        subtitle: "Mobile Command Center"
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #D4A574, #F5E6D3);
+              border: 2px solid #FF8C00;
+              color: #2F1B14;
+              text-align: center;
+              margin-bottom: 8px;
+            }
+
+      # Quick Status - Single Row
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: sensor.sietch_health_score
+            name: "System"
+            icon: mdi:shield-check
+            layout: vertical
+            
+          - type: custom:mushroom-entity-card
+            entity: sensor.spice_production_level
+            name: "Production"
+            icon: mdi:chart-line
+            layout: vertical
+            
+          - type: custom:mushroom-entity-card
+            entity: sensor.water_conservation_index
+            name: "Water"
+            icon: mdi:water-percent
+            layout: vertical
+
+      # Essential Controls - Swipe Cards
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.notification_system_enabled
+            name: "Notifications"
+            icon: mdi:bell
+            tap_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card {
+                  background: {% if is_state('input_boolean.notification_system_enabled', 'on') %}#32CD32{% else %}#666666{% endif %};
+                  color: white;
+                }
+
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.vacation_mode
+            name: "Away Mode"
+            icon: mdi:airplane
+            tap_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card {
+                  background: {% if is_state('input_boolean.vacation_mode', 'on') %}#FF8C00{% else %}#666666{% endif %};
+                  color: white;
+                }
+
+      # Emergency Quick Access
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: scene.energy_conservation
+            name: "Energy Save"
+            icon: mdi:leaf
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.energy_conservation
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(45deg, #228B22, #32CD32);
+                  color: white;
+                }
+
+          - type: custom:mushroom-entity-card
+            entity: scene.system_storm_mode
+            name: "Storm Mode"
+            icon: mdi:weather-lightning
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.system_storm_mode
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(45deg, #4169E1, #1E90FF);
+                  color: white;
+                }
+
+  - title: "Control"
+    icon: mdi:tune
+    path: control
+    badges: []
+    cards:
+      # Mobile Controls Header
+      - type: custom:mushroom-title-card
+        title: "⚙️ System Controls"
+        subtitle: "Essential system management"
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #4169E1, #6495ED);
+              color: white;
+              text-align: center;
+              margin-bottom: 8px;
+            }
+
+      # System Modes - Toggle Grid
+      - type: grid
+        columns: 2
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.guest_mode
+            name: "Guest Mode"
+            icon: mdi:account-group
+            layout: vertical
+            tap_action:
+              action: toggle
+            
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.maintenance_mode
+            name: "Maintenance"
+            icon: mdi:wrench
+            layout: vertical
+            tap_action:
+              action: toggle
+
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.motion_lighting_enabled
+            name: "Motion Lights"
+            icon: mdi:lightbulb-auto
+            layout: vertical
+            tap_action:
+              action: toggle
+              
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.climate_automation_enabled
+            name: "Climate Auto"
+            icon: mdi:thermostat-auto
+            layout: vertical
+            tap_action:
+              action: toggle
+
+      # House Mode Selector
+      - type: entities
+        title: "🏠 House Mode"
+        card_mod:
+          style: |
+            ha-card {
+              font-size: 14px;
+            }
+        entities:
+          - entity: input_select.house_mode
+            name: "Current Mode"
+          - entity: input_select.security_level
+            name: "Security Level"
+
+      # Quick Thresholds
+      - type: entities
+        title: "🎯 Quick Adjustments"
+        card_mod:
+          style: |
+            ha-card {
+              font-size: 14px;
+            }
+        entities:
+          - entity: input_number.motion_timeout_minutes
+            name: "Motion Timeout"
+          - entity: input_number.spice_production_target
+            name: "Production Target"
+
+  - title: "Monitor"
+    icon: mdi:monitor-dashboard
+    path: monitor
+    badges: []
+    cards:
+      # Mobile Monitoring Header
+      - type: custom:mushroom-title-card
+        title: "📊 System Monitor"
+        subtitle: "Status and analytics"
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #228B22, #32CD32);
+              color: white;
+              text-align: center;
+              margin-bottom: 8px;
+            }
+
+      # Key Metrics - Mobile Optimized
+      - type: grid
+        columns: 1
+        cards:
+          - type: gauge
+            entity: sensor.sietch_operational_intelligence
+            name: "Operational Intelligence"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 90
+              yellow: 75
+              red: 60
+
+      # Status Indicators - Compact
+      - type: entities
+        title: "🚦 System Status"
+        card_mod:
+          style: |
+            ha-card {
+              font-size: 14px;
+            }
+        entities:
+          - entity: binary_sensor.house_occupied
+            name: "House Occupied"
+            secondary_info: last-changed
+          - entity: binary_sensor.all_systems_operational
+            name: "All Systems OK"
+            secondary_info: last-changed
+          - entity: binary_sensor.automation_system_healthy
+            name: "Automation Health"
+            secondary_info: last-changed
+
+      # Recent Activity - Mobile List
+      - type: entities
+        title: "📈 Recent Activity"
+        card_mod:
+          style: |
+            ha-card {
+              font-size: 14px;
+            }
+        entities:
+          - entity: counter.atlas_daily_motion
+            name: "Motion Events Today"
+            secondary_info: last-changed
+          - entity: counter.spice_harvester_cycles
+            name: "Harvester Cycles"
+            secondary_info: last-changed
+          - entity: timer.motion_light_delay
+            name: "Motion Timer"
+            secondary_info: last-changed
+
+      # Quick Actions - Mobile Buttons
+      - type: entities
+        title: "🔧 Quick Actions"
+        entities:
+          - type: button
+            name: "System Health Check"
+            action_name: "Run"
+            service: script.system_health_monitor
+            
+          - type: button
+            name: "Reset Counters"
+            action_name: "Reset"
+            service: automation.daily_counter_reset
+
+  - title: "Settings"
+    icon: mdi:cog
+    path: settings
+    badges: []
+    cards:
+      # Mobile Settings Header
+      - type: custom:mushroom-title-card
+        title: "⚙️ Quick Settings"
+        subtitle: "Mobile configuration"
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #DC143C, #FF6347);
+              color: white;
+              text-align: center;
+              margin-bottom: 8px;
+            }
+
+      # Notification Settings
+      - type: entities
+        title: "🔔 Notifications"
+        card_mod:
+          style: |
+            ha-card {
+              font-size: 14px;
+            }
+        entities:
+          - entity: input_boolean.daily_reports_enabled
+            name: "Daily Reports"
+          - entity: input_boolean.threshold_alerts_enabled
+            name: "Threshold Alerts"  
+          - entity: input_boolean.emergency_alerts_enabled
+            name: "Emergency Alerts"
+          - entity: input_boolean.night_mode_notifications
+            name: "Night Mode"
+
+      # System Preferences
+      - type: entities
+        title: "🎛️ Preferences"
+        card_mod:
+          style: |
+            ha-card {
+              font-size: 14px;
+            }
+        entities:
+          - entity: input_select.climate_mode
+            name: "Climate Mode"
+          - entity: input_select.notification_priority
+            name: "Alert Priority"
+          - entity: input_number.temperature_threshold_high
+            name: "Temp High"
+          - entity: input_number.temperature_threshold_low
+            name: "Temp Low"
+
+      # Mobile Dashboard Settings
+      - type: entities
+        title: "📱 Dashboard"
+        entities:
+          - type: button
+            name: "Refresh Dashboard"
+            action_name: "Refresh"
+            service: homeassistant.reload_config_entry
+            
+          - type: button
+            name: "Clear Browser Cache"
+            action_name: "Clear"
+            service: browser_mod.lovelace_reload

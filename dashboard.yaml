@@ -1,0 +1,181 @@
+# ============================================================================
+# MAIN NAVIGATION DASHBOARD - Central Hub for All Dashboards
+# ============================================================================
+# This serves as the main entry point and navigation hub for all dashboards
+# Links to: Responsive Dashboard, Sietch Command Center, and system controls
+# ============================================================================
+
+title: "Home Command Center"
+theme: default
+
+views:
+  - title: "Home"
+    icon: mdi:home
+    path: home
+    badges: []
+    cards:
+      # Main Navigation Header
+      - type: custom:mushroom-title-card
+        title: "<Û House Atreides Central Command"
+        subtitle: "Navigate to specialized control systems"
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #D4A574, #F5E6D3);
+              border: 2px solid #FF8C00;
+              color: #2F1B14;
+              text-align: center;
+            }
+
+      # Dashboard Navigation Cards
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: sensor.sietch_health_score
+            name: "House Atreides Command"
+            icon: mdi:castle
+            secondary_info: "Main responsive dashboard with comprehensive controls"
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-responsive-dashboard
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(45deg, #228B22, #32CD32);
+                  color: white;
+                  border: 2px solid #006400;
+                }
+
+          - type: custom:mushroom-entity-card
+            entity: sensor.spice_production_level
+            name: "Sietch Command Center"
+            icon: mdi:console-network
+            secondary_info: "Advanced template sensor analytics and monitoring"
+            tap_action:
+              action: navigate
+              navigation_path: /dashboards-sietch_command
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(45deg, #4169E1, #1E90FF);
+                  color: white;
+                  border: 2px solid #0000CD;
+                }
+
+      # System Status Overview
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.sietch_health_score
+            name: "System Health"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 85
+              yellow: 70
+              red: 50
+
+          - type: gauge
+            entity: sensor.fremen_activity_level
+            name: "Activity Level"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 70
+              yellow: 40
+              red: 20
+
+          - type: gauge
+            entity: sensor.automation_success_rate
+            name: "Automation Success"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 85
+              yellow: 70
+              red: 55
+
+      # Quick Status Grid
+      - type: entities
+        title: "=Ê Quick System Status"
+        entities:
+          - entity: binary_sensor.house_occupied
+            name: "House Occupied"
+            icon: mdi:home-account
+          - entity: sensor.desert_survival_status
+            name: "Survival Status"
+            icon: mdi:shield-cross
+          - entity: sensor.water_conservation_index
+            name: "Water Conservation"
+            icon: mdi:water-percent
+          - entity: sensor.energy_shield_status
+            name: "Energy Shield Status"
+            icon: mdi:shield-check
+
+      # Notification Controls Quick Access
+      - type: entities
+        title: "= Quick Notification Controls"
+        entities:
+          - entity: input_boolean.notification_system_enabled
+            name: "System Notifications"
+            icon: mdi:bell-circle
+          - entity: input_boolean.daily_reports_enabled
+            name: "Daily Reports"
+            icon: mdi:calendar-today
+          - entity: input_boolean.emergency_alerts_enabled
+            name: "Emergency Alerts"
+            icon: mdi:alert-octagon
+
+      # Emergency Scene Controls
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: scene.energy_conservation
+            name: "Emergency Conservation"
+            icon: mdi:leaf
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.energy_conservation
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(45deg, #228B22, #32CD32);
+                  color: white;
+                }
+
+          - type: custom:mushroom-entity-card
+            entity: scene.system_storm_mode
+            name: "Storm Protocol"
+            icon: mdi:weather-lightning
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.system_storm_mode
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(45deg, #4169E1, #1E90FF);
+                  color: white;
+                }
+
+          - type: custom:mushroom-entity-card
+            entity: scene.water_emergency
+            name: "Water Emergency"
+            icon: mdi:water-alert
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.water_emergency
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(45deg, #DC143C, #FF6347);
+                  color: white;
+                }

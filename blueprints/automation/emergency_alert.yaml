@@ -84,7 +84,7 @@ blueprint:
     weather_entity:
       name: Weather Entity
       description: Weather entity to monitor (for weather_condition type)
-      default: ""
+      default: "weather.none"
       selector:
         entity:
           filter:
@@ -160,7 +160,7 @@ blueprint:
     emergency_scene:
       name: Emergency Scene
       description: Scene to activate during emergency
-      default: ""
+      default: "scene.none"
       selector:
         entity:
           filter:
@@ -169,7 +169,7 @@ blueprint:
     emergency_script:
       name: Emergency Script
       description: Script to run during emergency (optional)
-      default: ""
+      default: "script.none"
       selector:
         entity:
           filter:
@@ -348,7 +348,7 @@ action:
       # Emergency Response Actions
       - conditions:
           - condition: template
-            value_template: "{{ emergency_scene != '' }}"
+            value_template: "{{ emergency_scene != '' and emergency_scene != 'scene.none' }}"
         sequence:
           - service: scene.turn_on
             target:
@@ -357,7 +357,7 @@ action:
   - choose:
       - conditions:
           - condition: template
-            value_template: "{{ emergency_script != '' }}"
+            value_template: "{{ emergency_script != '' and emergency_script != 'script.none' }}"
         sequence:
           - service: script.turn_on
             target:

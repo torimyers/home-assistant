@@ -1,0 +1,477 @@
+---
+# Adaptive Context Messaging System - Intelligent Contextual Notifications
+alias: "Adaptive Context Messaging System"
+description: "Smart notifications that adapt based on time, location, activity patterns, and system performance"
+trigger:
+  # Morning Context Triggers
+  - platform: template
+    value_template: >-
+      {{ now().hour == 7 and states('sensor.morning_ritual_completion') | float < 25 }}
+    id: morning_ritual_reminder
+  - platform: template
+    value_template: >-
+      {{ (now().hour >= 8 and now().hour <= 10) and 
+         states('sensor.fremen_activity_level') | float < 40 }}
+    id: morning_low_activity
+  
+  # Evening Context Triggers  
+  - platform: template
+    value_template: >-
+      {{ now().hour == 19 and states('sensor.sietch_occupancy_distribution') == 'No Primary Zone' }}
+    id: evening_no_activity
+  - platform: template
+    value_template: >-
+      {{ now().hour == 21 and states('sensor.night_security_effectiveness') | float < 80 }}
+    id: evening_security_prep
+  
+  # Activity-Based Context
+  - platform: template  
+    value_template: >-
+      {{ states('sensor.motion_pattern_analysis') == 'Full Activity' and
+         states('sensor.system_response_time') | float < 75 }}
+    id: high_activity_performance_lag
+  - platform: template
+    value_template: >-
+      {{ states('sensor.fremen_activity_level') | float > 80 and
+         states('sensor.water_conservation_index') | float < 60 }}
+    id: high_activity_poor_conservation
+  
+  # Performance Context Triggers
+  - platform: template
+    value_template: >-
+      {{ states('sensor.sietch_health_score') | float > 90 and
+         states('sensor.spice_production_level') | float > 100 and
+         states('sensor.water_conservation_index') | float > 85 }}
+    for:
+      minutes: 30
+    id: all_systems_optimal
+  - platform: template
+    value_template: >-
+      {{ states('sensor.blueprint_efficiency_score') | float < 70 and
+         (now().hour >= 8 and now().hour <= 22) }}
+    id: daytime_blueprint_inefficiency
+  
+  # Environmental Context
+  - platform: template
+    value_template: >-
+      {{ states('sensor.atmospheric_conditions') | float < 70 and
+         states('sensor.fremen_activity_level') | float > 60 }}
+    id: poor_air_high_activity
+  - platform: template
+    value_template: >-
+      {{ now().hour >= 22 and states('sensor.energy_shield_status') | float < 75 }}
+    id: night_shield_weakness
+
+condition:
+  - condition: state
+    entity_id: input_boolean.notification_system_enabled
+    state: "on"
+action:
+  - choose:
+      # MORNING RITUAL REMINDER
+      - conditions:
+          - condition: trigger
+            id: morning_ritual_reminder
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🌅 Morning Ritual Guidance"
+              message: >-
+                The dawn breaks, but the morning ritual remains incomplete, Muad'Dib.
+                
+                🌅 **Ritual Progress**: {{ states('sensor.morning_ritual_completion') }}%
+                📍 **Current Phase**: {{ state_attr('sensor.morning_ritual_completion', 'ritual_phase') }}
+                
+                **Awakening Recommendations:**
+                • Zone Activation: {{ state_attr('sensor.morning_ritual_completion', 'zone_activation') }}
+                • Device Readiness: {{ state_attr('sensor.morning_ritual_completion', 'device_readiness') }}
+                
+                🏜️ "The desert awakens with purpose. Let your sietch mirror that intention."
+                
+                Begin the day with proper ritual. The spice flows better through prepared channels.
+              data:
+                actions:
+                  - action: "COMPLETE_MORNING_RITUAL"
+                    title: "🌅 Complete Ritual"
+                  - action: "SKIP_RITUAL_TODAY"
+                    title: "⏭️ Skip Today"
+                group: "contextual_guidance"
+                tag: "morning_guidance"
+                notification_icon: "mdi:weather-sunrise"
+                color: "#E67E22"
+                channel: "Contextual Guidance"
+                importance: default
+                sticky: false
+                timeout: 900
+
+      # MORNING LOW ACTIVITY ALERT
+      - conditions:
+          - condition: trigger
+            id: morning_low_activity
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🏃 Morning Activity Encouragement"
+              message: >-
+                The morning hours pass quietly, Duke. The sietch awaits your presence.
+                
+                🏃 **Activity Level**: {{ states('sensor.fremen_activity_level') }}% - {{ state_attr('sensor.fremen_activity_level', 'tribal_status') }}
+                🏠 **Primary Zone**: {{ states('sensor.sietch_occupancy_distribution') }}
+                
+                **Morning Peak Hours**: {{ state_attr('sensor.fremen_activity_level', 'peak_activity_periods') }}
+                **Current Period**: {{ state_attr('sensor.fremen_activity_level', 'current_period') }}
+                
+                🏜️ "The desert teaches that energy unused is energy lost to the sand."
+                
+                Consider activating key zones or beginning productive activities. The morning spice awaits harvesting.
+              data:
+                actions:
+                  - action: "ACTIVATE_MORNING_ROUTINE"
+                    title: "🌅 Morning Routine"
+                  - action: "VIEW_ACTIVITY_SUGGESTIONS"
+                    title: "💡 Activity Ideas"
+                group: "activity_encouragement"
+                tag: "morning_activity"
+                notification_icon: "mdi:run"
+                color: "#3498DB"
+                channel: "Activity Guidance"
+                importance: default
+                sticky: false
+                timeout: 600
+
+      # EVENING NO ACTIVITY WARNING
+      - conditions:
+          - condition: trigger
+            id: evening_no_activity
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🌙 Evening Presence Check"
+              message: >-
+                The evening hours arrive, but the sietch remains silent, Muad'Dib.
+                
+                🏠 **Occupancy Status**: {{ states('sensor.sietch_occupancy_distribution') }}
+                🏃 **Activity Level**: {{ states('sensor.fremen_activity_level') }}%
+                
+                **Zone Status**: {{ state_attr('sensor.sietch_occupancy_distribution', 'zone_status') }}
+                
+                🏜️ "A quiet sietch in the evening may indicate absence or deep contemplation. Ensure all is as intended."
+                
+                **Evening Considerations:**
+                • Verify intended presence status
+                • Check security preparations
+                • Confirm evening routine readiness
+                
+                The desert notices all patterns. Ensure your evening silence is by design.
+              data:
+                actions:
+                  - action: "CONFIRM_AWAY_STATUS"
+                    title: "🚗 Confirm Away"
+                  - action: "ACTIVATE_EVENING_MODE"
+                    title: "🌙 Evening Mode"
+                group: "presence_check"
+                tag: "evening_presence"
+                notification_icon: "mdi:home-search"
+                color: "#8E44AD"
+                channel: "Presence Guidance"
+                importance: default
+                sticky: false
+                timeout: 1200
+
+      # EVENING SECURITY PREPARATION
+      - conditions:
+          - condition: trigger
+            id: evening_security_prep
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🛡️ Night Security Preparation"
+              message: >-
+                The night approaches, but security preparations lag, Duke.
+                
+                🛡️ **Security Readiness**: {{ states('sensor.night_security_effectiveness') }}% - {{ state_attr('sensor.night_security_effectiveness', 'threat_level') }}
+                🌙 **Security Mode**: {{ state_attr('sensor.night_security_effectiveness', 'security_mode') }}
+                
+                **Security Network Status:**
+                • Sensor Network: {{ state_attr('sensor.night_security_effectiveness', 'sensor_network') }}
+                • Response Devices: {{ state_attr('sensor.night_security_effectiveness', 'response_devices') }}
+                
+                🏜️ "The desert night brings both danger and opportunity. Prepare your defenses before darkness falls completely."
+                
+                **Recommended Actions:**
+                • Activate night security protocols
+                • Verify all perimeter sensors
+                • Ensure response systems are ready
+                
+                The stillsuit hours demand vigilance. Prepare now while light remains.
+              data:
+                actions:
+                  - action: "ACTIVATE_NIGHT_SECURITY"
+                    title: "🛡️ Activate Security"
+                  - action: "SECURITY_DIAGNOSTIC"
+                    title: "🔍 Security Check"
+                  - action: "MANUAL_SECURITY_SETUP"
+                    title: "⚙️ Manual Setup"
+                group: "security_guidance"
+                tag: "night_security"
+                notification_icon: "mdi:shield-moon"
+                color: "#2C3E50"
+                channel: "Security Guidance"
+                importance: high
+                sticky: false
+                timeout: 1800
+
+      # HIGH ACTIVITY PERFORMANCE LAG
+      - conditions:
+          - condition: trigger
+            id: high_activity_performance_lag
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "⚡ Performance Optimization Needed"
+              message: >-
+                High sietch activity detected, but system performance lags behind demand.
+                
+                🏃 **Activity Status**: {{ states('sensor.motion_pattern_analysis') }} - {{ state_attr('sensor.motion_pattern_analysis', 'pattern_type') }}
+                ⚡ **System Response**: {{ states('sensor.system_response_time') }}% - {{ state_attr('sensor.system_response_time', 'response_grade') }}
+                
+                **Performance Analysis:**
+                • Current Load: {{ state_attr('sensor.system_response_time', 'current_load') }}
+                • Sensor Network: {{ state_attr('sensor.system_response_time', 'sensor_network') }}
+                • Motion Efficiency: {{ state_attr('sensor.motion_pattern_analysis', 'efficiency_score') }}
+                
+                🏜️ "When the tribe moves swiftly, the sietch must respond with equal speed. Lag betrays weakness."
+                
+                **Optimization Suggestions:**
+                • Reduce non-essential system load
+                • Optimize automation response patterns
+                • Consider system resource reallocation
+                
+                Swift response preserves the flow of spice. Act quickly to restore harmony.
+              data:
+                actions:
+                  - action: "OPTIMIZE_PERFORMANCE"
+                    title: "⚡ Optimize Now"
+                  - action: "REDUCE_SYSTEM_LOAD"
+                    title: "📉 Reduce Load"
+                  - action: "PERFORMANCE_ANALYSIS"
+                    title: "📊 Full Analysis"
+                group: "performance_optimization"
+                tag: "performance_lag"
+                notification_icon: "mdi:speedometer-slow"
+                color: "#E67E22"
+                channel: "Performance Guidance"
+                importance: high
+                sticky: false
+                timeout: 1200
+
+      # HIGH ACTIVITY POOR CONSERVATION
+      - conditions:
+          - condition: trigger
+            id: high_activity_poor_conservation
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "💧 Activity vs Conservation Balance"
+              message: >-
+                High tribal activity coincides with poor water discipline, Muad'Dib.
+                
+                🏃 **Activity Level**: {{ states('sensor.fremen_activity_level') }}% - {{ state_attr('sensor.fremen_activity_level', 'tribal_status') }}
+                💧 **Conservation**: {{ states('sensor.water_conservation_index') }}% - {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+                
+                **The Challenge**: High activity typically demands more resources, but conservation suffers.
+                
+                🏜️ "True Fremen balance activity with conservation. The desert demands both energy and efficiency."
+                
+                **Adaptive Strategies:**
+                • Focus activity in fewer zones simultaneously
+                • Use high-efficiency devices during peak activity
+                • Balance movement patterns for conservation
+                
+                Master this balance to achieve true desert harmony.
+              data:
+                actions:
+                  - action: "ACTIVITY_CONSERVATION_GUIDE"
+                    title: "⚖️ Balance Guide"
+                  - action: "OPTIMIZE_ACTIVE_ZONES"
+                    title: "🎯 Optimize Zones"
+                group: "balance_guidance"
+                tag: "activity_conservation"
+                notification_icon: "mdi:scale-balance"
+                color: "#16A085"
+                channel: "Balance Guidance"
+                importance: default
+                sticky: false
+                timeout: 900
+
+      # ALL SYSTEMS OPTIMAL CELEBRATION
+      - conditions:
+          - condition: trigger
+            id: all_systems_optimal
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🌟 Perfect Sietch Harmony Achieved!"
+              message: >-
+                MAGNIFICENT, MUAD'DIB! All systems achieve perfect harmony!
+                
+                🏆 **PERFECT HARMONY METRICS:**
+                • Sietch Health: {{ states('sensor.sietch_health_score') }}% ({{ state_attr('sensor.sietch_health_score', 'status_level') }})
+                • Spice Production: {{ states('sensor.spice_production_level') }} units ({{ state_attr('sensor.spice_production_level', 'current_yield') }})
+                • Water Conservation: {{ states('sensor.water_conservation_index') }}% ({{ state_attr('sensor.water_conservation_index', 'conservation_level') }})
+                
+                🏜️ **Desert Master Recognition**: "You have achieved the rarest of accomplishments - perfect balance between all the forces that govern desert life."
+                
+                **Perfect Harmony Benefits:**
+                ✨ Maximum system efficiency across all domains
+                🎯 Optimal resource utilization
+                🏆 Peak performance sustainability
+                🌟 True Fremen mastery demonstration
+                
+                This is the moment the desert prophets spoke of. Savor this achievement, for such perfect harmony is the pinnacle of sietch management.
+                
+                🚀 **Status**: TRANSCENDENT OPERATION
+              data:
+                actions:
+                  - action: "PERFECT_HARMONY_CELEBRATION"
+                    title: "🎉 Celebrate Harmony"
+                  - action: "HARMONY_ANALYSIS"
+                    title: "📊 Harmony Report"
+                  - action: "MAINTAIN_PERFECTION"
+                    title: "⚙️ Maintain Perfect State"
+                group: "perfect_achievements"
+                tag: "perfect_harmony"
+                notification_icon: "mdi:star-circle"
+                color: "#FFD700"
+                channel: "Perfect Achievements"
+                importance: max
+                sticky: true
+                timeout: 3600
+
+      # DAYTIME BLUEPRINT INEFFICIENCY
+      - conditions:
+          - condition: trigger
+            id: daytime_blueprint_inefficiency
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🔧 Blueprint Optimization Opportunity"
+              message: >-
+                Blueprint efficiency lags during peak operational hours, Duke.
+                
+                🔧 **Blueprint Efficiency**: {{ states('sensor.blueprint_efficiency_score') }}% - {{ state_attr('sensor.blueprint_efficiency_score', 'efficiency_rating') }}
+                ⏰ **Optimal Hours**: {{ state_attr('sensor.blueprint_efficiency_score', 'optimal_hours') }}
+                
+                **Current Performance Factors:**
+                • Motion Blueprints: {{ state_attr('sensor.blueprint_efficiency_score', 'motion_blueprints') }}
+                • Sensor Responsiveness: {{ state_attr('sensor.blueprint_efficiency_score', 'sensor_responsiveness') }}
+                
+                🏜️ "Even the finest stillsuit requires adjustment as conditions change. Your automation blueprints need tuning."
+                
+                **During peak hours, efficiency should be maximized. Consider:**
+                • Blueprint configuration review
+                • Motion sensor calibration
+                • System load optimization
+                
+                Perfect your automated systems for maximum desert advantage.
+              data:
+                actions:
+                  - action: "BLUEPRINT_OPTIMIZATION"
+                    title: "🔧 Optimize Blueprints"
+                  - action: "SENSOR_CALIBRATION"
+                    title: "📡 Calibrate Sensors"
+                group: "blueprint_guidance"
+                tag: "blueprint_efficiency"
+                notification_icon: "mdi:file-cog"
+                color: "#95A5A6"
+                channel: "Blueprint Guidance"
+                importance: default
+                sticky: false
+                timeout: 900
+
+      # POOR AIR HIGH ACTIVITY
+      - conditions:
+          - condition: trigger
+            id: poor_air_high_activity
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🌬️ Environmental Optimization Alert"
+              message: >-
+                High activity continues despite poor atmospheric conditions, Muad'Dib.
+                
+                🌬️ **Atmospheric Quality**: {{ states('sensor.atmospheric_conditions') }} - {{ state_attr('sensor.atmospheric_conditions', 'atmosphere_quality') }}
+                🏃 **Activity Level**: {{ states('sensor.fremen_activity_level') }}%
+                
+                **Environmental Factors:**
+                • Circulation Zones: {{ state_attr('sensor.atmospheric_conditions', 'circulation_zones') }}
+                • Heat Sources: {{ state_attr('sensor.atmospheric_conditions', 'heat_sources') }}
+                
+                🏜️ "Even the hardy Fremen must breathe. High activity in poor air wastes precious energy."
+                
+                **Adaptive Recommendations:**
+                • Shift activity to better-ventilated zones
+                • Reduce heat-generating device usage
+                • Optimize air circulation patterns
+                
+                Work with the environment, not against it. The desert teaches adaptation.
+              data:
+                actions:
+                  - action: "IMPROVE_AIR_CIRCULATION"
+                    title: "🌬️ Improve Air"
+                  - action: "SHIFT_ACTIVITY_ZONES"
+                    title: "🏃 Shift Zones"
+                group: "environmental_guidance"
+                tag: "air_quality"
+                notification_icon: "mdi:weather-windy"
+                color: "#7FB3D3"
+                channel: "Environmental Guidance"
+                importance: default
+                sticky: false
+                timeout: 900
+
+      # NIGHT SHIELD WEAKNESS
+      - conditions:
+          - condition: trigger
+            id: night_shield_weakness
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🛡️ Night Shield Reinforcement Needed"
+              message: >-
+                Night falls, but your energy shields show weakness, Duke.
+                
+                🛡️ **Shield Status**: {{ states('sensor.energy_shield_status') }}% - {{ state_attr('sensor.energy_shield_status', 'shield_strength') }}
+                🌙 **Night Hours**: Critical protection period active
+                
+                **Shield Network Analysis:**
+                • Generators: {{ state_attr('sensor.energy_shield_status', 'shield_generators') }}
+                • Power Draw: {{ state_attr('sensor.energy_shield_status', 'power_consumption') }}
+                • Emergency Status: {{ state_attr('sensor.energy_shield_status', 'emergency_protocol') }}
+                
+                🏜️ "The night brings unknown dangers. Weak shields invite catastrophe."
+                
+                **Night Reinforcement Options:**
+                • Activate additional shield generators
+                • Reduce non-essential power drain
+                • Implement emergency protocols
+                
+                Strengthen your defenses before the deep desert night claims dominion.
+              data:
+                actions:
+                  - action: "REINFORCE_NIGHT_SHIELDS"
+                    title: "🛡️ Reinforce Shields"
+                  - action: "EMERGENCY_SHIELD_PROTOCOL"
+                    title: "🚨 Emergency Protocol"
+                group: "night_security"
+                tag: "night_shields"
+                notification_icon: "mdi:shield-moon"
+                color: "#34495E"
+                channel: "Night Security"
+                importance: high
+                sticky: false
+                timeout: 1800
+
+mode: queued
+max: 20
+max_exceeded: silent

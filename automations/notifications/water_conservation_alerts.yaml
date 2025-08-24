@@ -1,0 +1,285 @@
+---
+# Water Conservation Alert System - Desert Survival Critical
+alias: "Water Conservation Alert System"
+description: "Multi-tiered water conservation monitoring with Fremen-wisdom alerts"
+trigger:
+  - platform: numeric_state
+    entity_id: sensor.water_conservation_index
+    below: 60
+    for:
+      minutes: 10
+    id: conservation_warning
+  - platform: numeric_state
+    entity_id: sensor.water_conservation_index
+    below: 45
+    for:
+      minutes: 5
+    id: conservation_critical
+  - platform: numeric_state
+    entity_id: sensor.water_conservation_index
+    below: 30
+    for:
+      minutes: 2
+    id: conservation_emergency
+  - platform: numeric_state
+    entity_id: sensor.water_conservation_index
+    above: 80
+    for:
+      minutes: 15
+    id: conservation_excellent
+  - platform: template
+    value_template: "{{ now().hour == 22 and states('sensor.water_conservation_index') | float < 50 }}"
+    id: night_conservation_alert
+condition:
+  - condition: state
+    entity_id: input_boolean.notification_system_enabled
+    state: "on"
+action:
+  - choose:
+      # WATER EMERGENCY - Critical Conservation Failure
+      - conditions:
+          - condition: trigger
+            id: conservation_emergency
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🚨 WATER EMERGENCY: Critical Loss Detected!"
+              message: >-
+                IMMEDIATE FREMEN INTERVENTION REQUIRED!
+                
+                💧 **CRITICAL WATER LOSS**: {{ states('sensor.water_conservation_index') }}%
+                🏜️ **Conservation Status**: {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+                ⚠️ **DESERT SURVIVAL THREATENED**
+                
+                **Water Theft Analysis:**
+                • Active Consumption: {{ state_attr('sensor.water_conservation_index', 'active_consumption') }}
+                • Night Mode: {{ state_attr('sensor.water_conservation_index', 'night_mode_active') }}
+                • Target: {{ state_attr('sensor.water_conservation_index', 'daily_target') }}
+                
+                **Related System Impact:**
+                • Sietch Health: {{ states('sensor.sietch_health_score') }}%
+                • Desert Survival: {{ states('sensor.desert_survival_status') }}
+                
+                🏜️ "Water is life on Arrakis. Waste not a single drop, or the desert will claim what remains."
+                
+                **EMERGENCY ACTIONS REQUIRED:**
+                • Identify excessive power consumption immediately
+                • Activate conservation protocols 
+                • Review all active water-consuming systems
+                
+                THE DESERT TESTS US. DO NOT FAIL THE TEST!
+              data:
+                actions:
+                  - action: "EMERGENCY_CONSERVATION"
+                    title: "💧 Emergency Conservation"
+                  - action: "IDENTIFY_WATER_WASTE"
+                    title: "🔍 Find Water Thieves"
+                  - action: "ACTIVATE_STILLSUIT_MODE"
+                    title: "🌵 Activate Stillsuit Mode"
+                group: "water_emergency"
+                tag: "water_critical"
+                notification_icon: "mdi:water-alert"
+                color: "#C0392B"
+                channel: "Water Conservation"
+                importance: max
+                sticky: true
+                timeout: 0
+                sound: "alarm_stream_max_3"
+
+          - service: persistent_notification.create
+            data:
+              title: "🚨 WATER EMERGENCY ACTIVE"
+              message: >-
+                **CRITICAL WATER CONSERVATION FAILURE**
+                
+                Conservation Index: {{ states('sensor.water_conservation_index') }}%
+                Status: {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+                
+                **IMMEDIATE FREMEN RESPONSE REQUIRED**
+                
+                "Without water, we are nothing." - Fremen Saying
+              notification_id: "water_emergency"
+
+      # CRITICAL CONSERVATION WARNING
+      - conditions:
+          - condition: trigger
+            id: conservation_critical
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "⚠️ CRITICAL: Water Conservation Failing"
+              message: >-
+                The desert grows thirsty, Muad'Dib. Conservation protocols are failing.
+                
+                💧 **Conservation Index**: {{ states('sensor.water_conservation_index') }}% - {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+                🎯 **Target Efficiency**: {{ state_attr('sensor.water_conservation_index', 'daily_target') }}
+                
+                **Water Loss Analysis:**
+                • Current Consumption: {{ state_attr('sensor.water_conservation_index', 'active_consumption') }}
+                • Night Conservation: {{ state_attr('sensor.water_conservation_index', 'night_mode_active') }}
+                
+                **System Impact Assessment:**
+                • Sietch Health: {{ states('sensor.sietch_health_score') }}% ({% if states('sensor.sietch_health_score') | float < 80 %}IMPACT DETECTED{% else %}Stable{% endif %})
+                • Harvester Efficiency: {{ states('sensor.harvester_efficiency') }}%
+                
+                🏜️ **Fremen Wisdom**: "The desert is not forgiving. Every drop wasted is a step closer to becoming one with the sand."
+                
+                **Immediate Actions:**
+                {% if state_attr('sensor.water_conservation_index', 'active_consumption') | int > 3 %}• Reduce active device consumption ({{ state_attr('sensor.water_conservation_index', 'active_consumption') }}){% endif %}
+                • Review high-consumption periods
+                • Implement stricter conservation protocols
+                • Monitor for system inefficiencies
+                
+                Your survival depends on swift action. The spice may flow, but water is life itself.
+              data:
+                actions:
+                  - action: "CONSERVATION_ANALYSIS"
+                    title: "🔍 Conservation Analysis"
+                  - action: "REDUCE_CONSUMPTION"
+                    title: "⚡ Reduce Consumption"
+                  - action: "FREMEN_MODE_ACTIVATE"
+                    title: "🌵 Fremen Mode"
+                group: "water_alerts"
+                tag: "water_critical"
+                notification_icon: "mdi:water-minus"
+                color: "#E67E22"
+                channel: "Water Conservation"
+                importance: high
+                sticky: true
+                timeout: 1800
+
+      # STANDARD CONSERVATION WARNING
+      - conditions:
+          - condition: trigger
+            id: conservation_warning
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "💧 Water Conservation Below Standards"
+              message: >-
+                Water discipline wavers, young Atreides. The desert notices all.
+                
+                💧 **Conservation Index**: {{ states('sensor.water_conservation_index') }}% - {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+                📊 **Performance**: Below Fremen standards
+                
+                **Current Consumption Factors:**
+                • Active Devices: {{ state_attr('sensor.water_conservation_index', 'active_consumption') }}
+                • Night Mode Active: {{ state_attr('sensor.water_conservation_index', 'night_mode_active') }}
+                • Daily Target: {{ state_attr('sensor.water_conservation_index', 'daily_target') }}
+                
+                **Sietch Status Impact:**
+                • Overall Health: {{ states('sensor.sietch_health_score') }}%
+                • Energy Efficiency: {{ states('sensor.energy_shield_status') }}%
+                
+                🏜️ **Conservation Guidance:**
+                "In the desert, water discipline is the difference between life and becoming part of the eternal sand."
+                
+                **Recommendations:**
+                • Review unnecessary device usage
+                • Optimize peak consumption periods
+                • Consider manual conservation measures
+                {% if now().hour >= 22 or now().hour <= 6 %}• Night hours provide natural conservation bonus{% endif %}
+                
+                Strengthen your water discipline before the desert tests your resolve further.
+              data:
+                actions:
+                  - action: "VIEW_CONSUMPTION_DETAILS"
+                    title: "📊 Consumption Report"
+                  - action: "CONSERVATION_TIPS"
+                    title: "💡 Conservation Tips"
+                  - action: "OPTIMIZE_SYSTEMS"
+                    title: "⚙️ Optimize Systems"
+                group: "water_alerts"
+                tag: "water_warning"
+                notification_icon: "mdi:water-percent"
+                color: "#F39C12"
+                channel: "Water Conservation"
+                importance: default
+                sticky: false
+                timeout: 1200
+
+      # EXCELLENT CONSERVATION ACHIEVEMENT
+      - conditions:
+          - condition: trigger
+            id: conservation_excellent
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🏆 Excellence in Water Conservation!"
+              message: >-
+                Outstanding water discipline, Muad'Dib! You have achieved true Fremen mastery.
+                
+                💧 **Conservation Excellence**: {{ states('sensor.water_conservation_index') }}% - {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+                🎯 **Performance**: Exceeds all standards
+                
+                **Mastery Metrics:**
+                • Efficiency Rating: {% if states('sensor.water_conservation_index') | float >= 90 %}Desert Master{% elif states('sensor.water_conservation_index') | float >= 85 %}Fremen Elite{% else %}Fremen Initiate{% endif %}
+                • Conservation Discipline: Exemplary
+                • Current Consumption: {{ state_attr('sensor.water_conservation_index', 'active_consumption') }} (Minimal)
+                
+                **Sietch Benefits:**
+                • Enhanced Survival Rating: {{ states('sensor.desert_survival_status') }}
+                • Improved System Efficiency: {{ states('sensor.harvester_efficiency') }}%
+                • Optimal Resource Allocation
+                
+                🏜️ **Fremen Honor**: "You have learned the desert's deepest lesson - that water is the most precious spice of all."
+                
+                Your mastery of conservation brings honor to your sietch and ensures the survival of future generations. The desert recognizes your wisdom.
+                
+                🌟 **Achievement Unlocked**: Fremen Water Master
+                {% if states('sensor.water_conservation_index') | float >= 95 %}🏆 Legendary conservation efficiency achieved!{% endif %}
+              data:
+                actions:
+                  - action: "VIEW_CONSERVATION_MASTERY"
+                    title: "🏆 View Mastery Stats"
+                  - action: "SHARE_ACHIEVEMENT"
+                    title: "📤 Share Achievement"
+                group: "achievements"
+                tag: "water_excellence"
+                notification_icon: "mdi:trophy"
+                color: "#27AE60"
+                channel: "Achievements"
+                importance: default
+                sticky: false
+                timeout: 900
+
+      # NIGHT CONSERVATION ALERT
+      - conditions:
+          - condition: trigger
+            id: night_conservation_alert
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🌙 Night Conservation Alert"
+              message: >-
+                The deep desert night arrives, but water waste continues, Duke.
+                
+                💧 **Night Conservation**: {{ states('sensor.water_conservation_index') }}%
+                🌙 **Night Mode**: {{ state_attr('sensor.water_conservation_index', 'night_mode_active') }}
+                
+                "The night is when the desert teaches its harshest lessons. Learn them well, or join the bones beneath the sand."
+                
+                **Night Protocol Recommendations:**
+                • Reduce non-essential device usage
+                • Activate conservation protocols
+                • Prepare for morning efficiency gains
+                
+                The stillsuit hours have begun. Honor them with proper water discipline.
+              data:
+                actions:
+                  - action: "NIGHT_CONSERVATION_MODE"
+                    title: "🌙 Night Mode"
+                  - action: "REDUCE_NIGHT_USAGE"
+                    title: "⚡ Reduce Usage"
+                group: "water_alerts"
+                tag: "night_conservation"
+                notification_icon: "mdi:weather-night"
+                color: "#8E44AD"
+                channel: "Water Conservation"
+                importance: default
+                sticky: false
+                timeout: 600
+
+mode: queued
+max: 10
+max_exceeded: silent

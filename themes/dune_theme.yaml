@@ -1,0 +1,35 @@
+# Dune Theme - House Atreides Visual Style
+# Custom theme matching the Dune aesthetic used in dashboards
+
+dune_theme:
+  # Primary colors inspired by desert and spice
+  primary-color: "#D4A574"  # Desert sand
+  accent-color: "#FF8C00"   # Spice orange
+  dark-primary-color: "#A0855B"
+  light-primary-color: "#F5E6D3"
+  
+  # Text colors
+  primary-text-color: "#2F1B14"
+  text-primary-color: "#2F1B14"
+  secondary-text-color: "#5D4037"
+  disabled-text-color: "#9E9E9E"
+  
+  # Background colors
+  primary-background-color: "#FFF8DC"  # Cornsilk
+  secondary-background-color: "#F5F5DC"  # Beige
+  divider-color: "rgba(212, 165, 116, 0.12)"
+  
+  # Card colors
+  card-background-color: "#FFFFFF"
+  paper-card-header-color: "#2F1B14"
+  
+  # Sidebar colors
+  sidebar-icon-color: "#A0855B"
+  sidebar-text-color: "#2F1B14"
+  sidebar-selected-text-color: "#FF8C00"
+  sidebar-selected-icon-color: "#FF8C00"
+  
+  # State colors
+  state-icon-color: "#A0855B"
+  state-icon-active-color: "#FF8C00"
+  state-icon-unavailable-color: "#9E9E9E"
