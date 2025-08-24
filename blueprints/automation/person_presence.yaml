@@ -27,7 +27,7 @@ blueprint:
     device_sensor:
       name: Device Sensor (Optional)
       description: Device sensor for charging/connection states
-      default:
+      default: "binary_sensor.none"
       selector:
         entity:
           domain: binary_sensor
@@ -78,7 +78,7 @@ blueprint:
     scene_entity:
       name: Scene to Activate (Optional)
       description: Scene to turn on
-      default:
+      default: "scene.none"
       selector:
         entity:
           domain: scene
@@ -228,7 +228,7 @@ condition:
 action:
   - if:
       - condition: template
-        value_template: "{{ scene_entity != none and scene_entity != '' }}"
+        value_template: "{{ scene_entity != none and scene_entity != '' and scene_entity != 'scene.none' }}"
     then:
       - service: scene.turn_on
         target:
