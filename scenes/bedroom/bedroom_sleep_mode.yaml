@@ -1,0 +1,14 @@
+bedroom_sleep_mode:
+  name: "Bedroom Sleep Mode"
+  description: "Stillsuit Charging - Minimal lighting for peaceful sleep while devices recharge"
+  icon: mdi:battery-charging
+  entities:
+    light.bedroom_ceiling_light:
+      state: off
+    light.bedside_lamp_left:
+      state: on
+      brightness: 10
+    switch.bedroom_phone_charger:
+      state: on
+    switch.bedroom_air_purifier:
+      state: on

@@ -1,0 +1,17 @@
+kitchen_morning_routine:
+  name: "Kitchen Morning Routine"
+  description: "Morning Water Ration - Dawn preparation ritual with coffee brewing and gentle music"
+  icon: mdi:coffee-maker
+  entities:
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: on
+      brightness: 200
+      color_temp: 400
+    light.kitchen_under_cabinet_lights:
+      state: on
+      brightness: 150
+    switch.coffee_maker:
+      state: on
+    media_player.kitchen_echo:
+      state: playing
+      source: "Spotify"

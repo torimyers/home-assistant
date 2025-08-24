@@ -1,0 +1,16 @@
+living_room_entertainment:
+  name: "Living Room Entertainment"
+  description: "Sietch Gathering - Community space with optimal lighting and temperature for social activities"
+  icon: mdi:sofa
+  entities:
+    light.living_room_main_lights:
+      state: on
+      brightness: 180
+      color_temp: 380
+    light.living_room_accent_lights:
+      state: on
+      brightness: 120
+    media_player.living_room_tv:
+      state: on
+    climate.living_room_thermostat:
+      temperature: 72

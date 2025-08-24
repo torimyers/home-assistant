@@ -1,0 +1,17 @@
+office_work_mode:
+  name: "Office Work Mode"
+  description: "Strategy Room - Focused lighting and power for planning and tactical operations"
+  icon: mdi:desk
+  entities:
+    light.office_desk_lamp:
+      state: on
+      brightness: 220
+      color_temp: 350
+    light.office_ceiling_light:
+      state: on
+      brightness: 160
+    light.office_accent_lighting:
+      state: on
+      brightness: 80
+    switch.office_computer_outlets:
+      state: on

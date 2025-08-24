@@ -1,0 +1,15 @@
+bathroom_bright_lights:
+  name: "Bathroom Bright Lights"
+  description: "Sacred Water Ritual - Full illumination for temple ceremonies and grooming"
+  icon: mdi:water-circle
+  entities:
+    light.master_bathroom_lights:
+      state: on
+      brightness: 180
+      color_temp: 370
+    light.bathroom_mirror_lights:
+      state: on
+      brightness: 120
+    fan.bathroom_exhaust_fan:
+      state: on
+      percentage: 40

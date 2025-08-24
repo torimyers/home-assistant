@@ -1,0 +1,30 @@
+harvester_diagnostics:
+  alias: System Health Monitor
+  description: "Harvester Diagnostics - Comprehensive system health monitoring with resource usage tracking and automated alerting"
+  icon: mdi:wrench
+  sequence:
+    - service: homeassistant.update_entity
+      target:
+        entity_id:
+          - sensor.system_uptime
+          - sensor.processor_use
+          - sensor.memory_use_percent
+          - sensor.disk_use_percent
+    - delay: '00:00:02'
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: |
+          Harvester Diagnostics Complete:
+          - Uptime: {{ states('sensor.system_uptime') }}
+          - CPU: {{ states('sensor.processor_use') }}%
+          - Memory: {{ states('sensor.memory_use_percent') }}%
+          - Disk: {{ states('sensor.disk_use_percent') }}%
+        title: "System Health Report"
+    - condition: template
+      value_template: "{{ states('sensor.processor_use')|float > 80 }}"
+    - service: script.turn_on
+      target:
+        entity_id: script.spice_harvest_alert
+      data:
+        variables:
+          message: "High CPU usage detected! System strain at {{ states('sensor.processor_use') }}%"

@@ -1,0 +1,15 @@
+system_goodnight:
+  name: "System Goodnight"
+  description: "Fremen Sleep - House-wide sleep mode with security armed and minimal lighting"
+  icon: mdi:sleep
+  entities:
+    light.all_lights:
+      state: off
+    media_player.all_speakers:
+      state: off
+    climate.thermostat:
+      temperature: 69
+    switch.nightlight_strips:
+      state: on
+    alarm_control_panel.house:
+      state: armed_night

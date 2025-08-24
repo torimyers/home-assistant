@@ -1,0 +1,18 @@
+bedroom_night_mode:
+  name: "Bedroom Night Mode"
+  description: "Rest Chamber - Gentle illumination for contemplation and rest in the sietch quarters"
+  icon: mdi:bed
+  entities:
+    light.bedroom_ceiling_light:
+      state: on
+      brightness: 50
+      color_temp: 500
+    light.bedside_lamp_left:
+      state: on
+      brightness: 30
+    light.bedside_lamp_right:
+      state: on
+      brightness: 30
+    fan.bedroom_ceiling_fan:
+      state: on
+      percentage: 30

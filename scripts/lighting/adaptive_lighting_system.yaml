@@ -1,0 +1,22 @@
+fremen_lighting:
+  alias: Adaptive Lighting System
+  description: "Fremen Lighting Control - Intelligent lighting with mood settings and environmental adaptation for optimal visibility"
+  icon: mdi:lightbulb-group
+  sequence:
+    - service: light.turn_on
+      target:
+        entity_id: "{{ lights | default('light.all_lights') }}"
+      data:
+        brightness: "{{ brightness | default(180) }}"
+        color_temp: "{{ color_temp | default(380) }}"
+        transition: "{{ transition | default(2) }}"
+    - condition: template
+      value_template: "{{ enable_mood | default(false) }}"
+    - service: light.turn_on
+      target:
+        entity_id: light.accent_lighting
+      data:
+        effect: "{{ mood_effect | default('colorloop') }}"
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "Fremen lighting protocol engaged. The way is lit."
