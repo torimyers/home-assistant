@@ -1,0 +1,23 @@
+- id: garage_lights_on_when_door_open
+  alias: Garage Lights On When Door Open
+  description: Maintenance Bay Operations - Extended Work
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.garage_motion
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: cover.garage_door
+    state: open
+  - condition: state
+    entity_id: light.garage_lights
+    state: 'off'
+  action:
+  - service: light.turn_on
+    target:
+      entity_id: light.garage_lights
+    data:
+      brightness: 220
+  - service: notify.mobile_app_tori_phone_2
+    data:
+      message: Maintenance bay illuminated. The machines of the desert await service.

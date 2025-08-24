@@ -1,0 +1,25 @@
+- id: office_work_preparation
+  alias: Office Work Preparation
+  description: Prescient Navigation - Future Sight Preparation
+  trigger:
+  - platform: state
+    entity_id: sensor.office_preparation_status
+    to: preparing
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.guild_calculation_mode
+  - service: cover.close_cover
+    target:
+      entity_id:
+      - cover.left_office_roller_blind
+      - cover.right_office_roller_blind
+  - service: climate.set_temperature
+    target:
+      entity_id: climate.home
+    data:
+      temperature: 72
+  - service: notify.mobile_app_tori_phone_2
+    data:
+      message: Prescient vision detects work period approaching. Navigation chamber
+        optimized.

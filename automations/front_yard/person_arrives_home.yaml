@@ -1,0 +1,14 @@
+- id: person_arrives_home
+  alias: Person Arrives Home
+  description: Sietch Entry Protocol - Gate Opens
+  trigger:
+  - platform: state
+    entity_id: person.tori_myers
+    to: home
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.front_door_audio
+  - service: notify.mobile_app_tori_phone_2
+    data:
+      message: Sietch gate acknowledges. Welcome home, child of the desert.

@@ -1,0 +1,18 @@
+- id: bathroom_lights_on_motion
+  alias: Bathroom Lights On Motion
+  description: Sacred Water Ritual - Temple Activation
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.master_bathroom_motion
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: light.master_bathroom_lights
+    state: 'off'
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.sacred_water_ritual
+  - service: notify.mobile_app_tori_phone_2
+    data:
+      message: Sacred water ritual begins. Each drop is precious as life itself.

@@ -1,0 +1,23 @@
+- id: cat_feeding_schedule
+  alias: Cat Feeding Schedule
+  description: Fremen Warriors Feeding - Tribal Sustenance
+  triggers:
+  - at: 07:00:00
+    trigger: time
+  - at: '18:00:00'
+    trigger: time
+  actions:
+  - target:
+      entity_id: switch.tp_link_power_strip_1446_lamp_by_door
+    action: switch.turn_on
+    data: {}
+    enabled: false
+  - target:
+      entity_id: input_datetime.cats_last_fed
+    data:
+      datetime: '{{ now() }}'
+    action: input_datetime.set_datetime
+  - data:
+      message: Fremen warriors gather for sustenance. The pack bond strengthens through
+        shared feast.
+    action: notify.mobile_app_tori_phone_2

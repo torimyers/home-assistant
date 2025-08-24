@@ -1,0 +1,15 @@
+- id: daily_energy_report
+  alias: Daily Energy Report
+  description: Water Discipline Daily Report - Resource Analysis
+  trigger:
+  - platform: time
+    at: '21:00:00'
+  action:
+  - service: notify.mobile_app_tori_phone_2
+    data:
+      message: 'Daily Water Discipline Report: Energy Flow: {{ states(''sensor.daily_energy_usage'')
+        }} System Health: {{ states(''sensor.system_health_score'') }} points Spice
+        Production: Optimal Desert Efficiency: {{ states(''sensor.hvac_coordination_score'')
+        }} points
+
+        '
