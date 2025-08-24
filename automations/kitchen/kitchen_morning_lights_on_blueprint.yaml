@@ -1,35 +1,34 @@
-automation:
-  - alias: Kitchen Morning Lights On
-    description: Morning Water Ration - Dawn Sustenance
-    use_blueprint:
-      path: time_based_room_control.yaml
-      input:
-        # Basic Configuration
-        room_name: "kitchen"
-        dune_description: "Morning Water Ration - Dawn Sustenance"
-        
-        # Trigger Configuration
-        trigger_type: "motion_time"
-        motion_entity: binary_sensor.kitchen_occupancy
-        
-        # Time Conditions
-        enable_time_conditions: true
-        time_after: "06:00:00"
-        time_before: "10:00:00"
-        
-        # Presence Detection - not needed for this automation
-        enable_presence_check: false
-        
-        # State Check - check if lights are off before turning on
-        enable_state_check: true
-        condition_entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
-        required_state: "off"
-        
-        # Action Configuration
-        action_type: "scene"
-        scene_entity: scene.kitchen_morning_ration
-        
-        # Notification Settings
-        enable_notifications: true
-        notification_device: "mobile_app_tori_phone_2"
-        notification_message: "Morning water ration prepared. The day's sustenance begins in the sietch."
+alias: Kitchen Morning Lights On
+description: Morning Water Ration - Dawn Sustenance
+use_blueprint:
+  path: time_based_room_control.yaml
+  input:
+    # Basic Configuration
+    room_name: "kitchen"
+    dune_description: "Morning Water Ration - Dawn Sustenance"
+    
+    # Trigger Configuration
+    trigger_type: "motion_time"
+    motion_entity: binary_sensor.kitchen_occupancy
+    
+    # Time Conditions
+    enable_time_conditions: true
+    time_after: "06:00:00"
+    time_before: "10:00:00"
+    
+    # Presence Detection - not needed for this automation
+    enable_presence_check: false
+    
+    # State Check - check if lights are off before turning on
+    enable_state_check: true
+    condition_entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
+    required_state: "off"
+    
+    # Action Configuration
+    action_type: "scene"
+    scene_entity: scene.kitchen_morning_ration
+    
+    # Notification Settings
+    enable_notifications: true
+    notification_device: "mobile_app_tori_phone_2"
+    notification_message: "Morning water ration prepared. The day's sustenance begins in the sietch."

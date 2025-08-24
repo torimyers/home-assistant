@@ -1,33 +1,32 @@
-automation:
-  - alias: Bedroom Lights Away Mode
-    description: Stilltent Away Conservation - Energy Discipline
-    use_blueprint:
-      path: time_based_room_control.yaml
-      input:
-        # Basic Configuration
-        room_name: "bedroom"
-        dune_description: "Stilltent Away Conservation - Energy Discipline"
-        
-        # Trigger Configuration
-        trigger_type: "time_only"
-        trigger_time: "23:00:00"
-        
-        # Time Conditions - not needed since we have specific trigger time
-        enable_time_conditions: false
-        
-        # Presence Detection - only trigger when person is away
-        enable_presence_check: true
-        person_entity: person.tori_myers
-        presence_condition: "not_home"
-        
-        # State Check - not needed for this automation
-        enable_state_check: false
-        
-        # Action Configuration
-        action_type: "light_off"
-        light_entity: light.tori_light_light
-        
-        # Notification Settings
-        enable_notifications: true
-        notification_device: "mobile_app_tori_phone_2"
-        notification_message: "Stilltent secured for desert patrol absence. Energy conserved."
+alias: Bedroom Lights Away Mode
+description: Stilltent Away Conservation - Energy Discipline
+use_blueprint:
+  path: time_based_room_control.yaml
+  input:
+    # Basic Configuration
+    room_name: "bedroom"
+    dune_description: "Stilltent Away Conservation - Energy Discipline"
+    
+    # Trigger Configuration
+    trigger_type: "time_only"
+    trigger_time: "23:00:00"
+    
+    # Time Conditions - not needed since we have specific trigger time
+    enable_time_conditions: false
+    
+    # Presence Detection - only trigger when person is away
+    enable_presence_check: true
+    person_entity: person.tori_myers
+    presence_condition: "not_home"
+    
+    # State Check - not needed for this automation
+    enable_state_check: false
+    
+    # Action Configuration
+    action_type: "light_off"
+    light_entity: light.tori_light_light
+    
+    # Notification Settings
+    enable_notifications: true
+    notification_device: "mobile_app_tori_phone_2"
+    notification_message: "Stilltent secured for desert patrol absence. Energy conserved."
