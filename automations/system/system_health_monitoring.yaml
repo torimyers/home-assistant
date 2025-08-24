@@ -1,21 +1,34 @@
-id: system_health_monitoring
+# This automation uses the Emergency/Alert System Blueprint
+# Original: System Health Monitoring - Sietch Vital Signs - Health Monitoring
+
+use_blueprint:
+  path: emergency_alert.yaml
+  input:
+    # Configuration
+    monitoring_type: scheduled_check
+    
+    # Scheduling Configuration
+    schedule_hours: "/2"
+    
+    # Condition Configuration
+    enable_condition: true
+    condition_entity: input_boolean.system_health_monitoring
+    condition_state: "on"
+    
+    # Emergency Script
+    emergency_script: script.system_health_check
+    
+    # Threshold Monitoring
+    numeric_sensors:
+      - sensor.system_health_score
+    threshold_value: 85
+    threshold_condition: below
+    
+    # Notification Settings
+    notification_service: notify.mobile_app_tori_phone_2
+    notification_title: "Sietch Vital Signs"
+    notification_message: "Sietch vital signs: {{ states('sensor.system_health_score') }} points. Monitoring continues."
+    critical_notification: false
+
 alias: System Health Monitoring
 description: Sietch Vital Signs - Health Monitoring
-trigger:
-- platform: time_pattern
-  hours: /2
-condition:
-- condition: state
-  entity_id: input_boolean.system_health_monitoring
-  state: 'on'
-action:
-- service: script.turn_on
-  target:
-    entity_id: script.system_health_check
-- condition: numeric_state
-  entity_id: sensor.system_health_score
-  below: 85
-- service: notify.mobile_app_tori_phone_2
-  data:
-    message: 'Sietch vital signs: {{ states(''sensor.system_health_score'') }} points.
-      Monitoring continues.'

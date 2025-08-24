@@ -1,0 +1,302 @@
+blueprint:
+  name: Person Presence & Device State Manager
+  description: >
+    Dune-themed automation for handling person arrivals/departures and device state changes.
+    Manage sietch protocols, stillsuit recharging, and desert journey notifications.
+  domain: automation
+  input:
+    trigger_type:
+      name: Trigger Type
+      description: Select the type of trigger for this automation
+      selector:
+        select:
+          options:
+            - person_arrives
+            - person_leaves
+            - device_charging
+            - device_unplugged
+      default: person_arrives
+    
+    person_entity:
+      name: Person
+      description: The person entity to monitor
+      selector:
+        entity:
+          domain: person
+    
+    device_sensor:
+      name: Device Sensor (Optional)
+      description: Device sensor for charging/connection states
+      default:
+      selector:
+        entity:
+          domain: binary_sensor
+    
+    delay_duration:
+      name: Delay Duration (minutes)
+      description: Time to wait before triggering (in minutes)
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 60
+          unit_of_measurement: minutes
+    
+    time_condition_enabled:
+      name: Enable Time Condition
+      description: Only trigger during specific time range
+      default: false
+      selector:
+        boolean:
+    
+    time_after:
+      name: Time After
+      description: Earliest time to trigger
+      default: '00:00:00'
+      selector:
+        time:
+    
+    time_before:
+      name: Time Before
+      description: Latest time to trigger
+      default: '23:59:59'
+      selector:
+        time:
+    
+    person_state_condition:
+      name: Person State Condition (Optional)
+      description: Required person state for device triggers
+      default: 'none'
+      selector:
+        select:
+          options:
+            - 'none'
+            - home
+            - not_home
+    
+    # Actions
+    scene_entity:
+      name: Scene to Activate (Optional)
+      description: Scene to turn on
+      default:
+      selector:
+        entity:
+          domain: scene
+    
+    lights_to_turn_on:
+      name: Lights to Turn On (Optional)
+      description: Lights to turn on
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: light
+    
+    lights_to_turn_off:
+      name: Lights to Turn Off (Optional)
+      description: Lights to turn off
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: light
+    
+    covers_to_open:
+      name: Covers to Open (Optional)
+      description: Covers to open
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: cover
+    
+    covers_to_close:
+      name: Covers to Close (Optional)
+      description: Covers to close
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: cover
+    
+    switches_to_turn_on:
+      name: Switches to Turn On (Optional)
+      description: Switches to turn on
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: switch
+    
+    switches_to_turn_off:
+      name: Switches to Turn Off (Optional)
+      description: Switches to turn off
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: switch
+    
+    input_booleans_to_turn_on:
+      name: Input Booleans to Turn On (Optional)
+      description: Input booleans to turn on
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: input_boolean
+    
+    input_booleans_to_turn_off:
+      name: Input Booleans to Turn Off (Optional)
+      description: Input booleans to turn off
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: input_boolean
+    
+    notification_service:
+      name: Notification Service (Optional)
+      description: Notification service to use (e.g., mobile_app_tori_phone_2)
+      default: ''
+      selector:
+        text:
+    
+    notification_message:
+      name: Notification Message
+      description: Dune-themed message to send
+      default: 'The spice must flow.'
+      selector:
+        text:
+          multiline: true
+
+trigger:
+  - platform: state
+    entity_id: !input person_entity
+    to: 
+      - "home"
+      - "not_home"
+    for: 
+      minutes: !input delay_duration
+  - platform: state
+    entity_id: !input device_sensor
+    to:
+      - "on"
+      - "off"
+
+condition:
+  - condition: template
+    value_template: >
+      {%- set trigger_type = trigger_type -%}
+      {%- set person_entity = person_entity -%}
+      {%- set device_sensor = device_sensor -%}
+      {%- set time_enabled = time_condition_enabled -%}
+      {%- set after_time = time_after -%}
+      {%- set before_time = time_before -%}
+      {%- set person_state_req = person_state_condition -%}
+      
+      {# Check if trigger matches the selected type #}
+      {%- set trigger_matches = false -%}
+      
+      {%- if trigger_type == 'person_arrives' and trigger.entity_id == person_entity and trigger.to_state.state == 'home' -%}
+        {%- set trigger_matches = true -%}
+      {%- elif trigger_type == 'person_leaves' and trigger.entity_id == person_entity and trigger.to_state.state == 'not_home' -%}
+        {%- set trigger_matches = true -%}
+      {%- elif trigger_type == 'device_charging' and trigger.entity_id == device_sensor and trigger.to_state.state == 'on' -%}
+        {%- set trigger_matches = true -%}
+      {%- elif trigger_type == 'device_unplugged' and trigger.entity_id == device_sensor and trigger.to_state.state == 'off' -%}
+        {%- set trigger_matches = true -%}
+      {%- endif -%}
+      
+      {# Check time condition #}
+      {%- set time_ok = true -%}
+      {%- if time_enabled -%}
+        {%- set current_time = now().time() -%}
+        {%- set after = strptime(after_time, '%H:%M:%S').time() -%}
+        {%- set before = strptime(before_time, '%H:%M:%S').time() -%}
+        {%- set time_ok = current_time >= after and current_time <= before -%}
+      {%- endif -%}
+      
+      {# Check person state condition #}
+      {%- set person_ok = true -%}
+      {%- if person_state_req != 'none' -%}
+        {%- set person_ok = states(person_entity) == person_state_req -%}
+      {%- endif -%}
+      
+      {{ trigger_matches and time_ok and person_ok }}
+
+action:
+  - if:
+      - condition: template
+        value_template: "{{ scene_entity != none and scene_entity != '' }}"
+    then:
+      - service: scene.turn_on
+        target:
+          entity_id: !input scene_entity
+  
+  - if:
+      - condition: template
+        value_template: "{{ lights_to_turn_on != {} }}"
+    then:
+      - service: light.turn_on
+        target: !input lights_to_turn_on
+  
+  - if:
+      - condition: template
+        value_template: "{{ lights_to_turn_off != {} }}"
+    then:
+      - service: light.turn_off
+        target: !input lights_to_turn_off
+  
+  - if:
+      - condition: template
+        value_template: "{{ covers_to_open != {} }}"
+    then:
+      - service: cover.open_cover
+        target: !input covers_to_open
+  
+  - if:
+      - condition: template
+        value_template: "{{ covers_to_close != {} }}"
+    then:
+      - service: cover.close_cover
+        target: !input covers_to_close
+  
+  - if:
+      - condition: template
+        value_template: "{{ switches_to_turn_on != {} }}"
+    then:
+      - service: switch.turn_on
+        target: !input switches_to_turn_on
+  
+  - if:
+      - condition: template
+        value_template: "{{ switches_to_turn_off != {} }}"
+    then:
+      - service: switch.turn_off
+        target: !input switches_to_turn_off
+  
+  - if:
+      - condition: template
+        value_template: "{{ input_booleans_to_turn_on != {} }}"
+    then:
+      - service: input_boolean.turn_on
+        target: !input input_booleans_to_turn_on
+  
+  - if:
+      - condition: template
+        value_template: "{{ input_booleans_to_turn_off != {} }}"
+    then:
+      - service: input_boolean.turn_off
+        target: !input input_booleans_to_turn_off
+  
+  - if:
+      - condition: template
+        value_template: "{{ notification_service != '' }}"
+    then:
+      - service: "notify.{{ notification_service }}"
+        data:
+          message: !input notification_message
+
+mode: single
+max_exceeded: silent

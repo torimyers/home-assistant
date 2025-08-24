@@ -1,0 +1,290 @@
+blueprint:
+  name: Daily Schedule/Routine Blueprint
+  description: >-
+    Comprehensive daily routine automation that consolidates morning, evening, bedtime, 
+    and reset routines with flexible time/sun-based triggers. Supports multiple scenes, 
+    scripts, entity control, and Dune-themed notifications.
+  domain: automation
+  input:
+    routine_name:
+      name: Routine Name
+      description: Name for this routine automation
+      default: "Daily Routine"
+      selector:
+        text:
+
+    routine_description:
+      name: Routine Description
+      description: Dune-themed description for this routine
+      default: "Desert Protocol - Automated Routine"
+      selector:
+        text:
+          multiline: true
+
+    trigger_type:
+      name: Trigger Type
+      description: Choose the type of trigger for this routine
+      default: "time"
+      selector:
+        select:
+          options:
+            - "time"
+            - "sunrise"
+            - "sunset"
+
+    trigger_time:
+      name: Trigger Time
+      description: Time to trigger (used for time-based triggers)
+      default: "06:00:00"
+      selector:
+        time:
+
+    sun_offset:
+      name: Sun Offset
+      description: Offset from sunrise/sunset (e.g., -00:30:00 for 30 min before, 01:00:00 for 1 hour after)
+      default: "00:00:00"
+      selector:
+        duration:
+
+    enable_scenes:
+      name: Enable Scene Activation
+      description: Enable scene activation in this routine
+      default: false
+      selector:
+        boolean:
+
+    scenes_to_activate:
+      name: Scenes to Activate
+      description: Select scenes to activate (multiple allowed)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          domain: scene
+
+    enable_scripts:
+      name: Enable Script Execution
+      description: Enable script execution in this routine
+      default: false
+      selector:
+        boolean:
+
+    scripts_to_run:
+      name: Scripts to Run
+      description: Select scripts to execute (multiple allowed)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          domain: script
+
+    enable_light_control:
+      name: Enable Light/Switch Control
+      description: Enable turning lights/switches on or off
+      default: false
+      selector:
+        boolean:
+
+    light_action:
+      name: Light Action
+      description: Choose action for lights/switches
+      default: "turn_on"
+      selector:
+        select:
+          options:
+            - "turn_on"
+            - "turn_off"
+
+    lights_switches:
+      name: Lights/Switches to Control
+      description: Select lights/switches to control (multiple allowed)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          domain:
+            - light
+            - switch
+
+    enable_counter_reset:
+      name: Enable Counter Reset
+      description: Enable resetting counters/inputs
+      default: false
+      selector:
+        boolean:
+
+    counters_to_reset:
+      name: Counters to Reset
+      description: Select counters to reset (multiple allowed)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          domain: counter
+
+    inputs_to_reset:
+      name: Input Numbers to Reset
+      description: Select input_number entities to reset (multiple allowed)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          domain: input_number
+
+    enable_notifications:
+      name: Enable Notifications
+      description: Send notification when routine executes
+      default: true
+      selector:
+        boolean:
+
+    notification_service:
+      name: Notification Service
+      description: Notification service to use
+      default: "notify.mobile_app_tori_phone_2"
+      selector:
+        entity:
+          domain: notify
+
+    notification_message:
+      name: Notification Message
+      description: Dune-themed message for the notification
+      default: "Desert protocol executed. Sietch operations updated."
+      selector:
+        text:
+          multiline: true
+
+    notification_title:
+      name: Notification Title
+      description: Optional title for the notification
+      default: ""
+      selector:
+        text:
+
+    enable_conditions:
+      name: Enable Conditions
+      description: Enable conditional execution based on person presence
+      default: false
+      selector:
+        boolean:
+
+    condition_person:
+      name: Person Entity
+      description: Person that must be home for routine to execute
+      default: []
+      selector:
+        entity:
+          domain: person
+
+    delay_between_actions:
+      name: Delay Between Actions
+      description: Optional delay between action groups (in seconds)
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 300
+          unit_of_measurement: seconds
+
+variables:
+  trigger_time_var: !input trigger_time
+  sun_offset_var: !input sun_offset
+  scenes_list: !input scenes_to_activate
+  scripts_list: !input scripts_to_run
+  lights_list: !input lights_switches
+  counters_list: !input counters_to_reset
+  inputs_list: !input inputs_to_reset
+  delay_seconds: !input delay_between_actions
+
+trigger:
+  - platform: "{{ 'time' if trigger_type == 'time' else 'sun' }}"
+    at: "{{ trigger_time_var if trigger_type == 'time' else none }}"
+    event: "{{ trigger_type if trigger_type in ['sunrise', 'sunset'] else none }}"
+    offset: "{{ sun_offset_var if trigger_type in ['sunrise', 'sunset'] else none }}"
+
+condition:
+  - condition: template
+    value_template: >-
+      {% if enable_conditions and condition_person %}
+        {{ is_state(condition_person, 'home') }}
+      {% else %}
+        true
+      {% endif %}
+
+action:
+  # Scene Activation
+  - if:
+      - condition: template
+        value_template: "{{ enable_scenes and scenes_list | length > 0 }}"
+    then:
+      - repeat:
+          for_each: "{{ scenes_list }}"
+          sequence:
+            - service: scene.turn_on
+              target:
+                entity_id: "{{ repeat.item }}"
+
+  # Delay between action groups
+  - if:
+      - condition: template
+        value_template: "{{ delay_seconds > 0 }}"
+    then:
+      - delay: "{{ delay_seconds }}"
+
+  # Script Execution
+  - if:
+      - condition: template
+        value_template: "{{ enable_scripts and scripts_list | length > 0 }}"
+    then:
+      - repeat:
+          for_each: "{{ scripts_list }}"
+          sequence:
+            - service: script.turn_on
+              target:
+                entity_id: "{{ repeat.item }}"
+
+  # Light/Switch Control
+  - if:
+      - condition: template
+        value_template: "{{ enable_light_control and lights_list | length > 0 }}"
+    then:
+      - service: "{{ 'switch.turn_on' if light_action == 'turn_on' else 'switch.turn_off' }}"
+        target:
+          entity_id: "{{ lights_list | select('match', '^switch\\.') | list }}"
+      - service: "{{ 'light.turn_on' if light_action == 'turn_on' else 'light.turn_off' }}"
+        target:
+          entity_id: "{{ lights_list | select('match', '^light\\.') | list }}"
+
+  # Counter Reset
+  - if:
+      - condition: template
+        value_template: "{{ enable_counter_reset and (counters_list | length > 0 or inputs_list | length > 0) }}"
+    then:
+      - if:
+          - condition: template
+            value_template: "{{ counters_list | length > 0 }}"
+        then:
+          - service: counter.reset
+            target:
+              entity_id: "{{ counters_list }}"
+      - if:
+          - condition: template
+            value_template: "{{ inputs_list | length > 0 }}"
+        then:
+          - service: input_number.set_value
+            target:
+              entity_id: "{{ inputs_list }}"
+            data:
+              value: 0
+
+  # Notifications
+  - if:
+      - condition: template
+        value_template: "{{ enable_notifications }}"
+    then:
+      - service: "{{ notification_service }}"
+        data:
+          message: !input notification_message
+          title: "{{ notification_title if notification_title else none }}"
+
+mode: single
