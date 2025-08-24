@@ -45,7 +45,7 @@ jobs:
         run: |
           echo "🚀 Deploying configuration locally..."
           echo "Working directory: $(pwd)"
-          echo "Target: /mnt/user/appdata/homeassistant/"
+          echo "Target: /mnt/user/appdata/Home-Assistant-Container/"
           
           # List what we're deploying
           echo "Files to deploy:"
@@ -57,7 +57,7 @@ jobs:
             --exclude='secrets.yaml' \
             --exclude='secrets.yaml.example' \
             --exclude='README.md' \
-            ./ /mnt/user/appdata/homeassistant/
+            ./ /mnt/user/appdata/Home-Assistant-Container/
             
           echo "✅ Configuration deployed successfully"
           
@@ -79,5 +79,5 @@ jobs:
       - name: 🔁 Restart HA (if requested)
         if: github.event.inputs.force_restart == 'true'
         run: |
-          docker restart homeassistant || echo "Container restart failed"
+          docker restart Home-Assistant-Container || echo "Container restart failed"
           echo "🔁 Home Assistant restart initiated"
