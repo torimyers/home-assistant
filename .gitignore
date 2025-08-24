@@ -19,3 +19,8 @@ home-assistant_v2.db*
 Thumbs.db
 
 backups/
+
+# HACS managed content (don't version control these)
+www/community/
+custom_components/hacs/
+/www/community/
