@@ -1,0 +1,15 @@
+front_yard_security:
+  name: "Front Yard Security"
+  description: "Perimeter Watch - Defensive lighting to monitor the outer boundaries of the sietch"
+  icon: mdi:security
+  entities:
+    light.front_porch_light:
+      state: on
+      brightness: 200
+    light.front_yard_spotlights:
+      state: on
+      brightness: 180
+    switch.front_door_camera_spotlight:
+      state: on
+    binary_sensor.front_door_motion:
+      state: on

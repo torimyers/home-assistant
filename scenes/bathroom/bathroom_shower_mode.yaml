@@ -1,0 +1,17 @@
+bathroom_shower_mode:
+  name: "Bathroom Shower Mode"
+  description: "Temple Cleansing - Maximum illumination and ventilation for purification rituals"
+  icon: mdi:shower
+  entities:
+    light.master_bathroom_lights:
+      state: on
+      brightness: 255
+      color_temp: 350
+    light.bathroom_mirror_lights:
+      state: on
+      brightness: 200
+    fan.bathroom_exhaust_fan:
+      state: on
+      percentage: 80
+    switch.bathroom_towel_warmer:
+      state: on

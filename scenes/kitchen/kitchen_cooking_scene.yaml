@@ -1,0 +1,17 @@
+kitchen_cooking_scene:
+  name: "Kitchen Cooking Scene"
+  description: "Sietch Preparation - Full illumination and ventilation for food preparation rituals"
+  icon: mdi:chef-hat
+  entities:
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: on
+      brightness: 255
+      color_temp: 380
+    light.kitchen_under_cabinet_lights:
+      state: on
+      brightness: 200
+    light.kitchen_island_pendant:
+      state: on
+      brightness: 180
+    switch.kitchen_exhaust_fan:
+      state: on

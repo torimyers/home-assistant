@@ -1,0 +1,22 @@
+spice_harvest_alert:
+  alias: Critical Alert System
+  description: "Spice Harvest Alert - High-priority notification system with visual and mobile alerts for critical system events"
+  icon: mdi:bell-alert
+  sequence:
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "{{ message }}"
+        title: "Spice Production Alert"
+        data:
+          notification_icon: mdi:alert-circle
+          priority: high
+    - service: light.turn_on
+      target:
+        entity_id: light.notification_strip
+      data:
+        effect: strobe
+        color_name: orange
+    - delay: '00:00:10'
+    - service: light.turn_off
+      target:
+        entity_id: light.notification_strip

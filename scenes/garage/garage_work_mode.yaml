@@ -1,0 +1,16 @@
+garage_work_mode:
+  name: "Garage Work Mode"
+  description: "Harvester Bay - Full illumination and ventilation for maintenance and storage operations"
+  icon: mdi:garage
+  entities:
+    light.garage_overhead_lights:
+      state: on
+      brightness: 255
+    light.garage_workbench_light:
+      state: on
+      brightness: 200
+    cover.garage_door:
+      state: open
+    fan.garage_exhaust_fan:
+      state: on
+      percentage: 50

@@ -1,0 +1,14 @@
+system_storm_mode:
+  name: "System Storm Mode"
+  description: "Desert Storm Protocol - Emergency power conservation and protection during harsh weather"
+  icon: mdi:weather-windy
+  entities:
+    light.all_exterior_lights:
+      state: off
+    cover.all_blinds:
+      position: 0
+    climate.thermostat:
+      hvac_mode: cool
+      temperature: 68
+    switch.all_unnecessary_devices:
+      state: off
