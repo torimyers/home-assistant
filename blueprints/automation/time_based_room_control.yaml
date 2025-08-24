@@ -227,25 +227,12 @@ mode: single
 max_exceeded: silent
 
 trigger:
-  - choose:
-      # Time-only trigger
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger_type == 'time_only' }}"
-        sequence:
-          - platform: time
-            at: !input trigger_time
-      # Motion + time conditions trigger
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger_type == 'motion_time' }}"
-        sequence:
-          - platform: state
-            entity_id: !input motion_entity
-            to: 'on'
+  # Time-only trigger - always present
+  - platform: time
+    at: !input trigger_time
 
 condition:
-  # Time range conditions
+  # Time range conditions  
   - condition: template
     value_template: >
       {% if enable_time_conditions %}
