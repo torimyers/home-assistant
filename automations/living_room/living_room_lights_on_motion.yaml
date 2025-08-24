@@ -1,18 +1,18 @@
-- id: living_room_lights_on_motion
-  alias: Living Room Lights On Motion
-  description: Tribal Council Assembles - Gathering Begins
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.living_room_motion_detected
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: switch.tp_link_power_strip_173b_couch_lamp
-    state: 'off'
-  action:
-  - service: scene.turn_on
-    target:
-      entity_id: scene.council_assembly
-  - service: notify.mobile_app_tori_phone_2
-    data:
-      message: Tribal council assembles. The voices of the desert speak as one.
+id: living_room_lights_on_motion
+alias: Living Room Lights On Motion
+description: Tribal Council Assembles - Gathering Begins
+trigger:
+- platform: state
+  entity_id: binary_sensor.living_room_motion_detected
+  to: 'on'
+condition:
+- condition: state
+  entity_id: switch.tp_link_power_strip_173b_couch_lamp
+  state: 'off'
+action:
+- service: scene.turn_on
+  target:
+    entity_id: scene.council_assembly
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: Tribal council assembles. The voices of the desert speak as one.

@@ -1,19 +1,19 @@
-- id: water_leak_emergency
-  alias: Water Leak Emergency
-  description: Water Loss Emergency - Precious Resource Alert
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.lumi_lumi_sensor_wleak_aq1
-    - binary_sensor.lumi_lumi_sensor_wleak_aq1_2
-    - binary_sensor.lumi_lumi_sensor_wleak_aq1_3
-    to: 'on'
-  action:
-  - service: scene.turn_on
-    target:
-      entity_id: scene.sardaukar_attack_protocol
-  - service: notify.mobile_app_tori_phone_2
-    data:
-      message: WATER LOSS DETECTED! Precious moisture escapes! Immediate attention
-        required!
-      title: 'EMERGENCY: Water Loss'
+id: water_leak_emergency
+alias: Water Leak Emergency
+description: Water Loss Emergency - Precious Resource Alert
+trigger:
+- platform: state
+  entity_id:
+  - binary_sensor.lumi_lumi_sensor_wleak_aq1
+  - binary_sensor.lumi_lumi_sensor_wleak_aq1_2
+  - binary_sensor.lumi_lumi_sensor_wleak_aq1_3
+  to: 'on'
+action:
+- service: scene.turn_on
+  target:
+    entity_id: scene.sardaukar_attack_protocol
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: WATER LOSS DETECTED! Precious moisture escapes! Immediate attention
+      required!
+    title: 'EMERGENCY: Water Loss'
