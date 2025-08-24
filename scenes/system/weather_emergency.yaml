@@ -1,0 +1,24 @@
+weather_emergency:
+  name: "Weather Emergency Mode"
+  description: "Coriolis Storm Protocol - Emergency lighting and systems for severe weather"
+  icon: mdi:weather-lightning-rainy
+  entities:
+    light.living_room_ceiling_light:
+      state: on
+      brightness: 255
+      color_temp: 320
+    light.kitchen_under_cabinet_lights:
+      state: on
+      brightness: 255
+    light.bedroom_ceiling_light:
+      state: on
+      brightness: 200
+    light.office_desk_lamp:
+      state: on
+      brightness: 255
+    switch.emergency_power_strip:
+      state: on
+    climate.home:
+      temperature: 72
+    cover.all_blinds:
+      state: closed

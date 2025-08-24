@@ -1,17 +1,14 @@
 id: washer_cycle_started
 alias: Washer Cycle Started
 description: Water Discipline Protocol - Wash Cycle Begin
-trigger:
-- platform: state
-  entity_id: input_boolean.washer_cycle_active
-  to: 'on'
-action:
-- service: input_datetime.set_datetime
-  target:
-    entity_id: input_datetime.last_wash_started
-  data:
-    datetime: '{{ now() }}'
-- service: notify.mobile_app_tori_phone_2
-  data:
-    message: Water discipline protocol initiated. Sacred moisture flows through
-      reclamation systems.
+use_blueprint:
+  path: appliance_cycle.yaml
+  input:
+    appliance_name: Washer
+    input_boolean_entity: input_boolean.washer_cycle_active
+    datetime_helper: input_datetime.last_wash_started
+    notification_target: mobile_app_tori_phone_2
+    cycle_type: started
+    trigger_state: "on"
+    custom_message: "Water discipline protocol initiated. Sacred moisture flows through reclamation systems."
+    dune_description: "Water Discipline Protocol - Wash Cycle Begin"

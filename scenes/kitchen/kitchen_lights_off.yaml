@@ -1,0 +1,17 @@
+kitchen_lights_off:
+  name: "Kitchen Lights Off"
+  description: "All Kitchen Lights Off - Complete darkness for bedtime routine"
+  icon: mdi:lightbulb-off
+  entities:
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: off
+    light.kitchen_under_cabinet_lights:
+      state: off
+    light.kitchen_pendant_lights:
+      state: off
+    switch.coffee_maker:
+      state: off
+    switch.kitchen_exhaust_fan:
+      state: off
+    media_player.kitchen_echo:
+      state: off

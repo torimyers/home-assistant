@@ -1,0 +1,16 @@
+id: dryer_cycle_started
+alias: Dryer Cycle Started
+description: Moisture Extraction Process - Dry Cycle Begin
+trigger:
+- platform: state
+  entity_id: input_boolean.dryer_cycle_active
+  to: 'on'
+action:
+- service: input_datetime.set_datetime
+  target:
+    entity_id: input_datetime.last_dry_started
+  data:
+    datetime: '{{ now() }}'
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: Moisture Extraction Process Initiated

@@ -1,0 +1,23 @@
+water_emergency:
+  name: "Water Emergency Protocol"
+  description: "Sardaukar Attack Protocol - Emergency response for water leak detection"
+  icon: mdi:water-alert
+  entities:
+    light.living_room_ceiling_light:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+    light.kitchen_under_cabinet_lights:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+    light.bathroom_lights:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+    switch.main_water_valve:
+      state: off
+    switch.water_heater:
+      state: off
+    switch.emergency_alert_system:
+      state: on

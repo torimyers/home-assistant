@@ -1,14 +1,12 @@
 id: laundry_cycle_complete
 alias: Laundry Cycle Complete
 description: Water Reclamation Cycle Complete - Desert Efficiency
-trigger:
-- platform: state
-  entity_id: input_boolean.washer_cycle_active
-  to: 'off'
-- platform: state
-  entity_id: input_boolean.dryer_cycle_active
-  to: 'off'
-action:
-- service: notify.mobile_app_tori_phone_2
-  data:
-    message: Water reclamation cycle complete. The desert approves of Fremen efficiency.
+use_blueprint:
+  path: appliance_cycle_complete.yaml
+  input:
+    appliance_name: Laundry
+    washer_boolean: input_boolean.washer_cycle_active
+    dryer_boolean: input_boolean.dryer_cycle_active
+    notification_target: notify.mobile_app_tori_phone_2
+    custom_message: "Water reclamation cycle complete. The desert approves of Fremen efficiency."
+    dune_description: "Water Reclamation Cycle Complete - Desert Efficiency"

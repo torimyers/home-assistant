@@ -1,18 +1,17 @@
-id: pet_medication_ellie
 alias: Pet Medication Ellie
 description: Chani Fluoxetine - Daily Medicine Protocol
-trigger:
-- platform: time
-  at: '19:00:00'
-condition:
-- condition: template
-  value_template: '{{ (now().date() - states(''input_datetime.ellie_last_fluoxetine'')
-    | as_datetime | as_local | as_timestamp | timestamp_custom(''%Y-%m-%d'') | as_datetime
-    | as_local).days >= 1 }}
-
-    '
-action:
-- service: notify.mobile_app_tori_phone_2
-  data:
-    message: Chani (Ellie) requires evening Fluoxetine. Desert warrior healing protocol
-      due.
+use_blueprint:
+  path: pet_care.yaml
+  input:
+    pet_name: Ellie
+    dune_name: Chani
+    care_type: medication
+    schedule_times: "19:00"
+    datetime_helper: input_datetime.ellie_last_fluoxetine
+    check_interval_hours: 23
+    medication_type: evening Fluoxetine
+    dual_medication: false
+    notification_device: mobile_app_tori_phone_2
+    custom_message: ""
+    enable_additional_actions: false
+    update_datetime_helper: false

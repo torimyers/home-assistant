@@ -9,7 +9,7 @@ actions:
 - action: scene.turn_on
   data: {}
   target:
-    entity_id: scene.sunset_over_arrakis_evening_routine
+    entity_id: scene.evening_routine
 - data:
     message: Sunset graces Arrakis. Sietch secured for evening. Desert companions
       comfortable.

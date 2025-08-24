@@ -1,0 +1,21 @@
+morning_awakening:
+  name: "Morning Awakening"
+  description: "Water of Awakening - Gentle morning lighting to ease awakening from sleep"
+  icon: mdi:weather-sunset-up
+  entities:
+    light.bedroom_ceiling_light:
+      state: on
+      brightness: 80
+      color_temp: 450
+    light.bedside_lamp_left:
+      state: on
+      brightness: 120
+      color_temp: 400
+    light.bedside_lamp_right:
+      state: on
+      brightness: 80
+      color_temp: 400
+    switch.bedroom_air_purifier:
+      state: on
+    switch.bedroom_phone_charger:
+      state: off

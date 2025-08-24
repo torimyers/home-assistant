@@ -1,0 +1,14 @@
+id: laundry_cycle_complete
+alias: Laundry Cycle Complete
+description: Water Reclamation Cycle Complete - Desert Efficiency
+trigger:
+- platform: state
+  entity_id: input_boolean.washer_cycle_active
+  to: 'off'
+- platform: state
+  entity_id: input_boolean.dryer_cycle_active
+  to: 'off'
+action:
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: Water reclamation cycle complete. The desert approves of Fremen efficiency.

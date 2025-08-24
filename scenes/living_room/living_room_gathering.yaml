@@ -1,0 +1,18 @@
+living_room_gathering:
+  name: "Living Room Gathering"
+  description: "Council Assembly - Comfortable lighting for family gatherings"
+  icon: mdi:account-group
+  entities:
+    light.living_room_ceiling_light:
+      state: on
+      brightness: 160
+      color_temp: 370
+    switch.tp_link_power_strip_173b_couch_lamp:
+      state: on
+    light.living_room_accent_lights:
+      state: on
+      brightness: 100
+    switch.living_room_floor_lamp:
+      state: on
+    media_player.living_room_tv:
+      state: off

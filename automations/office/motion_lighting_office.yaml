@@ -1,0 +1,22 @@
+alias: Navigator Chamber - Motion Lighting
+description: Navigator Enters Chamber - Spice Trance Ready and Away Protocol
+use_blueprint:
+  path: motion_lighting.yaml
+  input:
+    motion_entity: binary_sensor.office_motion_detected
+    room_name: office
+    dune_description: Navigator Enters Chamber - Spice Trance Ready
+    activation_type: scene
+    scene_entity: scene.office_focus
+    area_id: office
+    check_light_state: true
+    condition_entity: light.ledvance_a19_rgbw_light
+    timeout_minutes: 45
+    enable_notifications: true
+    notification_device: mobile_app_tori_phone_2
+    activation_message: Navigator enters the chamber. Spice trance initiated for prescient vision.
+    deactivation_message: Navigator chamber sealed. Prescient vision ends, darkness returns.
+    enable_additional_actions: true
+    additional_service: input_text.set_value
+    additional_entity: input_text.office_last_mode
+    additional_data: "value: navigator_absent"

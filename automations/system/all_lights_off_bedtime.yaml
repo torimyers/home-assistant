@@ -21,4 +21,4 @@ actions:
   metadata: {}
   data: {}
   target:
-    entity_id: scene.all_kitchen_lights_off_2
+    entity_id: scene.kitchen_lights_off

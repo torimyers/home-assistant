@@ -12,7 +12,7 @@ trigger:
 action:
 - service: scene.turn_on
   target:
-    entity_id: scene.coriolis_storm_protocol
+    entity_id: scene.weather_emergency
 - service: cover.close_cover
   target:
     entity_id: all

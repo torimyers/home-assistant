@@ -1,0 +1,31 @@
+automation:
+  - alias: Office Lights Off Late Night
+    description: Navigator Chamber Water Conservation - Spice Trance Sealed
+    use_blueprint:
+      path: time_based_room_control.yaml
+      input:
+        # Basic Configuration
+        room_name: "office"
+        dune_description: "Navigator Chamber Water Conservation - Spice Trance Sealed"
+        
+        # Trigger Configuration
+        trigger_type: "time_only"
+        trigger_time: "23:59:59"
+        
+        # Time Conditions - not needed since we have specific trigger time
+        enable_time_conditions: false
+        
+        # Presence Detection - not needed for this automation
+        enable_presence_check: false
+        
+        # State Check - not needed for this automation
+        enable_state_check: false
+        
+        # Action Configuration
+        action_type: "light_off"
+        area_id: "office"
+        
+        # Notification Settings
+        enable_notifications: true
+        notification_device: "mobile_app_tori_phone_2"
+        notification_message: "Spice conservation protocols active. Navigator chamber sealed for the deep desert night."

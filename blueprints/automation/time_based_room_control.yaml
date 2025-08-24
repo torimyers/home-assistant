@@ -1,0 +1,404 @@
+blueprint:
+  name: Time-Based Room Control (Dune Edition)
+  description: Comprehensive time-based room control with motion sensors, presence detection, and Dune-themed notifications
+  domain: automation
+  input:
+    # Basic Configuration
+    room_name:
+      name: Room Name
+      description: Name of the room for notifications (e.g., "kitchen", "office", "bedroom")
+      selector:
+        text:
+    
+    dune_description:
+      name: Dune Theme Description
+      description: The Dune-themed description for this automation
+      selector:
+        text:
+    
+    # Trigger Configuration
+    trigger_type:
+      name: Trigger Type
+      description: How this automation should be triggered
+      default: time_only
+      selector:
+        select:
+          options:
+            - label: "Time Only"
+              value: "time_only"
+            - label: "Motion + Time Conditions"
+              value: "motion_time"
+    
+    # Time Trigger Settings
+    trigger_time:
+      name: Trigger Time
+      description: Specific time to trigger automation (only used for Time Only trigger type)
+      default: "06:30:00"
+      selector:
+        time:
+    
+    # Motion Trigger Settings
+    motion_entity:
+      name: Motion Sensor
+      description: Motion sensor for trigger (only used for Motion + Time Conditions)
+      default: {}
+      selector:
+        entity:
+          filter:
+            device_class: motion
+            domain: binary_sensor
+    
+    # Time Condition Settings
+    enable_time_conditions:
+      name: Enable Time Conditions
+      description: Only trigger during specific time range
+      default: true
+      selector:
+        boolean:
+    
+    time_after:
+      name: Start Time
+      description: Only trigger after this time
+      default: "06:00:00"
+      selector:
+        time:
+    
+    time_before:
+      name: End Time
+      description: Only trigger before this time
+      default: "23:59:59"
+      selector:
+        time:
+    
+    # Presence Detection
+    enable_presence_check:
+      name: Enable Presence Check
+      description: Check if person is home/away before triggering
+      default: false
+      selector:
+        boolean:
+    
+    person_entity:
+      name: Person Entity
+      description: Person to check presence for
+      default: {}
+      selector:
+        entity:
+          domain: person
+    
+    presence_condition:
+      name: Presence Condition
+      description: Required presence state to trigger
+      default: "home"
+      selector:
+        select:
+          options:
+            - label: "Person must be home"
+              value: "home"
+            - label: "Person must be away"
+              value: "not_home"
+    
+    # State Condition Check
+    enable_state_check:
+      name: Enable State Check
+      description: Check state of a device before triggering
+      default: false
+      selector:
+        boolean:
+    
+    condition_entity:
+      name: Condition Entity
+      description: Entity to check state of before activation
+      default: {}
+      selector:
+        entity:
+    
+    required_state:
+      name: Required State
+      description: Required state of condition entity to trigger
+      default: "off"
+      selector:
+        text:
+    
+    # Action Configuration
+    action_type:
+      name: Action Type
+      description: What action to perform
+      default: scene
+      selector:
+        select:
+          options:
+            - label: "Activate Scene"
+              value: "scene"
+            - label: "Turn On Light"
+              value: "light_on"
+            - label: "Turn Off Light/Area"
+              value: "light_off"
+            - label: "Sequential Actions"
+              value: "sequential"
+    
+    # Scene Action
+    scene_entity:
+      name: Scene to Activate
+      description: Scene to activate (only used if Action Type is Activate Scene)
+      default: {}
+      selector:
+        entity:
+          domain: scene
+    
+    # Light Control
+    light_entity:
+      name: Light Entity
+      description: Light entity to control
+      default: {}
+      selector:
+        entity:
+          domain: light
+    
+    area_id:
+      name: Area ID
+      description: Area to control lights in
+      default: ""
+      selector:
+        text:
+    
+    # Sequential Actions Settings
+    enable_delay:
+      name: Enable Delay in Sequential
+      description: Add delay between actions in sequential mode
+      default: false
+      selector:
+        boolean:
+    
+    delay_minutes:
+      name: Delay Minutes
+      description: Minutes to delay between sequential actions
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 120
+          unit_of_measurement: minutes
+    
+    secondary_action:
+      name: Secondary Action
+      description: Second action in sequential mode
+      default: "none"
+      selector:
+        select:
+          options:
+            - label: "None"
+              value: "none"
+            - label: "Turn Off Light Entity"
+              value: "light_off_entity"
+            - label: "Turn Off Area"
+              value: "light_off_area"
+    
+    # Notification Settings
+    enable_notifications:
+      name: Enable Notifications
+      description: Send Dune-themed notifications
+      default: true
+      selector:
+        boolean:
+    
+    notification_device:
+      name: Notification Device
+      description: Mobile app to send notifications to
+      default: "mobile_app_tori_phone_2"
+      selector:
+        text:
+    
+    notification_message:
+      name: Notification Message
+      description: Dune-themed message to send
+      selector:
+        text:
+    
+    secondary_notification_message:
+      name: Secondary Notification Message
+      description: Second notification message for sequential actions
+      default: ""
+      selector:
+        text:
+
+# Use single mode to prevent overlapping executions
+mode: single
+max_exceeded: silent
+
+trigger:
+  - choose:
+      # Time-only trigger
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger_type == 'time_only' }}"
+        sequence:
+          - platform: time
+            at: !input trigger_time
+      # Motion + time conditions trigger
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger_type == 'motion_time' }}"
+        sequence:
+          - platform: state
+            entity_id: !input motion_entity
+            to: 'on'
+
+condition:
+  # Time range conditions
+  - condition: template
+    value_template: >
+      {% if enable_time_conditions %}
+        {% set now_time = now().strftime('%H:%M:%S') %}
+        {% set after_time = time_after %}
+        {% set before_time = time_before %}
+        {% if before_time < after_time %}
+          {# Time range crosses midnight #}
+          {{ now_time >= after_time or now_time <= before_time }}
+        {% else %}
+          {# Normal time range #}
+          {{ now_time >= after_time and now_time <= before_time }}
+        {% endif %}
+      {% else %}
+        true
+      {% endif %}
+  
+  # Presence conditions
+  - condition: template
+    value_template: >
+      {% if enable_presence_check %}
+        {% set person_state = states(person_entity) %}
+        {{ person_state == presence_condition }}
+      {% else %}
+        true
+      {% endif %}
+  
+  # State check conditions
+  - condition: template
+    value_template: >
+      {% if enable_state_check %}
+        {% set entity_state = states(condition_entity) %}
+        {{ entity_state == required_state }}
+      {% else %}
+        true
+      {% endif %}
+
+action:
+  # Primary action based on action type
+  - choose:
+      # Scene activation
+      - conditions:
+          - condition: template
+            value_template: "{{ action_type == 'scene' }}"
+        sequence:
+          - service: scene.turn_on
+            target:
+              entity_id: !input scene_entity
+      
+      # Light on
+      - conditions:
+          - condition: template
+            value_template: "{{ action_type == 'light_on' }}"
+        sequence:
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template: "{{ light_entity != none and light_entity != '' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: !input light_entity
+              - conditions:
+                  - condition: template
+                    value_template: "{{ area_id != '' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      area_id: !input area_id
+      
+      # Light off
+      - conditions:
+          - condition: template
+            value_template: "{{ action_type == 'light_off' }}"
+        sequence:
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template: "{{ light_entity != none and light_entity != '' }}"
+                sequence:
+                  - service: light.turn_off
+                    target:
+                      entity_id: !input light_entity
+              - conditions:
+                  - condition: template
+                    value_template: "{{ area_id != '' }}"
+                sequence:
+                  - service: light.turn_off
+                    target:
+                      area_id: !input area_id
+      
+      # Sequential actions
+      - conditions:
+          - condition: template
+            value_template: "{{ action_type == 'sequential' }}"
+        sequence:
+          # First action - scene or light on
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template: "{{ scene_entity != none and scene_entity != '' }}"
+                sequence:
+                  - service: scene.turn_on
+                    target:
+                      entity_id: !input scene_entity
+              - conditions:
+                  - condition: template
+                    value_template: "{{ light_entity != none and light_entity != '' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: !input light_entity
+              - conditions:
+                  - condition: template
+                    value_template: "{{ area_id != '' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      area_id: !input area_id
+          
+          # Optional delay
+          - condition: template
+            value_template: !input enable_delay
+          - delay:
+              minutes: !input delay_minutes
+          
+          # Secondary action
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template: "{{ secondary_action == 'light_off_entity' }}"
+                sequence:
+                  - service: light.turn_off
+                    target:
+                      entity_id: !input light_entity
+              - conditions:
+                  - condition: template
+                    value_template: "{{ secondary_action == 'light_off_area' }}"
+                sequence:
+                  - service: light.turn_off
+                    target:
+                      area_id: !input area_id
+          
+          # Secondary notification
+          - condition: template
+            value_template: "{{ enable_notifications and secondary_notification_message != '' }}"
+          - service: notify.{{ notification_device }}
+            data:
+              message: !input secondary_notification_message
+  
+  # Primary notification
+  - condition: template
+    value_template: !input enable_notifications
+  - service: notify.{{ notification_device }}
+    data:
+      message: !input notification_message
