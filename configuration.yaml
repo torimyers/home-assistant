@@ -1,0 +1,1675 @@
+# ====================================
+# HOME ASSISTANT MAIN CONFIGURATION
+# Organized for optimal performance and maintenance
+# Last Updated: July 2025
+# ====================================
+
+# ====================================
+# 🏠 CORE HOME ASSISTANT SETUP
+# ====================================
+
+# Load default set of integrations (includes most common components)
+default_config:
+
+# Configure frontend themes and UI customization
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Media and content sources
+media_source:
+
+# ====================================
+# 📁 CONFIGURATION FILE INCLUDES
+# Split configuration for better organization and maintenance
+# ====================================
+
+# Core automation and control files
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# ====================================
+# 📱 DASHBOARD CONFIGURATION
+# Multiple dashboards for different purposes and users
+# ====================================
+
+lovelace:
+  dashboards:
+    # Main responsive dashboard - primary interface
+    smart-home:
+      mode: yaml
+      title: Smart Home Control
+      icon: mdi:home
+      show_in_sidebar: true
+      filename: responsive-dashboard.yaml
+    
+    # Classic dashboard - backup/alternative interface
+    classic-dashboard:
+      mode: yaml
+      title: Classic Dashboard  
+      icon: mdi:view-dashboard-variant
+      show_in_sidebar: false
+      filename: dashboard.yaml
+
+# ====================================
+# 🔢 INPUT HELPERS - USER CONTROLS
+# ====================================
+
+input_boolean:
+  # ===== SYSTEM CONTROLS =====
+  power_outage_detected:
+    name: Power Outage Detected
+    initial: false
+    icon: mdi:power-off
+  
+  kitchen_lights_disabled:
+    name: "Kitchen Lights Disabled (Nap Mode)"
+    initial: false
+    icon: mdi:lightbulb-off
+  
+  maintenance_mode:
+    name: "System Maintenance Mode"
+    initial: false
+    icon: mdi:wrench
+  
+  vacation_mode:
+    name: "Vacation Mode Active"
+    initial: false
+    icon: mdi:home-export-outline
+
+  # ===== ENERGY MANAGEMENT =====
+  energy_optimization:
+    name: Energy Optimization Mode
+    initial: true
+    icon: mdi:leaf
+
+  peak_hour_reduction:
+    name: Peak Hour Energy Reduction
+    initial: true
+    icon: mdi:flash-alert
+
+  hvac_coordination:
+    name: HVAC Coordination
+    initial: true
+    icon: mdi:thermostat
+
+  energy_notifications:
+    name: Energy Usage Notifications
+    initial: true
+    icon: mdi:bell-alert
+
+  # ===== SECURITY SETTINGS =====
+  security_alerts:
+    name: Security Alerts Enabled
+    initial: true
+    icon: mdi:shield-alert
+
+  away_mode_lighting:
+    name: Away Mode Lighting
+    initial: true
+    icon: mdi:lightbulb-auto
+
+  door_window_monitoring:
+    name: Door/Window Monitoring
+    initial: true
+    icon: mdi:window-open-variant
+
+  enhanced_security_mode:
+    name: Enhanced Security Mode
+    initial: true
+    icon: mdi:shield-plus
+
+  # ===== PET CARE =====
+  atlas_feeding_reminder:
+    name: Atlas Feeding Reminder
+    initial: false
+    icon: mdi:food-dog
+
+  cat_feeding_reminder:
+    name: Cat Feeding Reminder
+    initial: false
+    icon: mdi:cat
+
+  pet_medication_reminder:
+    name: Pet Medication Reminder
+    initial: false
+    icon: mdi:medical-bag
+
+  atlas_activity_tracking:
+    name: Atlas Activity Tracking
+    initial: true
+    icon: mdi:dog-side
+
+  # ===== PREDICTIVE FEATURES =====
+  predictive_automations:
+    name: "Predictive Automations Enabled"
+    initial: true
+    icon: mdi:crystal-ball
+
+  smart_energy_management:
+    name: "Smart Energy Management"
+    initial: true
+    icon: mdi:leaf
+
+  adaptive_pet_care:
+    name: "Adaptive Pet Care"
+    initial: true  
+    icon: mdi:paw
+
+  # ===== LAUNDRY ROOM =====
+  laundry_notifications:
+    name: Laundry Notifications
+    initial: true
+    icon: mdi:bell-alert
+    
+  spice_flow_coordination:
+    name: Spice Flow Coordination (Smart Vacuum)
+    initial: true
+    icon: mdi:robot-vacuum
+    
+  fremen_friendly_cleaning:
+    name: Fremen-Friendly Desert Cleaning
+    initial: true
+    icon: mdi:dog
+    
+  laundry_energy_optimization:
+    name: Laundry Energy Optimization
+    initial: true
+    icon: mdi:leaf
+
+  washer_cycle_active:
+    name: Washer Cycle Active
+    initial: false
+    icon: mdi:washing-machine
+
+  dryer_cycle_active:
+    name: Dryer Cycle Active
+    initial: false
+    icon: mdi:tumble-dryer
+
+  load_needs_transfer:
+    name: Load Needs Transfer (Washer → Dryer)
+    initial: false
+    icon: mdi:transfer
+
+  # ===== SYSTEM HEALTH =====
+  system_health_monitoring:
+    name: System Health Monitoring
+    initial: true
+    icon: mdi:heart-pulse
+
+input_number:
+  # ===== TEMPERATURE CONTROLS =====
+  comfort_temp_min:
+    name: "Minimum Comfort Temperature"
+    min: 60
+    max: 75
+    step: 1
+    unit_of_measurement: "°F"
+    icon: mdi:thermometer-minus
+    initial: 68
+  
+  comfort_temp_max:
+    name: "Maximum Comfort Temperature" 
+    min: 70
+    max: 85
+    step: 1
+    unit_of_measurement: "°F"
+    icon: mdi:thermometer-plus
+    initial: 75
+
+  # ===== AUTOMATION TIMING =====
+  morning_routine_time:
+    name: "Morning Routine Hour"
+    min: 5
+    max: 10
+    step: 1
+    unit_of_measurement: "hour"
+    icon: mdi:weather-sunny
+    initial: 7
+
+  evening_routine_time:
+    name: "Evening Routine Hour"
+    min: 17
+    max: 22
+    step: 1
+    unit_of_measurement: "hour"
+    icon: mdi:weather-sunset
+    initial: 18
+
+  motion_timeout_minutes:
+    name: "Motion Sensor Timeout"
+    min: 1
+    max: 30
+    step: 1
+    unit_of_measurement: "minutes"
+    icon: mdi:motion-sensor
+    initial: 10
+
+  # ===== ENERGY MANAGEMENT =====
+  energy_target_daily:
+    name: Daily Energy Target (kWh)
+    min: 5
+    max: 50
+    step: 1
+    initial: 20
+    unit_of_measurement: "kWh"
+    icon: mdi:target
+
+  hvac_temperature_buffer:
+    name: HVAC Temperature Buffer
+    min: 1
+    max: 5
+    step: 0.5
+    initial: 2
+    unit_of_measurement: "°F"
+    icon: mdi:thermometer
+
+  energy_optimization_threshold:
+    name: "Energy Optimization Threshold"
+    min: 50
+    max: 200
+    step: 10
+    initial: 80
+    unit_of_measurement: "%"
+    icon: mdi:gauge
+
+  # ===== SECURITY SETTINGS =====
+  security_delay_minutes:
+    name: Security Delay (Minutes)
+    min: 0
+    max: 10
+    step: 1
+    initial: 2
+    icon: mdi:timer
+
+  away_mode_trigger_minutes:
+    name: Away Mode Trigger (Minutes)
+    min: 5
+    max: 60
+    step: 5
+    initial: 15
+    icon: mdi:clock-outline
+
+  # ===== PREDICTIVE FEATURES =====
+  predictive_office_prep_minutes:
+    name: "Office Preparation Lead Time"
+    min: 5
+    max: 30
+    step: 5
+    initial: 15
+    unit_of_measurement: "minutes"
+    icon: mdi:clock-fast
+
+  # ===== LAUNDRY SETTINGS =====
+  washer_cycle_timeout_minutes:
+    name: Washer Cycle Timeout
+    min: 30
+    max: 180
+    step: 15
+    initial: 90
+    unit_of_measurement: "minutes"
+    icon: mdi:timer
+
+  dryer_cycle_timeout_minutes:
+    name: Dryer Cycle Timeout
+    min: 30
+    max: 120
+    step: 15
+    initial: 60
+    unit_of_measurement: "minutes"
+    icon: mdi:timer
+
+  load_transfer_reminder_minutes:
+    name: Load Transfer Reminder
+    min: 5
+    max: 60
+    step: 5
+    initial: 15
+    unit_of_measurement: "minutes"
+    icon: mdi:clock-alert
+
+input_text:
+  # ===== POWER OUTAGE RECOVERY =====
+  office_left_state:
+    name: Office Left Light State
+    max: 255
+    initial: "off|0|300|255,255,255"
+    icon: mdi:lightbulb-outline
+  
+  office_right_state:
+    name: Office Right Light State  
+    max: 255
+    initial: "off|0|300|255,255,255"
+    icon: mdi:lightbulb-outline
+  
+  office_upper_state:
+    name: Office Upper Light State
+    max: 255
+    initial: "off|0|300|255,255,255"
+    icon: mdi:lightbulb-outline
+  
+  bedroom_light_state:
+    name: Bedroom Light State
+    max: 255
+    initial: "off|0|300"
+    icon: mdi:lightbulb-outline
+  
+  kitchen_states:
+    name: Kitchen Light States
+    max: 255
+    initial: "off|off|off|off|off|off"
+    icon: mdi:lightbulb-group-outline
+  
+  switch_states:
+    name: Switch States
+    max: 255
+    initial: "off|off|off"
+    icon: mdi:toggle-switch-outline
+  
+  last_save_time:
+    name: Last Save Time
+    max: 255
+    initial: "never"
+    icon: mdi:clock-outline
+
+  # ===== OFFICE MODE MEMORY =====
+  office_last_mode:
+    name: Office Last Mode
+    max: 50
+    initial: "work"
+    icon: mdi:lightbulb-auto
+
+  office_mode_preferences:
+    name: Office Mode Preferences
+    max: 255
+    initial: "auto_evening:true|weekend_gaming:true|quick_return:true"
+    icon: mdi:tune
+
+  # ===== PREDICTIVE FEATURES =====
+  evening_preparation_complete:
+    name: "Evening Preparation Complete Time"
+    max: 50
+    initial: "never"
+    icon: mdi:clock-outline
+
+  predictive_office_state:
+    name: "Predictive Office State"
+    max: 100
+    initial: "idle"
+    icon: mdi:lightbulb-auto
+
+input_select:
+  security_mode_override:
+    name: Security Mode Override
+    options:
+      - "Auto"
+      - "Disarmed"
+      - "Away Mode"
+      - "Night Mode" 
+      - "Vacation Mode"
+    initial: "Auto"
+    icon: mdi:shield-account
+
+input_datetime:
+  # ===== PET FEEDING SCHEDULES =====
+  atlas_last_fed:
+    name: Atlas Last Fed
+    has_date: true
+    has_time: true
+    icon: mdi:food-dog-bowl
+
+  cats_last_fed:
+    name: Cats Last Fed
+    has_date: true
+    has_time: true
+    icon: mdi:cat
+
+  # ===== ATLAS HEALTH TRACKING =====
+  atlas_last_vet_visit:
+    name: Atlas Last Vet Visit
+    has_date: true
+    has_time: false
+    icon: mdi:medical-bag
+  
+  atlas_last_probiotic:
+    name: Atlas Last Probiotic
+    has_date: true
+    has_time: true
+    icon: mdi:pill
+
+  atlas_last_flea_tick:
+    name: Atlas Last Flea/Tick Prevention
+    has_date: true
+    has_time: false
+    icon: mdi:bug-outline
+
+  # ===== CAT MEDICATION SCHEDULES =====
+  # Ellie (Domestic Shorthair) - Daily Fluoxetine
+  ellie_last_fluoxetine:
+    name: Ellie Last Fluoxetine
+    has_date: true
+    has_time: true
+    icon: mdi:pill
+
+  ellie_last_flea_tick:
+    name: Ellie Last Flea/Tick Prevention
+    has_date: true
+    has_time: false
+    icon: mdi:bug-outline
+
+  # Shadow (Domestic Longhair) - Dual Daily Medication
+  shadow_last_cerenia:
+    name: Shadow Last Cerenia
+    has_date: true
+    has_time: true
+    icon: mdi:pill
+
+  shadow_last_steroid:
+    name: Shadow Last Steroid
+    has_date: true
+    has_time: true
+    icon: mdi:pill
+
+  shadow_last_flea_tick:
+    name: Shadow Last Flea/Tick Prevention
+    has_date: true
+    has_time: false
+    icon: mdi:bug-outline
+
+  # Lance (Domestic Longhair) - Monthly Only
+  lance_last_flea_tick:
+    name: Lance Last Flea/Tick Prevention
+    has_date: true
+    has_time: false
+    icon: mdi:bug-outline
+
+  # Charlie (Cat) - Monthly Only
+  charlie_last_flea_tick:
+    name: Charlie Last Flea/Tick Prevention
+    has_date: true
+    has_time: false
+    icon: mdi:bug-outline
+
+  # ===== LAUNDRY TRACKING =====
+  last_wash_started:
+    name: Last Wash Started
+    has_date: true
+    has_time: true
+    icon: mdi:washing-machine
+
+  last_wash_completed:
+    name: Last Wash Completed
+    has_date: true
+    has_time: true
+    icon: mdi:washing-machine-off
+
+  last_dry_started:
+    name: Last Dry Started
+    has_date: true
+    has_time: true
+    icon: mdi:tumble-dryer
+
+  last_dry_completed:
+    name: Last Dry Completed
+    has_date: true
+    has_time: true
+    icon: mdi:tumble-dryer-off
+
+  last_sha_hulud_patrol:
+    name: Last Sha-Hulud Desert Patrol (Laundry)
+    has_date: true
+    has_time: true
+    icon: mdi:robot-vacuum
+
+# ====================================
+# 📊 COUNTERS & ANALYTICS
+# ====================================
+
+counter:
+  # ===== DAILY ACTIVITY TRACKING =====
+  deep_sleep_motion_events:
+    name: Deep Sleep Motion Events
+    initial: 0
+    step: 1
+    icon: mdi:sleep
+
+  automation_failures:
+    name: Automation Failures Today
+    initial: 0
+    step: 1
+    icon: mdi:alert-circle
+
+  motion_sensor_triggers_today:
+    name: Motion Sensor Triggers Today
+    initial: 0
+    step: 1
+    icon: mdi:motion-sensor
+  
+  atlas_daily_motion:
+    name: Atlas Daily Motion Events
+    initial: 0
+    step: 1
+    icon: mdi:counter
+
+  # ===== LAUNDRY ANALYTICS =====
+  daily_wash_cycles:
+    name: Daily Wash Cycles
+    initial: 0
+    step: 1
+    icon: mdi:washing-machine
+
+  daily_dry_cycles:
+    name: Daily Dry Cycles
+    initial: 0
+    step: 1
+    icon: mdi:tumble-dryer
+
+  weekly_desert_patrols:
+    name: Weekly Desert Patrols (Sha-Hulud)
+    initial: 0
+    step: 1
+    icon: mdi:robot-vacuum
+
+# ====================================
+# 📊 TEMPLATE SENSORS
+# Custom sensors for enhanced monitoring and control
+# ====================================
+
+template:
+  - sensor:
+      - name: "Sietch Activity Monitor"
+        unique_id: sietch_activity_monitor
+        state: >
+          {% set chambers = [] %}
+          {% if is_state('binary_sensor.office_motion_detected', 'on') %}
+            {% set chambers = chambers + ['Navigator Chamber'] %}
+          {% endif %}
+          {% if is_state('binary_sensor.kitchen_occupancy', 'on') %}
+            {% set chambers = chambers + ['Sustenance Center'] %}
+          {% endif %}
+          {% if is_state('binary_sensor.living_room_motion_detected', 'on') %}
+            {% set chambers = chambers + ['Tribal Council Chamber'] %}
+          {% endif %}
+          {% if is_state('binary_sensor.bedroom_occupancy', 'on') %}
+            {% set chambers = chambers + ['Personal Stilltent'] %}
+          {% endif %}
+          {% if is_state('sensor.laundry_room_status', 'vacuum_cleaning') or is_state('input_boolean.washer_cycle_active', 'on') or is_state('input_boolean.dryer_cycle_active', 'on') %}
+            {% set chambers = chambers + ['Water Reclamation Center'] %}
+          {% endif %}
+          {% if is_state('binary_sensor.garage_motion', 'on') %}
+            {% set chambers = chambers + ['Ornithopter Bay'] %}
+          {% endif %}
+          {{ chambers|join(', ') if chambers|length > 0 else 'All sietch chambers sealed' }}
+        attributes:
+          navigator_chamber_active: "{{ is_state('binary_sensor.office_motion_detected', 'on') }}"
+          sustenance_center_active: "{{ is_state('binary_sensor.kitchen_occupancy', 'on') }}"
+          tribal_council_active: "{{ is_state('binary_sensor.living_room_motion_detected', 'on') }}"
+          stilltent_active: "{{ is_state('binary_sensor.bedroom_occupancy', 'on') }}"
+          water_reclamation_active: "{{ is_state('sensor.laundry_room_status', 'vacuum_cleaning') or is_state('input_boolean.washer_cycle_active', 'on') or is_state('input_boolean.dryer_cycle_active', 'on') }}"
+          ornithopter_bay_active: "{{ is_state('binary_sensor.garage_motion', 'on') }}"
+          total_active_chambers: >
+            {% set count = 0 %}
+            {% if is_state('binary_sensor.office_motion_detected', 'on') %}
+              {% set count = count + 1 %}
+            {% endif %}
+            {% if is_state('binary_sensor.kitchen_occupancy', 'on') %}
+              {% set count = count + 1 %}
+            {% endif %}
+            {% if is_state('binary_sensor.living_room_motion_detected', 'on') %}
+              {% set count = count + 1 %}
+            {% endif %}
+            {% if is_state('binary_sensor.bedroom_occupancy', 'on') %}
+              {% set count = count + 1 %}
+            {% endif %}
+            {% if is_state('sensor.laundry_room_status', 'vacuum_cleaning') or is_state('input_boolean.washer_cycle_active', 'on') or is_state('input_boolean.dryer_cycle_active', 'on') %}
+              {% set count = count + 1 %}
+            {% endif %}
+            {% if is_state('binary_sensor.garage_motion', 'on') %}
+              {% set count = count + 1 %}
+            {% endif %}
+            {{ count }}
+        icon: >
+          {% set count = state_attr('sensor.sietch_activity_monitor', 'total_active_chambers')|int %}
+          {% if count == 0 %}
+            mdi:home-outline
+          {% elif count <= 2 %}
+            mdi:home
+          {% elif count <= 4 %}
+            mdi:home-city
+          {% else %}
+            mdi:city
+          {% endif %}
+      # ===== HOUSE INTELLIGENCE =====
+      - name: "House Mode"
+        unique_id: house_mode
+        state: |
+          {% set hour = now().hour %}
+          {% if 6 <= hour < 10 %}
+            morning
+          {% elif 10 <= hour < 17 %}
+            day
+          {% elif 17 <= hour < 21 %}
+            evening
+          {% elif 21 <= hour < 23 %}
+            bedtime
+          {% elif 23 <= hour or hour < 1 %}
+            late_night
+          {% else %}
+            deep_sleep
+          {% endif %}
+        attributes:
+          next_mode: |
+            {% set modes = ['morning', 'day', 'evening', 'bedtime', 'late_night', 'deep_sleep'] %}
+            {% set current_state = this.state %}
+            {% if current_state in modes %}
+              {% set current_index = modes.index(current_state) %}
+              {{ modes[(current_index + 1) % modes|length] }}
+            {% else %}
+              morning
+            {% endif %}
+          time_until_next: |
+            {% set hour = now().hour %}
+            {% if 6 <= hour < 10 %}
+              {{ (10 - hour) }}h until day mode
+            {% elif 10 <= hour < 17 %}
+              {{ (17 - hour) }}h until evening mode
+            {% elif 17 <= hour < 21 %}
+              {{ (21 - hour) }}h until bedtime mode
+            {% elif 21 <= hour < 23 %}
+              {{ (23 - hour) }}h until late night mode
+            {% elif 23 <= hour %}
+              {{ (24 - hour + 1) }}h until deep sleep mode
+            {% else %}
+              {{ (6 - hour) }}h until morning mode
+            {% endif %}
+
+      # ===== PREDICTIVE AUTOMATION SENSORS =====
+      - name: "Office Preparation Status"
+        unique_id: office_preparation_status
+        state: >
+          {% set now_time = now() %}
+          {% set weekday = now_time.weekday() < 5 %}
+          {% if weekday %}
+            {% set work_start = now_time.replace(hour=8, minute=45, second=0, microsecond=0) %}
+            {% set prep_time = work_start - timedelta(minutes=15) %}
+            {% if now_time >= prep_time and now_time < work_start %}
+              preparing
+            {% elif now_time >= work_start and now_time < work_start + timedelta(hours=1) %}
+              ready
+            {% else %}
+              idle
+            {% endif %}
+          {% else %}
+            idle
+          {% endif %}
+
+      - name: "Energy Preparation Status"
+        unique_id: energy_preparation_status  
+        state: >
+          {% set current_hour = now().hour %}
+          {% if current_hour == 17 and now().minute >= 30 %}
+            pre_peak_prep
+          {% elif 18 <= current_hour <= 22 %}
+            peak_active
+          {% elif current_hour == 23 or current_hour <= 5 %}
+            off_peak
+          {% else %}
+            normal
+          {% endif %}
+
+      - name: "Atlas Weather Comfort Prediction"
+        unique_id: atlas_weather_prediction
+        state: >
+          {% set current_pressure = states('sensor.barometric_pressure') | float(30.0) %}
+          {% set weather_condition = states('weather.forecast_home') %}
+          {% if current_pressure < 29.80 %}
+            storm_approaching
+          {% elif weather_condition in ['rainy', 'pouring', 'lightning-rainy'] %}
+            storm_active
+          {% elif current_pressure > 30.2 %}
+            clear_stable
+          {% else %}
+            normal
+          {% endif %}
+
+      # ===== SYSTEM HEALTH MONITORING =====
+      - name: "System Health Score"
+        state: >
+          {% set temp_health = states('sensor.temperature_sensor_health') | float(0) %}
+          {% set motion_health = states('sensor.motion_sensor_health') | float(0) %}
+          {% set pet_comfort = states('sensor.pet_comfort_index') | float(0) %}
+          {% set energy_score = states('sensor.hvac_coordination_score') | float(0) %}
+          
+          {% set total_score = (temp_health * 0.25) + (motion_health * 0.25) + (pet_comfort * 0.25) + (energy_score * 0.25) %}
+          {{ total_score | round(0) }}
+        unit_of_measurement: "points"
+        icon: >
+          {% set score = states('sensor.system_health_score') | int(0) %}
+          {% if score >= 90 %}
+            mdi:heart-pulse
+          {% elif score >= 75 %}
+            mdi:heart
+          {% elif score >= 60 %}
+            mdi:heart-half
+          {% else %}
+            mdi:heart-broken
+          {% endif %}
+
+      - name: "Temperature Sensor Health"
+        state: >
+          {% set sensors = [
+            'sensor.office_temperature',
+            'sensor.living_room_temperature',
+            'sensor.kitchen_temperature',
+            'sensor.bedroom_temperature',
+            'sensor.home_temperature'
+          ] %}
+          {% set available = sensors | select('has_value') | list | count %}
+          {% set total = sensors | count %}
+          {{ (available / total * 100) | round(1) }}
+        unit_of_measurement: "%"
+        icon: mdi:thermometer-alert
+
+      - name: "Motion Sensor Health"
+        state: >
+          {% set sensors = [
+            'binary_sensor.office_motion_sensor_occupancy',
+            'binary_sensor.office_occupancy',
+            'binary_sensor.kitchen_occupancy',
+            'binary_sensor.living_room_motion_sensor_occupancy',
+            'binary_sensor.living_room_occupancy',
+            'binary_sensor.ikea_of_sweden_tradfri_motion_sensor_motion_2',
+            'binary_sensor.bedroom_occupancy'
+          ] %}
+          {% set available = sensors | select('has_value') | list | count %}
+          {% set total = sensors | count %}
+          {{ (available / total * 100) | round(1) }}
+        unit_of_measurement: "%"
+        icon: mdi:motion-sensor-off
+
+      # ===== ENERGY MANAGEMENT =====
+      - name: "Daily Energy Usage"
+        state: >
+          {% set lights_on = states('sensor.available_lights_on_count') | int(0) %}
+          {% set switches_on = states.switch | selectattr("state", "eq", "on") | list | count %}
+          {% set estimated_watts = (lights_on * 12) + (switches_on * 25) %}
+          {{ (estimated_watts * 24 / 1000) | round(2) }}
+        unit_of_measurement: "kWh"
+        icon: mdi:lightning-bolt
+
+      - name: "HVAC Coordination Score"
+        state: >
+          {% set score = 0 %}
+          {% set house_temp = states('sensor.house_average_temperature') | float(70) %}
+          {% set target_temp = 70 %}
+          
+          {# Temperature efficiency (40 points) #}
+          {% set temp_diff = (house_temp - target_temp) | abs %}
+          {% if temp_diff < 2 %}
+            {% set score = score + 40 %}
+          {% elif temp_diff < 4 %}
+            {% set score = score + 30 %}
+          {% elif temp_diff < 6 %}
+            {% set score = score + 20 %}
+          {% else %}
+            {% set score = score + 10 %}
+          {% endif %}
+          
+          {# Additional scoring logic for shades and lighting #}
+          {% set shades_closed = states.cover | selectattr("state", "eq", "closed") | list | count %}
+          {% set total_shades = states.cover | list | count %}
+          {% if total_shades > 0 %}
+            {% set shade_efficiency = (shades_closed / total_shades) * 100 %}
+            {% if now().hour >= 14 and now().hour <= 18 and house_temp > 75 %}
+              {% if shade_efficiency > 60 %}
+                {% set score = score + 30 %}
+              {% elif shade_efficiency > 40 %}
+                {% set score = score + 20 %}
+              {% else %}
+                {% set score = score + 10 %}
+              {% endif %}
+            {% else %}
+              {% if shade_efficiency > 20 and shade_efficiency < 80 %}
+                {% set score = score + 30 %}
+              {% else %}
+                {% set score = score + 20 %}
+              {% endif %}
+            {% endif %}
+          {% endif %}
+          
+          {% set lights_on = states.light | selectattr("state", "eq", "on") | list | count %}
+          {% set rooms_with_motion = [
+            'binary_sensor.office_motion_detected',
+            'binary_sensor.living_room_motion_detected',
+            'binary_sensor.kitchen_occupancy',
+            'binary_sensor.bedroom_occupancy'
+          ] | select('is_state', 'on') | list | count %}
+          
+          {% if rooms_with_motion > 0 %}
+            {% set lighting_efficiency = (lights_on / rooms_with_motion) %}
+            {% if lighting_efficiency >= 0.8 and lighting_efficiency <= 1.2 %}
+              {% set score = score + 30 %}
+            {% elif lighting_efficiency >= 0.5 and lighting_efficiency <= 1.5 %}
+              {% set score = score + 20 %}
+            {% else %}
+              {% set score = score + 10 %}
+            {% endif %}
+          {% else %}
+            {% if lights_on <= 2 %}
+              {% set score = score + 30 %}
+            {% elif lights_on <= 4 %}
+              {% set score = score + 20 %}
+            {% else %}
+              {% set score = score + 10 %}
+            {% endif %}
+          {% endif %}
+          
+          {{ score }}
+        unit_of_measurement: "points"
+        icon: mdi:leaf
+
+      - name: "Peak Usage Hours"
+        state: >
+          {% set current_hour = now().hour %}
+          {% if current_hour >= 18 and current_hour <= 22 %}
+            active
+          {% elif current_hour >= 14 and current_hour <= 17 %}
+            approaching
+          {% else %}
+            off_peak
+          {% endif %}
+        icon: >
+          {% set status = states('sensor.peak_usage_hours') %}
+          {% if status == 'active' %}
+            mdi:flash-alert
+          {% elif status == 'approaching' %}
+            mdi:flash-outline
+          {% else %}
+            mdi:flash-off
+          {% endif %}
+
+      - name: "Monthly Energy Estimate"
+        state: >
+          {% set daily_kwh = states('sensor.daily_energy_usage') | float(0) %}
+          {{ (daily_kwh * 30) | round(1) }}
+        unit_of_measurement: "kWh"
+        icon: mdi:calendar-month
+
+      # ===== PRESENCE & SECURITY =====
+      - name: "House Occupied Enhanced"
+        state: >
+          {{ is_state('binary_sensor.office_motion_detected', 'on') or
+             is_state('binary_sensor.living_room_motion_detected', 'on') or
+             is_state('binary_sensor.kitchen_occupancy', 'on') or
+             is_state('binary_sensor.bedroom_occupancy', 'on') or
+             is_state('person.tori_myers', 'home') or
+             is_state('person.bennett', 'home') }}
+        icon: >
+          {% if is_state('binary_sensor.house_occupied_enhanced', 'on') %}
+            mdi:home-account
+          {% else %}
+            mdi:home-outline
+          {% endif %}
+
+      - name: "Active Rooms"
+        state: >
+          {% set rooms = [] %}
+          {% if is_state('binary_sensor.office_motion_detected', 'on') %}
+            {% set rooms = rooms + ['Office'] %}
+          {% endif %}
+          {% if is_state('binary_sensor.living_room_motion_detected', 'on') %}
+            {% set rooms = rooms + ['Living Room'] %}
+          {% endif %}
+          {% if is_state('binary_sensor.kitchen_occupancy', 'on') %}
+            {% set rooms = rooms + ['Kitchen'] %}
+          {% endif %}
+          {% if is_state('binary_sensor.bedroom_occupancy', 'on') %}
+            {% set rooms = rooms + ['Bedroom'] %}
+          {% endif %}
+          {% if rooms | count > 0 %}
+            {{ rooms | join(', ') }}
+          {% else %}
+            No Activity
+          {% endif %}
+        icon: mdi:home-map-marker
+
+      - name: "Time Away"
+        unique_id: time_away
+        state: >
+          {% set last_home = states('sensor.last_time_home') %}
+          {% if last_home not in ['unknown', 'unavailable'] %}
+            {% set time_diff = (now() - strptime(last_home, '%Y-%m-%d %H:%M:%S')).total_seconds() / 3600 %}
+            {{ time_diff | round(1) }}
+          {% else %}
+            0
+          {% endif %}
+        unit_of_measurement: "h"  # Changed from "hours" to "h"
+        device_class: duration
+        state_class: measurement
+        icon: mdi:clock-outline
+        attributes:
+          category: >
+            {% set hours = this.state | float %}
+            {% if hours == 0 %}
+              at_home
+            {% elif hours < 2 %}
+              brief_absence
+            {% elif hours < 8 %}
+              extended_absence
+            {% elif hours < 24 %}
+              day_away
+            {% else %}
+              extended_away
+            {% endif %}
+
+      - name: "Security Mode Description"
+        state: >
+          {% set mode = states('binary_sensor.security_status') %}
+          {% if mode == 'disarmed' %}
+            House occupied - security monitoring disabled
+          {% elif mode == 'away_mode' %}
+            Away mode - motion detection active
+          {% elif mode == 'night_mode' %}
+            Sleep mode - perimeter monitoring only
+          {% elif mode == 'vacation_mode' %}
+            Extended away mode - full monitoring active
+          {% else %}
+            Unknown security state
+          {% endif %}
+        icon: >
+          {% set mode = states('binary_sensor.security_status') %}
+          {% if mode == 'disarmed' %}
+            mdi:shield-off
+          {% elif mode == 'away_mode' %}
+            mdi:shield-home
+          {% elif mode == 'night_mode' %}
+            mdi:shield-moon
+          {% elif mode == 'vacation_mode' %}
+            mdi:shield-airplane
+          {% else %}
+            mdi:shield-alert
+          {% endif %}
+
+      # ===== PET CARE & MONITORING =====
+      - name: "Atlas Activity Level"
+        state: >
+          {% set motion_count = states('sensor.atlas_motion_events_today') | int(0) %}
+          {% if motion_count > 50 %}
+            very_active
+          {% elif motion_count > 25 %}
+            active
+          {% elif motion_count > 10 %}
+            moderate
+          {% elif motion_count > 5 %}
+            low
+          {% else %}
+            minimal
+          {% endif %}
+        icon: >
+          {% set motion_count = states('sensor.atlas_motion_events_today') | int(0) %}
+          {% if motion_count > 50 %}
+            mdi:run-fast
+          {% elif motion_count > 25 %}
+            mdi:run
+          {% elif motion_count > 10 %}
+            mdi:walk
+          {% else %}
+            mdi:sleep
+          {% endif %}
+
+      - name: "Atlas Motion Events Today"
+        state: >
+          {% set today = now().date() %}
+          {% set motion_sensor = 'binary_sensor.office_motion_sensor_occupancy' %}
+          {% set count = 0 %}
+          {% for state in states.binary_sensor.office_motion_sensor_occupancy.attributes.get('history', []) %}
+            {% if state.last_changed.date() == today and state.state == 'on' %}
+              {% set count = count + 1 %}
+            {% endif %}
+          {% endfor %}
+          {{ count if count > 0 else (states('counter.atlas_daily_motion') | int(0)) }}
+        unit_of_measurement: "events"
+        icon: mdi:run
+
+      - name: "Atlas Comfort Status"
+        state: >
+          {% set temp = states('sensor.atlas_room_temperature') | float(70) %}
+          {% if 68 <= temp <= 72 %}
+            perfect
+          {% elif temp > 76 %}
+            too_warm
+          {% elif temp < 65 %}
+            too_cool
+          {% else %}
+            good
+          {% endif %}
+        icon: >
+          {% set temp = states('sensor.atlas_room_temperature') | float(70) %}
+          {% if 68 <= temp <= 72 %}
+            mdi:heart
+          {% elif temp > 76 %}
+            mdi:thermometer-high
+          {% elif temp < 65 %}
+            mdi:thermometer-low
+          {% else %}
+            mdi:thermometer
+          {% endif %}
+
+      - name: "Pet Comfort Index"
+        state: >
+          {% set atlas_temp = states('sensor.office_temperature') | float(70) %}
+          {% set house_temp = states('sensor.house_average_temperature') | float(70) %}
+          {% set cat_bed_on = is_state('switch.tp_link_power_strip_1446_cat_bed', 'on') %}
+          {% set comfort_score = 0 %}
+          
+          {# Atlas temperature comfort (25 points) #}
+          {% if 68 <= atlas_temp <= 72 %}
+            {% set comfort_score = comfort_score + 25 %}
+          {% elif 65 <= atlas_temp <= 75 %}
+            {% set comfort_score = comfort_score + 20 %}
+          {% elif 60 <= atlas_temp <= 78 %}
+            {% set comfort_score = comfort_score + 15 %}
+          {% else %}
+            {% set comfort_score = comfort_score + 5 %}
+          {% endif %}
+          
+          {# House temperature for cats (25 points) #}
+          {% if 68 <= house_temp <= 74 %}
+            {% set comfort_score = comfort_score + 25 %}
+          {% elif 65 <= house_temp <= 77 %}
+            {% set comfort_score = comfort_score + 20 %}
+          {% elif 60 <= house_temp <= 80 %}
+            {% set comfort_score = comfort_score + 15 %}
+          {% else %}
+            {% set comfort_score = comfort_score + 5 %}
+          {% endif %}
+          
+          {# Cat bed heater (25 points) #}
+          {% if cat_bed_on %}
+            {% set comfort_score = comfort_score + 25 %}
+          {% endif %}
+          
+          {# Litter box cleanliness (25 points) #}
+          {% set litter_level = states('sensor.primary_bedroom_litter_level') | int(0) %}
+          {% if litter_level < 20 %}
+            {% set comfort_score = comfort_score + 25 %}
+          {% elif litter_level < 40 %}
+            {% set comfort_score = comfort_score + 20 %}
+          {% elif litter_level < 60 %}
+            {% set comfort_score = comfort_score + 15 %}
+          {% elif litter_level < 80 %}
+            {% set comfort_score = comfort_score + 10 %}
+          {% else %}
+            {% set comfort_score = comfort_score + 5 %}
+          {% endif %}
+          
+          {{ comfort_score }}
+        unit_of_measurement: "points"
+        icon: >
+          {% set score = states('sensor.pet_comfort_index') | int(0) %}
+          {% if score >= 90 %}
+            mdi:heart
+          {% elif score >= 75 %}
+            mdi:heart-outline
+          {% elif score >= 60 %}
+            mdi:heart-half
+          {% else %}
+            mdi:heart-broken
+          {% endif %}
+
+      - name: "Litter Box Status"
+        state: >
+          {% set primary_level = states('sensor.primary_bedroom_litter_level') | int(0) %}
+          {% set guest_motion = states('binary_sensor.guest_litterbox_motion') %}
+          {% if primary_level > 80 %}
+            needs_emptying
+          {% elif primary_level > 60 %}
+            getting_full
+          {% elif primary_level > 40 %}
+            moderate
+          {% elif primary_level > 20 %}
+            good
+          {% else %}
+            excellent
+          {% endif %}
+        icon: >
+          {% set primary_level = states('sensor.primary_bedroom_litter_level') | int(0) %}
+          {% if primary_level > 80 %}
+            mdi:delete-alert
+          {% elif primary_level > 60 %}
+            mdi:delete-variant
+          {% else %}
+            mdi:check-circle
+          {% endif %}
+
+      # ===== LAUNDRY ROOM STATUS =====
+      - name: "Laundry Room Status"
+        unique_id: laundry_room_status
+        state: >
+          {% if is_state('input_boolean.washer_cycle_active', 'on') and is_state('input_boolean.dryer_cycle_active', 'on') %}
+            both_running
+          {% elif is_state('input_boolean.washer_cycle_active', 'on') %}
+            washing
+          {% elif is_state('input_boolean.dryer_cycle_active', 'on') %}
+            drying
+          {% elif is_state('input_boolean.load_needs_transfer', 'on') %}
+            transfer_needed
+          {% elif is_state('binary_sensor.s7_max_ultra_cleaning', 'on') %}
+            vacuuming
+          {% elif is_state('binary_sensor.s7_max_ultra_charging', 'on') %}
+            vacuum_charging
+          {% else %}
+            idle
+          {% endif %}
+        icon: >
+          {% set status = states('sensor.laundry_room_status') %}
+          {% if status == 'both_running' %}
+            mdi:washing-machine
+          {% elif status == 'washing' %}
+            mdi:washing-machine
+          {% elif status == 'drying' %}
+            mdi:tumble-dryer
+          {% elif status == 'transfer_needed' %}
+            mdi:transfer
+          {% elif status == 'vacuuming' %}
+            mdi:robot-vacuum
+          {% elif status == 'vacuum_charging' %}
+            mdi:robot-vacuum-alert
+          {% else %}
+            mdi:home-outline
+          {% endif %}
+
+      - name: "Sha-Hulud Spice Flow Status"
+        unique_id: sha_hulud_spice_coordination
+        state: >
+          {% if is_state('input_boolean.spice_flow_coordination', 'off') %}
+            sietch_dormant
+          {% elif is_state('input_boolean.washer_cycle_active', 'on') or is_state('input_boolean.dryer_cycle_active', 'on') %}
+            awaiting_stillsuit_cycle
+          {% elif is_state('binary_sensor.s7_max_ultra_cleaning', 'on') %}
+            desert_patrol_active
+          {% elif is_state('sensor.atlas_activity_level', 'very_active') or is_state('sensor.atlas_activity_level', 'active') %}
+            fremen_leader_active
+          {% elif states('sensor.house_mode') in ['deep_sleep', 'bedtime', 'late_night'] %}
+            sietch_sleep_hours
+          {% elif is_state('binary_sensor.s7_max_ultra_charging', 'on') and states('sensor.s7_max_ultra_battery') | int >= 80 %}
+            spice_reserves_full
+          {% elif states('sensor.s7_max_ultra_battery') | int < 20 %}
+            low_melange_power
+          {% else %}
+            awaiting_orders
+          {% endif %}
+        icon: >
+          {% set status = states('sensor.sha_hulud_spice_flow_status') %}
+          {% if status == 'desert_patrol_active' %}
+            mdi:robot-vacuum
+          {% elif status == 'spice_reserves_full' %}
+            mdi:robot-vacuum-alert
+          {% elif status == 'fremen_leader_active' %}
+            mdi:dog
+          {% elif status == 'low_melange_power' %}
+            mdi:battery-low
+          {% elif status == 'sietch_dormant' %}
+            mdi:robot-vacuum-off
+          {% else %}
+            mdi:robot-vacuum-alert
+          {% endif %}
+
+      - name: "Laundry Energy Impact"
+        unique_id: laundry_energy_impact
+        state: >
+          {% set peak_hours = is_state('sensor.peak_usage_hours', 'active') %}
+          {% set washer_active = is_state('input_boolean.washer_cycle_active', 'on') %}
+          {% set dryer_active = is_state('input_boolean.dryer_cycle_active', 'on') %}
+          
+          {% if washer_active and dryer_active and peak_hours %}
+            high
+          {% elif (washer_active or dryer_active) and peak_hours %}
+            moderate
+          {% elif washer_active or dryer_active %}
+            minimal
+          {% else %}
+            none
+          {% endif %}
+        # Removed device_class, state_class, and unit_of_measurement since this is categorical data
+        icon: >
+          {% set impact = this.state %}
+          {% if impact == 'high' %}
+            mdi:flash-alert
+          {% elif impact == 'moderate' %}
+            mdi:flash
+          {% elif impact == 'minimal' %}
+            mdi:flash-outline
+          {% else %}
+            mdi:flash-off
+          {% endif %}
+        attributes:
+          friendly_name: "Laundry Energy Impact"
+          impact_level: "{{ this.state }}"
+          description: >
+            {% set impact = this.state %}
+            {% if impact == 'high' %}
+              Both washer and dryer running during peak hours
+            {% elif impact == 'moderate' %}
+              One appliance running during peak hours
+            {% elif impact == 'minimal' %}
+              Appliance running during off-peak hours
+            {% else %}
+              No laundry appliances active
+            {% endif %}
+
+      # ===== GENERAL SYSTEM STATUS =====
+      - name: "House Average Temperature"
+        state: >
+          {% set temps = [
+            states('sensor.office_temperature') | float(0),
+            states('sensor.living_room_temperature') | float(0),
+            states('sensor.kitchen_temperature') | float(0),
+            states('sensor.bedroom_temperature') | float(0)
+          ] | select('>', 0) | list %}
+          {% if temps | count > 0 %}
+            {{ (temps | sum / temps | count) | round(1) }}
+          {% else %}
+            {{ states('sensor.home_temperature') | float(70) }}
+          {% endif %}
+        unit_of_measurement: "°F"
+        icon: mdi:thermometer
+
+      - name: "Office Current Mode"
+        state: >
+          {% if state_attr('light.ledvance_a19_rgbw_light', 'rgb_color') != none %}
+            {% if state_attr('light.ledvance_a19_rgbw_light', 'rgb_color')[0] > 200 and 
+                  state_attr('light.ledvance_a19_rgbw_light', 'rgb_color')[1] < 50 %}
+              night_gaming
+            {% else %}
+              gaming
+            {% endif %}
+          {% elif state_attr('light.ledvance_a19_rgbw_light', 'brightness') and 
+                  state_attr('light.ledvance_a19_rgbw_light', 'brightness') < 150 and
+                  state_attr('light.ledvance_a19_rgbw_light', 'color_temp') and
+                  state_attr('light.ledvance_a19_rgbw_light', 'color_temp') > 400 %}
+            evening
+          {% elif state_attr('light.ledvance_a19_rgbw_light', 'brightness') and 
+                  state_attr('light.ledvance_a19_rgbw_light', 'brightness') > 200 %}
+            work
+          {% elif is_state('light.ledvance_a19_rgbw_light', 'off') %}
+            off
+          {% else %}
+            custom
+          {% endif %}
+        icon: >
+          {% if state_attr('light.ledvance_a19_rgbw_light', 'rgb_color') != none %}
+            mdi:gamepad-variant
+          {% elif state_attr('light.ledvance_a19_rgbw_light', 'brightness') and 
+                  state_attr('light.ledvance_a19_rgbw_light', 'brightness') < 150 %}
+            mdi:weather-sunset
+          {% elif state_attr('light.ledvance_a19_rgbw_light', 'brightness') and 
+                  state_attr('light.ledvance_a19_rgbw_light', 'brightness') > 200 %}
+            mdi:desk-lamp
+          {% else %}
+            mdi:lightbulb-auto
+          {% endif %}
+
+      # ===== SIMPLE COUNTING SENSORS =====
+      - name: "Lights On Count"
+        state: "{{ states('sensor.available_lights_on_count') }}"
+        icon: mdi:lightbulb-group
+        unit_of_measurement: "lights"
+
+      - name: "Switches On Count"  
+        state: >
+          {{ states.switch | selectattr("state", "eq", "on") | list | count }}
+        icon: mdi:toggle-switch
+        unit_of_measurement: "switches"
+
+      - name: "Windows Open Count"
+        state: >
+          {{ states.cover | selectattr("state", "eq", "open") | list | count }}
+        icon: mdi:window-open
+        unit_of_measurement: "windows"
+
+      - name: "House Security Status"
+        state: >
+          {% set doors_open = states.binary_sensor | selectattr("attributes.device_class", "defined") | selectattr("attributes.device_class", "eq", "door") | selectattr("state", "eq", "on") | list | count %}
+          {% set windows_open = states.cover | selectattr("state", "eq", "open") | list | count %}
+          {% if doors_open == 0 and windows_open == 0 %}
+            secure
+          {% elif doors_open > 0 %}
+            doors_open
+          {% else %}
+            windows_open
+          {% endif %}
+        icon: >
+          {% set doors_open = states.binary_sensor | selectattr("attributes.device_class", "defined") | selectattr("attributes.device_class", "eq", "door") | selectattr("state", "eq", "on") | list | count %}
+          {% if doors_open == 0 %}
+            mdi:shield-home
+          {% else %}
+            mdi:shield-alert
+          {% endif %}
+      
+      # ===== CENTRALIZED LIGHT COUNTING =====
+      - name: "Available Lights Count"
+        unique_id: available_lights_count
+        state: >
+          {{ states.light | rejectattr("state", "eq", "unavailable") | list | count }}
+        icon: mdi:lightbulb-group
+        unit_of_measurement: "lights"
+        
+      - name: "Available Lights On Count"
+        unique_id: available_lights_on_count  
+        state: >
+          {{ states.light | rejectattr("state", "eq", "unavailable") | selectattr("state", "eq", "on") | list | count }}
+        icon: mdi:lightbulb-on
+        unit_of_measurement: "lights"
+        
+      - name: "Light Status Summary"
+        unique_id: light_status_summary
+        state: >
+          {{ states('sensor.available_lights_on_count') }} of {{ states('sensor.available_lights_count') }} lights
+        icon: mdi:lightbulb-group-outline
+
+  - binary_sensor:
+      # ===== COMPOSITE MOTION SENSORS =====
+      - name: "Office Motion Detected"
+        state: >
+          {{ is_state('binary_sensor.office_motion_sensor_occupancy', 'on') or
+             is_state('binary_sensor.office_occupancy', 'on') }}
+        device_class: occupancy
+        icon: >
+          {% if is_state('binary_sensor.office_motion_detected', 'on') %}
+            mdi:motion-sensor
+          {% else %}
+            mdi:motion-sensor-off
+          {% endif %}
+        attributes:
+          primary_sensor: "{{ states('binary_sensor.office_motion_sensor_occupancy') }}"
+          backup_sensor: "{{ states('binary_sensor.office_occupancy') }}"
+          active_sensors: >
+            {{ [
+              'binary_sensor.office_motion_sensor_occupancy',
+              'binary_sensor.office_occupancy'
+            ] | select('is_state', 'on') | list | count }}
+
+      - name: "Living Room Motion Detected"
+        state: >
+          {{ is_state('binary_sensor.living_room_motion_sensor_occupancy', 'on') or
+             is_state('binary_sensor.living_room_occupancy', 'on') or
+             is_state('binary_sensor.ikea_of_sweden_tradfri_motion_sensor_motion_2', 'on') }}
+        device_class: occupancy
+        icon: >
+          {% if is_state('binary_sensor.living_room_motion_detected', 'on') %}
+            mdi:motion-sensor
+          {% else %}
+            mdi:motion-sensor-off
+          {% endif %}
+        attributes:
+          primary_sensor: "{{ states('binary_sensor.living_room_motion_sensor_occupancy') }}"
+          backup_sensor_1: "{{ states('binary_sensor.living_room_occupancy') }}"
+          backup_sensor_2: "{{ states('binary_sensor.ikea_of_sweden_tradfri_motion_sensor_motion_2') }}"
+          active_sensors: >
+            {{ [
+              'binary_sensor.living_room_motion_sensor_occupancy',
+              'binary_sensor.living_room_occupancy', 
+              'binary_sensor.ikea_of_sweden_tradfri_motion_sensor_motion_2'
+            ] | select('is_state', 'on') | list | count }}
+
+      # ===== SECURITY & OCCUPANCY =====
+      - name: "Security Status"
+        state: >
+          {% if is_state('binary_sensor.house_occupied_enhanced', 'on') %}
+            disarmed
+          {% elif is_state('input_boolean.vacation_mode', 'on') %}
+            vacation_mode
+          {% elif now().hour >= 22 or now().hour <= 6 %}
+            night_mode
+          {% else %}
+            away_mode
+          {% endif %}
+        icon: >
+          {% set status = states('binary_sensor.security_status') %}
+          {% if status == 'disarmed' %}
+            mdi:shield-off
+          {% elif status == 'vacation_mode' %}
+            mdi:shield-airplane
+          {% elif status == 'night_mode' %}
+            mdi:shield-moon
+          {% else %}
+            mdi:shield-home
+          {% endif %}
+
+      - name: "House Occupied"
+        state: >
+          {{ is_state('binary_sensor.office_occupancy', 'on') or
+             is_state('binary_sensor.kitchen_occupancy', 'on') or  
+             is_state('binary_sensor.living_room_motion_detected', 'on') or
+             is_state('binary_sensor.bedroom_occupancy', 'on') }}
+        icon: >
+          {% if is_state('binary_sensor.house_occupied', 'on') %}
+            mdi:home-account
+          {% else %}
+            mdi:home-outline
+          {% endif %}
+
+      # ===== LAUNDRY ROOM SENSORS =====
+      - name: "Safe for Desert Patrol"
+        unique_id: safe_for_desert_patrol
+        state: >
+          {{ not is_state('input_boolean.washer_cycle_active', 'on') and
+             not is_state('input_boolean.dryer_cycle_active', 'on') and
+             not is_state('input_boolean.load_needs_transfer', 'on') and
+             states('sensor.house_mode') not in ['deep_sleep', 'bedtime', 'late_night'] and
+             (not is_state('input_boolean.fremen_friendly_cleaning', 'on') or 
+              states('sensor.atlas_activity_level') in ['minimal', 'low']) }}
+        icon: >
+          {% if is_state('binary_sensor.safe_for_desert_patrol', 'on') %}
+            mdi:check-circle
+          {% else %}
+            mdi:cancel
+          {% endif %}
+
+      - name: "Sha-Hulud Maintenance Protocol"
+        unique_id: sha_hulud_maintenance_due
+        state: >
+          {{ (states('sensor.s7_max_ultra_main_brush_time_left') | int(100) < 10) or
+             (states('sensor.s7_max_ultra_side_brush_time_left') | int(100) < 10) or
+             (states('sensor.s7_max_ultra_filter_time_left') | int(100) < 10) or
+             (states('sensor.s7_max_ultra_sensor_time_left') | int(100) < 10) }}
+        icon: >
+          {% if is_state('binary_sensor.sha_hulud_maintenance_protocol', 'on') %}
+            mdi:wrench-clock
+          {% else %}
+            mdi:check-circle
+          {% endif %}
+
+      # ===== SYSTEM HEALTH =====
+      - name: "System Health"
+        state: >
+          {{ not is_state('input_boolean.power_outage_detected', 'on') and
+             states('input_text.last_save_time') != 'never' }}
+        icon: >
+          {% if is_state('binary_sensor.system_health', 'on') %}
+            mdi:heart-pulse
+          {% else %}
+            mdi:heart-broken
+          {% endif %}
+
+# ====================================
+# 👥 GROUPS & ORGANIZATION
+# Logical grouping of entities for easier management
+# ====================================
+
+group:
+  # ===== ROOM-BASED LIGHT GROUPS =====
+  office_lights:
+    name: "Office Lights"
+    entities:
+      - light.ledvance_a19_rgbw_light
+      - light.ledvance_a19_rgbw_light_2  
+      - light.ledvance_a19_rgbw_light_3
+
+  kitchen_lights:
+    name: "Kitchen Lights"
+    entities:
+      - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+      - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+      - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+      - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+      - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
+      - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
+
+  living_room_switches:
+    name: "Living Room Switches"
+    entities:
+      - switch.tp_link_power_strip_1446_lamp_by_door
+      - switch.tp_link_power_strip_173b_couch_lamp
+      - switch.tp_link_power_strip_1446_cat_bed
+
+  # ===== WINDOW COVERING GROUPS =====
+  office_blinds:
+    name: "Office Blinds"
+    entities:
+      - cover.left_office_roller_blind_cover
+      - cover.right_office_roller_blind_cover
+
+  bedroom_shades:
+    name: "Bedroom Shades"  
+    entities:
+      - cover.bennett_roller_shade_cover
+      - cover.tori_roller_shade_cover
+
+  living_room_shades:
+    name: "Living Room Shades"
+    entities:
+      - cover.left_living_room_roller_shade_cover
+      - cover.right_living_room_roller_shade_cover
+
+  # ===== SYSTEM MONITORING GROUPS =====
+  temperature_sensors:
+    name: "Temperature Sensors"
+    entities:
+      - sensor.office_temperature
+      - sensor.bedroom_temperature
+      - sensor.kitchen_temperature
+      - sensor.living_room_temperature
+      - sensor.atlas_room_temperature
+
+  occupancy_sensors:
+    name: "Occupancy Sensors"
+    entities:
+      - binary_sensor.office_occupancy
+      - binary_sensor.kitchen_occupancy
+      - binary_sensor.living_room_motion_detected
+      - binary_sensor.living_roomm_occupancy
+      - binary_sensor.bedroom_occupancy
+
+  # ===== PET CARE MONITORING =====
+  pet_devices:
+    name: "Pet Care Devices"
+    entities:
+      - sensor.primary_bedroom_litter_level
+      - binary_sensor.ring_guest_litterbox_motion
+      - camera.ring_guest_litterbox
+      - media_player.spotify_atlas
+
+# ====================================
+# 📈 RECORDER & HISTORY
+# Data retention and performance optimization
+# ====================================
+
+recorder:
+  purge_keep_days: 30
+  commit_interval: 1
+  
+  include:
+    entity_globs:
+      - sensor.office_temperature
+      - sensor.bedroom_temperature
+      - sensor.atlas_room_temperature
+      - sensor.*_occupancy*
+      - light.*
+      - switch.*
+      - cover.*
+      - binary_sensor.*_occupancy*
+    entities:
+      - input_boolean.power_outage_detected
+      - input_boolean.kitchen_lights_disabled
+      - sensor.lights_on_count
+      - sensor.office_current_mode
+      - sensor.atlas_comfort_status
+
+  exclude:
+    entity_globs:
+      - sensor.*_uptime
+      - sensor.*_cpu*
+      - sensor.*_memory*
+    entities:
+      - sun.sun
+      - weather.forecast_home
+
+# ====================================
+# 📊 LOGBOOK & HISTORY CUSTOMIZATION
+# ====================================
+
+logbook:
+  include:
+    entities:
+      - input_boolean.power_outage_detected
+      - input_boolean.kitchen_lights_disabled
+      - binary_sensor.house_occupied
+      - script.good_morning_house
+      - script.good_night
+      - script.atlas_comfort_mode
+
+  exclude:
+    entity_globs:
+      - sensor.*_temperature
+      - binary_sensor.*_occupancy*
+    entities:
+      - automation.auto_morning_routine
+      - automation.auto_evening_transition
+
+# ====================================
+# ⚙️ SYSTEM PERFORMANCE OPTIMIZATION
+# ====================================
+
+logger:
+  default: info
+  logs:
+    homeassistant.core: warning
+    homeassistant.loader: warning
+    homeassistant.setup: warning
+    custom_components: debug
+
+# ====================================
+# 🔔 NOTIFICATION SERVICES
+# ====================================
+
+notify:
+  # Mobile app notifications configured via UI
+
+# ====================================
+# 📝 CONFIGURATION NOTES & MAINTENANCE
+# ====================================
+
+# This configuration is organized into logical sections:
+# 1. Core setup and includes
+# 2. Input helpers organized by function
+# 3. Template sensors grouped by purpose
+# 4. Groups for entity organization
+# 5. System optimization settings
+
+# Key organizational improvements:
+# - Consolidated duplicate sections
+# - Grouped related input helpers together
+# - Organized template sensors by function
+# - Removed redundant configurations
+# - Added clear section headers
+# - Improved readability with consistent spacing
+
+# Regular maintenance tasks:
+# - Review recorder database size monthly
+# - Update input_number ranges as needed
+# - Clean up unused input_text entities
+# - Monitor system performance in Developer Tools
+# - Test power outage recovery scenarios

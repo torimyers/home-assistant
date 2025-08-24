@@ -1,0 +1,19 @@
+# Secrets and sensitive data  
+secrets.yaml
+known_devices.yaml
+ip_bans.yaml
+
+# Database and logs
+home-assistant_v2.db*
+*.log*
+
+# Runtime files
+.storage/
+.cloud/
+*.pid
+*.db-shm  
+*.db-wal
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,638 @@
+- name: Coriolis Storm Protocol
+  icon: mdi:weather-tornado
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 100
+      rgb_color:
+      - 139
+      - 69
+      - 19
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 80
+      rgb_color:
+      - 139
+      - 69
+      - 19
+    light.ledvance_a19_rgbw_light_3:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 139
+      - 69
+      - 19
+  id: 18330cdf8af14269a7532d492468e591
+- name: Council Assembly
+  icon: mdi:account-group
+  entities:
+    switch.tp_link_power_strip_173b_couch_lamp:
+      state: true
+    switch.tp_link_power_strip_1446_lamp_by_door:
+      state: true
+    switch.tp_link_power_strip_1446_cat_bed:
+      state: true
+  id: 223adea257ad4996bf4bc2816af22725
+- name: Desert Abundance Protocol
+  icon: mdi:weather-sunny
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 255
+      rgb_color:
+      - 255
+      - 215
+      - 0
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 255
+      rgb_color:
+      - 255
+      - 215
+      - 0
+    light.ledvance_a19_rgbw_light_3:
+      state: true
+      brightness: 255
+      rgb_color:
+      - 255
+      - 215
+      - 0
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: true
+      brightness: 255
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2:
+      state: true
+      brightness: 255
+    switch.tp_link_power_strip_173b_couch_lamp:
+      state: true
+    switch.tp_link_power_strip_1446_cat_bed:
+      state: true
+  id: b6f7b70c224342fc84f9528c5ca8f388
+- name: Desert Companions Rest
+  icon: mdi:cat
+  entities:
+    switch.tp_link_power_strip_1446_cat_bed:
+      state: true
+    switch.tp_link_power_strip_173b_couch_lamp:
+      state: false
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 80
+      rgb_color:
+      - 210
+      - 180
+      - 140
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 60
+      rgb_color:
+      - 210
+      - 180
+      - 140
+  id: d4a65f0846694b4780d4571aa4a59b7a
+- name: Desert Dreams Preparation
+  icon: mdi:bed
+  entities:
+    light.tori_light:
+      state: true
+      brightness: 100
+      color_temp: 450
+    cover.bedroom_left_roller_shade:
+      state: closed
+    cover.bedroom_right_roller_shade:
+      state: closed
+  id: af5f935433434f389baed51112139c41
+- name: Evening Council
+  icon: mdi:weather-sunset
+  entities:
+    switch.tp_link_power_strip_173b_couch_lamp:
+      state: true
+    switch.tp_link_power_strip_1446_lamp_by_door:
+      state: true
+    switch.tp_link_power_strip_1446_cat_bed:
+      state: true
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 255
+      - 147
+      - 42
+  id: 7f4333d3ef2143859feb4b8ec89ebcf1
+- name: Evening Feast Gathering
+  icon: mdi:food-turkey
+  entities:
+    light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light:
+      state: true
+      brightness: 240
+    light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2:
+      state: true
+      brightness: 240
+    light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3:
+      state: true
+      brightness: 240
+    light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4:
+      state: true
+      brightness: 240
+    light.silicon_labs_ezsp_dining_room_table_light:
+      state: true
+      brightness: 255
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: true
+      brightness: 220
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2:
+      state: true
+      brightness: 220
+  id: de3aff241da54835a02c957db4b89ede
+- name: Guild Calculation Mode
+  icon: mdi:calculator-variant
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 255
+      color_temp: 250
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 255
+      color_temp: 250
+    light.ledvance_a19_rgbw_light_3:
+      state: true
+      brightness: 255
+      color_temp: 250
+  id: 8b4ce62b63ad4c94a0a3255d0962e92b
+- name: Hangar Secured
+  icon: mdi:garage-variant
+  entities:
+    cover.garage_door:
+      state: closed
+    light.garage_lights:
+      state: false
+  id: 721eb4a5772640598b96d31df6e0670d
+- name: Maintenance Bay Operations
+  icon: mdi:wrench
+  entities:
+    light.garage_lights:
+      state: true
+      brightness: 255
+    cover.garage_door:
+      state: open
+  id: 7fb3b1a018f847048eb6cf6dfd68c0f1
+- name: Midday Sustenance Protocol
+  icon: mdi:weather-sunny
+  entities:
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: true
+      brightness: 200
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2:
+      state: true
+      brightness: 200
+    light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light:
+      state: true
+      brightness: 180
+    light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2:
+      state: true
+      brightness: 180
+    light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3:
+      state: true
+      brightness: 180
+    light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4:
+      state: true
+      brightness: 180
+  id: 017011de2a0b44b0bedd4d0fe281fd0d
+- name: Morning Water Ration
+  icon: mdi:coffee
+  entities:
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: true
+      brightness: 180
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2:
+      state: true
+      brightness: 180
+  id: 3ccc848fd5954562aa21fdaf6eef7364
+- name: Navigator Rest Mode
+  icon: mdi:sleep
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 80
+      rgb_color:
+      - 210
+      - 180
+      - 140
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 60
+      rgb_color:
+      - 210
+      - 180
+      - 140
+    light.ledvance_a19_rgbw_light_3:
+      state: true
+      brightness: 70
+      rgb_color:
+      - 210
+      - 180
+      - 140
+  id: 5ed74a68da104c28b6e8a42eb8f5c3de
+- name: Ornithopter Departure Prep
+  icon: mdi:helicopter
+  entities:
+    cover.garage_door:
+      state: open
+    light.garage_lights:
+      state: true
+      brightness: 255
+  id: c0eb7d30d96a4bca9a78be4cc2835530
+- name: Outworlder Hospitality
+  icon: mdi:account-plus
+  entities:
+    light.guest_bathroom_lights:
+      state: true
+      brightness: 200
+    switch.tp_link_power_strip_173b_couch_lamp:
+      state: true
+    switch.tp_link_power_strip_1446_lamp_by_door:
+      state: true
+  id: 279e63e1cbd940a4a3f5d050c9d0c900
+- name: Prescient Vision Mode
+  icon: mdi:eye-outline
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 150
+      rgb_color:
+      - 0
+      - 191
+      - 255
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 130
+      rgb_color:
+      - 0
+      - 191
+      - 255
+    light.ledvance_a19_rgbw_light_3:
+      state: true
+      brightness: 140
+      rgb_color:
+      - 0
+      - 191
+      - 255
+  id: bb420502c22b45fb8aacd3497bd0d0d7
+- name: Sacred Water Ritual
+  icon: mdi:water
+  entities:
+    light.master_bathroom_lights:
+      state: true
+      brightness: 150
+      color_temp: 400
+  id: 3ec22b95d2f04aa4a739b32122359d62
+- name: Sardaukar Attack Protocol
+  icon: mdi:shield-alert
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    light.ledvance_a19_rgbw_light_3:
+      state: true
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: true
+      brightness: 255
+    light.tori_light:
+      state: true
+      brightness: 255
+  id: 3cd201b99de0405d84e387be2f917045
+- name: Sietch Warmth Protocol
+  icon: mdi:fireplace
+  entities:
+    switch.tp_link_power_strip_173b_couch_lamp:
+      state: true
+    switch.tp_link_power_strip_1446_cat_bed:
+      state: true
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 255
+      - 140
+      - 0
+  id: 8e2a20d11c754787a342ed3b131055db
+- name: Spice Coffee Ritual
+  icon: mdi:coffee-outline
+  entities:
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: true
+      brightness: 220
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2:
+      state: true
+      brightness: 200
+    light.silicon_labs_ezsp_dining_room_table_light:
+      state: true
+      brightness: 180
+  id: 53204291f0a0498b9b1dc4ac99fc9b75
+- name: Spice Trance Mode
+  icon: mdi:meditation
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 200
+      rgb_color:
+      - 255
+      - 140
+      - 0
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 180
+      rgb_color:
+      - 255
+      - 140
+      - 0
+    light.ledvance_a19_rgbw_light_3:
+      state: true
+      brightness: 190
+      rgb_color:
+      - 255
+      - 140
+      - 0
+  id: f7799c6a8c76412392653f8403d233f3
+- name: Stilltent Sealed
+  icon: mdi:sleep
+  entities:
+    light.tori_light:
+      state: false
+    cover.bedroom_left_roller_shade:
+      state: closed
+    cover.bedroom_right_roller_shade:
+      state: closed
+  id: c9956bb3c1594873a62a515f34134e27
+- name: Storm Shelter Protocol
+  icon: mdi:weather-lightning-rainy
+  entities:
+    light.tori_light:
+      state: true
+      brightness: 80
+      color_temp: 500
+    cover.bedroom_left_roller_shade:
+      state: closed
+    cover.bedroom_right_roller_shade:
+      state: closed
+    cover.left_office_roller_blind:
+      state: closed
+    cover.right_office_roller_blind:
+      state: closed
+  id: 65fb7b66a6b64f9691d50bea6f4501fc
+- name: Water Conservation Mode
+  icon: mdi:water-percent
+  entities:
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2:
+      state: true
+      brightness: 80
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 60
+      rgb_color:
+      - 0
+      - 100
+      - 200
+  id: 473b65e9559b4d52a0926efbc7768a95
+- name: Water Conservation Wash
+  icon: mdi:washing-machine
+  entities:
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2:
+      state: true
+      brightness: 100
+    input_boolean.washer_cycle_active:
+      state: true
+  id: d74420151e724341a2c3b47d9e7fb537
+- id: 3d57eafc07b145778c673298f79977b7
+  name: Water of Awakening
+  entities:
+    cover.bedroom_left_roller_shade:
+      state: open
+    cover.bedroom_right_roller_shade:
+      state: open
+  icon: mdi:weather-sunrise
+- name: Water Shortage Protocol
+  icon: mdi:water-alert
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 50
+      rgb_color:
+      - 0
+      - 100
+      - 200
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 30
+      rgb_color:
+      - 0
+      - 100
+      - 200
+    light.ledvance_a19_rgbw_light_3:
+      state: true
+      brightness: 40
+      rgb_color:
+      - 0
+      - 100
+      - 200
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2:
+      state: true
+      brightness: 60
+  id: 4937aae002794c2d9c473fb1226517d5
+- name: Usul Awakens Morning Routine
+  icon: mdi:weather-sunrise
+  entities:
+    cover.office_left_roller_shade:
+      state: open
+    cover.office_right_roller_shade:
+      state: open
+  id: 1fe44cf65a174d2ba59f68ef71c53466
+- name: Sunset Over Arrakis Evening Routine
+  icon: mdi:weather-sunset
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 255
+      - 147
+      - 42
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 255
+      - 147
+      - 42
+    light.ledvance_a19_rgbw_light_3:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 255
+      - 147
+      - 42
+    light.tori_light:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 255
+      - 147
+      - 42
+    switch.tp_link_power_strip_173b_couch_lamp:
+      state: true
+    switch.tp_link_power_strip_1446_lamp_by_door:
+      state: true
+    switch.tp_link_power_strip_1446_cat_bed:
+      state: true
+    cover.bedroom_left_roller_shade:
+      state: closed
+    cover.bedroom_right_roller_shade:
+      state: closed
+    cover.left_office_roller_blind:
+      state: closed
+    cover.right_office_roller_blind:
+      state: closed
+    cover.left_living_room_roller_shade_cover:
+      state: closed
+    cover.right_living_room_roller_shade_cover:
+      state: closed
+  id: 3951c79ed8e84e67bdbc244e0a9576a6
+- name: Night Watch Begins Security Mode
+  icon: mdi:shield-check
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: false
+    light.ledvance_a19_rgbw_light_2:
+      state: false
+    light.ledvance_a19_rgbw_light_3:
+      state: false
+    light.tori_light:
+      state: false
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: false
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2:
+      state: false
+    switch.tp_link_power_strip_173b_couch_lamp:
+      state: false
+    switch.tp_link_power_strip_1446_lamp_by_door:
+      state: false
+    input_boolean.enhanced_security_mode:
+      state: true
+  id: 2d13deaad8b047a09baf9b76dc575a39
+- name: Desert Survival Mode Maximum Efficiency
+  icon: mdi:battery-outline
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 80
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 60
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2:
+      state: true
+      brightness: 80
+    switch.tp_link_power_strip_1446_cat_bed:
+      state: true
+    input_boolean.energy_optimization:
+      state: true
+    input_boolean.peak_hour_reduction:
+      state: true
+  id: 89b15f17535f4104bb40a6d3e0f47409
+- name: Sietch Status Report All Systems
+  icon: mdi:home-analytics
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 150
+      color_temp: 300
+    light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light:
+      state: true
+      brightness: 150
+  id: 61fa0fb31eb24b379b7ed90188aa9585
+- name: Shai Hulud Desert Patrol
+  icon: mdi:robot-vacuum
+  entities: {}
+  id: a01c12a75b244cbdbf900fcf2a60642a
+- name: Water Discipline Active
+  icon: mdi:water-sync
+  entities:
+    input_boolean.washer_cycle_active:
+      state: true
+  id: 5e6bde03dbda429898b5c9d8253d713c
+- name: Desert Heat Reclamation
+  icon: mdi:tumble-dryer
+  entities:
+    input_boolean.dryer_cycle_active:
+      state: true
+  id: e9633ae362c54ae8a77ae4ee9db1f230
+- name: Spice Production Complete
+  icon: mdi:check-circle
+  entities: {}
+  id: 9873bc298b9c4853be8e133a070901e9
+- id: 3951c79ed8e84e67bdbc244e0a9576a6
+  name: Sunset Over Arrakis Evening Routine
+  entities:
+    light.ledvance_a19_rgbw_light:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 255
+      - 147
+      - 42
+    light.ledvance_a19_rgbw_light_2:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 255
+      - 147
+      - 42
+    light.ledvance_a19_rgbw_light_3:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 255
+      - 147
+      - 42
+    light.tori_light:
+      state: true
+      brightness: 120
+      rgb_color:
+      - 255
+      - 147
+      - 42
+    switch.tp_link_power_strip_173b_couch_lamp:
+      state: true
+    switch.tp_link_power_strip_1446_lamp_by_door:
+      state: true
+    switch.tp_link_power_strip_1446_cat_bed:
+      state: true
+    cover.bedroom_left_roller_shade:
+      state: closed
+    cover.bedroom_right_roller_shade:
+      state: closed
+    cover.left_office_roller_blind:
+      state: closed
+    cover.right_office_roller_blind:
+      state: closed
+    cover.left_living_room_roller_shade_cover:
+      state: closed
+    cover.right_living_room_roller_shade_cover:
+      state: closed
+  icon: mdi:weather-sunset
