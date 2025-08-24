@@ -1,21 +1,20 @@
 id: morning_sunrise_routine
 alias: Morning Sunrise Routine
 description: Usul Awakens - Desert Morning Protocol
-triggers:
-- trigger: sun
-  event: sunrise
-  offset: 0
-conditions: []
-actions:
-- target:
-    entity_id: scene.morning_awakening
-  action: scene.turn_on
-  data: {}
-- target:
-    entity_id: script.morning_systems_check
-  action: script.turn_on
-  data: {}
-- data:
-    message: Bless the Maker and His water. Bless the coming and going of Him. The
-      day begins in the sietch.
-  action: notify.mobile_app_tori_phone_2
+use_blueprint:
+  path: daily_routine.yaml
+  input:
+    routine_name: "Morning Sunrise Routine"
+    routine_description: "Usul Awakens - Desert Morning Protocol"
+    trigger_type: "sunrise"
+    sun_offset: "00:00:00"
+    enable_scenes: true
+    scenes_to_activate:
+      - scene.morning_awakening
+    enable_scripts: true
+    scripts_to_run:
+      - script.morning_systems_check
+    enable_notifications: true
+    notification_service: notify.mobile_app_tori_phone_2
+    notification_message: "Bless the Maker and His water. Bless the coming and going of Him. The day begins in the sietch."
+    delay_between_actions: 2

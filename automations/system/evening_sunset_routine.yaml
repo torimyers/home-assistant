@@ -1,16 +1,16 @@
 id: evening_sunset_routine
 alias: Evening Sunset Routine
 description: Sunset Over Arrakis - Evening Protocol
-triggers:
-- event: sunset
-  offset: -00:30:00
-  trigger: sun
-actions:
-- action: scene.turn_on
-  data: {}
-  target:
-    entity_id: scene.evening_routine
-- data:
-    message: Sunset graces Arrakis. Sietch secured for evening. Desert companions
-      comfortable.
-  action: notify.mobile_app_tori_phone_2
+use_blueprint:
+  path: daily_routine.yaml
+  input:
+    routine_name: "Evening Sunset Routine"
+    routine_description: "Sunset Over Arrakis - Evening Protocol"
+    trigger_type: "sunset"
+    sun_offset: "-00:30:00"
+    enable_scenes: true
+    scenes_to_activate:
+      - scene.evening_routine
+    enable_notifications: true
+    notification_service: notify.mobile_app_tori_phone_2
+    notification_message: "Sunset graces Arrakis. Sietch secured for evening. Desert companions comfortable."

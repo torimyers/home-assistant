@@ -1,0 +1,460 @@
+blueprint:
+  name: Emergency/Alert System
+  description: >
+    Comprehensive emergency response system for various crisis scenarios.
+    Monitors sensors, triggers emergency protocols, and sends critical alerts.
+    Supports water leaks, weather emergencies, system health monitoring, and more.
+  domain: automation
+  input:
+    monitoring_type:
+      name: Monitoring Type
+      description: Type of emergency monitoring to perform
+      selector:
+        select:
+          options:
+            - label: Binary Sensor Monitoring
+              value: binary_sensor
+            - label: Sensor Threshold Monitoring
+              value: sensor_threshold
+            - label: Weather Condition Monitoring
+              value: weather_condition
+            - label: Scheduled Health Check
+              value: scheduled_check
+      default: binary_sensor
+
+    # Binary Sensor Configuration
+    binary_sensors:
+      name: Binary Sensors
+      description: Binary sensors to monitor (for binary_sensor type)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          filter:
+            domain: binary_sensor
+
+    binary_trigger_state:
+      name: Binary Sensor Trigger State
+      description: State that triggers the emergency (for binary_sensor type)
+      selector:
+        select:
+          options:
+            - label: "On"
+              value: "on"
+            - label: "Off"  
+              value: "off"
+      default: "on"
+
+    # Numeric Sensor Configuration
+    numeric_sensors:
+      name: Numeric Sensors
+      description: Numeric sensors to monitor (for sensor_threshold type)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          filter:
+            domain: sensor
+
+    threshold_value:
+      name: Threshold Value
+      description: Threshold value for numeric sensor comparison
+      default: 0
+      selector:
+        number:
+          min: -1000
+          max: 1000
+          step: 0.1
+
+    threshold_condition:
+      name: Threshold Condition
+      description: Condition type for threshold comparison
+      selector:
+        select:
+          options:
+            - label: Above
+              value: above
+            - label: Below
+              value: below
+            - label: Equal
+              value: equal
+      default: above
+
+    # Weather Configuration
+    weather_entity:
+      name: Weather Entity
+      description: Weather entity to monitor (for weather_condition type)
+      default: ""
+      selector:
+        entity:
+          filter:
+            domain: weather
+
+    weather_conditions:
+      name: Weather Conditions
+      description: Weather conditions that trigger emergency
+      default: []
+      selector:
+        select:
+          multiple: true
+          options:
+            - lightning-rainy
+            - thunderstorm
+            - tornado
+            - hurricane
+            - hail
+            - snowy-rainy
+
+    weather_attribute:
+      name: Weather Attribute
+      description: Weather attribute to monitor
+      selector:
+        select:
+          options:
+            - label: Condition
+              value: condition
+            - label: Temperature
+              value: temperature
+            - label: Wind Speed
+              value: wind_speed
+      default: condition
+
+    # Scheduled Check Configuration
+    schedule_hours:
+      name: Schedule Hours Pattern
+      description: Hour pattern for scheduled checks (e.g., /2 for every 2 hours)
+      default: "/2"
+      selector:
+        text:
+
+    schedule_minutes:
+      name: Schedule Minutes Pattern
+      description: Minute pattern for scheduled checks (optional)
+      default: ""
+      selector:
+        text:
+
+    # Condition Configuration
+    enable_condition:
+      name: Enable Condition Check
+      description: Enable additional condition checking
+      default: false
+      selector:
+        boolean:
+
+    condition_entity:
+      name: Condition Entity
+      description: Entity to check for additional conditions
+      default: ""
+      selector:
+        entity: {}
+
+    condition_state:
+      name: Condition State
+      description: Required state for condition entity
+      default: "on"
+      selector:
+        text:
+
+    # Emergency Actions
+    emergency_scene:
+      name: Emergency Scene
+      description: Scene to activate during emergency
+      default: ""
+      selector:
+        entity:
+          filter:
+            domain: scene
+
+    emergency_script:
+      name: Emergency Script
+      description: Script to run during emergency (optional)
+      default: ""
+      selector:
+        entity:
+          filter:
+            domain: script
+
+    # Protective Actions
+    close_covers:
+      name: Close All Covers
+      description: Automatically close all covers during emergency
+      default: false
+      selector:
+        boolean:
+
+    specific_covers:
+      name: Specific Covers
+      description: Specific covers to close (if not closing all)
+      default: []
+      selector:
+        entity:
+          multiple: true
+          filter:
+            domain: cover
+
+    emergency_switches:
+      name: Emergency Switches
+      description: Switches to turn on during emergency
+      default: []
+      selector:
+        entity:
+          multiple: true
+          filter:
+            domain: switch
+
+    emergency_lights:
+      name: Emergency Lights
+      description: Lights to turn on during emergency
+      default: []
+      selector:
+        entity:
+          multiple: true
+          filter:
+            domain: light
+
+    # Notification Configuration
+    notification_service:
+      name: Notification Service
+      description: Notification service to use for alerts
+      selector:
+        select:
+          options:
+            - label: Mobile App - Tori Phone 2
+              value: notify.mobile_app_tori_phone_2
+            - label: Mobile App - All Devices
+              value: notify.notify
+            - label: Persistent Notification
+              value: notify.persistent_notification
+      default: notify.mobile_app_tori_phone_2
+
+    notification_title:
+      name: Notification Title
+      description: Title for emergency notification
+      default: "EMERGENCY ALERT"
+      selector:
+        text:
+
+    notification_message:
+      name: Notification Message
+      description: Message for emergency notification (supports templates)
+      default: "Emergency condition detected! Immediate attention required!"
+      selector:
+        text:
+          multiline: true
+
+    critical_notification:
+      name: Critical Notification
+      description: Send as high-priority/critical notification
+      default: true
+      selector:
+        boolean:
+
+    # Recovery Actions
+    enable_recovery:
+      name: Enable Recovery Actions
+      description: Enable actions when emergency condition clears
+      default: false
+      selector:
+        boolean:
+
+    recovery_scene:
+      name: Recovery Scene
+      description: Scene to activate when emergency clears
+      default: ""
+      selector:
+        entity:
+          filter:
+            domain: scene
+
+    recovery_notification:
+      name: Recovery Notification
+      description: Send notification when emergency clears
+      default: true
+      selector:
+        boolean:
+
+    recovery_message:
+      name: Recovery Message
+      description: Message for recovery notification
+      default: "Emergency condition has cleared."
+      selector:
+        text:
+
+mode: single
+max_exceeded: silent
+
+trigger:
+  - choose:
+      # Binary Sensor Monitoring
+      - conditions:
+          - condition: template
+            value_template: "{{ monitoring_type == 'binary_sensor' }}"
+        sequence:
+          - platform: state
+            entity_id: !input binary_sensors
+            to: !input binary_trigger_state
+
+      # Numeric Sensor Threshold Monitoring
+      - conditions:
+          - condition: template
+            value_template: "{{ monitoring_type == 'sensor_threshold' }}"
+        sequence:
+          - platform: numeric_state
+            entity_id: !input numeric_sensors
+            above: >
+              {% if threshold_condition == 'above' %}
+                {{ threshold_value }}
+              {% endif %}
+            below: >
+              {% if threshold_condition == 'below' %}
+                {{ threshold_value }}
+              {% endif %}
+
+      # Weather Condition Monitoring
+      - conditions:
+          - condition: template
+            value_template: "{{ monitoring_type == 'weather_condition' }}"
+        sequence:
+          - platform: state
+            entity_id: !input weather_entity
+            attribute: !input weather_attribute
+            to: !input weather_conditions
+
+      # Scheduled Health Check
+      - conditions:
+          - condition: template
+            value_template: "{{ monitoring_type == 'scheduled_check' }}"
+        sequence:
+          - platform: time_pattern
+            hours: !input schedule_hours
+            minutes: >
+              {% if schedule_minutes %}
+                {{ schedule_minutes }}
+              {% endif %}
+
+condition:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ enable_condition }}"
+        sequence:
+          - condition: state
+            entity_id: !input condition_entity
+            state: !input condition_state
+
+action:
+  - choose:
+      # Emergency Response Actions
+      - conditions:
+          - condition: template
+            value_template: "{{ emergency_scene != '' }}"
+        sequence:
+          - service: scene.turn_on
+            target:
+              entity_id: !input emergency_scene
+
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ emergency_script != '' }}"
+        sequence:
+          - service: script.turn_on
+            target:
+              entity_id: !input emergency_script
+
+  # Protective Actions
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ close_covers }}"
+        sequence:
+          - service: cover.close_cover
+            target:
+              entity_id: all
+
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ specific_covers | length > 0 }}"
+        sequence:
+          - service: cover.close_cover
+            target:
+              entity_id: !input specific_covers
+
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ emergency_switches | length > 0 }}"
+        sequence:
+          - service: switch.turn_on
+            target:
+              entity_id: !input emergency_switches
+
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ emergency_lights | length > 0 }}"
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: !input emergency_lights
+
+  # Additional condition check for health monitoring
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ monitoring_type == 'scheduled_check' and threshold_value > 0 }}"
+        sequence:
+          - condition: numeric_state
+            entity_id: !input numeric_sensors
+            below: !input threshold_value
+
+  # Emergency Notification
+  - service: !input notification_service
+    data:
+      title: !input notification_title
+      message: !input notification_message
+      data:
+        priority: >
+          {% if critical_notification %}
+            high
+          {% else %}
+            normal
+          {% endif %}
+        ttl: 0
+        importance: >
+          {% if critical_notification %}
+            max
+          {% else %}
+            default
+          {% endif %}
+
+  # Recovery Actions (if enabled)
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ enable_recovery }}"
+        sequence:
+          - wait_for_trigger:
+              - platform: state
+                entity_id: !input binary_sensors
+                from: !input binary_trigger_state
+                for: "00:00:30"
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template: "{{ recovery_scene != '' }}"
+                sequence:
+                  - service: scene.turn_on
+                    target:
+                      entity_id: !input recovery_scene
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template: "{{ recovery_notification }}"
+                sequence:
+                  - service: !input notification_service
+                    data:
+                      title: "Recovery - {{ notification_title }}"
+                      message: !input recovery_message

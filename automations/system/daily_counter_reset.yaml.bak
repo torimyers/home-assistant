@@ -1,0 +1,18 @@
+id: daily_counter_reset
+alias: Daily Counter Reset
+description: Daily Desert Cycle Reset - Midnight Protocol
+trigger:
+- platform: time
+  at: 00:00:00
+action:
+- service: counter.reset
+  target:
+    entity_id:
+    - counter.atlas_daily_motion
+    - counter.motion_sensor_triggers_today
+    - counter.automation_failures
+    - counter.deep_sleep_motion_events
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: Desert cycle complete. New day begins. Sietch records reset for fresh
+      analysis.

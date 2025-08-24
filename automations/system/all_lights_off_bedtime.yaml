@@ -1,24 +1,23 @@
 id: all_lights_off_bedtime
 alias: All Lights Off Bedtime
 description: Sietch Sleep Protocol - All Lights Off
-triggers:
-- at: '22:15:00'
-  trigger: time
-conditions: []
-actions:
-- target:
-    entity_id:
-    - switch.tp_link_power_strip_173b_couch_lamp
-    - switch.tp_link_power_strip_1446_lamp_by_door
-  action: switch.turn_off
-  data: {}
-- data:
-    message: Sietch prepares for sleep. All illumination systems sealed. Gentle
-      darkness falls across the desert sanctuary.
-    title: "🏜️ Sietch Sleep Protocol"
-  action: notify.mobile_app_tori_phone_2
-- action: scene.turn_on
-  metadata: {}
-  data: {}
-  target:
-    entity_id: scene.kitchen_lights_off
+use_blueprint:
+  path: daily_routine.yaml
+  input:
+    routine_name: "All Lights Off Bedtime"
+    routine_description: "Sietch Sleep Protocol - All Lights Off"
+    trigger_type: "time"
+    trigger_time: "22:15:00"
+    enable_light_control: true
+    light_action: "turn_off"
+    lights_switches:
+      - switch.tp_link_power_strip_173b_couch_lamp
+      - switch.tp_link_power_strip_1446_lamp_by_door
+    enable_scenes: true
+    scenes_to_activate:
+      - scene.kitchen_lights_off
+    enable_notifications: true
+    notification_service: notify.mobile_app_tori_phone_2
+    notification_message: "Sietch prepares for sleep. All illumination systems sealed. Gentle darkness falls across the desert sanctuary."
+    notification_title: "🏜️ Sietch Sleep Protocol"
+    delay_between_actions: 1
