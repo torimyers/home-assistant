@@ -1,0 +1,41 @@
+name: 🔍 Validate Configuration
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate Home Assistant Configuration
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Check out repository
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Create secrets from template  
+        run: |
+          cp secrets.yaml.example secrets.yaml
+          
+          # Replace common placeholder patterns with test values
+          sed -i 's/your_.*_here/test_value_123/g' secrets.yaml
+          sed -i 's/your_.*_password/test_password/g' secrets.yaml
+          sed -i 's/your_.*_key/test_api_key_12345678901234567890123456789012/g' secrets.yaml
+          sed -i 's/your_.*_id/test_client_id/g' secrets.yaml
+          sed -i 's/your_.*_secret/test_client_secret/g' secrets.yaml
+          sed -i 's/192\.168\.1\.xxx/192.168.1.100/g' secrets.yaml
+          sed -i 's/REPLACE_WITH_.*/test_replacement_value/g' secrets.yaml
+          
+          echo "✅ Test secrets created"
+          
+      - name: 🏠 Validate Home Assistant Configuration
+        uses: frenck/action-home-assistant@v1.4
+        with:
+          path: "."
+          
+      - name: ✅ Validation Success
+        if: success()
+        run: echo "🎉 Configuration is valid!"

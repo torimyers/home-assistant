@@ -1,0 +1,75 @@
+name: 🚀 Deploy to Home Assistant
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - '.github/**'
+  workflow_dispatch:
+    inputs:
+      force_restart:
+        description: 'Restart Home Assistant after deploy'
+        type: boolean
+        default: false
+
+jobs:
+  validate:
+    name: Validate Before Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create test secrets
+        run: |
+          cp secrets.yaml.example secrets.yaml
+          sed -i 's/your_.*_here/test_value/g' secrets.yaml
+          sed -i 's/your_.*_password/test_password/g' secrets.yaml
+          sed -i 's/your_.*_key/test_api_key_12345678901234567890123456789012/g' secrets.yaml
+      - uses: frenck/action-home-assistant@v1.4
+        with:
+          path: "."
+
+  deploy:
+    name: Deploy Configuration
+    needs: validate
+    runs-on: ubuntu-latest
+    if: needs.validate.result == 'success'
+    
+    steps:
+      - name: 📥 Check out repository
+        uses: actions/checkout@v4
+        
+      - name: 🔐 Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.HA_SSH_PRIVATE_KEY }}
+          
+      - name: 🚀 Deploy to Home Assistant
+        run: |
+          ssh-keyscan -H ${{ secrets.HA_HOST }} >> ~/.ssh/known_hosts
+          
+          echo "🚀 Deploying configuration..."
+          
+          # Sync files, excluding secrets and git files
+          rsync -avz --delete \
+            --exclude='.git*' \
+            --exclude='secrets.yaml' \
+            --exclude='secrets.yaml.example' \
+            --exclude='README.md' \
+            ./ ${{ secrets.HA_USER }}@${{ secrets.HA_HOST }}:${{ secrets.HA_CONFIG_PATH }}/
+            
+          echo "✅ Configuration deployed successfully"
+          
+      - name: 🔄 Reload HA Configuration
+        run: |
+          curl -X POST "${{ secrets.HA_API_URL }}/api/services/homeassistant/reload_config_entry" \
+            -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}" \
+            -H "Content-Type: application/json"
+          echo "🔄 Configuration reloaded"
+          
+      - name: 🔁 Restart HA (if requested)
+        if: github.event.inputs.force_restart == 'true'
+        run: |
+          curl -X POST "${{ secrets.HA_API_URL }}/api/services/homeassistant/restart" \
+            -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}"
+          echo "🔁 Home Assistant restart initiated"
