@@ -55,7 +55,7 @@ blueprint:
     scene_entity:
       name: Scene Entity
       description: Scene to activate (if action_type is scene)
-      default: ""
+      default: "scene.none"
       selector:
         entity:
           domain: scene
@@ -63,7 +63,7 @@ blueprint:
     light_entity:
       name: Light Entity
       description: Light to control (if action_type is light_on/light_off)
-      default: ""
+      default: "light.none"
       selector:
         entity:
           domain: light
@@ -71,7 +71,7 @@ blueprint:
     area_name:
       name: Area Name
       description: Area to turn off lights (if action_type is area_off)
-      default: ""
+      default: "none"
       selector:
         text:
     
@@ -115,7 +115,7 @@ action:
       # Scene activation
       - conditions:
           - condition: template
-            value_template: "{{ action_type == 'scene' and scene_entity != '' }}"
+            value_template: "{{ action_type == 'scene' and scene_entity != 'scene.none' }}"
         sequence:
           - service: scene.turn_on
             target:
@@ -124,7 +124,7 @@ action:
       # Light on
       - conditions:
           - condition: template
-            value_template: "{{ action_type == 'light_on' and light_entity != '' }}"
+            value_template: "{{ action_type == 'light_on' and light_entity != 'light.none' }}"
         sequence:
           - service: light.turn_on
             target:
@@ -133,7 +133,7 @@ action:
       # Light off
       - conditions:
           - condition: template
-            value_template: "{{ action_type == 'light_off' and light_entity != '' }}"
+            value_template: "{{ action_type == 'light_off' and light_entity != 'light.none' }}"
         sequence:
           - service: light.turn_off
             target:
@@ -142,7 +142,7 @@ action:
       # Area lights off
       - conditions:
           - condition: template
-            value_template: "{{ action_type == 'area_off' and area_name != '' }}"
+            value_template: "{{ action_type == 'area_off' and area_name != 'none' }}"
         sequence:
           - service: light.turn_off
             target:
@@ -151,7 +151,7 @@ action:
   # Send notification if enabled
   - condition: template
     value_template: "{{ enable_notifications and notification_device != '' }}"
-  - service: notify.{{ notification_device }}
+  - service: "notify.{{ notification_device }}"
     data:
       message: !input notification_message
 
