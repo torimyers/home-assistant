@@ -1,0 +1,18 @@
+- id: office_lights_off_after_motion
+  alias: Office Lights Off After Motion
+  description: Navigator Chamber Sealed - Away Protocol
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.office_motion_detected
+    to: 'off'
+    for: 00:45:00
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: all
+      area_id: office
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.office_last_mode
+    data:
+      value: navigator_absent

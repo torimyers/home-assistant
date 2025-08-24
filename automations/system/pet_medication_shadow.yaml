@@ -1,0 +1,26 @@
+- id: pet_medication_shadow
+  alias: Pet Medication Shadow
+  description: Shadow Dual Medication - Warrior Strength Protocol
+  trigger:
+  - platform: time
+    at: '19:30:00'
+  condition:
+  - condition: or
+    conditions:
+    - condition: template
+      value_template: '{{ (now().date() - states(''input_datetime.shadow_last_steroid'')
+        | as_datetime | as_local | as_timestamp | timestamp_custom(''%Y-%m-%d'') |
+        as_datetime | as_local).days >= 1 }}
+
+        '
+    - condition: template
+      value_template: '{{ (now().date() - states(''input_datetime.shadow_last_cerenia'')
+        | as_datetime | as_local | as_timestamp | timestamp_custom(''%Y-%m-%d'') |
+        as_datetime | as_local).days >= 1 }}
+
+        '
+  action:
+  - service: notify.mobile_app_tori_phone_2
+    data:
+      message: Stilgar (Shadow) requires dual medication. Strength enhancement and
+        comfort medicine due.

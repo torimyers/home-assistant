@@ -1,0 +1,19 @@
+- id: office_lights_on_motion
+  alias: Office Lights On Motion
+  description: Navigator Enters Chamber - Spice Trance Ready
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.office_motion_detected
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: light.ledvance_a19_rgbw_light
+    state: 'off'
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.spice_trance_mode
+  - service: notify.mobile_app_tori_phone_2
+    data:
+      message: Navigator enters the chamber. Spice trance initiated for prescient
+        vision.

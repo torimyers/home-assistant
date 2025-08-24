@@ -1,0 +1,16 @@
+- id: office_lights_off_late_night
+  alias: Office Lights Off Late Night
+  description: Navigator Chamber Water Conservation - Spice Trance Sealed
+  triggers:
+  - trigger: time
+    at: '23:59:59'
+  conditions: []
+  actions:
+  - target:
+      area_id: office
+    action: light.turn_off
+    data: {}
+  - data:
+      message: Spice conservation protocols active. Navigator chamber sealed for the
+        deep desert night.
+    action: notify.mobile_app_tori_phone_2
