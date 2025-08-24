@@ -52,11 +52,14 @@ jobs:
           ls -la
           
           # Copy files directly (no SSH - we're on the same machine)
-          rsync -avz --delete \
+          sudo rsync -rlptD --delete \
+            --no-owner --no-group \
             --exclude='.git*' \
             --exclude='secrets.yaml' \
             --exclude='secrets.yaml.example' \
             --exclude='README.md' \
+            --exclude='www/community/' \
+            --exclude='custom_components/hacs/' \
             ./ /mnt/user/appdata/Home-Assistant-Container/
             
           echo "✅ Configuration deployed successfully"
