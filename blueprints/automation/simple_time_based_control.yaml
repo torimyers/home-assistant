@@ -1,0 +1,158 @@
+blueprint:
+  name: Simple Time-Based Room Control
+  description: Simple time-based automation for room lighting control with presence detection
+  domain: automation
+  input:
+    room_name:
+      name: Room Name
+      description: The name of the room for notifications
+      selector:
+        text:
+    
+    trigger_time:
+      name: Trigger Time
+      description: Time when automation should trigger
+      selector:
+        time:
+    
+    enable_presence_check:
+      name: Enable Presence Check
+      description: Only trigger when person meets presence condition
+      default: false
+      selector:
+        boolean:
+    
+    person_entity:
+      name: Person Entity
+      description: Person to check presence for
+      default: ""
+      selector:
+        entity:
+          domain: person
+    
+    presence_condition:
+      name: Presence Condition
+      description: Required person state (home/not_home)
+      default: "home"
+      selector:
+        select:
+          options:
+            - "home"
+            - "not_home"
+    
+    action_type:
+      name: Action Type
+      description: Type of action to perform
+      default: "scene"
+      selector:
+        select:
+          options:
+            - "scene"
+            - "light_on"
+            - "light_off"
+            - "area_off"
+    
+    scene_entity:
+      name: Scene Entity
+      description: Scene to activate (if action_type is scene)
+      default: ""
+      selector:
+        entity:
+          domain: scene
+    
+    light_entity:
+      name: Light Entity
+      description: Light to control (if action_type is light_on/light_off)
+      default: ""
+      selector:
+        entity:
+          domain: light
+    
+    area_name:
+      name: Area Name
+      description: Area to turn off lights (if action_type is area_off)
+      default: ""
+      selector:
+        text:
+    
+    enable_notifications:
+      name: Enable Notifications
+      description: Send notification when automation runs
+      default: true
+      selector:
+        boolean:
+    
+    notification_device:
+      name: Notification Device
+      description: Mobile device to send notifications to
+      default: ""
+      selector:
+        text:
+    
+    notification_message:
+      name: Notification Message
+      description: Custom message to send
+      default: "Room automation executed"
+      selector:
+        text:
+
+# Automation Configuration
+trigger:
+  - platform: time
+    at: !input trigger_time
+
+condition:
+  - condition: template
+    value_template: >
+      {% if enable_presence_check and person_entity != "" %}
+        {{ states(person_entity) == presence_condition }}
+      {% else %}
+        true
+      {% endif %}
+
+action:
+  - choose:
+      # Scene activation
+      - conditions:
+          - condition: template
+            value_template: "{{ action_type == 'scene' and scene_entity != '' }}"
+        sequence:
+          - service: scene.turn_on
+            target:
+              entity_id: !input scene_entity
+      
+      # Light on
+      - conditions:
+          - condition: template
+            value_template: "{{ action_type == 'light_on' and light_entity != '' }}"
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: !input light_entity
+      
+      # Light off
+      - conditions:
+          - condition: template
+            value_template: "{{ action_type == 'light_off' and light_entity != '' }}"
+        sequence:
+          - service: light.turn_off
+            target:
+              entity_id: !input light_entity
+      
+      # Area lights off
+      - conditions:
+          - condition: template
+            value_template: "{{ action_type == 'area_off' and area_name != '' }}"
+        sequence:
+          - service: light.turn_off
+            target:
+              area_id: !input area_name
+  
+  # Send notification if enabled
+  - condition: template
+    value_template: "{{ enable_notifications and notification_device != '' }}"
+  - service: notify.{{ notification_device }}
+    data:
+      message: !input notification_message
+
+mode: single
