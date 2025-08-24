@@ -24,3 +24,10 @@ backups/
 www/community/
 custom_components/hacs/
 /www/community/s
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
