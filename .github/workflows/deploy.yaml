@@ -32,7 +32,7 @@ jobs:
   deploy:
     name: Deploy Configuration
     needs: validate
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: needs.validate.result == 'success'
     
     steps:
@@ -50,13 +50,13 @@ jobs:
           
           echo "🚀 Deploying configuration..."
           
-          # Sync files, excluding secrets and git files
+          # Copy files directly (we're on the same machine now)
           rsync -avz --delete \
             --exclude='.git*' \
             --exclude='secrets.yaml' \
             --exclude='secrets.yaml.example' \
             --exclude='README.md' \
-            ./ ${{ secrets.HA_USER }}@${{ secrets.HA_HOST }}:${{ secrets.HA_CONFIG_PATH }}/
+            ./ /mnt/user/appdata/homeassistant/
             
           echo "✅ Configuration deployed successfully"
           
