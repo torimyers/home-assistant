@@ -65,23 +65,29 @@ jobs:
             
           echo "✅ Configuration deployed successfully"
           
-      - name: 🔄 Reload HA Configuration
-        run: |
-          # Use localhost since we're on the same machine
-          curl -X POST "http://192.168.1.2:8123/api/services/homeassistant/reload_core_config" \
-            -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            || echo "Core config reload failed"
-            
-          curl -X POST "http://192.168.1.2:8123/api/services/automation/reload" \
-            -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            || echo "Automation reload failed"
-            
-          echo "🔄 Configuration reload completed"
-          
-      - name: 🔁 Restart HA (if requested)
+      - name: 🔁 Restart Home Assistant Container
         if: github.event.inputs.force_restart == 'true'
         run: |
-          docker restart Home-Assistant-Container || echo "Container restart failed"
-          echo "🔁 Home Assistant restart initiated"
+          echo "🔁 Restarting Home Assistant container..."
+          
+          # Find the Home Assistant container
+          CONTAINER=$(docker ps --filter "name=Home-Assistant" --format "{{.Names}}" | head -1)
+          
+          if [ -z "$CONTAINER" ]; then
+            echo "❌ Home Assistant container not found"
+            echo "Available containers:"
+            docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Image}}"
+            exit 1
+          fi
+          
+          echo "Found container: $CONTAINER"
+          
+          # Restart the container
+          if docker restart "$CONTAINER"; then
+            echo "✅ Container restart successful"
+            echo "⏳ Waiting for Home Assistant to initialize..."
+            sleep 30
+          else
+            echo "❌ Container restart failed"
+            exit 1
+          fi
