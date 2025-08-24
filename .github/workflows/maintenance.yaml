@@ -1,0 +1,213 @@
+name: 🔧 Maintenance Tasks
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Maintenance task to run'
+        required: true
+        type: choice
+        options:
+          - 'config-check'
+          - 'entity-cleanup'
+          - 'backup-create'
+          - 'performance-report'
+        default: 'config-check'
+  schedule:
+    # Run config check daily at 2 AM
+    - cron: '0 2 * * *'
+
+jobs:
+  config-check:
+    name: Configuration Validation
+    runs-on: self-hosted
+    if: github.event.inputs.task == 'config-check' || github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Create test secrets
+        run: |
+          cp secrets.yaml.example secrets.yaml
+          sed -i 's/your_.*_here/test_value/g' secrets.yaml
+          sed -i 's/your_.*_password/test_password/g' secrets.yaml
+          sed -i 's/your_.*_key/test_api_key_12345678901234567890123456789012/g' secrets.yaml
+          
+      - name: 🔍 Validate Configuration
+        uses: frenck/action-home-assistant@v1.4
+        with:
+          path: "."
+          
+      - name: 📊 Generate Report
+        run: |
+          echo "## 🏠 Configuration Validation Report" >> validation-report.md
+          echo "**Date:** $(date)" >> validation-report.md
+          echo "**Commit:** ${GITHUB_SHA::8}" >> validation-report.md
+          echo "" >> validation-report.md
+          
+          # Count entities by type
+          echo "### 📈 Entity Statistics" >> validation-report.md
+          echo "- Automations: $(find automations -name '*.yaml' | wc -l)" >> validation-report.md
+          echo "- Scenes: $(find scenes -name '*.yaml' | wc -l)" >> validation-report.md  
+          echo "- Scripts: $(find scripts -name '*.yaml' | wc -l)" >> validation-report.md
+          echo "- Blueprints: $(find blueprints -name '*.yaml' | wc -l)" >> validation-report.md
+          echo "- Template Sensors: $(grep -r 'name:' entities/template/ | wc -l)" >> validation-report.md
+          echo "" >> validation-report.md
+          
+          # Check for common issues
+          echo "### ⚠️  Potential Issues" >> validation-report.md
+          
+          # Check for empty defaults in blueprints
+          if grep -r "default: ''" blueprints/ >/dev/null 2>&1; then
+            echo "- ⚠️ Empty default values found in blueprints" >> validation-report.md
+          else
+            echo "- ✅ No empty blueprint defaults found" >> validation-report.md
+          fi
+          
+          # Check for missing entity references
+          missing_refs=$(grep -r "entity:" dashboards/ | grep -c "sensor\." || echo "0")
+          echo "- Entity references in dashboards: $missing_refs" >> validation-report.md
+          
+          cat validation-report.md
+
+  entity-cleanup:
+    name: Entity Cleanup Analysis  
+    runs-on: self-hosted
+    if: github.event.inputs.task == 'entity-cleanup'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 🧹 Analyze Entity Usage
+        run: |
+          echo "## 🧹 Entity Cleanup Analysis" > cleanup-report.md
+          echo "**Date:** $(date)" >> cleanup-report.md
+          echo "" >> cleanup-report.md
+          
+          # Find potentially unused entities
+          echo "### 🔍 Potentially Unused Entities" >> cleanup-report.md
+          
+          # Check for entities defined but not referenced
+          for entity_file in entities/**/*.yaml; do
+            if [ -f "$entity_file" ]; then
+              entities=$(grep -E "^[[:space:]]*[a-z_]+:" "$entity_file" | sed 's/://g' | sed 's/^[[:space:]]*//')
+              for entity in $entities; do
+                # Skip YAML keys that aren't entities
+                if [[ "$entity" =~ ^(sensor|binary_sensor|input_boolean|input_select|input_number|input_datetime|counter|timer)$ ]]; then
+                  continue
+                fi
+                
+                # Search for entity usage across all files
+                if ! grep -r "$entity" automations/ dashboards/ scenes/ scripts/ >/dev/null 2>&1; then
+                  echo "- Potentially unused: $entity (in $entity_file)" >> cleanup-report.md
+                fi
+              done
+            fi
+          done
+          
+          echo "" >> cleanup-report.md
+          echo "### 📋 Cleanup Recommendations" >> cleanup-report.md
+          echo "1. Review unused entities listed above" >> cleanup-report.md
+          echo "2. Check dashboard performance metrics" >> cleanup-report.md
+          echo "3. Consolidate similar automation patterns into blueprints" >> cleanup-report.md
+          
+          cat cleanup-report.md
+
+  backup-create:
+    name: Configuration Backup
+    runs-on: self-hosted  
+    if: github.event.inputs.task == 'backup-create'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 💾 Create Configuration Backup
+        run: |
+          BACKUP_DATE=$(date +%Y-%m-%d_%H-%M)
+          BACKUP_DIR="backups/config_backup_${BACKUP_DATE}"
+          
+          echo "Creating backup: $BACKUP_DIR"
+          mkdir -p "$BACKUP_DIR"
+          
+          # Copy configuration files
+          cp -r automations/ "$BACKUP_DIR/"
+          cp -r scenes/ "$BACKUP_DIR/"
+          cp -r scripts/ "$BACKUP_DIR/"
+          cp -r entities/ "$BACKUP_DIR/"
+          cp -r integrations/ "$BACKUP_DIR/"
+          cp -r blueprints/ "$BACKUP_DIR/"
+          cp -r dashboards/ "$BACKUP_DIR/"
+          cp -r themes/ "$BACKUP_DIR/" 2>/dev/null || true
+          cp -r customizations/ "$BACKUP_DIR/" 2>/dev/null || true
+          cp *.yaml "$BACKUP_DIR/" 2>/dev/null || true
+          
+          # Create backup info
+          echo "# Configuration Backup" > "$BACKUP_DIR/BACKUP_INFO.md"
+          echo "**Created:** $(date)" >> "$BACKUP_DIR/BACKUP_INFO.md"
+          echo "**Commit:** ${GITHUB_SHA}" >> "$BACKUP_DIR/BACKUP_INFO.md"
+          echo "**Branch:** ${GITHUB_REF#refs/heads/}" >> "$BACKUP_DIR/BACKUP_INFO.md"
+          
+          # Compress backup
+          tar -czf "${BACKUP_DIR}.tar.gz" -C backups/ "config_backup_${BACKUP_DATE}"
+          rm -rf "$BACKUP_DIR"
+          
+          echo "✅ Backup created: ${BACKUP_DIR}.tar.gz"
+
+  performance-report:
+    name: Performance Analysis
+    runs-on: self-hosted
+    if: github.event.inputs.task == 'performance-report'  
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 📊 Analyze Configuration Performance
+        run: |
+          echo "## 📊 Performance Analysis Report" > performance-report.md
+          echo "**Date:** $(date)" >> performance-report.md
+          echo "" >> performance-report.md
+          
+          # File size analysis
+          echo "### 📁 File Size Analysis" >> performance-report.md
+          echo "\`\`\`" >> performance-report.md
+          echo "Dashboard file sizes:" >> performance-report.md
+          find . -name "*.yaml" -path "./dashboard*" -exec wc -l {} \; | sort -nr >> performance-report.md
+          echo "" >> performance-report.md
+          echo "Largest configuration files:" >> performance-report.md
+          find . -name "*.yaml" -exec wc -l {} \; | sort -nr | head -10 >> performance-report.md
+          echo "\`\`\`" >> performance-report.md
+          echo "" >> performance-report.md
+          
+          # Blueprint efficiency
+          echo "### 🔧 Blueprint Efficiency" >> performance-report.md
+          TOTAL_AUTOMATIONS=$(find automations -name "*.yaml" | wc -l)
+          BLUEPRINT_INSTANCES=$(grep -r "use_blueprint:" automations/ | wc -l)
+          BLUEPRINT_EFFICIENCY=$((BLUEPRINT_INSTANCES * 100 / TOTAL_AUTOMATIONS))
+          
+          echo "- Total automation files: $TOTAL_AUTOMATIONS" >> performance-report.md
+          echo "- Blueprint instances: $BLUEPRINT_INSTANCES" >> performance-report.md
+          echo "- Blueprint adoption: ${BLUEPRINT_EFFICIENCY}%" >> performance-report.md
+          echo "" >> performance-report.md
+          
+          # Entity organization
+          echo "### 📋 Entity Organization" >> performance-report.md
+          for entity_type in binary_sensor counter input_boolean input_datetime input_number input_select template timer; do
+            count=$(find entities/$entity_type -name "*.yaml" 2>/dev/null | wc -l)
+            echo "- $entity_type files: $count" >> performance-report.md
+          done
+          
+          echo "" >> performance-report.md
+          echo "### 💡 Optimization Recommendations" >> performance-report.md
+          
+          # Check dashboard sizes
+          LARGE_DASHBOARDS=$(find . -name "*dashboard*.yaml" -exec wc -l {} \; | awk '$1 > 1000 {print}' | wc -l)
+          if [ "$LARGE_DASHBOARDS" -gt 0 ]; then
+            echo "- Consider optimizing dashboard files >1000 lines" >> performance-report.md
+          else
+            echo "- ✅ Dashboard sizes are optimal" >> performance-report.md
+          fi
+          
+          # Check blueprint adoption
+          if [ "$BLUEPRINT_EFFICIENCY" -lt 50 ]; then
+            echo "- Consider creating more blueprints to reduce duplication" >> performance-report.md
+          else
+            echo "- ✅ Good blueprint adoption rate" >> performance-report.md
+          fi
+          
+          cat performance-report.md

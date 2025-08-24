@@ -70,6 +70,12 @@ jobs:
             --include='entities/**' \
             --include='blueprints/' \
             --include='blueprints/**' \
+            --include='dashboards/' \
+            --include='dashboards/**' \
+            --include='themes/' \
+            --include='themes/**' \
+            --include='assistants/' \
+            --include='assistants/**' \
             --exclude='*' \
             ./ /mnt/user/appdata/Home-Assistant-Container/
             

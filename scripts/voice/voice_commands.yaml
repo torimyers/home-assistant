@@ -1,0 +1,209 @@
+# Voice Assistant Commands - Dune Voice Interface
+# Natural language processing for House Atreides command systems
+
+alias: "Process Voice Commands"
+description: "Processes natural language voice commands with Dune-themed responses"
+icon: mdi:microphone
+mode: parallel
+max: 10
+
+fields:
+  command:
+    name: "Voice Command"
+    description: "The voice command to process"
+    required: true
+    selector:
+      text:
+        multiline: false
+
+variables:
+  # Command processing variables
+  command_lower: "{{ command | lower }}"
+  
+  # Dune-themed response templates
+  acknowledgments:
+    - "Command acknowledged, my Duke"
+    - "As you command, noble Atreides"
+    - "The spice must flow - executing now"
+    - "By your will, Muad'Dib"
+    - "The Sisterhood obeys"
+  
+  status_reports:
+    health_good: "The Sietch thrives, my Lord. All systems operational at {{ states('sensor.sietch_health_score') }}%"
+    health_concerning: "The desert tests us, Sire. System health at {{ states('sensor.sietch_health_score') }}% - monitoring advised"
+    production_high: "The spice flows well - production at {{ states('sensor.spice_production_level') }}%"
+    production_low: "Spice production concerns noted at {{ states('sensor.spice_production_level') }}%"
+
+sequence:
+  # System Status Commands
+  - if:
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ 'status' in command_lower or 'health' in command_lower or 'report' in command_lower }}"
+    then:
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: >
+            {% set health = states('sensor.sietch_health_score') | float(0) %}
+            {% if health >= 85 %}
+              {{ status_reports.health_good }}
+            {% else %}
+              {{ status_reports.health_concerning }}
+            {% endif %}
+            
+            {% set production = states('sensor.spice_production_level') | float(0) %}
+            {% if production >= 75 %}
+              {{ status_reports.production_high }}
+            {% else %}
+              {{ status_reports.production_low }}
+            {% endif %}
+            
+            Water conservation stands at {{ states('sensor.water_conservation_index') }}%.
+            The shields hold at {{ states('sensor.energy_shield_status') }}%.
+
+  # Lighting Control Commands
+  - if:
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ 'lights on' in command_lower or 'illuminate' in command_lower }}"
+    then:
+      - service: light.turn_on
+        target:
+          area_id: ["living_room", "kitchen", "office"]
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: "{{ acknowledgments | random }}. The great halls are now illuminated."
+
+  - if:
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ 'lights off' in command_lower or 'darkness' in command_lower or 'dim' in command_lower }}"
+    then:
+      - service: light.turn_off
+        target:
+          area_id: ["living_room", "kitchen", "office"]
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: "{{ acknowledgments | random }}. Returning the halls to the embrace of night."
+
+  # Climate Control Commands
+  - if:
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ 'warmer' in command_lower or 'heat' in command_lower or 'increase temperature' in command_lower }}"
+    then:
+      - service: input_number.increment
+        target:
+          entity_id: input_number.temperature_threshold_high
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: "The temperature rises like the twin suns of Arrakis. Climate adjusted, my Lord."
+
+  - if:
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ 'cooler' in command_lower or 'cold' in command_lower or 'decrease temperature' in command_lower }}"
+    then:
+      - service: input_number.decrement
+        target:
+          entity_id: input_number.temperature_threshold_high
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: "Like the cool desert night, temperature lowered. The stillsuits conserve all."
+
+  # Security Commands
+  - if:
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ 'security' in command_lower or 'shields up' in command_lower or 'defense' in command_lower }}"
+    then:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.security_level
+        data:
+          option: "Enhanced"
+      - service: scene.turn_on
+        target:
+          entity_id: scene.system_storm_mode
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: "Holtzman shields activated. The House of Atreides stands ready against all enemies."
+
+  # Emergency Commands
+  - if:
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ 'emergency' in command_lower or 'alert' in command_lower or 'urgent' in command_lower }}"
+    then:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.water_emergency
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.emergency_alerts_enabled
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: "Emergency protocols activated! All Fremen to stations. The spice must be protected!"
+
+  # Automation Control
+  - if:
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ 'automation' in command_lower or 'disable auto' in command_lower }}"
+    then:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: 
+            - input_boolean.motion_lighting_enabled
+            - input_boolean.climate_automation_enabled
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: "Automation systems standing down. Manual control granted to the Kwisatz Haderach."
+
+  # Production Reports
+  - if:
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ 'production' in command_lower or 'spice' in command_lower or 'harvest' in command_lower }}"
+    then:
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: >
+            Current spice production stands at {{ states('sensor.spice_production_level') }}%.
+            Harvester efficiency trending {{ state_attr('sensor.spice_harvester_efficiency_trend', 'trend_direction') | lower }}.
+            {% if states('sensor.spice_production_level') | float(0) >= 80 %}
+            The desert provides abundantly, Sire.
+            {% else %}
+            The sands are restless. Production optimization recommended.
+            {% endif %}
+
+  # Unknown Command Fallback
+  - if:
+      - condition: template
+        value_template: >
+          {{ not ('status' in command_lower or 'health' in command_lower or 'lights' in command_lower or 
+                  'temperature' in command_lower or 'security' in command_lower or 'emergency' in command_lower or
+                  'automation' in command_lower or 'production' in command_lower or 'spice' in command_lower) }}
+    then:
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: "Forgive me, noble Atreides. The ancient ways are unclear. Please rephrase your command."

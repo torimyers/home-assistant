@@ -1,0 +1,445 @@
+# Multi-Condition Decision Tree System
+# Complex decision-making with cascading conditions and priority hierarchies
+#
+# Multi-Condition Decision Trees:
+# - Cascading conditions with weighted decisions using multiple template sensors
+# - Priority hierarchies based on Sietch Health Score levels
+# - Cross-room coordination considering multiple zones simultaneously
+# - Environmental adaptation with weather, time, presence, and sensor integration
+
+alias: "Multi-Condition Decision Tree - Advanced Logic Matrix"
+description: "Complex decision-making automation with cascading conditions and intelligent priority management"
+trigger:
+  # Primary decision triggers based on multi-sensor convergence
+  - platform: template
+    value_template: >-
+      {% set health = states('sensor.sietch_health_score') | float %}
+      {% set activity = states('sensor.fremen_activity_level') | float %}
+      {% set conservation = states('sensor.water_conservation_index') | float %}
+      {% set efficiency = states('sensor.harvester_efficiency') | float %}
+      {% set production = states('sensor.spice_production_level') | float %}
+      
+      {# Complex multi-sensor decision matrix #}
+      {% set decision_vector = [
+        health * 0.25,
+        activity * 0.20,
+        conservation * 0.20,
+        efficiency * 0.20,
+        production * 0.15
+      ] %}
+      {% set decision_score = decision_vector | sum %}
+      
+      {# Dynamic threshold based on time and survival status #}
+      {% set survival = states('sensor.desert_survival_status') %}
+      {% set hour = now().hour %}
+      {% set base_threshold = 60 %}
+      {% set survival_modifier = 20 if survival == 'Critical' else (10 if survival == 'Stressed' else 0) %}
+      {% set time_modifier = 10 if 22 <= hour or hour <= 6 else 0 %}
+      {% set threshold = base_threshold - survival_modifier - time_modifier %}
+      
+      {{ decision_score >= threshold }}
+    for:
+      minutes: 5
+    id: "decision_matrix_triggered"
+
+  # Environmental decision cascade
+  - platform: template
+    value_template: >-
+      {% set atmospheric = states('sensor.atmospheric_conditions') | float %}
+      {% set security = states('sensor.night_security_effectiveness') | float %}
+      {% set energy = states('sensor.energy_shield_status') | float %}
+      {% set response = states('sensor.system_response_time') | float %}
+      
+      {# Environmental cascade conditions #}
+      {% set env_critical = atmospheric < 70 %}
+      {% set security_compromised = security < 75 and (now().hour >= 22 or now().hour <= 6) %}
+      {% set energy_low = energy < 60 %}
+      {% set system_slow = response < 75 %}
+      
+      {# Cascading priority logic #}
+      {% if env_critical and (security_compromised or energy_low) %}
+        {{ true }}  {# High priority environmental + security/energy issue #}
+      {% elif env_critical and system_slow %}
+        {{ true }}  {# Environmental issue with system performance problem #}
+      {% elif security_compromised and energy_low and system_slow %}
+        {{ true }}  {# Multiple system failures #}
+      {% else %}
+        {{ false }}
+      {% endif %}
+    for:
+      minutes: 10
+    id: "environmental_cascade_trigger"
+
+  # Cross-zone coordination trigger
+  - platform: template
+    value_template: >-
+      {% set occupancy = states('sensor.sietch_occupancy_distribution') %}
+      {% set pattern = states('sensor.motion_pattern_analysis') %}
+      {% set activity = states('sensor.fremen_activity_level') | float %}
+      {% set ritual_completion = states('sensor.morning_ritual_completion') | float %}
+      
+      {# Multi-zone coordination conditions #}
+      {% set zone_transition = occupancy != states('input_text.previous_primary_zone') %}
+      {% set pattern_significant = pattern in ['Full Activity', 'Distributed'] %}
+      {% set activity_threshold = activity > 60 %}
+      {% set morning_active = 6 <= now().hour <= 10 and ritual_completion < 100 %}
+      
+      {{ zone_transition and pattern_significant and (activity_threshold or morning_active) }}
+    id: "cross_zone_coordination"
+
+condition:
+  # Hierarchical condition assessment with priority weighting
+  - condition: template
+    value_template: >-
+      {% set health = states('sensor.sietch_health_score') | float %}
+      {% set survival = states('sensor.desert_survival_status') %}
+      {% set activity = states('sensor.fremen_activity_level') | float %}
+      {% set conservation = states('sensor.water_conservation_index') | float %}
+      {% set atmospheric = states('sensor.atmospheric_conditions') | float %}
+      {% set energy = states('sensor.energy_shield_status') | float %}
+      
+      {# Priority Level 1: Critical Survival Override #}
+      {% if survival == 'Critical' %}
+        {{ true }}  {# Always proceed in critical survival situations #}
+      
+      {# Priority Level 2: System Health Critical #}
+      {% elif health < 40 %}
+        {{ atmospheric > 60 and energy > 40 }}  {# Minimal environmental requirements #}
+      
+      {# Priority Level 3: Standard Operations #}
+      {% elif health >= 60 %}
+        {{ activity > 20 and conservation > 40 and atmospheric > 70 }}
+      
+      {# Priority Level 4: Degraded Operations #}
+      {% else %}
+        {% set subsystem_count = 0 %}
+        {% if activity > 30 %}{% set subsystem_count = subsystem_count + 1 %}{% endif %}
+        {% if conservation > 50 %}{% set subsystem_count = subsystem_count + 1 %}{% endif %}
+        {% if atmospheric > 65 %}{% set subsystem_count = subsystem_count + 1 %}{% endif %}
+        {% if energy > 50 %}{% set subsystem_count = subsystem_count + 1 %}{% endif %}
+        {{ subsystem_count >= 2 }}  {# At least 2 subsystems functional #}
+      {% endif %}
+
+action:
+  # Complex decision tree with cascading logic branches
+  - choose:
+      # Main Decision Matrix Branch
+      - conditions:
+          - condition: trigger
+            id: "decision_matrix_triggered"
+        sequence:
+          # Level 1 Decision: Determine primary action category
+          - service: script.turn_on
+            target:
+              entity_id: script.primary_decision_categorizer
+            data:
+              variables:
+                decision_metrics: >-
+                  {
+                    "health_score": {{ states('sensor.sietch_health_score') | float }},
+                    "activity_level": {{ states('sensor.fremen_activity_level') | float }},
+                    "conservation_index": {{ states('sensor.water_conservation_index') | float }},
+                    "harvester_efficiency": {{ states('sensor.harvester_efficiency') | float }},
+                    "production_level": {{ states('sensor.spice_production_level') | float }},
+                    "atmospheric_conditions": {{ states('sensor.atmospheric_conditions') | float }},
+                    "survival_status": "{{ states('sensor.desert_survival_status') }}"
+                  }
+
+          # Level 2 Decision: Branched execution based on health score priority
+          - choose:
+              # Critical Health Priority Branch (Health < 50)
+              - conditions:
+                  - condition: numeric_state
+                    entity_id: sensor.sietch_health_score
+                    below: 50
+                sequence:
+                  # Emergency system stabilization protocol
+                  - service: script.turn_on
+                    target:
+                      entity_id: script.emergency_system_stabilization
+                    data:
+                      variables:
+                        health_level: "{{ states('sensor.sietch_health_score') | float }}"
+                        critical_subsystems: >-
+                          [
+                            {% if states('sensor.energy_shield_status') | float < 50 %}"energy_shield",{% endif %}
+                            {% if states('sensor.atmospheric_conditions') | float < 70 %}"atmospheric",{% endif %}
+                            {% if states('sensor.system_response_time') | float < 60 %}"response_time",{% endif %}
+                            {% if states('sensor.night_security_effectiveness') | float < 60 %}"security"{% endif %}
+                          ]
+
+                  # Override normal operations for system recovery
+                  - service: automation.turn_off
+                    target:
+                      entity_id:
+                        - automation.comfort_optimizations
+                        - automation.entertainment_controls
+                        - automation.non_essential_lighting
+
+              # High Health Priority Branch (Health 50-75)
+              - conditions:
+                  - condition: numeric_state
+                    entity_id: sensor.sietch_health_score
+                    above: 50
+                    below: 75
+                sequence:
+                  # Balanced operation with selective feature activation
+                  - service: script.turn_on
+                    target:
+                      entity_id: script.balanced_operations_manager
+                    data:
+                      variables:
+                        health_tier: "moderate"
+                        operational_priorities: >-
+                          {
+                            "conservation": {{ states('sensor.water_conservation_index') | float > 60 }},
+                            "efficiency": {{ states('sensor.harvester_efficiency') | float > 75 }},
+                            "security": {{ states('sensor.night_security_effectiveness') | float > 70 }},
+                            "production": {{ states('sensor.spice_production_level') | float > 80 }}
+                          }
+
+                  # Level 3 Decision: Activity-based sub-branching
+                  - choose:
+                      - conditions:
+                          - condition: numeric_state
+                            entity_id: sensor.fremen_activity_level
+                            above: 70
+                        sequence:
+                          - service: scene.turn_on
+                            target:
+                              entity_id: scene.high_activity_optimization
+                          - service: input_boolean.turn_on
+                            target:
+                              entity_id: input_boolean.enhanced_responsiveness_mode
+
+                      - conditions:
+                          - condition: numeric_state
+                            entity_id: sensor.fremen_activity_level
+                            below: 30
+                        sequence:
+                          - service: scene.turn_on
+                            target:
+                              entity_id: scene.low_activity_conservation
+                          - service: input_boolean.turn_on
+                            target:
+                              entity_id: input_boolean.energy_conservation_mode
+
+              # Optimal Health Priority Branch (Health >= 75)
+              - conditions:
+                  - condition: numeric_state
+                    entity_id: sensor.sietch_health_score
+                    above: 75
+                sequence:
+                  # Full feature activation with optimization focus
+                  - service: script.turn_on
+                    target:
+                      entity_id: script.optimal_operations_orchestrator
+                    data:
+                      variables:
+                        health_tier: "optimal"
+                        enhancement_matrix: >-
+                          {
+                            "pattern_optimization": "{{ states('sensor.motion_pattern_analysis') }}",
+                            "efficiency_boost": {{ states('sensor.harvester_efficiency') | float > 90 }},
+                            "production_excellence": {{ states('sensor.spice_production_level') | float > 100 }},
+                            "atmospheric_perfection": {{ states('sensor.atmospheric_conditions') | float > 85 }}
+                          }
+
+                  # Level 3 Decision: Multi-factor optimization
+                  - service: automation.turn_on
+                    target:
+                      entity_id:
+                        - automation.advanced_scene_intelligence
+                        - automation.predictive_climate_optimization
+                        - automation.enhanced_security_algorithms
+
+      # Environmental Cascade Branch
+      - conditions:
+          - condition: trigger
+            id: "environmental_cascade_trigger"
+        sequence:
+          # Cascade Level 1: Assess environmental threat severity
+          - service: script.turn_on
+            target:
+              entity_id: script.environmental_threat_assessor
+            data:
+              variables:
+                atmospheric_level: "{{ states('sensor.atmospheric_conditions') | float }}"
+                security_effectiveness: "{{ states('sensor.night_security_effectiveness') | float }}"
+                energy_shield_status: "{{ states('sensor.energy_shield_status') | float }}"
+                system_response: "{{ states('sensor.system_response_time') | float }}"
+                threat_matrix: >-
+                  {% set threats = [] %}
+                  {% if states('sensor.atmospheric_conditions') | float < 70 %}
+                    {% set threats = threats + ['atmospheric_degradation'] %}
+                  {% endif %}
+                  {% if states('sensor.night_security_effectiveness') | float < 75 and (now().hour >= 22 or now().hour <= 6) %}
+                    {% set threats = threats + ['security_vulnerability'] %}
+                  {% endif %}
+                  {% if states('sensor.energy_shield_status') | float < 60 %}
+                    {% set threats = threats + ['energy_depletion'] %}
+                  {% endif %}
+                  {% if states('sensor.system_response_time') | float < 75 %}
+                    {% set threats = threats + ['system_degradation'] %}
+                  {% endif %}
+                  {{ threats | join(',') }}
+
+          # Cascade Level 2: Multi-threat response coordination
+          - choose:
+              # Critical Multi-Threat Response
+              - conditions:
+                  - condition: template
+                    value_template: >-
+                      {% set atmospheric_bad = states('sensor.atmospheric_conditions') | float < 70 %}
+                      {% set security_bad = states('sensor.night_security_effectiveness') | float < 75 %}
+                      {% set energy_bad = states('sensor.energy_shield_status') | float < 60 %}
+                      {{ (atmospheric_bad and security_bad) or (atmospheric_bad and energy_bad) or (security_bad and energy_bad) }}
+                sequence:
+                  # Multi-system emergency response
+                  - service: script.turn_on
+                    target:
+                      entity_id: script.multi_threat_emergency_response
+                    data:
+                      variables:
+                        threat_combination: >-
+                          {% set threats = [] %}
+                          {% if states('sensor.atmospheric_conditions') | float < 70 %}{% set threats = threats + ['atmospheric'] %}{% endif %}
+                          {% if states('sensor.night_security_effectiveness') | float < 75 %}{% set threats = threats + ['security'] %}{% endif %}
+                          {% if states('sensor.energy_shield_status') | float < 60 %}{% set threats = threats + ['energy'] %}{% endif %}
+                          {{ threats | join('_') }}
+
+              # Single Critical Threat Response  
+              - conditions:
+                  - condition: template
+                    value_template: >-
+                      {% set threat_count = 0 %}
+                      {% if states('sensor.atmospheric_conditions') | float < 65 %}{% set threat_count = threat_count + 1 %}{% endif %}
+                      {% if states('sensor.night_security_effectiveness') | float < 70 %}{% set threat_count = threat_count + 1 %}{% endif %}
+                      {% if states('sensor.energy_shield_status') | float < 55 %}{% set threat_count = threat_count + 1 %}{% endif %}
+                      {{ threat_count == 1 }}
+                sequence:
+                  # Focused threat mitigation
+                  - service: script.turn_on
+                    target:
+                      entity_id: script.focused_threat_mitigation
+                    data:
+                      variables:
+                        primary_threat: >-
+                          {% if states('sensor.atmospheric_conditions') | float < 65 %}atmospheric
+                          {% elif states('sensor.night_security_effectiveness') | float < 70 %}security
+                          {% elif states('sensor.energy_shield_status') | float < 55 %}energy
+                          {% else %}system_performance
+                          {% endif %}
+
+      # Cross-Zone Coordination Branch
+      - conditions:
+          - condition: trigger
+            id: "cross_zone_coordination"
+        sequence:
+          # Zone coordination analysis
+          - service: script.turn_on
+            target:
+              entity_id: script.cross_zone_coordinator
+            data:
+              variables:
+                current_zone: "{{ states('sensor.sietch_occupancy_distribution') }}"
+                previous_zone: "{{ states('input_text.previous_primary_zone') }}"
+                motion_pattern: "{{ states('sensor.motion_pattern_analysis') }}"
+                activity_level: "{{ states('sensor.fremen_activity_level') | float }}"
+                coordination_strategy: >-
+                  {% set pattern = states('sensor.motion_pattern_analysis') %}
+                  {% set activity = states('sensor.fremen_activity_level') | float %}
+                  {% if pattern == 'Full Activity' and activity > 80 %}
+                    full_coordination
+                  {% elif pattern == 'Distributed' and activity > 60 %}
+                    zone_following
+                  {% else %}
+                    minimal_coordination
+                  {% endif %}
+
+          # Multi-zone scene and system coordination
+          - choose:
+              # Full Activity Multi-Zone Coordination
+              - conditions:
+                  - condition: template
+                    value_template: "{{ states('sensor.motion_pattern_analysis') == 'Full Activity' }}"
+                sequence:
+                  - service: scene.turn_on
+                    target:
+                      entity_id: scene.full_sietch_active_coordination
+                  
+                  - service: script.turn_on
+                    target:
+                      entity_id: script.multi_zone_optimization
+                    data:
+                      variables:
+                        zones_active: >-
+                          [
+                            {% if is_state('binary_sensor.kitchen_occupancy', 'on') %}"kitchen",{% endif %}
+                            {% if is_state('binary_sensor.office_motion_detected', 'on') %}"office",{% endif %}
+                            {% if is_state('binary_sensor.living_room_motion_detected', 'on') %}"living_room"{% endif %}
+                          ]
+
+              # Distributed Activity Selective Coordination
+              - conditions:
+                  - condition: template
+                    value_template: "{{ states('sensor.motion_pattern_analysis') == 'Distributed' }}"
+                sequence:
+                  - service: script.turn_on
+                    target:
+                      entity_id: script.selective_zone_coordination
+                    data:
+                      variables:
+                        primary_zone: "{{ states('sensor.sietch_occupancy_distribution') }}"
+                        secondary_zones: >-
+                          {% set zones = [] %}
+                          {% if is_state('binary_sensor.kitchen_occupancy', 'on') and states('sensor.sietch_occupancy_distribution') != 'Kitchen' %}
+                            {% set zones = zones + ['kitchen'] %}
+                          {% endif %}
+                          {% if is_state('binary_sensor.office_motion_detected', 'on') and states('sensor.sietch_occupancy_distribution') != 'Office' %}
+                            {% set zones = zones + ['office'] %}
+                          {% endif %}
+                          {% if is_state('binary_sensor.living_room_motion_detected', 'on') and states('sensor.sietch_occupancy_distribution') != 'Living Room' %}
+                            {% set zones = zones + ['living_room'] %}
+                          {% endif %}
+                          {{ zones | join(',') }}
+
+  # Update previous zone for next coordination cycle
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.previous_primary_zone
+    data:
+      value: "{{ states('sensor.sietch_occupancy_distribution') }}"
+
+  # Advanced decision tree logging and analysis
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.decision_tree_analytics
+    data:
+      value: >-
+        {{ now().strftime('%H:%M:%S') }}: {{ trigger.id }} |
+        Decision Vector: [
+          H:{{ states('sensor.sietch_health_score') }},
+          A:{{ states('sensor.fremen_activity_level') }},
+          C:{{ states('sensor.water_conservation_index') }},
+          E:{{ states('sensor.harvester_efficiency') }},
+          P:{{ states('sensor.spice_production_level') }}
+        ] = {{ 
+          (states('sensor.sietch_health_score')|float * 0.25) +
+          (states('sensor.fremen_activity_level')|float * 0.20) +
+          (states('sensor.water_conservation_index')|float * 0.20) +
+          (states('sensor.harvester_efficiency')|float * 0.20) +
+          (states('sensor.spice_production_level')|float * 0.15)
+        | round(1) }} |
+        Branch: {{ trigger.id }} |
+        Survival: {{ states('sensor.desert_survival_status') }}
+
+  # Meta-decision analysis for continuous improvement
+  - service: automation.trigger
+    target:
+      entity_id: automation.decision_tree_optimization
+    data:
+      skip_condition: false
+
+mode: queued
+max: 5

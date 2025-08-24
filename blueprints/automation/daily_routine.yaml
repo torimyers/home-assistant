@@ -197,12 +197,34 @@ variables:
   delay_seconds: !input delay_between_actions
 
 trigger:
-  - platform: "{{ 'time' if trigger_type == 'time' else 'sun' }}"
-    at: "{{ trigger_time_var if trigger_type == 'time' else none }}"
-    event: "{{ trigger_type if trigger_type in ['sunrise', 'sunset'] else none }}"
-    offset: "{{ sun_offset_var if trigger_type in ['sunrise', 'sunset'] else none }}"
+  # Time-based trigger
+  - platform: time
+    at: !input trigger_time_var
+  # Sunrise trigger
+  - platform: sun
+    event: sunrise
+    offset: !input sun_offset_var
+  # Sunset trigger  
+  - platform: sun
+    event: sunset
+    offset: !input sun_offset_var
 
 condition:
+  # Check if the correct trigger type was activated
+  - condition: template
+    value_template: >-
+      {% set t_type = trigger_type %}
+      {% if t_type == 'time' %}
+        {{ trigger.platform == 'time' }}
+      {% elif t_type == 'sunrise' %}
+        {{ trigger.platform == 'sun' and trigger.event == 'sunrise' }}
+      {% elif t_type == 'sunset' %}
+        {{ trigger.platform == 'sun' and trigger.event == 'sunset' }}
+      {% else %}
+        false
+      {% endif %}
+  
+  # Person condition check
   - condition: template
     value_template: >-
       {% if enable_conditions and condition_person %}

@@ -1,0 +1,39 @@
+---
+# Automation Timers - Dune Temporal Controls
+# Timer entities for automation delays and scheduling
+
+timer:
+  motion_light_delay:
+    name: "Motion Light Delay"
+    duration: "00:10:00"
+    icon: mdi:timer-outline
+
+  security_arm_delay:
+    name: "Security Arm Delay"
+    duration: "00:02:00"
+    icon: mdi:shield-clock
+
+  appliance_notification_cooldown:
+    name: "Appliance Notification Cooldown"
+    duration: "01:00:00"
+    icon: mdi:washing-machine
+
+  guest_mode_timeout:
+    name: "Guest Mode Timeout"
+    duration: "24:00:00"
+    icon: mdi:account-clock
+
+  maintenance_reminder_snooze:
+    name: "Maintenance Reminder Snooze"
+    duration: "04:00:00"
+    icon: mdi:wrench-clock
+
+  emergency_alert_cooldown:
+    name: "Emergency Alert Cooldown"
+    duration: "00:30:00"
+    icon: mdi:alert-circle-outline
+
+  system_health_check_interval:
+    name: "System Health Check Interval"
+    duration: "01:00:00"
+    icon: mdi:heart-pulse

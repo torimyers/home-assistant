@@ -1,0 +1,442 @@
+---
+# Motion Pattern Anomaly Detection - Tribal Movement Intelligence
+alias: "Motion Pattern Anomaly Detection"
+description: "Advanced motion analytics with pattern efficiency monitoring and tribal movement insights"
+trigger:
+  - platform: template
+    value_template: >-
+      {{ state_attr('sensor.motion_pattern_analysis', 'efficiency_score').replace('% efficiency', '') | int < 60 }}
+    for:
+      minutes: 10
+    id: pattern_inefficiency
+  - platform: template
+    value_template: >-
+      {{ states('sensor.motion_pattern_analysis') == 'Full Activity' and
+         states('sensor.system_response_time') | float < 70 }}
+    for:
+      minutes: 5
+    id: overwhelming_activity_pattern
+  - platform: template
+    value_template: >-
+      {{ states('sensor.motion_pattern_analysis') == 'Dormant' and
+         (now().hour >= 8 and now().hour <= 20) }}
+    for:
+      minutes: 20
+    id: unusual_dormancy_pattern
+  - platform: template
+    value_template: >-
+      {{ states('sensor.fremen_activity_level') | float < 20 and
+         (now().hour >= 10 and now().hour <= 16) }}
+    for:
+      minutes: 15
+    id: midday_inactivity_anomaly
+  - platform: template
+    value_template: >-
+      {{ state_attr('sensor.motion_pattern_analysis', 'pattern_type') == 'Multi-Zone' and
+         states('sensor.harvester_efficiency') | float < 75 }}
+    id: multi_zone_inefficiency
+  - platform: template
+    value_template: >-
+      {{ states('sensor.sietch_occupancy_distribution') == 'No Primary Zone' and
+         states('sensor.fremen_activity_level') | float > 30 }}
+    for:
+      minutes: 8
+    id: phantom_activity_pattern
+  - platform: template
+    value_template: >-
+      {{ state_attr('sensor.motion_pattern_analysis', 'efficiency_score').replace('% efficiency', '') | int >= 95 }}
+    for:
+      minutes: 15
+    id: perfect_motion_efficiency
+  - platform: template
+    value_template: >-
+      {{ states('sensor.fremen_activity_level') | float >= 90 and
+         states('sensor.water_conservation_index') | float >= 85 }}
+    for:
+      minutes: 10
+    id: optimal_activity_conservation_balance
+condition:
+  - condition: state
+    entity_id: input_boolean.notification_system_enabled
+    state: "on"
+action:
+  - choose:
+      # PATTERN INEFFICIENCY ALERT
+      - conditions:
+          - condition: trigger
+            id: pattern_inefficiency
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "⚡ Motion Pattern Inefficiency Detected"
+              message: >-
+                Movement patterns show suboptimal efficiency, Muad'Dib. The tribe moves without purpose.
+                
+                ⚡ **Pattern Efficiency**: {{ state_attr('sensor.motion_pattern_analysis', 'efficiency_score') }}
+                🏃 **Movement Status**: {{ states('sensor.motion_pattern_analysis') }} - {{ state_attr('sensor.motion_pattern_analysis', 'pattern_type') }}
+                
+                **Current Movement Analysis:**
+                • Activity Distribution: {{ state_attr('sensor.sietch_occupancy_distribution', 'activity_distribution') }}
+                • Primary Zone: {{ states('sensor.sietch_occupancy_distribution') }}
+                • Time Analysis: {{ state_attr('sensor.motion_pattern_analysis', 'time_analysis') }}
+                
+                **Efficiency Factors:**
+                • Expected vs Actual: Performance below anticipated patterns
+                • Resource Utilization: Movement not optimized for current conditions
+                • Coordination Issues: Multiple zones active without synergy
+                
+                🏜️ "Efficient movement conserves water and energy. Wasted motion is wasted life in the desert."
+                
+                **Optimization Recommendations:**
+                • Focus activity in complementary zones
+                • Coordinate movement with peak efficiency periods
+                • Reduce simultaneous multi-zone activation
+                • Consider activity sequencing for better flow
+                
+                The desert teaches economy of motion. Learn its lessons.
+              data:
+                actions:
+                  - action: "OPTIMIZE_MOVEMENT_PATTERNS"
+                    title: "⚡ Optimize Patterns"
+                  - action: "VIEW_MOVEMENT_ANALYTICS"
+                    title: "📊 Movement Analytics"
+                  - action: "EFFICIENCY_TRAINING"
+                    title: "🎯 Efficiency Guide"
+                group: "pattern_alerts"
+                tag: "pattern_inefficiency"
+                notification_icon: "mdi:chart-line-variant"
+                color: "#FF9800"
+                channel: "Pattern Analysis"
+                importance: default
+                sticky: false
+                timeout: 1200
+
+      # OVERWHELMING ACTIVITY PATTERN
+      - conditions:
+          - condition: trigger
+            id: overwhelming_activity_pattern
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🌊 Overwhelming Activity Pattern Alert"
+              message: >-
+                Full tribal activity overwhelms system response capacity, Duke.
+                
+                🌊 **Activity Status**: {{ states('sensor.motion_pattern_analysis') }} - {{ state_attr('sensor.motion_pattern_analysis', 'pattern_type') }}
+                ⚡ **System Response**: {{ states('sensor.system_response_time') }}% - {{ state_attr('sensor.system_response_time', 'response_grade') }}
+                
+                **Overwhelming Factors:**
+                • All zones simultaneously active
+                • System load: {{ state_attr('sensor.system_response_time', 'current_load') }}
+                • Response lag detected across multiple systems
+                
+                **Performance Impact:**
+                • Harvester Efficiency: {{ states('sensor.harvester_efficiency') }}%
+                • Automation Response: Delayed due to high load
+                • Resource Coordination: Strained by concurrent demands
+                
+                🏜️ "Even the mightiest sandworm must surface to breathe. Overwhelming activity requires strategic pacing."
+                
+                **Tactical Recommendations:**
+                • Implement zone priority sequencing
+                • Reduce non-essential concurrent activities
+                • Allow system recovery periods
+                • Consider staggered activity patterns
+                
+                Master the rhythm of the desert - intense bursts followed by strategic rest.
+              data:
+                actions:
+                  - action: "IMPLEMENT_ACTIVITY_SEQUENCING"
+                    title: "⏭️ Sequence Activities"
+                  - action: "REDUCE_CONCURRENT_LOAD"
+                    title: "📉 Reduce Load"
+                  - action: "SYSTEM_RECOVERY_MODE"
+                    title: "🔄 Recovery Mode"
+                group: "pattern_alerts"
+                tag: "overwhelming_activity"
+                notification_icon: "mdi:waves"
+                color: "#E91E63"
+                channel: "Pattern Analysis"
+                importance: high
+                sticky: false
+                timeout: 1800
+
+      # UNUSUAL DORMANCY PATTERN
+      - conditions:
+          - condition: trigger
+            id: unusual_dormancy_pattern
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "😴 Unusual Dormancy Pattern Detected"
+              message: >-
+                Extended dormancy during productive hours, Muad'Dib. The sietch sleeps when it should thrive.
+                
+                😴 **Pattern Status**: {{ states('sensor.motion_pattern_analysis') }}
+                ⏰ **Time Context**: {{ state_attr('sensor.motion_pattern_analysis', 'time_analysis') }}
+                
+                **Dormancy Analysis:**
+                • Activity Level: {{ states('sensor.fremen_activity_level') }}% ({{ state_attr('sensor.fremen_activity_level', 'tribal_status') }})
+                • Primary Zone: {{ states('sensor.sietch_occupancy_distribution') }}
+                • Expected Period: {{ state_attr('sensor.fremen_activity_level', 'current_period') }}
+                
+                **Potential Causes:**
+                • Extended absence from the sietch
+                • System-wide motion detection issues
+                • Intentional low-activity period
+                • Sensor network problems
+                
+                🏜️ "The desert does not sleep during the day. Neither should a thriving sietch."
+                
+                **Investigation Recommendations:**
+                • Verify presence and intended activity levels
+                • Check motion sensor network functionality
+                • Confirm automation system responses
+                • Consider if intentional conservation mode is active
+                
+                {% if now().hour >= 12 and now().hour <= 14 %}
+                **Midday Note**: Some rest during peak heat is natural, but extended dormancy may indicate issues.
+                {% endif %}
+                
+                Ensure dormancy is by design, not by system failure.
+              data:
+                actions:
+                  - action: "VERIFY_PRESENCE_STATUS"
+                    title: "👤 Verify Presence"
+                  - action: "CHECK_MOTION_SENSORS"
+                    title: "📡 Check Sensors"
+                  - action: "ACTIVATE_SYSTEMS_CHECK"
+                    title: "🔍 Systems Check"
+                group: "pattern_alerts"
+                tag: "unusual_dormancy"
+                notification_icon: "mdi:sleep"
+                color: "#607D8B"
+                channel: "Pattern Analysis"
+                importance: default
+                sticky: false
+                timeout: 1200
+
+      # MIDDAY INACTIVITY ANOMALY
+      - conditions:
+          - condition: trigger
+            id: midday_inactivity_anomaly
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "☀️ Midday Inactivity Anomaly"
+              message: >-
+                Minimal activity during prime productive hours, Duke. The midday sun calls for action.
+                
+                ☀️ **Activity Level**: {{ states('sensor.fremen_activity_level') }}% - {{ state_attr('sensor.fremen_activity_level', 'tribal_status') }}
+                ⏰ **Time Context**: {{ state_attr('sensor.fremen_activity_level', 'current_period') }}
+                
+                **Midday Expectations vs Reality:**
+                • Expected: Moderate to high productivity
+                • Actual: {{ state_attr('sensor.fremen_activity_level', 'tribal_status') }}
+                • Peak Hours: {{ state_attr('sensor.fremen_activity_level', 'peak_activity_periods') }}
+                
+                🏜️ "The midday sun provides energy for work. Wasted daylight is wasted opportunity."
+                
+                **Possible Considerations:**
+                • Natural siesta period (culturally appropriate)
+                • Awaiting optimal conditions for activity
+                • Conservation of energy for evening productivity
+                • System or presence verification needed
+                
+                Balance rest with productivity. The desert rewards both wisdom and action.
+              data:
+                actions:
+                  - action: "MIDDAY_ACTIVITY_SUGGESTIONS"
+                    title: "☀️ Activity Ideas"
+                  - action: "VERIFY_MIDDAY_PLAN"
+                    title: "📅 Verify Plan"
+                group: "pattern_alerts"
+                tag: "midday_inactivity"
+                notification_icon: "mdi:weather-sunny"
+                color: "#FFC107"
+                channel: "Pattern Analysis"
+                importance: default
+                sticky: false
+                timeout: 900
+
+      # MULTI-ZONE INEFFICIENCY
+      - conditions:
+          - condition: trigger
+            id: multi_zone_inefficiency
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "🔄 Multi-Zone Efficiency Problem"
+              message: >-
+                Multiple zones active but harvester efficiency suffers, Muad'Dib.
+                
+                🔄 **Pattern Type**: {{ state_attr('sensor.motion_pattern_analysis', 'pattern_type') }}
+                ⚡ **Harvester Impact**: {{ states('sensor.harvester_efficiency') }}% ({{ state_attr('sensor.harvester_efficiency', 'efficiency_grade') }})
+                
+                **Multi-Zone Analysis:**
+                • Zone Status: {{ state_attr('sensor.sietch_occupancy_distribution', 'zone_status') }}
+                • Activity Distribution: {{ state_attr('sensor.sietch_occupancy_distribution', 'activity_distribution') }}
+                • System Load: {{ state_attr('sensor.harvester_efficiency', 'current_load') }}
+                
+                🏜️ "Scattered activity dilutes focus. True efficiency comes from coordinated purpose."
+                
+                **Coordination Strategies:**
+                • Sequence multi-zone activities for optimal efficiency
+                • Focus on one primary zone during peak production periods
+                • Coordinate activities to complement harvester operations
+                
+                Multiple fronts require a master strategist. Coordinate your movements.
+              data:
+                actions:
+                  - action: "COORDINATE_MULTI_ZONE"
+                    title: "🎯 Coordinate Zones"
+                  - action: "ZONE_PRIORITY_SEQUENCE"
+                    title: "⏭️ Priority Sequence"
+                group: "pattern_alerts"
+                tag: "multi_zone_inefficiency"
+                notification_icon: "mdi:vector-combine"
+                color: "#9C27B0"
+                channel: "Pattern Analysis"
+                importance: default
+                sticky: false
+                timeout: 1200
+
+      # PHANTOM ACTIVITY PATTERN
+      - conditions:
+          - condition: trigger
+            id: phantom_activity_pattern
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "👻 Phantom Activity Pattern Alert"
+              message: >-
+                Activity detected but no primary zone identified, Duke. Ghost movements in the sietch.
+                
+                👻 **Anomaly**: Activity without clear zone focus
+                🏃 **Activity Level**: {{ states('sensor.fremen_activity_level') }}%
+                🏠 **Primary Zone**: {{ states('sensor.sietch_occupancy_distribution') }}
+                
+                **Phantom Pattern Analysis:**
+                • Motion sensors detect activity
+                • No dominant occupancy zone identified
+                • Possible scattered or brief movements
+                • Potential sensor calibration issues
+                
+                🏜️ "The desert plays tricks on the unwary. Ensure your sensors see truth, not mirages."
+                
+                **Investigation Steps:**
+                • Check individual motion sensor status
+                • Verify sensor calibration settings
+                • Review recent motion events for patterns
+                • Consider environmental factors affecting detection
+                
+                Phantom patterns often reveal sensor issues or very brief activities. Investigate thoroughly.
+              data:
+                actions:
+                  - action: "INVESTIGATE_PHANTOM_ACTIVITY"
+                    title: "🔍 Investigate Pattern"
+                  - action: "CALIBRATE_MOTION_SENSORS"
+                    title: "📡 Calibrate Sensors"
+                group: "pattern_alerts"
+                tag: "phantom_activity"
+                notification_icon: "mdi:ghost"
+                color: "#795548"
+                channel: "Pattern Analysis"
+                importance: default
+                sticky: false
+                timeout: 1200
+
+      # PERFECT MOTION EFFICIENCY ACHIEVEMENT
+      - conditions:
+          - condition: trigger
+            id: perfect_motion_efficiency
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "⭐ Perfect Motion Efficiency Achieved!"
+              message: >-
+                Magnificent, Muad'Dib! Your movement patterns achieve perfect efficiency.
+                
+                ⭐ **Perfect Efficiency**: {{ state_attr('sensor.motion_pattern_analysis', 'efficiency_score') }}
+                🎯 **Movement Mastery**: {{ states('sensor.motion_pattern_analysis') }} - {{ state_attr('sensor.motion_pattern_analysis', 'pattern_type') }}
+                
+                **Excellence Metrics:**
+                • Pattern Coordination: Flawless
+                • Resource Utilization: Optimal
+                • Time Synchronization: Perfect
+                • Energy Conservation: Maximized
+                
+                **Mastery Benefits:**
+                • Maximum harvester efficiency alignment
+                • Optimal system resource utilization
+                • Perfect automation synchronization
+                • Exemplary water conservation support
+                
+                🏜️ **Desert Master Recognition**: "Your movements flow like the desert wind - purposeful, efficient, and in perfect harmony with the environment."
+                
+                This level of motion efficiency represents true understanding of desert principles. Every step serves a purpose, every pause conserves energy.
+                
+                🌟 **Fremen Honor**: Motion Efficiency Master
+              data:
+                actions:
+                  - action: "CELEBRATE_MOTION_MASTERY"
+                    title: "🎉 Celebrate Mastery"
+                  - action: "MOTION_EFFICIENCY_ANALYSIS"
+                    title: "📊 Efficiency Report"
+                group: "pattern_achievements"
+                tag: "perfect_efficiency"
+                notification_icon: "mdi:star-circle"
+                color: "#4CAF50"
+                channel: "Pattern Achievements"
+                importance: default
+                sticky: false
+                timeout: 1200
+
+      # OPTIMAL ACTIVITY-CONSERVATION BALANCE
+      - conditions:
+          - condition: trigger
+            id: optimal_activity_conservation_balance
+        sequence:
+          - service: notify.mobile_app_toris_iphone
+            data:
+              title: "⚖️ Perfect Activity-Conservation Balance!"
+              message: >-
+                EXTRAORDINARY ACHIEVEMENT! High activity with excellent conservation - true Fremen mastery!
+                
+                ⚖️ **Perfect Balance Achieved**:
+                • Activity Level: {{ states('sensor.fremen_activity_level') }}% ({{ state_attr('sensor.fremen_activity_level', 'tribal_status') }})
+                • Conservation: {{ states('sensor.water_conservation_index') }}% ({{ state_attr('sensor.water_conservation_index', 'conservation_level') }})
+                
+                **Mastery Demonstration:**
+                • High tribal activity maintained
+                • Excellent water conservation achieved simultaneously
+                • Perfect harmony between movement and efficiency
+                • Ultimate desert adaptation displayed
+                
+                🏜️ **Ultimate Fremen Recognition**: "You have achieved what few can claim - the ability to live fully while wasting nothing. This is the deepest wisdom of Arrakis."
+                
+                **Balance Master Benefits:**
+                ✨ Maximum productivity without waste
+                🎯 Optimal resource utilization mastery
+                🏆 True desert warrior status
+                🌟 Perfect adaptation to harsh conditions
+                
+                This balance is the holy grail of desert living. You embody the Fremen ideal perfectly.
+              data:
+                actions:
+                  - action: "BALANCE_MASTERY_CELEBRATION"
+                    title: "🎖️ Balance Master Ceremony"
+                  - action: "FREMEN_WISDOM_SHARING"
+                    title: "📚 Share Wisdom"
+                group: "ultimate_achievements"
+                tag: "perfect_balance"
+                notification_icon: "mdi:scale-balance"
+                color: "#00BCD4"
+                channel: "Ultimate Achievements"
+                importance: max
+                sticky: true
+                timeout: 2400
+
+mode: queued
+max: 15
+max_exceeded: silent

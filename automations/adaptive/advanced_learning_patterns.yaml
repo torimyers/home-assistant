@@ -1,0 +1,394 @@
+# Advanced Learning Pattern System  
+# Self-improving automation that learns and adapts behavior over time
+#
+# Adaptive Learning Patterns
+# - Template sensor trend analysis with threshold adaptation
+# - Usage pattern recognition with schedule modification
+# - Seasonal responsiveness with weather integration
+# - Efficiency optimization with self-improving parameters
+
+alias: "Advanced Learning Engine - Behavioral Adaptation System"
+description: "Self-improving automation with machine learning-like pattern recognition and adaptive behavior"
+trigger:
+  # Learning triggers based on pattern analysis
+  - platform: template
+    value_template: >-
+      {% set current_activity = states('sensor.fremen_activity_level') | int %}
+      {% set historical_avg = states('input_number.historical_activity_average') | int %}
+      {% set threshold_deviation = 20 %}
+      {{ (current_activity - historical_avg) | abs > threshold_deviation }}
+    for:
+      minutes: 30
+    id: "activity_pattern_deviation"
+
+  # Automation effectiveness learning
+  - platform: template
+    value_template: >-
+      {% set success_rate = states('sensor.automation_success_rate') | float %}
+      {% set blueprint_efficiency = states('sensor.blueprint_efficiency_score') | float %}
+      {% set performance_threshold = states('input_number.performance_learning_threshold') | float %}
+      {{ (success_rate + blueprint_efficiency) / 2 < performance_threshold }}
+    for:
+      minutes: 45
+    id: "automation_performance_learning"
+
+  # Environmental adaptation triggers
+  - platform: template
+    value_template: >-
+      {% set atmospheric = states('sensor.atmospheric_conditions') | float %}
+      {% set conservation = states('sensor.water_conservation_index') | float %}
+      {% set survival = states('sensor.desert_survival_status') %}
+      {% set historical_atmospheric = states('input_number.historical_atmospheric_average') | float %}
+      {% set environmental_shift = (atmospheric - historical_atmospheric) | abs > 15 %}
+      {{ environmental_shift and (conservation < 70 or survival in ['Stressed', 'Critical']) }}
+    for:
+      minutes: 60
+    id: "environmental_adaptation_needed"
+
+  # Seasonal behavior learning
+  - platform: time_pattern
+    hours: "6"
+    minutes: "0"
+    id: "daily_learning_cycle"
+
+  # Usage pattern analysis
+  - platform: template
+    value_template: >-
+      {% set pattern = states('sensor.motion_pattern_analysis') %}
+      {% set expected_pattern = states('input_text.expected_daily_pattern') %}
+      {% set hour = now().hour %}
+      {% set weekday = now().weekday() %}
+      {% if 6 <= hour <= 22 and weekday < 5 %}
+        {{ pattern != expected_pattern }}
+      {% else %}
+        false
+      {% endif %}
+    for:
+      minutes: 20
+    id: "usage_pattern_anomaly"
+
+  # Efficiency optimization learning
+  - platform: template
+    value_template: >-
+      {% set harvester = states('sensor.harvester_efficiency') | float %}
+      {% set spice = states('sensor.spice_production_level') | float %}
+      {% set response = states('sensor.system_response_time') | float %}
+      {% set efficiency_composite = (harvester + spice + response) / 3 %}
+      {% set learning_target = states('input_number.efficiency_learning_target') | float %}
+      {{ efficiency_composite > learning_target + 10 or efficiency_composite < learning_target - 15 }}
+    for:
+      minutes: 15
+    id: "efficiency_optimization_trigger"
+
+condition:
+  # Learning system readiness assessment
+  - condition: template
+    value_template: >-
+      {% set health = states('sensor.sietch_health_score') | float %}
+      {% set survival = states('sensor.desert_survival_status') %}
+      {% set system_stable = health > 50 and survival != 'Critical' %}
+      {% set learning_enabled = is_state('input_boolean.adaptive_learning_enabled', 'on') %}
+      {{ system_stable and learning_enabled }}
+
+action:
+  # Advanced learning algorithm implementation
+  - choose:
+      # Activity Pattern Learning and Adaptation
+      - conditions:
+          - condition: trigger
+            id: "activity_pattern_deviation"
+        sequence:
+          # Analyze activity deviation patterns
+          - service: script.turn_on
+            target:
+              entity_id: script.activity_pattern_analyzer
+            data:
+              variables:
+                current_activity: "{{ states('sensor.fremen_activity_level') | int }}"
+                historical_average: "{{ states('input_number.historical_activity_average') | int }}"
+                deviation_magnitude: >-
+                  {{ (states('sensor.fremen_activity_level') | int - states('input_number.historical_activity_average') | int) | abs }}
+                pattern_context: "{{ states('sensor.motion_pattern_analysis') }}"
+                time_context: >-
+                  {% set hour = now().hour %}
+                  {% if 6 <= hour <= 9 %}morning
+                  {% elif 10 <= hour <= 16 %}daytime
+                  {% elif 17 <= hour <= 22 %}evening
+                  {% else %}night
+                  {% endif %}
+
+          # Adapt activity thresholds based on learning
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.adaptive_activity_threshold
+            data:
+              value: >-
+                {% set current = states('sensor.fremen_activity_level') | int %}
+                {% set historical = states('input_number.historical_activity_average') | int %}
+                {% set current_threshold = states('input_number.adaptive_activity_threshold') | int %}
+                {% set learning_rate = 0.1 %}
+                {% set target_adjustment = (current - historical) * learning_rate %}
+                {{ [current_threshold + target_adjustment, 100] | min | max(10) }}
+
+          # Update motion detection sensitivity
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.motion_sensitivity_learned
+            data:
+              value: >-
+                {% set pattern = states('sensor.motion_pattern_analysis') %}
+                {% set activity = states('sensor.fremen_activity_level') | int %}
+                {% set base_sensitivity = states('input_number.motion_sensitivity') | int %}
+                {% if pattern == 'Full Activity' and activity > 80 %}
+                  {% set adjustment = -5 %}  {# Reduce false positives during high activity #}
+                {% elif pattern == 'Dormant' and activity < 20 %}
+                  {% set adjustment = 10 %}  {# Increase sensitivity during low activity #}
+                {% else %}
+                  {% set adjustment = 0 %}
+                {% endif %}
+                {{ [base_sensitivity + adjustment, 100] | min | max(20) }}
+
+      # Automation Performance Learning
+      - conditions:
+          - condition: trigger
+            id: "automation_performance_learning"
+        sequence:
+          # Analyze automation performance metrics
+          - service: script.turn_on
+            target:
+              entity_id: script.automation_performance_analyzer
+            data:
+              variables:
+                success_rate: "{{ states('sensor.automation_success_rate') | float }}"
+                blueprint_efficiency: "{{ states('sensor.blueprint_efficiency_score') | float }}"
+                system_health: "{{ states('sensor.sietch_health_score') | float }}"
+                performance_factors: >-
+                  {
+                    "motion_responsiveness": {{ states('sensor.motion_pattern_analysis') == 'Focused' }},
+                    "system_load": {{ states('sensor.system_response_time') | float }},
+                    "energy_availability": {{ states('sensor.energy_shield_status') | float }},
+                    "environmental_conditions": {{ states('sensor.atmospheric_conditions') | float }}
+                  }
+
+          # Adapt automation execution parameters
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.automation_delay_adaptive
+            data:
+              value: >-
+                {% set success_rate = states('sensor.automation_success_rate') | float %}
+                {% set response_time = states('sensor.system_response_time') | float %}
+                {% set base_delay = 2 %}
+                {% if success_rate > 90 and response_time > 90 %}
+                  {% set delay_adjustment = -0.5 %}  {# Reduce delays when performing well #}
+                {% elif success_rate < 80 or response_time < 70 %}
+                  {% set delay_adjustment = 1 %}     {# Increase delays when struggling #}
+                {% else %}
+                  {% set delay_adjustment = 0 %}
+                {% endif %}
+                {{ [base_delay + delay_adjustment, 10] | min | max(0.5) }}
+
+          # Update performance learning threshold
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.performance_learning_threshold
+            data:
+              value: >-
+                {% set current_performance = (states('sensor.automation_success_rate') | float + states('sensor.blueprint_efficiency_score') | float) / 2 %}
+                {% set current_threshold = states('input_number.performance_learning_threshold') | float %}
+                {% set learning_factor = 0.05 %}
+                {% set new_threshold = current_threshold + ((current_performance - current_threshold) * learning_factor) %}
+                {{ [new_threshold, 95] | min | max(60) }}
+
+      # Environmental Adaptation Learning
+      - conditions:
+          - condition: trigger
+            id: "environmental_adaptation_needed"
+        sequence:
+          # Learn from environmental changes and adapt accordingly
+          - service: script.turn_on
+            target:
+              entity_id: script.environmental_adaptation_engine
+            data:
+              variables:
+                atmospheric_conditions: "{{ states('sensor.atmospheric_conditions') | float }}"
+                conservation_index: "{{ states('sensor.water_conservation_index') | float }}"
+                survival_status: "{{ states('sensor.desert_survival_status') }}"
+                adaptation_context: >-
+                  {% set season = now().strftime('%m') | int %}
+                  {% if season in [12, 1, 2] %}winter
+                  {% elif season in [3, 4, 5] %}spring
+                  {% elif season in [6, 7, 8] %}summer
+                  {% else %}autumn
+                  {% endif %}
+
+          # Adapt environmental response thresholds
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.atmospheric_response_threshold
+            data:
+              value: >-
+                {% set current_atmospheric = states('sensor.atmospheric_conditions') | float %}
+                {% set historical_avg = states('input_number.historical_atmospheric_average') | float %}
+                {% set current_threshold = states('input_number.atmospheric_response_threshold') | float %}
+                {% set adaptation_rate = 0.08 %}
+                {% if current_atmospheric < historical_avg - 10 %}
+                  {% set threshold_adjustment = -5 %}  {# Lower threshold for worse conditions #}
+                {% elif current_atmospheric > historical_avg + 10 %}
+                  {% set threshold_adjustment = 3 %}   {# Raise threshold for better conditions #}
+                {% else %}
+                  {% set threshold_adjustment = 0 %}
+                {% endif %}
+                {{ [current_threshold + threshold_adjustment, 95] | min | max(50) }}
+
+      # Daily Learning Cycle - Comprehensive Pattern Update
+      - conditions:
+          - condition: trigger
+            id: "daily_learning_cycle"
+        sequence:
+          # Update historical averages and patterns
+          - service: script.turn_on
+            target:
+              entity_id: script.daily_pattern_learning_update
+            data:
+              variables:
+                learning_data: >-
+                  {
+                    "activity_avg": {{ states('sensor.fremen_activity_level') | float }},
+                    "atmospheric_avg": {{ states('sensor.atmospheric_conditions') | float }},
+                    "conservation_avg": {{ states('sensor.water_conservation_index') | float }},
+                    "efficiency_avg": {{ states('sensor.harvester_efficiency') | float }},
+                    "production_avg": {{ states('sensor.spice_production_level') | float }},
+                    "response_avg": {{ states('sensor.system_response_time') | float }},
+                    "dominant_pattern": "{{ states('sensor.motion_pattern_analysis') }}",
+                    "primary_zone": "{{ states('sensor.sietch_occupancy_distribution') }}",
+                    "date": "{{ now().strftime('%Y-%m-%d') }}",
+                    "weekday": {{ now().weekday() }}
+                  }
+
+          # Update historical moving averages with decay factor
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.historical_activity_average
+            data:
+              value: >-
+                {% set current = states('sensor.fremen_activity_level') | float %}
+                {% set historical = states('input_number.historical_activity_average') | float %}
+                {% set decay_factor = 0.9 %}
+                {% set learning_rate = 0.1 %}
+                {{ (historical * decay_factor) + (current * learning_rate) }}
+
+          # Update expected daily patterns based on learning
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.expected_daily_pattern
+            data:
+              value: >-
+                {% set patterns_today = [
+                  states.sensor.motion_pattern_analysis.state,
+                  states.sensor.motion_pattern_analysis.attributes.get('pattern_type', 'Unknown')
+                ] %}
+                {% set most_common = patterns_today | select('ne', 'Unknown') | list | first %}
+                {{ most_common if most_common else 'Distributed' }}
+
+      # Usage Pattern Anomaly Learning
+      - conditions:
+          - condition: trigger
+            id: "usage_pattern_anomaly"
+        sequence:
+          # Learn from usage pattern deviations
+          - service: script.turn_on
+            target:
+              entity_id: script.usage_pattern_learning_engine
+            data:
+              variables:
+                observed_pattern: "{{ states('sensor.motion_pattern_analysis') }}"
+                expected_pattern: "{{ states('input_text.expected_daily_pattern') }}"
+                deviation_context: >-
+                  {
+                    "hour": {{ now().hour }},
+                    "weekday": {{ now().weekday() }},
+                    "activity_level": {{ states('sensor.fremen_activity_level') | float }},
+                    "occupancy": "{{ states('sensor.sietch_occupancy_distribution') }}"
+                  }
+
+          # Adjust pattern expectations based on observed behavior
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.pattern_learning_log
+            data:
+              value: >-
+                {{ now().strftime('%H:%M') }}: Expected {{ states('input_text.expected_daily_pattern') }}, 
+                Observed {{ states('sensor.motion_pattern_analysis') }}, 
+                Activity {{ states('sensor.fremen_activity_level') }}%
+
+      # Efficiency Optimization Learning
+      - conditions:
+          - condition: trigger
+            id: "efficiency_optimization_trigger"
+        sequence:
+          # Learn optimal efficiency parameters
+          - service: script.turn_on
+            target:
+              entity_id: script.efficiency_optimization_learning
+            data:
+              variables:
+                efficiency_metrics: >-
+                  {
+                    "harvester": {{ states('sensor.harvester_efficiency') | float }},
+                    "production": {{ states('sensor.spice_production_level') | float }},
+                    "response": {{ states('sensor.system_response_time') | float }},
+                    "conservation": {{ states('sensor.water_conservation_index') | float }},
+                    "energy": {{ states('sensor.energy_shield_status') | float }}
+                  }
+
+          # Update efficiency learning target based on performance
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.efficiency_learning_target
+            data:
+              value: >-
+                {% set current_composite = (
+                  states('sensor.harvester_efficiency') | float +
+                  states('sensor.spice_production_level') | float +
+                  states('sensor.system_response_time') | float
+                ) / 3 %}
+                {% set current_target = states('input_number.efficiency_learning_target') | float %}
+                {% set learning_rate = 0.05 %}
+                {% if current_composite > current_target + 5 %}
+                  {% set new_target = current_target + (learning_rate * 5) %}
+                {% elif current_composite < current_target - 10 %}
+                  {% set new_target = current_target - (learning_rate * 8) %}
+                {% else %}
+                  {% set new_target = current_target %}
+                {% endif %}
+                {{ [new_target, 100] | min | max(70) }}
+
+  # Advanced learning analytics and logging
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.learning_analytics_log
+    data:
+      value: >-
+        {{ now().strftime('%H:%M:%S') }}: {{ trigger.id }} |
+        Learning Vector: [
+          Activity:{{ states('sensor.fremen_activity_level') }}, 
+          Pattern:{{ states('sensor.motion_pattern_analysis') }}, 
+          Efficiency:{{ states('sensor.harvester_efficiency') }}, 
+          Performance:{{ states('sensor.automation_success_rate') }}
+        ] |
+        Adaptations: [
+          Threshold:{{ states('input_number.adaptive_activity_threshold') }}, 
+          Sensitivity:{{ states('input_number.motion_sensitivity_learned') }}, 
+          Delay:{{ states('input_number.automation_delay_adaptive') }}
+        ]
+
+  # Meta-learning: Learn about the learning process itself
+  - service: automation.trigger
+    target:
+      entity_id: automation.meta_learning_optimization
+    data:
+      skip_condition: false
+
+mode: queued
+max: 2

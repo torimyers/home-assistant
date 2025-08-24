@@ -1,0 +1,58 @@
+---
+# Numeric Input Controls - Dune Threshold Management
+# Adjustable thresholds for automation triggers and system limits
+
+input_number:
+  temperature_threshold_high:
+    name: "Temperature Threshold High"
+    min: 70
+    max: 85
+    step: 1
+    initial: 78
+    unit_of_measurement: "°F"
+    icon: mdi:thermometer-high
+
+  temperature_threshold_low:
+    name: "Temperature Threshold Low"  
+    min: 60
+    max: 75
+    step: 1
+    initial: 68
+    unit_of_measurement: "°F"
+    icon: mdi:thermometer-low
+
+  motion_timeout_minutes:
+    name: "Motion Timeout Minutes"
+    min: 1
+    max: 60
+    step: 1
+    initial: 10
+    unit_of_measurement: "minutes"
+    icon: mdi:timer
+
+  spice_production_target:
+    name: "Spice Production Target"
+    min: 0
+    max: 100
+    step: 5
+    initial: 75
+    unit_of_measurement: "%"
+    icon: mdi:target
+
+  water_conservation_goal:
+    name: "Water Conservation Goal"
+    min: 50
+    max: 100
+    step: 5
+    initial: 85
+    unit_of_measurement: "%"
+    icon: mdi:water-percent
+
+  energy_shield_minimum:
+    name: "Energy Shield Minimum"
+    min: 0
+    max: 100
+    step: 5
+    initial: 60
+    unit_of_measurement: "%"
+    icon: mdi:shield-half-full

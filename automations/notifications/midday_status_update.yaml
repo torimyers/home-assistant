@@ -1,0 +1,125 @@
+---
+# Midday Status Update - Peak Performance Check
+alias: "Midday Status Update"
+description: "Comprehensive midday performance assessment with optimization guidance"
+trigger:
+  - platform: time
+    at: "12:00:00"
+condition:
+  - condition: state
+    entity_id: input_boolean.notification_system_enabled
+    state: "on"
+    for:
+      seconds: 30
+action:
+  - service: notify.mobile_app_toris_iphone
+    data:
+      title: "☀️ Midday Sietch Assessment"
+      message: >-
+        The sun reaches its zenith, Muad'Dib. Time for a strategic assessment of your domain.
+        
+        📊 **Morning Performance Summary:**
+        • Sietch Health: {{ states('sensor.sietch_health_score') }}% - {{ state_attr('sensor.sietch_health_score', 'status_level') }}
+        • Morning Ritual: {{ states('sensor.morning_ritual_completion') }}% - {{ state_attr('sensor.morning_ritual_completion', 'completion_status') }}
+        • Activity Efficiency: {{ states('sensor.fremen_activity_level') }}% - {{ state_attr('sensor.fremen_activity_level', 'tribal_status') }}
+        
+        ⚡ **Production Status:**
+        • Spice Production: {{ states('sensor.spice_production_level') }} units ({{ state_attr('sensor.spice_production_level', 'current_yield') }})
+        • Harvester Performance: {{ states('sensor.harvester_efficiency') }}% - {{ state_attr('sensor.harvester_efficiency', 'efficiency_grade') }}
+        • Guild Standing: {{ state_attr('sensor.spice_production_level', 'guild_rating') }}
+        
+        💧 **Resource Management:**
+        • Water Conservation: {{ states('sensor.water_conservation_index') }}% - {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+        • Energy Shields: {{ states('sensor.energy_shield_status') }}% - {{ state_attr('sensor.energy_shield_status', 'shield_strength') }}
+        
+        🏠 **Operational Insights:**
+        • Primary Activity Zone: {{ states('sensor.sietch_occupancy_distribution') }}
+        • Motion Pattern: {{ states('sensor.motion_pattern_analysis') }} ({{ state_attr('sensor.motion_pattern_analysis', 'efficiency_score') }})
+        • System Response: {{ state_attr('sensor.system_response_time', 'response_grade') }}
+        
+        🌬️ **Environmental Conditions:**
+        Atmospheric Quality: {{ states('sensor.atmospheric_conditions') }} - {{ state_attr('sensor.atmospheric_conditions', 'atmosphere_quality') }}
+        
+        {% set health = states('sensor.sietch_health_score') | float %}
+        {% set production = states('sensor.spice_production_level') | float %}
+        {% set conservation = states('sensor.water_conservation_index') | float %}
+        
+        🎯 **Midday Strategic Assessment:**
+        {% if health >= 85 and production >= 100 and conservation >= 80 %}
+        🌟 **EXCELLENT MORNING**: Your sietch operates at peak efficiency. The morning has yielded exceptional results across all domains.
+        
+        **Afternoon Recommendations**: Maintain current excellence and prepare for evening consolidation.
+        
+        {% elif health >= 75 and production >= 80 and conservation >= 65 %}
+        📈 **STRONG PERFORMANCE**: Solid morning progress with room for afternoon optimization.
+        
+        **Focus Areas for Afternoon:**
+        {% if conservation < 75 %}• Enhance water conservation protocols{% endif %}
+        {% if production < 95 %}• Optimize spice production efficiency{% endif %}
+        {% if health < 85 %}• Address any system health concerns{% endif %}
+        
+        {% elif health >= 60 or production >= 60 or conservation >= 50 %}
+        ⚠️ **IMPROVEMENT NEEDED**: Morning performance shows areas requiring immediate attention.
+        
+        **Critical Afternoon Actions:**
+        {% if health < 75 %}• Priority: Investigate and resolve sietch health issues{% endif %}
+        {% if conservation < 60 %}• Critical: Implement emergency water conservation{% endif %}
+        {% if production < 70 %}• Essential: Review and optimize harvester operations{% endif %}
+        
+        {% else %}
+        🚨 **IMMEDIATE ATTENTION REQUIRED**: Multiple systems require urgent intervention.
+        
+        **Emergency Protocols:**
+        • Comprehensive system health review
+        • Emergency conservation measures
+        • Production system diagnostics
+        • Consider maintenance operations
+        {% endif %}
+        
+        🌅➡️☀️ **Morning→Afternoon Transition:**
+        {% if state_attr('sensor.fremen_activity_level', 'current_period') == 'Day Patrol' %}
+        Perfect timing - you're in optimal productivity period. Use these peak hours wisely.
+        {% else %}
+        Consider adjusting activity patterns to align with peak productivity hours.
+        {% endif %}
+        
+        The desert sun provides maximum energy now. Channel it into your most important objectives.
+      data:
+        actions:
+          - action: "AFTERNOON_OPTIMIZATION"
+            title: "🎯 Afternoon Plan"
+          - action: "DETAILED_MIDDAY_REPORT"
+            title: "📊 Detailed Report"
+          - action: "PRIORITY_ACTIONS"
+            title: "⚡ Priority Actions"
+        group: "status_updates"
+        tag: "midday_update"
+        notification_icon: "mdi:weather-sunny"
+        color: "#FF9800"
+        channel: "Status Updates"
+        importance: default
+        sticky: false
+        timeout: 2400
+
+  # Create persistent notification for dashboard reference
+  - service: persistent_notification.create
+    data:
+      title: "☀️ Midday Status Summary"
+      message: >-
+        **Peak Sun Assessment Complete**
+        
+        🏆 **Top Performers:**
+        {% if states('sensor.sietch_health_score') | float >= 85 %}• Sietch Health: {{ states('sensor.sietch_health_score') }}%{% endif %}
+        {% if states('sensor.spice_production_level') | float >= 100 %}• Spice Production: {{ states('sensor.spice_production_level') }} units{% endif %}
+        {% if states('sensor.water_conservation_index') | float >= 80 %}• Water Conservation: {{ states('sensor.water_conservation_index') }}%{% endif %}
+        
+        📊 **Current Focus**: {{ states('sensor.sietch_occupancy_distribution') }} Zone
+        🎯 **Activity Status**: {{ state_attr('sensor.fremen_activity_level', 'tribal_status') }}
+        
+        **Afternoon Optimization**: {% if (states('sensor.sietch_health_score') | float + states('sensor.spice_production_level') | float + states('sensor.water_conservation_index') | float) / 3 >= 80 %}Maintain Excellence{% else %}Performance Enhancement{% endif %}
+        
+        *"The sun teaches us that peak performance requires both intensity and sustainability."*
+      notification_id: "midday_status_{{ now().strftime('%Y%m%d') }}"
+
+mode: single
+max_exceeded: silent

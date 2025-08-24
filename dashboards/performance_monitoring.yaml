@@ -1,0 +1,371 @@
+# Performance Monitoring Dashboard - Mentat Intelligence Analysis
+# Real-time system performance metrics and optimization insights
+
+title: "Mentat Performance Analytics"
+theme: dune_theme
+
+views:
+  - title: "System Performance"
+    icon: mdi:speedometer
+    path: performance
+    badges: []
+    cards:
+      # Performance Analytics Header
+      - type: custom:mushroom-title-card
+        title: "🧠 Mentat Performance Analytics"
+        subtitle: "Real-time system monitoring and optimization insights"
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #4169E1, #6495ED);
+              border: 2px solid #1E90FF;
+              color: white;
+              text-align: center;
+            }
+
+      # System Health Overview
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.sietch_operational_intelligence
+            name: "Operational Intelligence"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 90
+              yellow: 75
+              red: 60
+            
+          - type: gauge
+            entity: sensor.spice_harvester_efficiency_trend
+            name: "Efficiency Trend"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 85
+              yellow: 70
+              red: 50
+
+          - type: gauge
+            entity: sensor.dune_prescience_forecast
+            name: "Prescience Forecast"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 80
+              yellow: 65
+              red: 45
+
+      # Advanced Analytics Grid
+      - type: grid
+        columns: 2
+        cards:
+          - type: entities
+            title: "🔍 Intelligence Analysis"
+            entities:
+              - entity: sensor.sietch_operational_intelligence
+                secondary_info: last-updated
+                name: "Operational Intelligence"
+              - entity: sensor.fremen_activity_correlation_index
+                secondary_info: last-updated  
+                name: "Activity Correlation"
+              - entity: sensor.dune_prescience_forecast
+                secondary_info: last-updated
+                name: "Prescience Level"
+
+          - type: entities
+            title: "⚡ Resource Optimization"
+            entities:
+              - entity: sensor.water_reclamation_efficiency
+                secondary_info: last-updated
+                name: "Water Efficiency"
+              - entity: sensor.energy_shield_optimization_score
+                secondary_info: last-updated
+                name: "Energy Optimization"
+              - entity: sensor.spice_harvester_efficiency_trend
+                secondary_info: last-updated
+                name: "Harvester Trend"
+
+      # Performance Metrics Chart
+      - type: custom:apexcharts-card
+        header:
+          title: "System Performance Trends"
+          show: true
+        graph_span: 24h
+        series:
+          - entity: sensor.sietch_health_score
+            name: "System Health"
+            color: "#32CD32"
+          - entity: sensor.automation_success_rate  
+            name: "Automation Success"
+            color: "#FF8C00"
+          - entity: sensor.sietch_operational_intelligence
+            name: "Operational Intelligence"
+            color: "#4169E1"
+
+      # Detailed Performance Analysis
+      - type: entities
+        title: "📊 Performance Breakdown"
+        entities:
+          - type: section
+            label: "System Health Components"
+          - entity: sensor.sietch_health_score
+            name: "Overall Health Score"
+            secondary_info: last-updated
+          - type: attribute
+            entity: sensor.sietch_health_score
+            attribute: motion_sensor_status
+            name: "Motion Sensors"
+          - type: attribute
+            entity: sensor.sietch_health_score
+            attribute: switch_health
+            name: "Device Health"
+          
+          - type: section
+            label: "Predictive Analytics"
+          - type: attribute
+            entity: sensor.spice_harvester_efficiency_trend
+            attribute: trend_direction
+            name: "Efficiency Trend"
+          - type: attribute
+            entity: sensor.dune_prescience_forecast
+            attribute: confidence_level
+            name: "Forecast Confidence"
+          - type: attribute
+            entity: sensor.dune_prescience_forecast
+            attribute: next_hour_prediction
+            name: "Next Hour"
+
+  - title: "Resource Analytics"
+    icon: mdi:chart-line-variant
+    path: resources
+    badges: []
+    cards:
+      # Resource Optimization Header
+      - type: custom:mushroom-title-card
+        title: "🌊 Resource Optimization Center"
+        subtitle: "Water, energy, and spice production analytics"
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #228B22, #32CD32);
+              border: 2px solid #006400;
+              color: white;
+              text-align: center;
+            }
+
+      # Resource Efficiency Gauges
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.water_reclamation_efficiency
+            name: "Water Efficiency"
+            unit: "%"
+            min: 0
+            max: 120
+            severity:
+              green: 90
+              yellow: 75
+              red: 60
+
+          - type: gauge
+            entity: sensor.energy_shield_optimization_score
+            name: "Energy Shield"
+            unit: "%"
+            min: 0
+            max: 120
+            severity:
+              green: 85
+              yellow: 70
+              red: 55
+
+          - type: gauge
+            entity: sensor.spice_production_level
+            name: "Spice Production"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 80
+              yellow: 65
+              red: 45
+
+      # Environmental Impact Analysis
+      - type: grid
+        columns: 2
+        cards:
+          - type: entities
+            title: "🌡️ Environmental Factors"
+            entities:
+              - type: attribute
+                entity: sensor.water_reclamation_efficiency
+                attribute: temperature_impact
+                name: "Temperature Impact"
+              - type: attribute
+                entity: sensor.water_reclamation_efficiency
+                attribute: humidity_impact
+                name: "Humidity Impact"
+              - type: attribute
+                entity: sensor.energy_shield_optimization_score
+                attribute: solar_optimization
+                name: "Solar Optimization"
+              - type: attribute
+                entity: sensor.energy_shield_optimization_score
+                attribute: occupancy_factor
+                name: "Occupancy Factor"
+
+          - type: entities
+            title: "📈 Optimization Insights"
+            entities:
+              - type: attribute
+                entity: sensor.sietch_operational_intelligence
+                attribute: performance_grade
+                name: "Performance Grade"
+              - type: attribute
+                entity: sensor.sietch_operational_intelligence
+                attribute: high_performance_systems
+                name: "Top Performers"
+              - type: attribute
+                entity: sensor.fremen_activity_correlation_index
+                attribute: motion_score
+                name: "Motion Activity"
+              - type: attribute
+                entity: sensor.fremen_activity_correlation_index
+                attribute: expected_activity
+                name: "Expected Activity"
+
+      # Resource Trends Chart
+      - type: custom:apexcharts-card
+        header:
+          title: "Resource Optimization Trends"
+          show: true
+        graph_span: 24h
+        series:
+          - entity: sensor.water_conservation_index
+            name: "Water Conservation"
+            color: "#1E90FF"
+          - entity: sensor.energy_shield_status
+            name: "Energy Shield"
+            color: "#FFD700"  
+          - entity: sensor.spice_production_level
+            name: "Spice Production"
+            color: "#FF8C00"
+
+  - title: "System Diagnostics"
+    icon: mdi:bug-check
+    path: diagnostics
+    badges: []
+    cards:
+      # Diagnostics Header
+      - type: custom:mushroom-title-card
+        title: "🔧 System Diagnostics & Maintenance"
+        subtitle: "Deep system analysis and troubleshooting tools"
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #DC143C, #FF6347);
+              border: 2px solid #B22222;
+              color: white;
+              text-align: center;
+            }
+
+      # Critical System Status
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.all_systems_operational
+            name: "All Systems"
+            icon: mdi:check-circle
+            tap_action:
+              action: more-info
+            
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.critical_alert_status
+            name: "Critical Alerts"
+            icon: mdi:alert-octagon
+            tap_action:
+              action: more-info
+              
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.automation_system_healthy
+            name: "Automation Health"
+            icon: mdi:robot
+            tap_action:
+              action: more-info
+
+      # Advanced Diagnostic Tools
+      - type: entities
+        title: "🛠️ Spook Diagnostic Services"
+        entities:
+          - type: button
+            name: "Create Performance Report"
+            action_name: "Generate"
+            service: spook.repairs_create
+            service_data:
+              title: "Performance Analysis Report"
+              description: "Automated system performance analysis generated"
+              severity: "warning"
+              persistent: false
+              
+          - type: button
+            name: "List Orphaned Entities"
+            action_name: "Scan"
+            service: spook.homeassistant_list_orphaned_database_entities
+            
+          - type: button
+            name: "System Health Check"
+            action_name: "Execute"
+            service: script.system_health_monitor
+
+      # PowerCalc Energy Management
+      - type: entities
+        title: "⚡ PowerCalc Energy Tools"
+        entities:
+          - type: button
+            name: "Update Power Library"
+            action_name: "Update"
+            service: powercalc.update_library
+            
+          - type: button
+            name: "Reload PowerCalc Config"
+            action_name: "Reload"
+            service: powercalc.reload
+
+      # System Maintenance Actions
+      - type: entities
+        title: "🔄 Maintenance Actions"
+        entities:
+          - type: button
+            name: "Run Config Validation"
+            action_name: "Validate"
+            service: homeassistant.check_config
+            
+          - type: button
+            name: "Restart Core"
+            action_name: "Restart"
+            service: homeassistant.restart
+            
+          - type: button
+            name: "Reload All Automations"
+            action_name: "Reload"
+            service: automation.reload
+
+      # Performance Statistics
+      - type: entities
+        title: "📊 System Statistics"
+        entities:
+          - entity: sensor.sietch_health_score
+            name: "System Health Score"
+            secondary_info: last-updated
+          - entity: sensor.automation_success_rate
+            name: "Automation Success Rate"
+            secondary_info: last-updated
+          - entity: counter.atlas_daily_motion
+            name: "Daily Motion Events"
+            secondary_info: last-updated
+          - entity: counter.spice_harvester_cycles
+            name: "Harvester Cycles"
+            secondary_info: last-updated

@@ -1,0 +1,27 @@
+---
+# PowerCalc Integration - Energy Monitoring & Calculation
+# Estimates power consumption for devices without power meters
+# https://github.com/bramstroker/homeassistant-powercalc
+
+powercalc:
+  # Global PowerCalc configuration
+  # Individual device configs are handled via UI configuration flow
+  
+  # Enable automatic energy sensor creation
+  create_energy_sensors: true
+  
+  # Enable utility meter creation for daily/monthly tracking  
+  create_utility_meters: true
+  
+  # Ignore unavailable state for calculations
+  ignore_unavailable_state: true
+  
+  # Energy integration method for more accurate calculations
+  energy_integration_method: trapezoidal
+  
+  # Key services available:
+  # - powercalc.activate_playbook: Device state simulation
+  # - powercalc.calibrate_energy: Manual energy calibration
+  # - powercalc.reset_energy: Reset energy counters
+  # - powercalc.switch_sub_profile: Change device profiles
+  # - powercalc.update_library: Refresh device library

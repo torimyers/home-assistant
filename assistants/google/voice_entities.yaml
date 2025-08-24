@@ -1,0 +1,52 @@
+# Google Assistant Voice Entities - Optimized for Voice Control
+# Entities exposed to Google Assistant with natural language aliases
+
+# Essential Controls with Voice-Friendly Names
+- input_boolean.notification_system_enabled
+- input_boolean.vacation_mode  
+- input_boolean.guest_mode
+- input_boolean.maintenance_mode
+- input_boolean.motion_lighting_enabled
+- input_boolean.climate_automation_enabled
+- input_boolean.security_monitoring_enabled
+
+# System Status Sensors
+- sensor.sietch_health_score
+- sensor.spice_production_level
+- sensor.water_conservation_index
+- sensor.energy_shield_status
+- sensor.automation_success_rate
+
+# Advanced Analytics (for voice reports)
+- sensor.sietch_operational_intelligence
+- sensor.dune_prescience_forecast
+- sensor.spice_harvester_efficiency_trend
+
+# House Mode Controls
+- input_select.house_mode
+- input_select.climate_mode
+- input_select.security_level
+- input_select.notification_priority
+
+# Threshold Controls
+- input_number.temperature_threshold_high
+- input_number.temperature_threshold_low
+- input_number.motion_timeout_minutes
+- input_number.spice_production_target
+
+# Emergency Scenes
+- scene.energy_conservation
+- scene.system_storm_mode
+- scene.water_emergency
+
+# System Status Binaries
+- binary_sensor.house_occupied
+- binary_sensor.all_systems_operational
+- binary_sensor.critical_alert_status
+- binary_sensor.automation_system_healthy
+- binary_sensor.night_mode_active
+
+# Timers for Voice Status
+- timer.motion_light_delay
+- timer.security_arm_delay
+- timer.emergency_alert_cooldown

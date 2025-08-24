@@ -1,0 +1,84 @@
+---
+# Evening Consolidation Report - Daily Summary
+alias: "Evening Consolidation Report"
+description: "Comprehensive evening report with daily performance summary and night preparation"
+trigger:
+  - platform: time
+    at: "20:00:00"
+condition:
+  - condition: state
+    entity_id: input_boolean.notification_system_enabled
+    state: "on"
+    for:
+      seconds: 30
+action:
+  - service: notify.mobile_app_toris_iphone
+    data:
+      title: "🌙 Evening Consolidation - Sietch Report"
+      message: >-
+        The twin moons rise, Muad'Dib. Time to gather the day's wisdom.
+        
+        🎯 **Daily Performance:**
+        • Spice Production: {{ states('sensor.spice_production_level') }} units - {{ state_attr('sensor.spice_production_level', 'current_yield') }}
+        • Activity Level: {{ states('sensor.fremen_activity_level') }}% - {{ state_attr('sensor.fremen_activity_level', 'tribal_status') }}
+        • Motion Patterns: {{ states('sensor.motion_pattern_analysis') }} - {{ state_attr('sensor.motion_pattern_analysis', 'efficiency_score') }}
+        
+        💧 **Conservation Metrics:**
+        • Water Index: {{ states('sensor.water_conservation_index') }}% - {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+        • Current Efficiency: {% if states('sensor.water_conservation_index') | float >= 80 %}Excellent{% elif states('sensor.water_conservation_index') | float >= 60 %}Good{% else %}Needs Attention{% endif %}
+        
+        🏠 **Sietch Operations:**
+        • Health Score: {{ states('sensor.sietch_health_score') }}% - {{ state_attr('sensor.sietch_health_score', 'status_level') }}
+        • Occupancy: {{ states('sensor.sietch_occupancy_distribution') }} (Primary Zone)
+        • Active Systems: {{ state_attr('sensor.sietch_health_score', 'automation_status') }}
+        
+        🛡️ **Security Preparation:**
+        • Night Security: {{ states('sensor.night_security_effectiveness') }}% readiness
+        • Energy Shields: {{ states('sensor.energy_shield_status') }}% - {{ state_attr('sensor.energy_shield_status', 'shield_strength') }}
+        • Response Systems: {{ state_attr('sensor.system_response_time', 'response_grade') }}
+        
+        🌬️ **Environmental Status:**
+        Atmospheric Conditions: {{ states('sensor.atmospheric_conditions') }} - {{ state_attr('sensor.atmospheric_conditions', 'atmosphere_quality') }}
+        
+        {% if states('sensor.sietch_health_score') | float >= 85 %}
+        The sietch thrives under your leadership. Rest well, knowing the desert watches over your domain.
+        {% elif states('sensor.sietch_health_score') | float >= 70 %}
+        Your sietch remains strong. Minor adjustments may optimize tomorrow's efficiency.
+        {% else %}
+        The sietch requires attention. Review systems before the deep desert night.
+        {% endif %}
+      data:
+        actions:
+          - action: "NIGHT_SECURITY_ACTIVATE"
+            title: "🛡️ Activate Night Watch"
+          - action: "VIEW_DAILY_METRICS"
+            title: "📈 Daily Analytics"
+          - action: "CONSERVATION_REPORT"
+            title: "💧 Conservation Summary"
+        group: "daily_reports"
+        tag: "evening_report"
+        notification_icon: "mdi:weather-sunset"
+        color: "#8E44AD"
+        channel: "Sietch Reports"
+        importance: high
+        sticky: false
+        timeout: 2400
+
+  # Create detailed persistent notification
+  - service: persistent_notification.create
+    data:
+      title: "🌙 Evening Consolidation Summary"
+      message: >-
+        **Daily Achievements:**
+        - Spice: {{ states('sensor.spice_production_level') }} units ({{ state_attr('sensor.spice_production_level', 'guild_rating') }})
+        - Activity: {{ state_attr('sensor.fremen_activity_level', 'tribal_status') }}
+        - Conservation: {{ state_attr('sensor.water_conservation_index', 'conservation_level') }}
+        
+        **Night Readiness:** {{ states('sensor.night_security_effectiveness') }}% prepared
+        **Overall Status:** {{ state_attr('sensor.sietch_health_score', 'status_level') }}
+        
+        *"The beginning is a very delicate time."* - Princess Irulan
+      notification_id: "evening_consolidation_{{ now().strftime('%Y%m%d') }}"
+
+mode: single
+max_exceeded: silent

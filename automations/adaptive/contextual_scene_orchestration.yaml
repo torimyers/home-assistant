@@ -1,0 +1,411 @@
+# Contextual Scene Orchestration System
+# Intelligent scene management with adaptive parameters and cross-system coordination
+#
+# Pattern 5: Contextual Scene Orchestration
+# - Auto-selects scenes based on Fremen Activity Level
+# - Adjusts scene brightness based on Atmospheric Conditions
+# - Coordinates multiple rooms using Sietch Occupancy Distribution
+# - Uses Morning Ritual Completion for routine optimization
+
+alias: "Contextual Scene Orchestrator - Adaptive Environment Control"
+description: "Advanced scene management with intelligent selection and dynamic parameter adjustment"
+trigger:
+  # Activity-based scene triggers
+  - platform: numeric_state
+    entity_id: sensor.fremen_activity_level
+    above: 80
+    for:
+      minutes: 5
+    id: "high_activity_scene"
+    
+  - platform: numeric_state
+    entity_id: sensor.fremen_activity_level
+    below: 20
+    for:
+      minutes: 15
+    id: "low_activity_scene"
+
+  # Atmospheric condition scene adjustments
+  - platform: numeric_state
+    entity_id: sensor.atmospheric_conditions
+    below: 75
+    for:
+      minutes: 10
+    id: "atmospheric_compensation_needed"
+    
+  - platform: numeric_state
+    entity_id: sensor.atmospheric_conditions
+    above: 90
+    for:
+      minutes: 5
+    id: "optimal_atmospheric_conditions"
+
+  # Occupancy distribution scene coordination
+  - platform: state
+    entity_id: sensor.sietch_occupancy_distribution
+    id: "occupancy_change"
+    not_to:
+      - "unknown"
+      - "unavailable"
+
+  # Morning ritual scene progression
+  - platform: numeric_state
+    entity_id: sensor.morning_ritual_completion
+    above: 25
+    below: 100
+    id: "morning_ritual_progression"
+
+  # Pattern-based scene optimization
+  - platform: state
+    entity_id: sensor.motion_pattern_analysis
+    id: "pattern_change"
+    not_to:
+      - "unknown"
+      - "unavailable"
+
+  # Periodic scene optimization
+  - platform: time_pattern
+    minutes: "/20"  # Every 20 minutes
+    id: "scene_optimization_cycle"
+
+condition:
+  # Multi-factor scene readiness assessment
+  - condition: template
+    value_template: >-
+      {% set health = states('sensor.sietch_health_score') | float %}
+      {% set activity = states('sensor.fremen_activity_level') | float %}
+      {% set atmospheric = states('sensor.atmospheric_conditions') | float %}
+      {% set energy = states('sensor.energy_shield_status') | float %}
+      {% set survival = states('sensor.desert_survival_status') %}
+      
+      {# Scene system readiness calculation #}
+      {% set readiness_score = (health * 0.3) + (energy * 0.3) + (atmospheric * 0.2) + (activity * 0.2) %}
+      
+      {# Emergency override for critical survival #}
+      {% if survival == 'Critical' %}
+        {{ true }}  {# Always allow emergency scene changes #}
+      {% else %}
+        {{ readiness_score > 60 }}
+      {% endif %}
+
+action:
+  # Intelligent scene orchestration decision matrix
+  - choose:
+      # High Activity Scene Selection
+      - conditions:
+          - condition: trigger
+            id: "high_activity_scene"
+        sequence:
+          # Determine optimal high-activity scene
+          - service: script.turn_on
+            target:
+              entity_id: script.intelligent_scene_selector
+            data:
+              variables:
+                scene_category: "high_activity"
+                activity_level: "{{ states('sensor.fremen_activity_level') | float }}"
+                pattern_type: "{{ states('sensor.motion_pattern_analysis') }}"
+                primary_zone: "{{ states('sensor.sietch_occupancy_distribution') }}"
+                atmospheric_conditions: "{{ states('sensor.atmospheric_conditions') | float }}"
+                energy_availability: "{{ states('sensor.energy_shield_status') | float }}"
+                scene_selection_matrix: >-
+                  {% set pattern = states('sensor.motion_pattern_analysis') %}
+                  {% set zone = states('sensor.sietch_occupancy_distribution') %}
+                  {% if pattern == 'Full Activity' %}
+                    {% if zone == 'Kitchen' %}kitchen_cooking_scene
+                    {% elif zone == 'Office' %}office_productivity
+                    {% elif zone == 'Living Room' %}living_room_entertainment
+                    {% else %}system_high_energy
+                    {% endif %}
+                  {% elif pattern == 'Distributed' %}
+                    multi_zone_coordination
+                  {% else %}
+                    focused_workspace
+                  {% endif %}
+
+          # Apply atmospheric adjustments to scene
+          - service: script.turn_on
+            target:
+              entity_id: script.atmospheric_scene_adjustment
+            data:
+              variables:
+                base_scene: "{{ states('input_text.selected_scene') }}"
+                atmospheric_index: "{{ states('sensor.atmospheric_conditions') | float }}"
+
+      # Low Activity Scene Selection
+      - conditions:
+          - condition: trigger
+            id: "low_activity_scene"
+        sequence:
+          # Select appropriate low-activity scene
+          - service: script.turn_on
+            target:
+              entity_id: script.intelligent_scene_selector
+            data:
+              variables:
+                scene_category: "low_activity"
+                activity_level: "{{ states('sensor.fremen_activity_level') | float }}"
+                conservation_priority: "{{ states('sensor.water_conservation_index') | float }}"
+                time_period: >-
+                  {% set hour = now().hour %}
+                  {% if 22 <= hour or hour <= 6 %}night
+                  {% elif 6 <= hour <= 9 %}morning
+                  {% elif 10 <= hour <= 16 %}day
+                  {% else %}evening
+                  {% endif %}
+                scene_selection_matrix: >-
+                  {% set hour = now().hour %}
+                  {% set conservation = states('sensor.water_conservation_index') | float %}
+                  {% if 22 <= hour or hour <= 6 %}
+                    {% if conservation > 80 %}bedroom_sleep_mode{% else %}energy_conservation{% endif %}
+                  {% elif 6 <= hour <= 9 %}
+                    morning_awakening
+                  {% else %}
+                    {% if conservation > 70 %}comfort_mode{% else %}efficiency_mode{% endif %}
+                  {% endif %}
+
+      # Atmospheric Compensation Scene Adjustment
+      - conditions:
+          - condition: trigger
+            id: "atmospheric_compensation_needed"
+        sequence:
+          # Implement atmospheric compensation through scene modification
+          - service: script.turn_on
+            target:
+              entity_id: script.atmospheric_compensation_protocol
+            data:
+              variables:
+                atmospheric_level: "{{ states('sensor.atmospheric_conditions') | float }}"
+                current_scene: "{{ states('input_text.active_scene') }}"
+                compensation_strategy: >-
+                  {% set atmospheric = states('sensor.atmospheric_conditions') | float %}
+                  {% set activity = states('sensor.fremen_activity_level') | float %}
+                  {% if atmospheric < 70 %}
+                    {% if activity > 50 %}enhanced_circulation{% else %}air_quality_boost{% endif %}
+                  {% else %}
+                    moderate_adjustment
+                  {% endif %}
+
+          # Adjust lighting to compensate for atmospheric conditions
+          - service: light.turn_on
+            target:
+              entity_id: all
+            data:
+              brightness_pct: >-
+                {% set atmospheric = states('sensor.atmospheric_conditions') | float %}
+                {% set current_brightness = state_attr('light.main_lights', 'brightness') | default(128) %}
+                {% set compensation_factor = (85 - atmospheric) / 10 %}
+                {% set adjusted_brightness = ((current_brightness / 255 * 100) + compensation_factor * 10) %}
+                {{ [adjusted_brightness, 100] | min | round }}
+              color_temp: >-
+                {% set atmospheric = states('sensor.atmospheric_conditions') | float %}
+                {% if atmospheric < 75 %}
+                  300  {# Warmer light for poor air quality #}
+                {% else %}
+                  400  {# Neutral light for good conditions #}
+                {% endif %}
+
+      # Occupancy Distribution Scene Coordination
+      - conditions:
+          - condition: trigger
+            id: "occupancy_change"
+        sequence:
+          # Coordinate scenes across zones based on occupancy distribution
+          - service: script.turn_on
+            target:
+              entity_id: script.multi_zone_scene_coordination
+            data:
+              variables:
+                primary_zone: "{{ states('sensor.sietch_occupancy_distribution') }}"
+                previous_zone: "{{ trigger.from_state.state if trigger.from_state else 'None' }}"
+                activity_pattern: "{{ states('sensor.motion_pattern_analysis') }}"
+                coordination_strategy: >-
+                  {% set current = states('sensor.sietch_occupancy_distribution') %}
+                  {% set pattern = states('sensor.motion_pattern_analysis') %}
+                  {% if current == 'No Primary Zone' %}
+                    neutral_standby
+                  {% elif pattern == 'Full Activity' %}
+                    follow_primary_enhanced
+                  {% elif pattern == 'Distributed' %}
+                    multi_zone_active
+                  {% else %}
+                    focus_primary_zone
+                  {% endif %}
+
+          # Implement zone-specific scene activation
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template: "{{ states('sensor.sietch_occupancy_distribution') == 'Kitchen' }}"
+                sequence:
+                  - service: scene.turn_on
+                    target:
+                      entity_id: >-
+                        {% set activity = states('sensor.fremen_activity_level') | float %}
+                        {% if activity > 60 %}
+                          scene.kitchen_cooking_scene
+                        {% else %}
+                          scene.kitchen_morning_routine
+                        {% endif %}
+                  - service: scene.turn_on
+                    target:
+                      entity_id: scene.supporting_zones_dim
+              
+              - conditions:
+                  - condition: template
+                    value_template: "{{ states('sensor.sietch_occupancy_distribution') == 'Office' }}"
+                sequence:
+                  - service: scene.turn_on
+                    target:
+                      entity_id: >-
+                        {% set hour = now().hour %}
+                        {% if 9 <= hour <= 17 %}
+                          scene.office_productivity
+                        {% else %}
+                          scene.office_focus
+                        {% endif %}
+                  - service: scene.turn_on
+                    target:
+                      entity_id: scene.supporting_zones_minimal
+
+              - conditions:
+                  - condition: template
+                    value_template: "{{ states('sensor.sietch_occupancy_distribution') == 'Living Room' }}"
+                sequence:
+                  - service: scene.turn_on
+                    target:
+                      entity_id: >-
+                        {% set activity = states('sensor.fremen_activity_level') | float %}
+                        {% set hour = now().hour %}
+                        {% if activity > 50 and 17 <= hour <= 22 %}
+                          scene.living_room_entertainment
+                        {% else %}
+                          scene.living_room_gathering
+                        {% endif %}
+
+      # Morning Ritual Scene Progression
+      - conditions:
+          - condition: trigger
+            id: "morning_ritual_progression"
+        sequence:
+          # Progressive scene activation based on morning ritual completion
+          - service: script.turn_on
+            target:
+              entity_id: script.morning_ritual_scene_progression
+            data:
+              variables:
+                completion_percentage: "{{ states('sensor.morning_ritual_completion') | float }}"
+                ritual_phase: "{{ state_attr('sensor.morning_ritual_completion', 'ritual_phase') }}"
+                zone_activation: "{{ state_attr('sensor.morning_ritual_completion', 'zone_activation') }}"
+                scene_progression_map: >-
+                  {% set completion = states('sensor.morning_ritual_completion') | float %}
+                  {% if completion >= 75 %}
+                    morning_full_activation
+                  {% elif completion >= 50 %}
+                    morning_moderate_activation
+                  {% elif completion >= 25 %}
+                    morning_gentle_awakening
+                  {% else %}
+                    pre_dawn_preparation
+                  {% endif %}
+
+          # Implement progressive lighting and scene changes
+          - service: scene.turn_on
+            target:
+              entity_id: >-
+                {% set completion = states('sensor.morning_ritual_completion') | float %}
+                {% if completion >= 75 %}
+                  scene.morning_full_energy
+                {% elif completion >= 50 %}
+                  scene.morning_activation
+                {% elif completion >= 25 %}
+                  scene.dawn_awakening
+                {% else %}
+                  scene.pre_dawn_gentle
+                {% endif %}
+
+      # Pattern-Based Scene Optimization
+      - conditions:
+          - condition: trigger
+            id: "pattern_change"
+        sequence:
+          # Optimize scene selection based on motion pattern changes
+          - service: script.turn_on
+            target:
+              entity_id: script.pattern_optimized_scene_selection
+            data:
+              variables:
+                new_pattern: "{{ states('sensor.motion_pattern_analysis') }}"
+                previous_pattern: "{{ trigger.from_state.state if trigger.from_state else 'None' }}"
+                activity_level: "{{ states('sensor.fremen_activity_level') | float }}"
+                optimization_strategy: >-
+                  {% set pattern = states('sensor.motion_pattern_analysis') %}
+                  {% set activity = states('sensor.fremen_activity_level') | float %}
+                  {% if pattern == 'Full Activity' and activity > 70 %}
+                    maximum_coordination
+                  {% elif pattern == 'Distributed' %}
+                    multi_zone_balance
+                  {% elif pattern == 'Focused' %}
+                    single_zone_optimization
+                  {% else %}
+                    energy_conservation
+                  {% endif %}
+
+      # Periodic Scene Optimization
+      - conditions:
+          - condition: trigger
+            id: "scene_optimization_cycle"
+        sequence:
+          # Comprehensive scene system optimization
+          - service: script.turn_on
+            target:
+              entity_id: script.comprehensive_scene_optimization
+            data:
+              variables:
+                system_metrics: >-
+                  {
+                    "activity": {{ states('sensor.fremen_activity_level') | float }},
+                    "atmospheric": {{ states('sensor.atmospheric_conditions') | float }},
+                    "occupancy": "{{ states('sensor.sietch_occupancy_distribution') }}",
+                    "pattern": "{{ states('sensor.motion_pattern_analysis') }}",
+                    "ritual": {{ states('sensor.morning_ritual_completion') | float }},
+                    "health": {{ states('sensor.sietch_health_score') | float }},
+                    "energy": {{ states('sensor.energy_shield_status') | float }}
+                  }
+
+          # Update scene preference learning
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.scene_preference_matrix
+            data:
+              value: >-
+                {% set activity = states('sensor.fremen_activity_level') | float %}
+                {% set pattern = states('sensor.motion_pattern_analysis') %}
+                {% set zone = states('sensor.sietch_occupancy_distribution') %}
+                {% set hour = now().hour %}
+                Activity:{{ activity }},Pattern:{{ pattern }},Zone:{{ zone }},Hour:{{ hour }},Preference:{{ states('input_text.active_scene') }}
+
+  # Advanced scene orchestration logging
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.scene_orchestration_log
+    data:
+      value: >-
+        {{ now().strftime('%H:%M:%S') }}: {{ trigger.id }} |
+        Activity: {{ states('sensor.fremen_activity_level') }}% |
+        Atmospheric: {{ states('sensor.atmospheric_conditions') }}% |
+        Pattern: {{ states('sensor.motion_pattern_analysis') }} |
+        Occupancy: {{ states('sensor.sietch_occupancy_distribution') }} |
+        Ritual: {{ states('sensor.morning_ritual_completion') }}% |
+        Health: {{ states('sensor.sietch_health_score') }}% |
+        Scene: {{ states('input_text.active_scene') }}
+
+  # Contextual scene intelligence update
+  - service: automation.trigger
+    target:
+      entity_id: automation.scene_intelligence_learning
+    data:
+      skip_condition: false
+
+mode: queued
+max: 3

@@ -1,0 +1,298 @@
+# Advanced Threat Detection - Mentat-Level Security Analysis
+# Multi-layered security automation with predictive threat assessment
+
+alias: "Advanced Threat Detection System"
+description: "AI-powered security monitoring with anomaly detection and predictive alerts"
+icon: mdi:shield-alert
+mode: parallel
+max: 10
+
+trigger:
+  # Motion Pattern Anomalies
+  - platform: state
+    entity_id:
+      - binary_sensor.office_motion_detected
+      - binary_sensor.kitchen_occupancy
+      - binary_sensor.living_room_motion_detected
+      - binary_sensor.guest_bathroom_motion
+    to: "on"
+    id: "motion_detected"
+
+  # System Health Degradation
+  - platform: numeric_state
+    entity_id: sensor.sietch_health_score
+    below: 70
+    for:
+      minutes: 5
+    id: "system_degradation"
+
+  # Security Level Changes
+  - platform: state
+    entity_id: input_select.security_level
+    id: "security_level_change"
+
+  # Unusual Activity Patterns
+  - platform: template
+    value_template: >
+      {% set correlation = states('sensor.fremen_activity_correlation_index') | float(0) %}
+      {{ correlation < 30 or correlation > 150 }}
+    for:
+      minutes: 2
+    id: "activity_anomaly"
+
+  # Time-based Security Triggers
+  - platform: time
+    at: "22:00:00"
+    id: "evening_security_enable"
+    
+  - platform: time
+    at: "06:00:00"
+    id: "morning_security_normalize"
+
+condition:
+  # Only run if security monitoring is enabled
+  - condition: state
+    entity_id: input_boolean.security_monitoring_enabled
+    state: "on"
+
+action:
+  # Log security event for analysis
+  - service: logbook.log
+    data:
+      name: "Dune Security System"
+      message: "Security event triggered: {{ trigger.id }}"
+      entity_id: "{{ trigger.entity_id }}"
+
+  # Motion Detection Analysis
+  - if:
+      - condition: trigger
+        id: "motion_detected"
+    then:
+      - variables:
+          current_hour: "{{ now().hour }}"
+          is_night: "{{ current_hour >= 22 or current_hour <= 6 }}"
+          is_house_occupied: "{{ is_state('binary_sensor.house_occupied', 'on') }}"
+          security_level: "{{ states('input_select.security_level') }}"
+          
+      # Night Motion When House Should Be Empty
+      - if:
+          - condition: template
+            value_template: "{{ is_night and not is_house_occupied and security_level != 'Normal' }}"
+        then:
+          - service: notify.mobile_app_phone
+            data:
+              title: "🚨 Fremen Alert: Unauthorized Movement"
+              message: >
+                Motion detected in {{ trigger.to_state.attributes.friendly_name }} at {{ now().strftime('%H:%M') }}.
+                House should be unoccupied. Security level: {{ security_level }}.
+              data:
+                tag: "security_alert"
+                priority: "high"
+                
+          # Activate enhanced monitoring
+          - service: input_select.select_option
+            target:
+              entity_id: input_select.security_level
+            data:
+              option: "Maximum"
+              
+          # Turn on strategic lights as deterrent
+          - service: light.turn_on
+            target:
+              area_id: ["living_room", "kitchen", "front_yard"]
+            data:
+              brightness: 255
+              color_name: "red"
+              
+          # Create repair issue for investigation
+          - service: spook.repairs_create
+            data:
+              title: "Security Incident Detected"
+              description: >
+                Unauthorized motion detected during secured hours.
+                Location: {{ trigger.to_state.attributes.friendly_name }}
+                Time: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+                Recommended action: Review security footage and motion sensor logs.
+              severity: "warning"
+              persistent: true
+
+  # System Health Degradation Response
+  - if:
+      - condition: trigger
+        id: "system_degradation"
+    then:
+      - variables:
+          health_score: "{{ states('sensor.sietch_health_score') | float(0) }}"
+          
+      # Critical Health Alert
+      - if:
+          - condition: template
+            value_template: "{{ health_score < 50 }}"
+        then:
+          - service: notify.mobile_app_phone
+            data:
+              title: "⚠️ Sietch Critical: System Failure"
+              message: >
+                Critical system health detected: {{ health_score }}%
+                Multiple systems may be compromised. Immediate attention required.
+              data:
+                tag: "critical_system"
+                priority: "high"
+                
+          # Emergency scene activation
+          - service: scene.turn_on
+            target:
+              entity_id: scene.water_emergency
+              
+          # Disable non-essential automations to preserve resources
+          - service: input_boolean.turn_off
+            target:
+              entity_id:
+                - input_boolean.motion_lighting_enabled
+                - input_boolean.climate_automation_enabled
+
+      # Moderate Health Warning
+      - if:
+          - condition: template
+            value_template: "{{ health_score >= 50 and health_score < 70 }}"
+        then:
+          - service: notify.mobile_app_phone
+            data:
+              title: "⚠️ Sietch Warning: System Stress"
+              message: >
+                System health declining: {{ health_score }}%
+                Monitoring system performance for potential issues.
+              data:
+                tag: "system_warning"
+
+  # Security Level Change Response
+  - if:
+      - condition: trigger
+        id: "security_level_change"
+    then:
+      - variables:
+          new_level: "{{ trigger.to_state.state }}"
+          old_level: "{{ trigger.from_state.state }}"
+          
+      # Maximum Security Protocol
+      - if:
+          - condition: template
+            value_template: "{{ new_level == 'Maximum' }}"
+        then:
+          - service: tts.speak
+            data:
+              entity_id: media_player.alexa_echo
+              message: "Maximum security protocol activated. All Fremen to defensive positions. The Duke's house must be protected."
+              
+          # Enable all security features
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.emergency_alerts_enabled
+              
+          # Start security monitoring timer
+          - service: timer.start
+            target:
+              entity_id: timer.security_arm_delay
+              
+      # Security Level Decrease
+      - if:
+          - condition: template
+            value_template: "{{ new_level == 'Normal' and old_level != 'Normal' }}"
+        then:
+          - service: tts.speak
+            data:
+              entity_id: media_player.alexa_echo
+              message: "Security protocols normalizing. The immediate threat has passed. Long live House Atreides."
+
+  # Activity Anomaly Detection
+  - if:
+      - condition: trigger
+        id: "activity_anomaly"
+    then:
+      - variables:
+          correlation_index: "{{ states('sensor.fremen_activity_correlation_index') | float(0) }}"
+          
+      - service: notify.mobile_app_phone
+        data:
+          title: "🔍 Mentat Analysis: Activity Anomaly"
+          message: >
+            Unusual activity pattern detected. Correlation index: {{ correlation_index }}%
+            {% if correlation_index < 30 %}
+            Lower than expected activity - possible system issues or absence.
+            {% else %}
+            Higher than expected activity - investigating cause.
+            {% endif %}
+          data:
+            tag: "activity_anomaly"
+            
+      # Log for pattern analysis
+      - service: counter.increment
+        target:
+          entity_id: counter.fremen_patrol_count
+
+  # Evening Security Activation
+  - if:
+      - condition: trigger
+        id: "evening_security_enable"
+    then:
+      # Automatic security enhancement at night
+      - if:
+          - condition: state
+            entity_id: input_select.security_level
+            state: "Normal"
+        then:
+          - service: input_select.select_option
+            target:
+              entity_id: input_select.security_level
+            data:
+              option: "Enhanced"
+              
+      # Enable night mode features
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.night_mode_notifications
+          
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: "The desert night arrives. Security systems enhanced. Sleep well, noble Atreides."
+
+  # Morning Security Normalization
+  - if:
+      - condition: trigger
+        id: "morning_security_normalize"
+    then:
+      # Return to normal security if no incidents
+      - if:
+          - condition: state
+            entity_id: input_select.security_level
+            state: "Enhanced"
+          - condition: template
+            value_template: "{{ states('sensor.sietch_health_score') | float(0) > 80 }}"
+        then:
+          - service: input_select.select_option
+            target:
+              entity_id: input_select.security_level
+            data:
+              option: "Normal"
+              
+      # Disable night mode
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.night_mode_notifications
+          
+      - service: tts.speak
+        data:
+          entity_id: media_player.alexa_echo
+          message: "Dawn breaks over Arrakis. Security protocols normalizing. The Sietch awakens safely."
+
+  # Always update security metrics
+  - service: counter.increment
+    target:
+      entity_id: counter.spice_harvester_cycles
+    
+  # Update prescience forecast based on security events
+  - delay: "00:00:05"
+  - service: homeassistant.update_entity
+    target:
+      entity_id: sensor.dune_prescience_forecast
