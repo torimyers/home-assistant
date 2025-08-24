@@ -1,25 +1,25 @@
-- id: phone_charging_bedtime
-  alias: Phone Charging Bedtime
-  description: Stillsuit Recharge - Desert Dreams Begin
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.sm_s908u_is_charging
-    to: 'on'
-  condition:
-  - condition: time
-    after: '21:00:00'
-  - condition: state
-    entity_id: person.tori_myers
-    state: home
-  action:
-  - service: light.turn_off
-    target:
-      entity_id: light.tori_light_light
-  - service: cover.close_cover
-    target:
-      entity_id:
-      - cover.bedroom_left_roller_shade
-      - cover.bedroom_right_roller_shade
-  - service: notify.mobile_app_tori_phone_2
-    data:
-      message: Stilltent sealed. May your dreams carry you across infinite dunes.
+id: phone_charging_bedtime
+alias: Phone Charging Bedtime
+description: Stillsuit Recharge - Desert Dreams Begin
+trigger:
+- platform: state
+  entity_id: binary_sensor.sm_s908u_is_charging
+  to: 'on'
+condition:
+- condition: time
+  after: '21:00:00'
+- condition: state
+  entity_id: person.tori_myers
+  state: home
+action:
+- service: light.turn_off
+  target:
+    entity_id: light.tori_light_light
+- service: cover.close_cover
+  target:
+    entity_id:
+    - cover.bedroom_left_roller_shade
+    - cover.bedroom_right_roller_shade
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: Stilltent sealed. May your dreams carry you across infinite dunes.

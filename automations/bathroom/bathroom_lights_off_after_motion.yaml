@@ -1,15 +1,15 @@
-- id: bathroom_lights_off_after_motion
-  alias: Bathroom Lights Off After Motion
-  description: Sacred Water Conservation - Temple Sealed
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.master_bathroom_motion
-    to: 'off'
-    for: 00:10:00
-  action:
-  - service: light.turn_off
-    target:
-      area_id: master_bathroom
-  - service: notify.mobile_app_tori_phone_2
-    data:
-      message: Sacred ceremony complete. Water discipline observed in the temple.
+id: bathroom_lights_off_after_motion
+alias: Bathroom Lights Off After Motion
+description: Sacred Water Conservation - Temple Sealed
+trigger:
+- platform: state
+  entity_id: binary_sensor.master_bathroom_motion
+  to: 'off'
+  for: 00:10:00
+action:
+- service: light.turn_off
+  target:
+    area_id: master_bathroom
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: Sacred ceremony complete. Water discipline observed in the temple.

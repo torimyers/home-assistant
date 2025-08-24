@@ -1,27 +1,27 @@
-- id: robotic_vacuum_schedule
-  alias: Robotic Vacuum Schedule
-  description: Shai-Hulud Enhanced Desert Patrol
-  trigger:
-  - platform: state
-    entity_id: input_boolean.washer_cycle_active
-    to: 'off'
-  - platform: state
-    entity_id: input_boolean.dryer_cycle_active
-    to: 'off'
-  condition:
+id: robotic_vacuum_schedule
+alias: Robotic Vacuum Schedule
+description: Shai-Hulud Enhanced Desert Patrol
+trigger:
+- platform: state
+  entity_id: input_boolean.washer_cycle_active
+  to: 'off'
+- platform: state
+  entity_id: input_boolean.dryer_cycle_active
+  to: 'off'
+condition:
+- condition: state
+  entity_id: binary_sensor.house_occupied
+  state: 'off'
+- condition: not
+  conditions:
   - condition: state
-    entity_id: binary_sensor.house_occupied
-    state: 'off'
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.s7_max_ultra_status
-      state: cleaning
-  action:
-  - service: vacuum.start
-    target:
-      entity_id: vacuum.s7_max_ultra
-  - service: notify.mobile_app_tori_phone_2
-    data:
-      message: Shai-Hulud awakens for enhanced desert patrol! Water reclamation and
-        spice flow coordinated.
+    entity_id: sensor.s7_max_ultra_status
+    state: cleaning
+action:
+- service: vacuum.start
+  target:
+    entity_id: vacuum.s7_max_ultra
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: Shai-Hulud awakens for enhanced desert patrol! Water reclamation and
+      spice flow coordinated.

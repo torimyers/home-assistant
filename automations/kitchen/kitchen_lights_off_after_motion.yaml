@@ -1,15 +1,15 @@
-- id: kitchen_lights_off_after_motion
-  alias: Kitchen Lights Off After Motion
-  description: Sietch Sustenance Conservation - Motion Timeout
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.kitchen_occupancy
-    to: 'off'
-    for: 00:10:00
-  action:
-  - service: light.turn_off
-    target:
-      area_id: kitchen
-  - service: notify.mobile_app_tori_phone_2
-    data:
-      message: Sustenance preparation complete. Resources conserved for the tribe.
+id: kitchen_lights_off_after_motion
+alias: Kitchen Lights Off After Motion
+description: Sietch Sustenance Conservation - Motion Timeout
+trigger:
+- platform: state
+  entity_id: binary_sensor.kitchen_occupancy
+  to: 'off'
+  for: 00:10:00
+action:
+- service: light.turn_off
+  target:
+    area_id: kitchen
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: Sustenance preparation complete. Resources conserved for the tribe.
