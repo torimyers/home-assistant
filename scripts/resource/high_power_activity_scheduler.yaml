@@ -1,0 +1,31 @@
+high_power_activity_scheduler:
+  alias: High Power Activity Scheduler
+  description: "Schedules high-power activities during optimal resource availability"
+  icon: mdi:calendar-clock
+  sequence:
+    # Check resource availability
+    - condition: template
+      value_template: >
+        {% set harvester_efficiency = states('sensor.harvester_efficiency') | int %}
+        {% set system_response = states('sensor.system_response_time') | int %}
+        {{ harvester_efficiency > 70 and system_response < 50 }}
+    
+    # Update automation priority
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.automation_execution_priority
+      data:
+        value: >
+          {% set efficiency = states('sensor.harvester_efficiency') | int %}
+          {% if efficiency > 85 %}
+            3  # High priority scheduling
+          {% elif efficiency > 60 %}
+            2  # Medium priority
+          {% else %}
+            1  # Low priority
+          {% endif %}
+    
+    # Schedule notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "⚡ High-power activities scheduled during optimal resource window."

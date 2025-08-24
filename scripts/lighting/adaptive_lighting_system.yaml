@@ -1,4 +1,4 @@
-fremen_lighting:
+adaptive_lighting_activation:
   alias: Adaptive Lighting System
   description: "Fremen Lighting Control - Intelligent lighting with mood settings and environmental adaptation for optimal visibility"
   icon: mdi:lightbulb-group

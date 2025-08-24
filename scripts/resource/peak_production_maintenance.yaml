@@ -1,0 +1,54 @@
+peak_production_maintenance:
+  alias: Peak Production Maintenance
+  description: "Maintains peak production efficiency through resource optimization"
+  icon: mdi:chart-line
+  sequence:
+    # Enable peak production priority mode
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.high_production_priority_mode
+    
+    # Optimize system performance target for peak production
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.system_performance_target
+      data:
+        value: 95  # Peak performance target
+    
+    # Set maximum automation execution priority
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.automation_execution_priority
+      data:
+        value: 3  # Maximum priority for peak production
+    
+    # Enable all production-enhancing automations
+    - service: automation.turn_on
+      target:
+        entity_id:
+          - automation.complex_scene_management
+          - automation.multi_zone_coordination
+          - automation.predictive_analytics_update
+    
+    # Log peak production activation
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.resource_management_log
+      data:
+        value: >
+          PEAK PRODUCTION MODE: {{ now().strftime('%H:%M') }} -
+          Spice Level: {{ states('sensor.spice_production_level') }}% -
+          Harvester Efficiency: {{ states('sensor.harvester_efficiency') }}% -
+          Target Performance: 95%
+    
+    # Update resource priority matrix
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.resource_priority_matrix
+      data:
+        value: "PRODUCTION[95%]:EFFICIENCY[MAX]:CONSERVATION[BALANCED]:COMFORT[STANDARD]"
+    
+    # Peak production notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🚀 Peak production maintenance active. All systems optimized for maximum efficiency."

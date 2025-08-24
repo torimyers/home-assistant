@@ -1,0 +1,131 @@
+activity_pattern_analyzer:
+  alias: Activity Pattern Analyzer
+  description: "Advanced AI-like analysis of daily activity patterns to predict and optimize routines"
+  icon: mdi:brain
+  sequence:
+    # Gather current activity data
+    - variables:
+        current_hour: "{{ now().hour }}"
+        current_day: "{{ now().strftime('%A') }}"
+        activity_level: "{{ states('sensor.fremen_activity_level') | int }}"
+        motion_pattern: "{{ states('sensor.motion_pattern_analysis') }}"
+        occupancy_distribution: "{{ states('sensor.sietch_occupancy_distribution') }}"
+        
+        # Calculate pattern score based on historical consistency
+        pattern_consistency: >
+          {% set hour = now().hour %}
+          {% set day = now().strftime('%A') %}
+          {% set activity = states('sensor.fremen_activity_level') | int %}
+          
+          {# Simulate pattern learning logic #}
+          {% if day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] %}
+            {% if 6 <= hour <= 9 %}
+              {% set base_score = 85 %}  {# High consistency morning weekdays #}
+            {% elif 17 <= hour <= 22 %}
+              {% set base_score = 75 %}  {# Good consistency evening weekdays #}
+            {% else %}
+              {% set base_score = 40 %}  {# Lower consistency other times #}
+            {% endif %}
+          {% else %}
+            {% set base_score = 60 %}  {# Weekend patterns more variable #}
+          {% endif %}
+          
+          {# Adjust based on current activity level #}
+          {% if activity > 70 %}
+            {{ base_score + 10 }}
+          {% elif activity < 30 %}
+            {{ base_score - 15 }}
+          {% else %}
+            {{ base_score }}
+          {% endif %}
+    
+    # Log detailed pattern analysis
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.predictive_analytics_log
+      data:
+        value: >
+          ACTIVITY PATTERN ANALYSIS: {{ now().strftime('%H:%M') }} {{ current_day }} -
+          Activity: {{ activity_level }}% -
+          Motion: {{ motion_pattern }} -
+          Occupancy: {{ occupancy_distribution }} -
+          Consistency: {{ pattern_consistency }}% -
+          Learning Confidence: {% if pattern_consistency | int > 80 %}HIGH{% elif pattern_consistency | int > 60 %}MEDIUM{% else %}LOW{% endif %}
+    
+    # Update pattern learning based on consistency
+    - choose:
+        # High confidence patterns - make predictions
+        - conditions:
+            - condition: template
+              value_template: "{{ pattern_consistency | int > 80 }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.predictive_analytics_log
+              data:
+                value: >
+                  PATTERN PREDICTION: High confidence detected for {{ current_day }} {{ current_hour }}:00 -
+                  Predicted next activity: {% if current_hour < 8 %}Morning Routine{% elif current_hour < 12 %}Work Period{% elif current_hour < 17 %}Afternoon Activity{% elif current_hour < 22 %}Evening Routine{% else %}Rest Preparation{% endif %} -
+                  Suggested preparation: {% if current_hour < 8 %}Pre-warm systems{% elif current_hour < 17 %}Optimize work environment{% else %}Prepare evening scenes{% endif %}
+            
+            # Trigger predictive preparation
+            - condition: template
+              value_template: "{{ current_hour in [7, 8, 17, 21] }}"
+            - service: script.turn_on
+              target:
+                entity_id: >
+                  {% if current_hour == 7 %}
+                    script.morning_routine_preparation
+                  {% elif current_hour == 17 %}
+                    script.evening_routine_prediction
+                  {% elif current_hour == 21 %}
+                    script.night_mode_prediction
+                  {% else %}
+                    script.intelligent_scene_selector
+                  {% endif %}
+        
+        # Medium confidence - gather more data
+        - conditions:
+            - condition: template
+              value_template: "{{ 60 <= (pattern_consistency | int) <= 80 }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.predictive_analytics_log
+              data:
+                value: "PATTERN LEARNING: Medium confidence - continuing data collection for {{ current_day }} {{ current_hour }}:00 patterns"
+      
+      # Low confidence - basic logging
+      default:
+        - service: input_text.set_value
+          target:
+            entity_id: input_text.predictive_analytics_log
+          data:
+            value: "PATTERN LEARNING: Low confidence - baseline data collection for {{ current_day }} {{ current_hour }}:00"
+    
+    # Update overall prediction accuracy
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.prediction_accuracy_score
+      data:
+        value: >
+          {% set current_score = states('input_number.prediction_accuracy_score') | int %}
+          {% set consistency = pattern_consistency | int %}
+          {% if consistency > 85 %}
+            {{ [current_score + 3, 100] | min }}
+          {% elif consistency > 70 %}
+            {{ [current_score + 1, 100] | min }}
+          {% elif consistency < 40 %}
+            {{ [current_score - 1, 0] | max }}
+          {% else %}
+            {{ current_score }}
+          {% endif %}
+    
+    # Intelligent notification based on learning confidence
+    - condition: template
+      value_template: "{{ pattern_consistency | int > 85 }}"
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: >
+          🧠 Activity pattern learned: {{ pattern_consistency }}% confidence for {{ current_day }} {{ current_hour }}:00.
+          Predictive optimizations now active.

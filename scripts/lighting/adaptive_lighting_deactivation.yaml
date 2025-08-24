@@ -1,0 +1,37 @@
+adaptive_lighting_deactivation:
+  alias: Adaptive Lighting Deactivation
+  description: "Fremen Lighting Deactivation - Intelligent light deactivation with conservation protocols and security considerations"
+  icon: mdi:lightbulb-off
+  sequence:
+    # Determine lights to turn off based on zone
+    - service: light.turn_off
+      target:
+        entity_id: >
+          {% set zone = trigger_zone | default('all') %}
+          {% if zone == 'office' %}
+            light.office_lights
+          {% elif zone == 'kitchen' %}
+            light.kitchen_lights
+          {% elif zone == 'living_room' %}
+            light.living_room_lights
+          {% else %}
+            light.all_lights
+          {% endif %}
+      data:
+        transition: >
+          {% set security_mode = security_mode | default('day') %}
+          {% set conservation = conservation_index | default(50) %}
+          {% if security_mode == 'active' %}
+            10  # Slower transition for security mode
+          {% elif conservation > 80 %}
+            1   # Quick transition for conservation
+          {% else %}
+            3   # Normal transition
+          {% endif %}
+    
+    # Conservation logging
+    - condition: template
+      value_template: "{{ conservation_index | default(50) | int > 70 }}"
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "Conservation protocol engaged. {{ trigger_zone | default('Zone') | title }} lights deactivated. Water preserved."

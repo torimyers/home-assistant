@@ -1,0 +1,31 @@
+emergency_load_shedding:
+  alias: Emergency Load Shedding
+  description: "Emergency load shedding for critical resource conservation"
+  icon: mdi:flash-off
+  sequence:
+    # Emergency load shedding
+    - parallel:
+        # Disable all non-essential automations
+        - service: automation.turn_off
+          target:
+            entity_id:
+              - automation.complex_scene_management
+              - automation.multi_zone_coordination
+              - automation.predictive_analytics_update
+        # Set emergency performance mode
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.system_performance_target
+          data:
+            value: 30  # Emergency performance level
+        # Enable high priority mode
+        - service: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.high_production_priority_mode
+    
+    # Emergency notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🚨 EMERGENCY LOAD SHEDDING - Only critical systems active"
+        data:
+          priority: high

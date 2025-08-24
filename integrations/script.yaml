@@ -2,9 +2,8 @@
 # The script integration allows users to specify a sequence of actions to be
 # executed by Home Assistant when turned on.
 #
-# This loads up my custom scripts.
+# This loads up my custom scripts from directory structure.
 #
 # https://www.home-assistant.io/integrations/script/
 #
-script: !include ../scripts.yaml
-script_split: !include_dir_named ../scripts
+script: !include_dir_named ../scripts

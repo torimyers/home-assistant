@@ -1,0 +1,12 @@
+multi_zone_optimization:
+  alias: Multi Zone Optimization
+  description: "Optimizes resource usage across all zones intelligently"
+  icon: mdi:home-analytics
+  sequence:
+    # Optimize all zones for resources
+    - service: script.turn_on
+      target:
+        entity_id: script.comprehensive_resource_optimization
+    - service: script.turn_on
+      target:
+        entity_id: script.multi_zone_scene_coordination

@@ -53,7 +53,7 @@ views:
             secondary_info: "Advanced template sensor analytics and monitoring"
             tap_action:
               action: navigate
-              navigation_path: /dashboards-sietch_command
+              navigation_path: /dashboards-sietch-command
             card_mod:
               style: |
                 ha-card {

@@ -30,12 +30,12 @@ blueprint:
               value: "care"
     
     # Schedule Settings
-    schedule_times:
-      name: Schedule Times
-      description: Times when care is needed (one per line in HH:MM format)
+    schedule_time:
+      name: Care Time
+      description: Time when care is needed
+      default: "07:00"
       selector:
-        text:
-          multiline: true
+        time:
     
     # Tracking Settings
     datetime_helper:
@@ -134,7 +134,7 @@ max_exceeded: silent
 
 trigger:
   - platform: time
-    at: !input schedule_times
+    at: !input schedule_time
 
 condition:
   - condition: template

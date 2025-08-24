@@ -1,0 +1,42 @@
+predictive_maintenance_analyzer:
+  alias: Predictive Maintenance Analyzer
+  description: "Analyzes system patterns to predict maintenance needs"
+  icon: mdi:wrench-clock
+  sequence:
+    # Analyze system performance trends
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.predictive_analytics_log
+      data:
+        value: >
+          Maintenance Analysis: {{ now().strftime('%H:%M') }} -
+          System Response: {{ states('sensor.system_response_time') }}ms -
+          Blueprint Efficiency: {{ states('sensor.blueprint_efficiency_score') }}% -
+          Success Rate: {{ states('sensor.automation_success_rate') }}%
+    
+    # Schedule maintenance if needed
+    - condition: template
+      value_template: >
+        {% set response_time = states('sensor.system_response_time') | int %}
+        {% set efficiency = states('sensor.blueprint_efficiency_score') | int %}
+        {% set success_rate = states('sensor.automation_success_rate') | int %}
+        {{ response_time > 100 or efficiency < 70 or success_rate < 80 }}
+    
+    # Create maintenance calendar event
+    - service: calendar.create_event
+      target:
+        entity_id: calendar.sietch_maintenance
+      data:
+        summary: "Predictive Maintenance Required"
+        description: >
+          System analysis indicates maintenance needed:
+          - Response Time: {{ states('sensor.system_response_time') }}ms
+          - Efficiency: {{ states('sensor.blueprint_efficiency_score') }}%
+          - Success Rate: {{ states('sensor.automation_success_rate') }}%
+        start_date_time: "{{ (now() + timedelta(days=1)).strftime('%Y-%m-%d 09:00:00') }}"
+        end_date_time: "{{ (now() + timedelta(days=1)).strftime('%Y-%m-%d 11:00:00') }}"
+    
+    # Maintenance notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🔧 Predictive maintenance scheduled. System optimization required within 24 hours."

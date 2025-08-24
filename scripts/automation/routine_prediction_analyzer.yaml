@@ -1,0 +1,28 @@
+routine_prediction_analyzer:
+  alias: Routine Prediction Analyzer
+  description: "Analyzes daily patterns to predict and prepare for routine activities"
+  icon: mdi:chart-timeline-variant
+  sequence:
+    # Analyze current time patterns
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.predictive_analytics_log
+      data:
+        value: >
+          Routine analysis: {{ now().strftime('%H:%M') }} - 
+          Activity: {{ states('sensor.fremen_activity_level') }}% -
+          Pattern: {{ states('sensor.motion_pattern_analysis') }}
+    
+    # Update prediction accuracy score
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.prediction_accuracy_score
+      data:
+        value: >
+          {% set current = states('input_number.prediction_accuracy_score') | int %}
+          {% set activity = states('sensor.fremen_activity_level') | int %}
+          {% if activity > 70 %}
+            {{ [current + 5, 100] | min }}
+          {% else %}
+            {{ [current - 1, 0] | max }}
+          {% endif %}

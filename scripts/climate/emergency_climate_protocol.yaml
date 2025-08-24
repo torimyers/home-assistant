@@ -1,0 +1,38 @@
+emergency_climate_protocol:
+  alias: Emergency Climate Protocol
+  description: "Emergency climate response for extreme conditions"
+  icon: mdi:alert-rhombus
+  sequence:
+    # Emergency climate actions
+    - parallel:
+        - service: climate.set_hvac_mode
+          target:
+            entity_id: climate.sietch_main
+          data:
+            hvac_mode: "auto"
+        - service: climate.set_temperature
+          target:
+            entity_id: climate.sietch_main
+          data:
+            temperature: >
+              {% set survival_status = states('sensor.desert_survival_status') %}
+              {% if survival_status == 'Critical' %}
+                22  # Emergency comfort temperature
+              {% else %}
+                20  # Conservation temperature
+              {% endif %}
+        - service: fan.turn_on
+          target:
+            entity_id: fan.circulation_system
+          data:
+            speed: "high"
+    
+    # Emergency notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🌡️ Emergency climate protocol engaged. Survival systems active."
+    
+    # Enable conservation mode
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.conservation_climate_mode

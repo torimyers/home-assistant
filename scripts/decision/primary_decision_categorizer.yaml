@@ -1,0 +1,210 @@
+primary_decision_categorizer:
+  alias: Primary Decision Categorizer
+  description: "Main AI decision engine that categorizes situations and routes to appropriate response systems"
+  icon: mdi:account-supervisor-circle
+  sequence:
+    # Gather comprehensive system state for decision analysis
+    - variables:
+        # Core metrics for decision making
+        sietch_health: "{{ states('sensor.sietch_health_score') | int }}"
+        activity_level: "{{ states('sensor.fremen_activity_level') | int }}"
+        occupancy_pattern: "{{ states('sensor.sietch_occupancy_distribution') }}"
+        desert_survival: "{{ states('sensor.desert_survival_status') }}"
+        water_conservation: "{{ states('sensor.water_conservation_index') | int }}"
+        atmospheric_conditions: "{{ states('sensor.atmospheric_conditions') | int }}"
+        
+        # Time context
+        time_context: >
+          {% set hour = now().hour %}
+          {% if 5 <= hour < 10 %}
+            morning_routine
+          {% elif 10 <= hour < 17 %}
+            day_operations
+          {% elif 17 <= hour < 22 %}
+            evening_routine
+          {% else %}
+            night_security
+          {% endif %}
+        
+        # Calculate decision priority score
+        decision_priority: >
+          {% set health = states('sensor.sietch_health_score') | int %}
+          {% set survival = states('sensor.desert_survival_status') %}
+          {% set water = states('sensor.water_conservation_index') | int %}
+          {% set atmospheric = states('sensor.atmospheric_conditions') | int %}
+          
+          {# Priority scoring system #}
+          {% set priority_score = 0 %}
+          
+          {# Health factor (30% weight) #}
+          {% if health < 40 %}
+            {% set priority_score = priority_score + 30 %}
+          {% elif health < 70 %}
+            {% set priority_score = priority_score + 15 %}
+          {% else %}
+            {% set priority_score = priority_score + 5 %}
+          {% endif %}
+          
+          {# Survival factor (35% weight) #}
+          {% if survival == 'Critical' %}
+            {% set priority_score = priority_score + 35 %}
+          {% elif survival == 'Warning' %}
+            {% set priority_score = priority_score + 20 %}
+          {% else %}
+            {% set priority_score = priority_score + 5 %}
+          {% endif %}
+          
+          {# Water conservation factor (20% weight) #}
+          {% if water > 90 %}
+            {% set priority_score = priority_score + 20 %}
+          {% elif water > 70 %}
+            {% set priority_score = priority_score + 10 %}
+          {% endif %}
+          
+          {# Atmospheric factor (15% weight) #}
+          {% if atmospheric < 30 %}
+            {% set priority_score = priority_score + 15 %}
+          {% elif atmospheric < 50 %}
+            {% set priority_score = priority_score + 8 %}
+          {% endif %}
+          
+          {{ priority_score }}
+        
+        # Determine decision category
+        decision_category: >
+          {% set priority = decision_priority | int %}
+          {% set survival = states('sensor.desert_survival_status') %}
+          {% set health = states('sensor.sietch_health_score') | int %}
+          
+          {% if priority > 70 or survival == 'Critical' %}
+            emergency_response
+          {% elif priority > 45 or health < 50 %}
+            threat_mitigation
+          {% elif priority > 25 %}
+            optimization_needed
+          {% else %}
+            normal_operations
+          {% endif %}
+    
+    # Log primary decision analysis
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.predictive_analytics_log
+      data:
+        value: >
+          PRIMARY DECISION: {{ now().strftime('%H:%M') }} -
+          Health: {{ sietch_health }}% -
+          Survival: {{ desert_survival }} -
+          Water: {{ water_conservation }}% -
+          Atmospheric: {{ atmospheric_conditions }}% -
+          Priority Score: {{ decision_priority }} -
+          Category: {{ decision_category | upper }} -
+          Context: {{ time_context | upper }}
+    
+    # Route to appropriate decision handler based on category
+    - choose:
+        # Emergency Response - Immediate action required
+        - conditions:
+            - condition: template
+              value_template: "{{ decision_category == 'emergency_response' }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.predictive_analytics_log
+              data:
+                value: "EMERGENCY ROUTING: Activating emergency system stabilization protocols"
+            
+            # Activate emergency response systems
+            - service: script.turn_on
+              target:
+                entity_id: script.emergency_system_stabilization
+            
+            # Enable emergency notifications
+            - service: notify.mobile_app_tori_phone_2
+              data:
+                message: "🚨 EMERGENCY DECISION: Priority {{ decision_priority }} situation detected. Emergency protocols activated."
+                data:
+                  priority: high
+                  ttl: 0
+        
+        # Threat Mitigation - Proactive threat response
+        - conditions:
+            - condition: template
+              value_template: "{{ decision_category == 'threat_mitigation' }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.predictive_analytics_log
+              data:
+                value: "THREAT MITIGATION: Routing to focused threat response systems"
+            
+            # Check for environmental threats
+            - condition: template
+              value_template: "{{ atmospheric_conditions | int < 40 or desert_survival == 'Warning' }}"
+            - service: script.turn_on
+              target:
+                entity_id: script.environmental_threat_assessor
+            
+            # Check for system health threats
+            - condition: template
+              value_template: "{{ sietch_health | int < 60 }}"
+            - service: script.turn_on
+              target:
+                entity_id: script.focused_threat_mitigation
+        
+        # Optimization Needed - System improvements required
+        - conditions:
+            - condition: template
+              value_template: "{{ decision_category == 'optimization_needed' }}"
+          sequence:
+            - service: input_text.set_value
+              target:
+                entity_id: input_text.predictive_analytics_log
+              data:
+                value: "OPTIMIZATION ROUTING: Activating balanced operations management"
+            
+            # Route to balanced operations manager
+            - service: script.turn_on
+              target:
+                entity_id: script.balanced_operations_manager
+      
+      # Normal Operations - Maintain optimal performance
+      default:
+        - service: input_text.set_value
+          target:
+            entity_id: input_text.predictive_analytics_log
+          data:
+            value: "NORMAL OPERATIONS: Routing to optimal operations orchestrator"
+        
+        # Route to optimal operations
+        - service: script.turn_on
+          target:
+            entity_id: script.optimal_operations_orchestrator
+    
+    # Update decision-making accuracy based on outcomes
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.prediction_accuracy_score
+      data:
+        value: >
+          {% set current = states('input_number.prediction_accuracy_score') | int %}
+          {% set priority = decision_priority | int %}
+          {% set category = decision_category %}
+          
+          {# Reward accurate high-priority categorization #}
+          {% if category == 'emergency_response' and priority > 70 %}
+            {{ [current + 8, 100] | min }}
+          {% elif category == 'threat_mitigation' and 45 <= priority <= 70 %}
+            {{ [current + 5, 100] | min }}
+          {% elif category == 'normal_operations' and priority < 25 %}
+            {{ [current + 3, 100] | min }}
+          {% else %}
+            {{ [current + 1, 100] | min }}
+          {% endif %}
+    
+    # Log decision routing completion
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.predictive_analytics_log
+      data:
+        value: "DECISION ROUTING COMPLETE: {{ decision_category | upper }} handler activated with priority {{ decision_priority }}"

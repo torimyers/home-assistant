@@ -139,7 +139,7 @@ blueprint:
     
     additional_data:
       name: Additional Data
-      description: Data for additional service call (e.g., 'value: navigator_absent')
+      description: "Data for additional service call (e.g., 'value: navigator_absent')"
       default: ""
       selector:
         text:

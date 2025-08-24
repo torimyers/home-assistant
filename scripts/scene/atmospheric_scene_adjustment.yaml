@@ -1,0 +1,50 @@
+atmospheric_scene_adjustment:
+  alias: Atmospheric Scene Adjustment
+  description: "Adjusts scene parameters based on atmospheric conditions"
+  icon: mdi:tune
+  sequence:
+    # Calculate atmospheric adjustments
+    - variables:
+        atmospheric_conditions: "{{ states('sensor.atmospheric_conditions') | int }}"
+        water_conservation: "{{ states('sensor.water_conservation_index') | int }}"
+        brightness_adjustment: >
+          {% set atmospheric = states('sensor.atmospheric_conditions') | int %}
+          {% if atmospheric < 40 %}
+            50  # Increase brightness for poor conditions
+          {% elif atmospheric > 80 %}
+            -30  # Reduce brightness for good conditions
+          {% else %}
+            0  # No adjustment needed
+          {% endif %}
+    
+    # Apply scene adjustments
+    - service: light.turn_on
+      target:
+        area_id: all
+      data:
+        brightness: >
+          {% set base_brightness = 180 %}
+          {% set adjustment = brightness_adjustment | int %}
+          {{ [base_brightness + adjustment, 255] | min | max(50) }}
+        color_temp: >
+          {% set atmospheric = states('sensor.atmospheric_conditions') | int %}
+          {% if atmospheric < 40 %}
+            300  # Warmer for poor conditions
+          {% elif atmospheric > 80 %}
+            450  # Cooler for good conditions
+          {% else %}
+            375  # Neutral
+          {% endif %}
+        transition: 5
+    
+    # Adjust climate if needed
+    - condition: template
+      value_template: "{{ atmospheric_conditions < 50 }}"
+    - service: script.turn_on
+      target:
+        entity_id: script.climate_optimization_cycle
+    
+    # Adjustment notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🎭 Scene adjusted for atmospheric conditions: {{ atmospheric_conditions }}% atmospheric quality."

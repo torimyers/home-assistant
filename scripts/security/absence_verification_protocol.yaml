@@ -1,0 +1,25 @@
+absence_verification_protocol:
+  alias: Absence Verification Protocol
+  description: "Verifies house vacancy and adjusts security settings accordingly"
+  icon: mdi:account-off
+  sequence:
+    # Check occupancy sensors
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.security_intelligence_log
+      data:
+        value: "Absence verification: {{ now().strftime('%H:%M') }} - No occupancy detected for {{ (as_timestamp(now()) - as_timestamp(states.binary_sensor.house_occupied.last_changed)) // 60 }} minutes"
+    
+    # Enable enhanced security if absence confirmed
+    - condition: template
+      value_template: >
+        {% set occupancy_time = (as_timestamp(now()) - as_timestamp(states.binary_sensor.house_occupied.last_changed)) // 60 %}
+        {{ occupancy_time > 30 }}
+    
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.security_override_active
+    
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🏠 Absence verified. Enhanced security protocols activated."

@@ -1,0 +1,65 @@
+atmospheric_compensation_protocol:
+  alias: Atmospheric Compensation Protocol
+  description: "Compensates scene lighting and climate for atmospheric conditions"
+  icon: mdi:weather-fog
+  sequence:
+    # Analyze atmospheric conditions for compensation
+    - variables:
+        atmospheric_level: "{{ states('sensor.atmospheric_conditions') | int }}"
+        compensation_factor: >
+          {% set level = states('sensor.atmospheric_conditions') | int %}
+          {% if level < 30 %}
+            high
+          {% elif level < 60 %}
+            medium
+          {% else %}
+            low
+          {% endif %}
+    
+    # Apply atmospheric compensation
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ compensation_factor == 'high' }}"
+          sequence:
+            # High compensation - increase lighting and circulation
+            - service: light.turn_on
+              target:
+                area_id: all
+              data:
+                brightness: 255
+                color_temp: 300  # Warmer light for poor conditions
+            - service: fan.turn_on
+              target:
+                entity_id: fan.circulation_system
+              data:
+                speed: "high"
+        - conditions:
+            - condition: template
+              value_template: "{{ compensation_factor == 'medium' }}"
+          sequence:
+            # Medium compensation
+            - service: light.turn_on
+              target:
+                area_id: all
+              data:
+                brightness: 200
+                color_temp: 350
+            - service: fan.set_percentage
+              target:
+                entity_id: fan.circulation_system
+              data:
+                percentage: 70
+      default:
+        # Low compensation - minimal adjustments
+        - service: light.turn_on
+          target:
+            area_id: all
+          data:
+            brightness: 150
+            color_temp: 400
+    
+    # Compensation notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🌫️ Atmospheric compensation applied: {{ compensation_factor | upper }} level adjustments active."
