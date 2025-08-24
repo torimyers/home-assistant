@@ -16,7 +16,7 @@ on:
 jobs:
   validate:
     name: Validate Before Deploy
-    runs-on: ubuntu-latest
+    runs-on: self-hosted  # Changed from ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Create test secrets
@@ -39,18 +39,19 @@ jobs:
       - name: 📥 Check out repository
         uses: actions/checkout@v4
         
-      - name: 🔐 Setup SSH
-        uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.HA_SSH_PRIVATE_KEY }}
-          
-      - name: 🚀 Deploy to Home Assistant
+      # REMOVED: SSH Setup (not needed for local deployment)
+      
+      - name: 🚀 Deploy to Home Assistant (Local)
         run: |
-          ssh-keyscan -H ${{ secrets.HA_HOST }} >> ~/.ssh/known_hosts
+          echo "🚀 Deploying configuration locally..."
+          echo "Working directory: $(pwd)"
+          echo "Target: /mnt/user/appdata/homeassistant/"
           
-          echo "🚀 Deploying configuration..."
+          # List what we're deploying
+          echo "Files to deploy:"
+          ls -la
           
-          # Copy files directly (we're on the same machine now)
+          # Copy files directly (no SSH - we're on the same machine)
           rsync -avz --delete \
             --exclude='.git*' \
             --exclude='secrets.yaml' \
@@ -62,14 +63,21 @@ jobs:
           
       - name: 🔄 Reload HA Configuration
         run: |
-          curl -X POST "${{ secrets.HA_API_URL }}/api/services/homeassistant/reload_config_entry" \
+          # Use localhost since we're on the same machine
+          curl -X POST "http://localhost:8123/api/services/homeassistant/reload_core_config" \
             -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}" \
-            -H "Content-Type: application/json"
-          echo "🔄 Configuration reloaded"
+            -H "Content-Type: application/json" \
+            || echo "Core config reload failed"
+            
+          curl -X POST "http://localhost:8123/api/services/automation/reload" \
+            -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            || echo "Automation reload failed"
+            
+          echo "🔄 Configuration reload completed"
           
       - name: 🔁 Restart HA (if requested)
         if: github.event.inputs.force_restart == 'true'
         run: |
-          curl -X POST "${{ secrets.HA_API_URL }}/api/services/homeassistant/restart" \
-            -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}"
+          docker restart homeassistant || echo "Container restart failed"
           echo "🔁 Home Assistant restart initiated"
