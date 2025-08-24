@@ -68,6 +68,8 @@ jobs:
             --include='customizations/**' \
             --include='entities/' \
             --include='entities/**' \
+            --include='blueprints/' \
+            --include='blueprints/**' \
             --exclude='*' \
             ./ /mnt/user/appdata/Home-Assistant-Container/
             
