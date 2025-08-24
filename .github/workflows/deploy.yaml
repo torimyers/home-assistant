@@ -68,12 +68,12 @@ jobs:
       - name: 🔄 Reload HA Configuration
         run: |
           # Use localhost since we're on the same machine
-          curl -X POST "http://localhost:8123/api/services/homeassistant/reload_core_config" \
+          curl -X POST "http://192.168.1.2:8123/api/services/homeassistant/reload_core_config" \
             -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}" \
             -H "Content-Type: application/json" \
             || echo "Core config reload failed"
             
-          curl -X POST "http://localhost:8123/api/services/automation/reload" \
+          curl -X POST "http://192.168.1.2:8123/api/services/automation/reload" \
             -H "Authorization: Bearer ${{ secrets.HA_TOKEN }}" \
             -H "Content-Type: application/json" \
             || echo "Automation reload failed"
