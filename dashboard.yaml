@@ -16,7 +16,7 @@ views:
     cards:
       # Main Navigation Header
       - type: custom:mushroom-title-card
-        title: "<Û House Atreides Central Command"
+        title: "<ï¿½ House Atreides Central Command"
         subtitle: "Navigate to specialized control systems"
         card_mod:
           style: |
@@ -37,7 +37,7 @@ views:
             secondary_info: "Main responsive dashboard with comprehensive controls"
             tap_action:
               action: navigate
-              navigation_path: /lovelace-responsive-dashboard
+              navigation_path: /lovelace/0
             card_mod:
               style: |
                 ha-card {
@@ -100,7 +100,7 @@ views:
 
       # Quick Status Grid
       - type: entities
-        title: "=Ê Quick System Status"
+        title: "=ï¿½ Quick System Status"
         entities:
           - entity: binary_sensor.house_occupied
             name: "House Occupied"
