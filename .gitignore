@@ -17,3 +17,5 @@ home-assistant_v2.db*
 # OS files
 .DS_Store
 Thumbs.db
+
+backups/
