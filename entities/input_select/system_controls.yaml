@@ -2,7 +2,7 @@
 # System Control Selectors - Dune Operational Modes
 # Dropdown selections for system-wide operational states
 
-house_mode:
+  house_mode:
     name: "House Mode"
     options:
       - "Normal"
