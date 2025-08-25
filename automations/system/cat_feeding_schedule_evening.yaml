@@ -1,5 +1,6 @@
 alias: Cat Evening Feeding Schedule
 description: Fremen Warriors Evening Feeding - Tribal Sustenance
+area_id: kitchen
 use_blueprint:
   path: pet_care.yaml
   input:

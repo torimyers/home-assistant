@@ -1,5 +1,6 @@
 alias: Person Leaves Home
 description: Sietch Sealed - Desert Patrol Departure
+area_id: front_yard
 use_blueprint:
   path: person_presence.yaml
   input:

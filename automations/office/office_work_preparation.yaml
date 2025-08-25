@@ -1,6 +1,7 @@
 id: office_work_preparation
 alias: Office Work Preparation
 description: Prescient Navigation - Future Sight Preparation
+area_id: office
 trigger:
 - platform: state
   entity_id: sensor.office_preparation_status

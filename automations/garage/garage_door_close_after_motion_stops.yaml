@@ -1,6 +1,7 @@
 id: garage_door_close_after_motion_stops
 alias: Garage Door Close After Motion Stops
 description: Ornithopter Secured - Bay Sealed
+area_id: garage
 trigger:
 - platform: state
   entity_id: binary_sensor.garage_motion

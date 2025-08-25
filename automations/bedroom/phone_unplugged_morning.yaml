@@ -1,5 +1,6 @@
 alias: Phone Unplugged Morning
 description: Water of Awakening - Morning Rise
+area_id: bedroom
 use_blueprint:
   path: person_presence.yaml
   input:

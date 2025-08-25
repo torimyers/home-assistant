@@ -1,6 +1,7 @@
 id: garage_lights_on_when_door_open
 alias: Garage Lights On When Door Open
 description: Maintenance Bay Operations - Extended Work
+area_id: garage
 trigger:
 - platform: state
   entity_id: binary_sensor.garage_motion

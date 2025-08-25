@@ -1,6 +1,7 @@
 id: kitchen_morning_lights_on
 alias: Kitchen Morning Lights On
 description: Morning Water Ration - Dawn Sustenance
+area_id: kitchen
 trigger:
 - platform: state
   entity_id: binary_sensor.kitchen_motion
