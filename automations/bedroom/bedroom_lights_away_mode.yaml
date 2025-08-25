@@ -1,7 +1,6 @@
 id: bedroom_lights_away_mode
 alias: Bedroom Lights Away Mode
 description: Stilltent Away Conservation - Energy Discipline
-area_id: bedroom
 trigger:
 - platform: time
   at: '23:00:00'

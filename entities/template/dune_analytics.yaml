@@ -5,6 +5,7 @@
 # SIETCH VITALS & SYSTEM HEALTH
 # ============================================================================
 
+sensor:
   - name: "Sietch Health Score"
     unique_id: "sietch_health_score"
     state: >-

@@ -3,10 +3,16 @@
 # https://www.home-assistant.io/integrations/lovelace/
 
 lovelace:
-  # Main dashboard configuration - Mobile Responsive
+  # Main dashboard configuration - House Dodson Command (Desktop optimized)
   mode: yaml
+  title: "House Dodson Command"
+  filename: responsive-dashboard.yaml
   resources:
-    - url: /local/dashboard-card.js
+    - url: /local/community/lovelace-mushroom/mushroom.js
+      type: module
+    - url: /local/community/apexcharts-card/apexcharts-card.js
+      type: module
+    - url: /local/community/lovelace-card-mod/card-mod.js
       type: module
   
   # Additional dashboards
@@ -35,10 +41,18 @@ lovelace:
       show_in_sidebar: true
       filename: ui-lovelace/dashboards/performance_monitoring.yaml
       
-    # Mobile command dashboard  
-    dashboards-mobile-command:
+    # Mobile command dashboard - Optimized for phones/tablets
+    mobile-command:
       mode: yaml
       title: "Mobile Command"
       icon: mdi:cellphone
       show_in_sidebar: true
-      filename: ui-lovelace/dashboards/mobile_command.yaml
+      filename: dashboards/mobile_command.yaml
+      
+    # Desktop alternative - Quick access to main dashboard
+    desktop-command:
+      mode: yaml
+      title: "Desktop Command"
+      icon: mdi:monitor-dashboard
+      show_in_sidebar: true
+      filename: responsive-dashboard.yaml

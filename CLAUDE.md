@@ -27,6 +27,31 @@ This is a Home Assistant configuration repository with:
 - Optimized dashboard structure (87.5% file size reduction)
 - Automated deployment via GitHub Actions
 
+## Dashboard Configuration
+
+### Main Dashboards:
+- **Default Dashboard**: `responsive-dashboard.yaml` - "House Dodson Command"
+  - Desktop-optimized with full analytics and controls
+  - Wide layouts, detailed entity displays, comprehensive system overview
+  - User-friendly names with Dune references in secondary info
+  
+- **Mobile Dashboard**: `dashboards/mobile_command.yaml` - "📱 Mobile Command"  
+  - Touch-optimized for phones/tablets
+  - Simplified layouts, essential controls, quick navigation
+  - Clear primary names with Dune context in secondary info
+  - URL: `/lovelace-mobile-command`
+
+### Specialized Dashboards:
+- **Sietch Command**: `dashboards/sietch_command.yaml` - Advanced analytics
+- **Performance Monitor**: `dashboards/performance_monitoring.yaml` - System diagnostics
+- **Desktop Command**: Links back to main dashboard for easy access
+
+### Navigation:
+All dashboards include cross-navigation cards to switch between:
+- Desktop ↔ Mobile views
+- Specialized analytics dashboards  
+- Quick access to system controls
+
 ## Testing Approach
 - Batch testing at project milestones rather than incremental
 - Full system validation before commits
