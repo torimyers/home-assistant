@@ -1,6 +1,7 @@
 id: garage_door_open_on_motion
 alias: Garage Door Open on Motion
 description: Ornithopter Departure - Desert Patrol Ready
+area_id: garage
 trigger:
 - platform: state
   entity_id: binary_sensor.garage_motion

@@ -1,5 +1,6 @@
 alias: Person Arrives Home
 description: Sietch Entry Protocol - Gate Opens
+area_id: front_yard
 use_blueprint:
   path: person_presence.yaml
   input:

@@ -1,6 +1,7 @@
 id: front_door_motion_light
 alias: Front Door Motion Light
 description: Desert Wanderer Approaches - Perimeter Alert
+area_id: front_yard
 trigger:
 - platform: state
   entity_id: binary_sensor.front_door_motion_3
