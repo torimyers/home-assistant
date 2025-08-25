@@ -1,7 +1,6 @@
 id: dryer_cycle_started
 alias: Dryer Cycle Started
 description: Moisture Extraction Process - Dry Cycle Begin
-area_id: laundry
 use_blueprint:
   path: appliance_cycle.yaml
   input:
