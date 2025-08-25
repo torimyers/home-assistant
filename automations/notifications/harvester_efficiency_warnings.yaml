@@ -43,7 +43,7 @@ action:
           - condition: trigger
             id: efficiency_emergency
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🚨 HARVESTER EMERGENCY: Production Failure!"
               message: >-
@@ -108,7 +108,7 @@ action:
           - condition: trigger
             id: efficiency_critical
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚠️ CRITICAL: Harvester Efficiency Degraded"
               message: >-
@@ -161,7 +161,7 @@ action:
           - condition: trigger
             id: efficiency_warning
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚠️ Harvester Efficiency Below Standards"
               message: >-
@@ -212,7 +212,7 @@ action:
           - condition: trigger
             id: efficiency_optimal
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🏆 Optimal Harvester Performance!"
               message: >-
@@ -266,7 +266,7 @@ action:
           - condition: trigger
             id: peak_hour_inefficiency
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⏰ Peak Hour Inefficiency Detected"
               message: >-

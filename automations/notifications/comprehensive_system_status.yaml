@@ -59,7 +59,7 @@ action:
           - condition: trigger
             id: multiple_critical_systems
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🚨 MULTIPLE CRITICAL SYSTEMS ALERT"
               message: >-
@@ -124,7 +124,7 @@ action:
           - condition: trigger
             id: exceptional_all_systems
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌟 EXCEPTIONAL: All Systems Peak Performance!"
               message: >-
@@ -196,7 +196,7 @@ action:
           - condition: trigger
             id: significant_health_change
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "📊 Significant Sietch Health Change"
               message: >-
@@ -236,7 +236,7 @@ action:
           - condition: trigger
             id: significant_production_change
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚡ Major Spice Production Shift"
               message: >-
@@ -273,7 +273,7 @@ action:
           - condition: trigger
             id: guild_rating_change
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🏅 Guild Rating Status Change!"
               message: >-
@@ -312,7 +312,7 @@ action:
           - condition: trigger
             id: scheduled_comprehensive
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "📊 Comprehensive System Status Report"
               message: >-

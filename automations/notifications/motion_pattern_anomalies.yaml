@@ -66,7 +66,7 @@ action:
           - condition: trigger
             id: pattern_inefficiency
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚡ Motion Pattern Inefficiency Detected"
               message: >-
@@ -116,7 +116,7 @@ action:
           - condition: trigger
             id: overwhelming_activity_pattern
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌊 Overwhelming Activity Pattern Alert"
               message: >-
@@ -166,7 +166,7 @@ action:
           - condition: trigger
             id: unusual_dormancy_pattern
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "😴 Unusual Dormancy Pattern Detected"
               message: >-
@@ -221,7 +221,7 @@ action:
           - condition: trigger
             id: midday_inactivity_anomaly
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "☀️ Midday Inactivity Anomaly"
               message: >-
@@ -264,7 +264,7 @@ action:
           - condition: trigger
             id: multi_zone_inefficiency
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🔄 Multi-Zone Efficiency Problem"
               message: >-
@@ -306,7 +306,7 @@ action:
           - condition: trigger
             id: phantom_activity_pattern
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "👻 Phantom Activity Pattern Alert"
               message: >-
@@ -351,7 +351,7 @@ action:
           - condition: trigger
             id: perfect_motion_efficiency
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⭐ Perfect Motion Efficiency Achieved!"
               message: >-
@@ -397,7 +397,7 @@ action:
           - condition: trigger
             id: optimal_activity_conservation_balance
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚖️ Perfect Activity-Conservation Balance!"
               message: >-

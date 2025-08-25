@@ -12,7 +12,7 @@ condition:
     for:
       seconds: 30
 action:
-  - service: notify.mobile_app_toris_iphone
+  - service: notify.mobile_app_tori_phone_2
     data:
       title: "🌅 Dawn Breaks Over Sietch Tabr"
       message: >-

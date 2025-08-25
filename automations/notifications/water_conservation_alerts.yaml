@@ -41,7 +41,7 @@ action:
           - condition: trigger
             id: conservation_emergency
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🚨 WATER EMERGENCY: Critical Loss Detected!"
               message: >-
@@ -105,7 +105,7 @@ action:
           - condition: trigger
             id: conservation_critical
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚠️ CRITICAL: Water Conservation Failing"
               message: >-
@@ -153,7 +153,7 @@ action:
           - condition: trigger
             id: conservation_warning
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "💧 Water Conservation Below Standards"
               message: >-
@@ -203,7 +203,7 @@ action:
           - condition: trigger
             id: conservation_excellent
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🏆 Excellence in Water Conservation!"
               message: >-
@@ -248,7 +248,7 @@ action:
           - condition: trigger
             id: night_conservation_alert
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌙 Night Conservation Alert"
               message: >-

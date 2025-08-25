@@ -51,7 +51,7 @@ action:
           - condition: trigger
             id: security_emergency
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🚨 SECURITY EMERGENCY: Defense Systems Failing!"
               message: >-
@@ -125,7 +125,7 @@ action:
           - condition: trigger
             id: security_critical
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚠️ CRITICAL: Security System Degradation"
               message: >-
@@ -184,7 +184,7 @@ action:
           - condition: trigger
             id: security_degradation
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚠️ Security Effectiveness Declining"
               message: >-
@@ -235,7 +235,7 @@ action:
           - condition: trigger
             id: night_security_weakness
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌙 Night Watch Security Concern"
               message: >-
@@ -282,7 +282,7 @@ action:
           - condition: trigger
             id: fortress_security_achieved
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🏰 Fortress-Level Security Achieved!"
               message: >-
@@ -329,7 +329,7 @@ action:
           - condition: trigger
             id: perimeter_breach_risk
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🔍 Perimeter Breach Risk Detected"
               message: >-

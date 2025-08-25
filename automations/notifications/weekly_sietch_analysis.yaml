@@ -21,7 +21,7 @@ condition:
         for:
           minutes: 5
 action:
-  - service: notify.mobile_app_toris_iphone
+  - service: notify.mobile_app_tori_phone_2
     data:
       title: "📊 Weekly Sietch Analysis - Strategic Review"
       message: >-

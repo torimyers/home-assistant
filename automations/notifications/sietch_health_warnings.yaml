@@ -38,7 +38,7 @@ action:
           - condition: trigger
             id: health_emergency
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🚨 SIETCH EMERGENCY - CRITICAL SYSTEMS FAILURE"
               message: >-
@@ -97,7 +97,7 @@ action:
           - condition: trigger
             id: health_critical
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚠️ CRITICAL: Sietch Health Degradation"
               message: >-
@@ -141,7 +141,7 @@ action:
           - condition: trigger
             id: health_warning
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚠️ Sietch Health Below Optimal"
               message: >-
@@ -187,7 +187,7 @@ action:
           - condition: trigger
             id: health_recovery
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "✅ Sietch Health Restored"
               message: >-

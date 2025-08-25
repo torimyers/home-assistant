@@ -116,7 +116,7 @@ action:
                       percentage: 50
                       
           # Notify of cooling action
-          - service: notify.mobile_app_phone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌡️ Stillsuit: Cooling Activated"
               message: >
@@ -147,7 +147,7 @@ action:
                   temperature: "{{ low_threshold + 1 }}"
                   
           # Notify of heating action
-          - service: notify.mobile_app_phone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🔥 Stillsuit: Heating Activated"
               message: >
@@ -230,7 +230,7 @@ action:
         target:
           area_id: ["bedroom", "office", "guest_bathroom"]
           
-      - service: notify.mobile_app_phone
+      - service: notify.mobile_app_tori_phone_2
         data:
           title: "⚡ Desert Conservation: Climate Restricted"
           message: >
@@ -290,7 +290,7 @@ action:
             value_template: "{{ humidity < 30 }}"
         then:
           # Low humidity - desert conditions
-          - service: notify.mobile_app_phone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🏜️ Desert Alert: Low Humidity"
               message: >
@@ -313,7 +313,7 @@ action:
               entity_id: climate.home
               hvac_mode: "dry"
               
-          - service: notify.mobile_app_phone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "💧 Humidity Control: Dehumidifying"
               message: >

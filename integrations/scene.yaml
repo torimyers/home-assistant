@@ -5,4 +5,5 @@
 #
 
 # Load scenes from organized folder structure
-scene: !include_dir_named ../scenes
+# Note: Scene loading is now handled by scenes.yaml in the root directory
+# scene: !include_dir_named ../scenes
