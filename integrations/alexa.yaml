@@ -99,93 +99,53 @@ alexa:
       # Security controls - Both friendly and Dune names
       script.security_lockdown_mode:
         name: "Security Lockdown"
-        aliases:
-          - "Lockdown Mode"
-          - "Security Mode"
-          - "Defense Protocol"
         description: "Activate security lockdown mode"
         display_categories: SECURITY_PANEL
       
       script.night_security_protocol:
         name: "Night Security"
-        aliases:
-          - "Night Mode"
-          - "Night Watch"
-          - "Desert Guard"
         description: "Activate night security protocol"
         display_categories: SECURITY_PANEL
       
       # Climate controls - Both friendly and Dune names
       script.climate_control_system:
         name: "Climate Control"
-        aliases:
-          - "Environmental Control"
-          - "Atmosphere Control"
-          - "Stillsuit Mode"
         description: "Activate climate control system"
         display_categories: THERMOSTAT
       
       # System modes - Both friendly and Dune names
       input_boolean.vacation_mode:
         name: "Vacation Mode"
-        aliases:
-          - "Journey Mode"
-          - "Travel Mode"
-          - "Desert Journey"
         description: "Enable vacation mode"
         display_categories: SWITCH
       
       input_boolean.guest_mode:
         name: "Guest Mode"
-        aliases:
-          - "Visitor Mode"
-          - "Welcome Mode"
-          - "Hospitality Mode"
         description: "Enable guest mode"
         display_categories: SWITCH
       
       input_boolean.maintenance_mode:
         name: "Maintenance Mode"
-        aliases:
-          - "Service Mode"
-          - "Repair Mode"
-          - "Engineering Mode"
         description: "Enable maintenance mode"
         display_categories: SWITCH
       
       input_boolean.notification_system_enabled:
         name: "Notifications"
-        aliases:
-          - "Alert System"
-          - "Message System"
-          - "Communication Hub"
         description: "Control notification system"
         display_categories: SWITCH
       
       input_boolean.motion_lighting_enabled:
         name: "Motion Lighting"
-        aliases:
-          - "Automatic Lighting"
-          - "Smart Lighting"
-          - "Sensor Lighting"
         description: "Enable motion lighting automation"
         display_categories: SWITCH
       
       input_boolean.security_monitoring_enabled:
         name: "Security Monitoring"
-        aliases:
-          - "Security System"
-          - "Surveillance Mode"
-          - "Guard System"
         description: "Enable security monitoring"
         display_categories: SWITCH
       
       input_boolean.climate_automation_enabled:
         name: "Climate Automation"
-        aliases:
-          - "Environmental Automation"
-          - "Temperature Control"
-          - "Atmosphere Management"
         description: "Enable climate automation"
         display_categories: SWITCH
 
