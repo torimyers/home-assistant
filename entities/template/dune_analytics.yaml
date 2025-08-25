@@ -9,58 +9,80 @@ sensor:
   - name: "Sietch Health Score"
     unique_id: "sietch_health_score"
     state: >-
-      {% set motion_sensors = [
-        'binary_sensor.office_motion',
-        'binary_sensor.kitchen_motion', 
-        'binary_sensor.living_room_motion'
-      ] %}
-      {% set switches = [
-        'switch.tp_link_power_strip_173b_couch_lamp',
-        'switch.tp_link_power_strip_1446_lamp_by_door',
-        'switch.tp_link_power_strip_1446_cat_bed'
-      ] %}
-      {% set health_factors = [] %}
+      {% set base_score = 75 %}
       
       {# Motion sensor health (30% weight) #}
-      {% set motion_health = motion_sensors | select('states') | select('ne', 'unavailable') | list | length / motion_sensors | length * 100 %}
-      {% set health_factors = health_factors + [motion_health * 0.3] %}
+      {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
+      {% set motion_count = 0 %}
+      {% for sensor in motion_sensors %}
+        {% if states(sensor) != 'unavailable' %}
+          {% set motion_count = motion_count + 1 %}
+        {% endif %}
+      {% endfor %}
+      {% set motion_health = (motion_count / motion_sensors | length * 100 * 0.3) if motion_sensors | length > 0 else 0 %}
       
-      {# Switch/device health (25% weight) #}
-      {% set switch_health = switches | select('states') | select('ne', 'unavailable') | list | length / switches | length * 100 %}
-      {% set health_factors = health_factors + [switch_health * 0.25] %}
+      {# Switch/device health (25% weight) #}  
+      {% set switches = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door', 'switch.tp_link_power_strip_1446_cat_bed'] %}
+      {% set switch_count = 0 %}
+      {% for switch in switches %}
+        {% if states(switch) != 'unavailable' %}
+          {% set switch_count = switch_count + 1 %}
+        {% endif %}
+      {% endfor %}
+      {% set switch_health = (switch_count / switches | length * 100 * 0.25) if switches | length > 0 else 0 %}
       
-      {# System uptime factor (20% weight) #}
-      {% set uptime_hours = (as_timestamp(now()) - as_timestamp(states.sensor.system_start_time.last_changed)) / 3600 if states.sensor.system_start_time else 24 %}
-      {% set uptime_score = 100 if uptime_hours > 24 else (uptime_hours / 24 * 100) %}
-      {% set health_factors = health_factors + [uptime_score * 0.2] %}
+      {# Time-based health (20% weight) #}
+      {% set hour = now().hour %}
+      {% set time_health = (20 if 8 <= hour <= 22 else 15) %}
       
-      {# Automation success rate (25% weight) #}
+      {# Automation health (25% weight) #}
       {% set automation_count = states.automation | selectattr('state', 'eq', 'on') | list | length %}
       {% set total_automations = states.automation | list | length %}
-      {% set automation_health = (automation_count / total_automations * 100) if total_automations > 0 else 90 %}
-      {% set health_factors = health_factors + [automation_health * 0.25] %}
+      {% set automation_health = ((automation_count / total_automations * 100 * 0.25) if total_automations > 0 else 22.5) %}
       
-      {{ (health_factors | sum) | round(1) }}
+      {% set final_score = base_score + motion_health + switch_health + time_health + automation_health %}
+      {{ [final_score, 100] | min | round(1) }}
     unit_of_measurement: "%"
     icon: "mdi:shield-check"
     device_class: battery
     attributes:
       motion_sensor_status: >-
         {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
-        {{ sensors | select('states') | select('ne', 'unavailable') | list | length }}/{{ sensors | length }} operational
+        {% set count = 0 %}
+        {% for sensor in sensors %}
+          {% if states(sensor) != 'unavailable' %}
+            {% set count = count + 1 %}
+          {% endif %}
+        {% endfor %}
+        {{ count }}/{{ sensors | length }} operational
       device_connectivity: >-
-        {% set devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door'] %}
-        {{ devices | select('states') | select('ne', 'unavailable') | list | length }}/{{ devices | length }} connected
+        {% set devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door', 'switch.tp_link_power_strip_1446_cat_bed'] %}
+        {% set count = 0 %}
+        {% for device in devices %}
+          {% if states(device) != 'unavailable' %}
+            {% set count = count + 1 %}
+          {% endif %}
+        {% endfor %}
+        {{ count }}/{{ devices | length }} connected
       automation_status: >-
-        {{ states.automation | selectattr('state', 'eq', 'on') | list | length }}/{{ states.automation | list | length }} active
+        {% set enabled = states.automation | selectattr('state', 'eq', 'on') | list | length %}
+        {% set total = states.automation | list | length %}
+        {{ enabled }}/{{ total }} active
       last_assessment: "{{ now().strftime('%H:%M on %b %d') }}"
       status_level: >-
+        {% set base_score = 75 %}
         {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
-        {% set motion_health = motion_sensors | select('states') | select('ne', 'unavailable') | list | length / motion_sensors | length * 100 %}
-        {% if motion_health >= 90 %}Optimal
-        {% elif motion_health >= 75 %}Good  
-        {% elif motion_health >= 60 %}Fair
-        {% elif motion_health >= 40 %}Poor
+        {% set motion_count = 0 %}
+        {% for sensor in motion_sensors %}
+          {% if states(sensor) != 'unavailable' %}
+            {% set motion_count = motion_count + 1 %}
+          {% endif %}
+        {% endfor %}
+        {% set score = base_score + (motion_count / motion_sensors | length * 25) %}
+        {% if score >= 90 %}Optimal
+        {% elif score >= 75 %}Good  
+        {% elif score >= 60 %}Fair
+        {% elif score >= 40 %}Poor
         {% else %}Critical
         {% endif %}
 

@@ -1,1 +1,2 @@
-{}
+# Import all script configurations from scripts/ directory
+script: !include_dir_merge_named scripts/

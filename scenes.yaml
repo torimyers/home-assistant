@@ -1,1 +1,2 @@
-[]
+# Import all scene configurations from scenes/ directory
+scene: !include_dir_merge_list scenes/
