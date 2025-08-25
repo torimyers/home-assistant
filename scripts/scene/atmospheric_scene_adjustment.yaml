@@ -1,8 +1,7 @@
-atmospheric_scene_adjustment:
-  alias: Atmospheric Scene Adjustment
-  description: "Adjusts scene parameters based on atmospheric conditions"
-  icon: mdi:tune
-  sequence:
+alias: Atmospheric Scene Adjustment
+description: "Adjusts scene parameters based on atmospheric conditions"
+icon: mdi:tune
+sequence:
     # Calculate atmospheric adjustments
     - variables:
         atmospheric_conditions: "{{ states('sensor.atmospheric_conditions') | int }}"

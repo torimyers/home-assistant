@@ -1,8 +1,7 @@
-efficiency_optimization_learning:
-  alias: Efficiency Optimization Learning
-  description: "Learns optimal efficiency settings and continuously improves system performance"
-  icon: mdi:speedometer
-  sequence:
+alias: Efficiency Optimization Learning
+description: "Learns optimal efficiency settings and continuously improves system performance"
+icon: mdi:speedometer
+sequence:
     # Analyze current efficiency metrics
     - variables:
         harvester_efficiency: "{{ states('sensor.harvester_efficiency') | int }}"

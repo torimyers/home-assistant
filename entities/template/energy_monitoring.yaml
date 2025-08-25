@@ -1,12 +1,11 @@
 # Energy Monitoring System - Holtzman Shield Power Management
 # Advanced energy analytics and optimization for resource conservation
 
-sensor:
-  # ============================================================================
-  # ENERGY CONSUMPTION ANALYTICS
-  # ============================================================================
-  
-  - name: "Holtzman Energy Consumption"
+# ============================================================================
+# ENERGY CONSUMPTION ANALYTICS
+# ============================================================================
+
+- name: "Holtzman Energy Consumption"
     unique_id: "holtzman_energy_consumption"
     state: >-
       {% set switches = [

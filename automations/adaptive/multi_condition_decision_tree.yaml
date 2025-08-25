@@ -375,9 +375,9 @@ action:
                       variables:
                         zones_active: >-
                           [
-                            {% if is_state('binary_sensor.kitchen_occupancy', 'on') %}"kitchen",{% endif %}
-                            {% if is_state('binary_sensor.office_motion_detected', 'on') %}"office",{% endif %}
-                            {% if is_state('binary_sensor.living_room_motion_detected', 'on') %}"living_room"{% endif %}
+                            {% if is_state('binary_sensor.kitchen_motion', 'on') %}"kitchen",{% endif %}
+                            {% if is_state('binary_sensor.office_motion', 'on') %}"office",{% endif %}
+                            {% if is_state('binary_sensor.living_room_motion', 'on') %}"living_room"{% endif %}
                           ]
 
               # Distributed Activity Selective Coordination
@@ -393,13 +393,13 @@ action:
                         primary_zone: "{{ states('sensor.sietch_occupancy_distribution') }}"
                         secondary_zones: >-
                           {% set zones = [] %}
-                          {% if is_state('binary_sensor.kitchen_occupancy', 'on') and states('sensor.sietch_occupancy_distribution') != 'Kitchen' %}
+                          {% if is_state('binary_sensor.kitchen_motion', 'on') and states('sensor.sietch_occupancy_distribution') != 'Kitchen' %}
                             {% set zones = zones + ['kitchen'] %}
                           {% endif %}
-                          {% if is_state('binary_sensor.office_motion_detected', 'on') and states('sensor.sietch_occupancy_distribution') != 'Office' %}
+                          {% if is_state('binary_sensor.office_motion', 'on') and states('sensor.sietch_occupancy_distribution') != 'Office' %}
                             {% set zones = zones + ['office'] %}
                           {% endif %}
-                          {% if is_state('binary_sensor.living_room_motion_detected', 'on') and states('sensor.sietch_occupancy_distribution') != 'Living Room' %}
+                          {% if is_state('binary_sensor.living_room_motion', 'on') and states('sensor.sietch_occupancy_distribution') != 'Living Room' %}
                             {% set zones = zones + ['living_room'] %}
                           {% endif %}
                           {{ zones | join(',') }}

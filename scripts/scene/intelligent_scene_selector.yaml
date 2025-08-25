@@ -1,8 +1,7 @@
-intelligent_scene_selector:
-  alias: Intelligent Scene Selector
-  description: "Intelligently selects scenes based on context and conditions"
-  icon: mdi:lightbulb-group-outline
-  sequence:
+alias: Intelligent Scene Selector
+description: "Intelligently selects scenes based on context and conditions"
+icon: mdi:lightbulb-group-outline
+sequence:
     # Analyze current context
     - variables:
         time_of_day: >

@@ -3,7 +3,7 @@ description: Tribal Council Assembles - Gathering Begins
 use_blueprint:
   path: motion_lighting.yaml
   input:
-    motion_entity: binary_sensor.living_room_motion_detected
+    motion_entity: binary_sensor.living_room_motion
     room_name: living_room
     dune_description: Tribal Council Assembles - Gathering Begins
     activation_type: scene

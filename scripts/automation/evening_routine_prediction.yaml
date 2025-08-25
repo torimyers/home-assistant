@@ -1,8 +1,7 @@
-evening_routine_prediction:
-  alias: Evening Routine Prediction
-  description: "Predicts and prepares for evening routine activities"
-  icon: mdi:weather-sunset
-  sequence:
+alias: Evening Routine Prediction
+description: "Predicts and prepares for evening routine activities"
+icon: mdi:weather-sunset
+sequence:
     # Prepare evening environment
     - service: scene.turn_on
       target:

@@ -239,7 +239,17 @@ action:
   - service: "{{ additional_service }}"
     target:
       entity_id: "{{ additional_entity }}"
-    data: "{{ additional_data | from_yaml }}"
+    data: >
+      {% if additional_data %}
+        {% set data_parts = additional_data.split(':') %}
+        {% if data_parts | length == 2 %}
+          {{ {data_parts[0].strip(): data_parts[1].strip()} }}
+        {% else %}
+          {}
+        {% endif %}
+      {% else %}
+        {}
+      {% endif %}
   
   # Send deactivation notification
   - condition: template

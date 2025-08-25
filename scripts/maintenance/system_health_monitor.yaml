@@ -1,8 +1,7 @@
-harvester_diagnostics:
-  alias: System Health Monitor
-  description: "Harvester Diagnostics - Comprehensive system health monitoring with resource usage tracking and automated alerting"
-  icon: mdi:wrench
-  sequence:
+alias: System Health Monitor
+description: "Harvester Diagnostics - Comprehensive system health monitoring with resource usage tracking and automated alerting"
+icon: mdi:wrench
+sequence:
     - service: homeassistant.update_entity
       target:
         entity_id:

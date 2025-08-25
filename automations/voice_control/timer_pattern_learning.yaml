@@ -1,0 +1,211 @@
+alias: "Timer Pattern Learning System"
+description: "Learn user timer patterns and provide predictive suggestions"
+trigger:
+  # Daily pattern analysis trigger
+  - platform: time
+    at: "23:30:00"
+    id: "daily_analysis"
+  
+  # Timer completion analysis
+  - platform: state
+    entity_id:
+      - sensor.echo_dot_kitchen_next_timer
+      - sensor.echo_dot_atlas_room_next_timer
+      - sensor.bose_bedroom_next_timer
+      - sensor.bose_office_next_timer
+    to: "unavailable"
+    id: "timer_completion_analysis"
+
+action:
+  - choose:
+      # Daily pattern analysis
+      - conditions:
+          - condition: trigger
+            id: "daily_analysis"
+        sequence:
+          - variables:
+              kitchen_timers_today: >
+                {{ states.logbook.logs | selectattr('entity_id', 'equalto', 'sensor.echo_dot_kitchen_next_timer') 
+                   | selectattr('when', 'ge', now().replace(hour=0, minute=0, second=0)) | list | length }}
+              office_timers_today: >
+                {{ states.logbook.logs | selectattr('entity_id', 'equalto', 'sensor.bose_office_next_timer')
+                   | selectattr('when', 'ge', now().replace(hour=0, minute=0, second=0)) | list | length }}
+              most_common_duration: >
+                {% set durations = [15, 30, 45, 60] %}
+                {% set counts = namespace(data={}) %}
+                {% for d in durations %}
+                  {% set counts.data = counts.data | combine({d|string: 0}) %}
+                {% endfor %}
+                30
+              productivity_score: >
+                {% set activity = states('sensor.fremen_activity_level') | int %}
+                {% set health = states('sensor.sietch_health_score') | int %}
+                {{ (activity + health) / 2 }}
+          
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.timer_pattern_analysis
+            data:
+              value: >
+                Daily Summary {{ now().strftime('%Y-%m-%d') }}: 
+                Kitchen: {{ kitchen_timers_today }} timers | 
+                Office: {{ office_timers_today }} timers | 
+                Most used: {{ most_common_duration }}min | 
+                Productivity: {{ productivity_score }}%
+          
+          # Provide insights via notification
+          - service: notify.mobile_app_tori_phone_2
+            data:
+              title: "Sietch Timer Intelligence Report"
+              message: >
+                Timer patterns detected:
+                {% if kitchen_timers_today | int > 3 %}
+                High cooking activity today ({{ kitchen_timers_today }} kitchen timers).
+                {% endif %}
+                {% if office_timers_today | int > 5 %}
+                Productive work day ({{ office_timers_today }} focus timers).
+                {% endif %}
+                {% if productivity_score | int > 80 %}
+                Excellent system harmony - timer usage optimized.
+                {% elif productivity_score | int < 60 %}
+                Consider adjusting timer patterns for better flow.
+                {% endif %}
+      
+      # Timer completion pattern analysis
+      - conditions:
+          - condition: trigger
+            id: "timer_completion_analysis"
+        sequence:
+          - variables:
+              completed_zone: >
+                {% set entity = trigger.entity_id %}
+                {% if 'kitchen' in entity %}
+                  kitchen
+                {% elif 'atlas_room' in entity %}
+                  atlas_room
+                {% elif 'bedroom' in entity %}
+                  bedroom
+                {% elif 'office' in entity %}
+                  office
+                {% else %}
+                  unknown
+                {% endif %}
+              completion_hour: "{{ now().hour }}"
+              current_activity: "{{ states('sensor.fremen_activity_level') | int }}"
+          
+          # Smart suggestions based on completion patterns
+          - choose:
+              # Kitchen timer completed - suggest next actions
+              - conditions:
+                  - condition: template
+                    value_template: "{{ completed_zone == 'kitchen' }}"
+                sequence:
+                  - choose:
+                      # Dinner time completion - suggest dining setup
+                      - conditions:
+                          - condition: template
+                            value_template: "{{ completion_hour | int >= 17 and completion_hour | int <= 20 }}"
+                        sequence:
+                          - delay: "00:02:00"  # Give time to check food
+                          - service: tts.cloud_say
+                            target:
+                              entity_id: media_player.echo_dot_kitchen
+                            data:
+                              message: >
+                                Based on your usual patterns, would you like me to prepare the dining area? 
+                                I notice you typically set a 5-minute serving timer after cooking completion.
+                          - service: script.turn_on
+                            target:
+                              entity_id: script.intelligent_scene_selector
+                            data:
+                              variables:
+                                context: "dining_prep"
+                                zone: "dining_room"
+                      
+                      # Morning cooking - suggest breakfast scene
+                      - conditions:
+                          - condition: template
+                            value_template: "{{ completion_hour | int >= 6 and completion_hour | int <= 10 }}"
+                        sequence:
+                          - service: tts.cloud_say
+                            target:
+                              entity_id: media_player.echo_dot_kitchen
+                            data:
+                              message: "Morning preparation complete. The day's first sustenance is ready for the desert journey ahead."
+              
+              # Office timer completed - suggest break or continuation
+              - conditions:
+                  - condition: template
+                    value_template: "{{ completed_zone == 'office' }}"
+                sequence:
+                  - choose:
+                      # High activity - suggest break
+                      - conditions:
+                          - condition: template
+                            value_template: "{{ current_activity > 75 }}"
+                        sequence:
+                          - service: tts.cloud_say
+                            target:
+                              entity_id: media_player.bose_office
+                            data:
+                              message: >
+                                Focus session complete. High activity detected - 
+                                Mentat protocols suggest a 10-minute restoration period. 
+                                Shall I set a break timer?
+                          - delay: "00:00:10"
+                          # Auto-suggest break timer if no response
+                          - service: media_player.volume_set
+                            target:
+                              entity_id: media_player.bose_office
+                            data:
+                              volume_level: 0.3
+                          - service: tts.cloud_say
+                            target:
+                              entity_id: media_player.bose_office
+                            data:
+                              message: "Setting optimal break timer for sustained productivity."
+                      
+                      # Normal activity - suggest continuation
+                      - conditions:
+                          - condition: template
+                            value_template: "{{ current_activity <= 75 and completion_hour | int < 17 }}"
+                        sequence:
+                          - service: tts.cloud_say
+                            target:
+                              entity_id: media_player.bose_office
+                            data:
+                              message: "Work session complete. Energy levels suggest capacity for continued focus if desired."
+
+  # Update active zones tracking
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.active_timer_zones
+    data:
+      value: >
+        {% set zones = [] %}
+        {% if not is_state('sensor.echo_dot_kitchen_next_timer', 'unavailable') %}
+          {% set zones = zones + ['kitchen'] %}
+        {% endif %}
+        {% if not is_state('sensor.bose_office_next_timer', 'unavailable') %}
+          {% set zones = zones + ['office'] %}
+        {% endif %}
+        {% if not is_state('sensor.echo_dot_atlas_room_next_timer', 'unavailable') %}
+          {% set zones = zones + ['atlas_room'] %}
+        {% endif %}
+        {% if not is_state('sensor.bose_bedroom_next_timer', 'unavailable') %}
+          {% set zones = zones + ['bedroom'] %}
+        {% endif %}
+        {{ zones | join(', ') if zones | length > 0 else 'none' }}
+
+  # Log pattern learning data
+  - service: logbook.log
+    data:
+      name: "Timer Pattern Learning"
+      message: >
+        Learning event: {{ trigger.id }} | 
+        Zones active: {{ states('input_text.active_timer_zones') }} |
+        Activity: {{ states('sensor.fremen_activity_level') }}% |
+        Time: {{ now().strftime('%H:%M') }}
+
+mode: parallel
+max: 10

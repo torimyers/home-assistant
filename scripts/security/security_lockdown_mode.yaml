@@ -1,8 +1,7 @@
-shield_wall_protocol:
-  alias: Security Lockdown Mode
-  description: "Shield Wall Protocol - Complete security activation with alarm arming, door locking, and perimeter lighting"
-  icon: mdi:shield
-  sequence:
+alias: Security Lockdown Mode
+description: "Shield Wall Protocol - Complete security activation with alarm arming, door locking, and perimeter lighting"
+icon: mdi:shield
+sequence:
     - service: alarm_control_panel.alarm_arm_away
       target:
         entity_id: alarm_control_panel.house

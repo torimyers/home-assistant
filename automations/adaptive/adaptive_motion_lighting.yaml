@@ -13,18 +13,18 @@ trigger:
   # Multiple trigger points for comprehensive motion detection
   - platform: state
     entity_id: 
-      - binary_sensor.office_motion_detected
-      - binary_sensor.kitchen_occupancy
-      - binary_sensor.living_room_motion_detected
+      - binary_sensor.office_motion
+      - binary_sensor.kitchen_motion
+      - binary_sensor.living_room_motion
     to: "on"
     id: "motion_detected"
   
   # Adaptive timeout trigger based on pattern analysis
   - platform: state
     entity_id:
-      - binary_sensor.office_motion_detected
-      - binary_sensor.kitchen_occupancy
-      - binary_sensor.living_room_motion_detected
+      - binary_sensor.office_motion
+      - binary_sensor.kitchen_motion
+      - binary_sensor.living_room_motion
     to: "off"
     for:
       minutes: >-
@@ -95,7 +95,7 @@ action:
         sequence:
           - service: script.turn_on
             target:
-              entity_id: script.adaptive_lighting_activation
+              entity_id: script.adaptive_lighting_system
             data:
               variables:
                 trigger_zone: "{{ trigger.entity_id.split('.')[1].replace('_motion_detected', '').replace('_occupancy', '') }}"

@@ -1,8 +1,7 @@
-enhanced_anomaly_detection:
-  alias: Enhanced Anomaly Detection
-  description: "Advanced security anomaly detection with pattern recognition and threat assessment"
-  icon: mdi:shield-search
-  sequence:
+alias: Enhanced Anomaly Detection
+description: "Advanced security anomaly detection with pattern recognition and threat assessment"
+icon: mdi:shield-search
+sequence:
     # Analyze motion patterns
     - service: input_text.set_value
       target:

@@ -125,11 +125,11 @@ action:
         sequence:
           - service: climate.set_temperature
             target:
-              entity_id: climate.sietch_main
+              entity_id: climate.home
             data:
               temperature: >-
                 {% set conservation = states('sensor.water_conservation_index') | float %}
-                {% set current_temp = state_attr('climate.sietch_main', 'temperature') | float %}
+                {% set current_temp = state_attr('climate.home', 'temperature') | float %}
                 {% set hour = now().hour %}
                 {% if conservation < 40 %}
                   {# Aggressive conservation #}
@@ -160,7 +160,7 @@ action:
         sequence:
           - service: climate.set_preset_mode
             target:
-              entity_id: climate.sietch_main
+              entity_id: climate.home
             data:
               preset_mode: >-
                 {% set activity = states('sensor.fremen_activity_level') | float %}
@@ -188,7 +188,7 @@ action:
         sequence:
           - service: climate.set_temperature
             target:
-              entity_id: climate.sietch_main
+              entity_id: climate.home
             data:
               temperature: >-
                 {% set activity = states('sensor.fremen_activity_level') | float %}

@@ -1,8 +1,7 @@
-environmental_adaptation_predictor:
-  alias: Environmental Adaptation Predictor
-  description: "Predicts and adapts to environmental changes"
-  icon: mdi:weather-partly-cloudy
-  sequence:
+alias: Environmental Adaptation Predictor
+description: "Predicts and adapts to environmental changes"
+icon: mdi:weather-partly-cloudy
+sequence:
     # Analyze environmental conditions
     - service: input_text.set_value
       target:

@@ -1,0 +1,32 @@
+# Timer Context Tracking - Input Text Entities
+# Track timer contexts and patterns for intelligent automation
+
+current_kitchen_activity:
+  name: "Current Kitchen Activity"
+  initial: "idle"
+  max: 100
+  icon: mdi:chef-hat
+
+current_work_mode:
+  name: "Current Work Mode"
+  initial: "available"
+  max: 100
+  icon: mdi:briefcase
+
+last_timer_context:
+  name: "Last Timer Context"
+  initial: "none"
+  max: 150
+  icon: mdi:timer-sand
+
+timer_pattern_analysis:
+  name: "Timer Pattern Analysis"
+  initial: "learning"
+  max: 200
+  icon: mdi:chart-timeline-variant
+
+active_timer_zones:
+  name: "Active Timer Zones"
+  initial: "none"
+  max: 100
+  icon: mdi:home-map-marker

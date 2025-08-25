@@ -1,8 +1,7 @@
-high_power_activity_scheduler:
-  alias: High Power Activity Scheduler
-  description: "Schedules high-power activities during optimal resource availability"
-  icon: mdi:calendar-clock
-  sequence:
+alias: High Power Activity Scheduler
+description: "Schedules high-power activities during optimal resource availability"
+icon: mdi:calendar-clock
+sequence:
     # Check resource availability
     - condition: template
       value_template: >

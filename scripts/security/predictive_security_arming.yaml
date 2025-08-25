@@ -1,8 +1,7 @@
-predictive_security_arming:
-  alias: Predictive Security Arming
-  description: "Intelligent security system arming based on occupancy patterns and threat assessment"
-  icon: mdi:shield-plus
-  sequence:
+alias: Predictive Security Arming
+description: "Intelligent security system arming based on occupancy patterns and threat assessment"
+icon: mdi:shield-plus
+sequence:
     # Assess current security status
     - service: input_number.set_value
       target:

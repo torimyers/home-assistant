@@ -2,8 +2,7 @@
 # Numeric Input Controls - Dune Threshold Management
 # Adjustable thresholds for automation triggers and system limits
 
-input_number:
-  temperature_threshold_high:
+temperature_threshold_high:
     name: "Temperature Threshold High"
     min: 70
     max: 85

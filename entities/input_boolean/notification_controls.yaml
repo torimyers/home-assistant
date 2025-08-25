@@ -1,78 +1,221 @@
----
-# Notification System Controls - Dune Intelligence Center
-# Master controls for the comprehensive notification and automation system
+# ============================================================================
+# NOTIFICATION CONTROLS
+# ============================================================================
+notification_system_enabled:
+  name: "Notification System Enabled"
+  initial: on
+  icon: mdi:bell-circle
 
-input_boolean:
-  # ============================================================================
-  # NOTIFICATION CONTROLS
-  # ============================================================================
-  notification_system_enabled:
-    name: "Notification System Enabled"
-    initial: on
-    icon: mdi:bell-circle
+daily_reports_enabled:
+  name: "Daily Reports Enabled"
+  initial: on
+  icon: mdi:calendar-today
+
+threshold_alerts_enabled:
+  name: "Threshold Alerts Enabled"
+  initial: on
+  icon: mdi:alert-circle
   
-  daily_reports_enabled:
-    name: "Daily Reports Enabled"
-    initial: on
-    icon: mdi:calendar-today
+achievement_notifications_enabled:
+  name: "Achievement Notifications Enabled"
+  initial: on
+  icon: mdi:trophy-award
   
-  threshold_alerts_enabled:
-    name: "Threshold Alerts Enabled"
-    initial: on
-    icon: mdi:alert-circle
-    
-  achievement_notifications_enabled:
-    name: "Achievement Notifications Enabled"
-    initial: on
-    icon: mdi:trophy-award
-    
-  context_messaging_enabled:
-    name: "Context Messaging Enabled"
-    initial: on
-    icon: mdi:message-cog
-    
-  emergency_alerts_enabled:
-    name: "Emergency Alerts Enabled"
-    initial: on
-    icon: mdi:alert-octagon
-    
-  night_mode_notifications:
-    name: "Night Mode Notifications"
-    initial: off
-    icon: mdi:weather-night
+context_messaging_enabled:
+  name: "Context Messaging Enabled"
+  initial: on
+  icon: mdi:message-cog
+  
+emergency_alerts_enabled:
+  name: "Emergency Alerts Enabled"
+  initial: on
+  icon: mdi:alert-octagon
+  
+night_mode_notifications:
+  name: "Night Mode Notifications"
+  initial: off
+  icon: mdi:weather-night
 
-  # ============================================================================
-  # SYSTEM MODES
-  # ============================================================================
-  vacation_mode:
-    name: "Vacation Mode"
-    initial: off
-    icon: mdi:airplane
+# ============================================================================
+# SYSTEM MODES
+# ============================================================================
+vacation_mode:
+  name: "Vacation Mode"
+  initial: off
+  icon: mdi:airplane
 
-  guest_mode:
-    name: "Guest Mode"
-    initial: off
-    icon: mdi:account-group
+guest_mode:
+  name: "Guest Mode"
+  initial: off
+  icon: mdi:account-group
 
-  maintenance_mode:
-    name: "Maintenance Mode"
-    initial: off
-    icon: mdi:wrench
+maintenance_mode:
+  name: "Maintenance Mode"
+  initial: off
+  icon: mdi:wrench
 
-  # ============================================================================
-  # AUTOMATION CONTROLS  
-  # ============================================================================
-  motion_lighting_enabled:
-    name: "Motion Lighting Enabled"
-    initial: on
-    icon: mdi:lightbulb-auto
+# ============================================================================
+# AUTOMATION CONTROLS  
+# ============================================================================
+motion_lighting_enabled:
+  name: "Motion Lighting Enabled"
+  initial: on
+  icon: mdi:lightbulb-auto
 
-  security_monitoring_enabled:
-    name: "Security Monitoring Enabled"
-    initial: on
-    icon: mdi:shield-check
+security_monitoring_enabled:
+  name: "Security Monitoring Enabled"
+  initial: on
+  icon: mdi:shield-check
 
-  climate_automation_enabled:
-    name: "Climate Automation Enabled"
-    initial: on
-    icon: mdi:thermostat-auto
+climate_automation_enabled:
+  name: "Climate Automation Enabled"
+  initial: on
+  icon: mdi:thermostat-auto
+
+# ============================================================================
+# LAUNDRY SYSTEM CONTROLS
+# ============================================================================
+dryer_cycle_active:
+  name: "Dryer Cycle Active"
+  initial: off
+  icon: mdi:tumble-dryer
+
+washer_cycle_active:
+  name: "Washer Cycle Active"
+  initial: off
+  icon: mdi:washing-machine
+
+load_needs_transfer:
+  name: "Load Needs Transfer (Washer → Dryer)"
+  initial: off
+  icon: mdi:transfer-right
+
+laundry_energy_optimization:
+  name: "Laundry Energy Optimization"
+  initial: on
+  icon: mdi:flash
+
+laundry_notifications:
+  name: "Laundry Notifications"
+  initial: on
+  icon: mdi:bell-check
+
+# ============================================================================
+# ENERGY SYSTEM CONTROLS
+# ============================================================================
+energy_optimization:
+  name: "Energy Optimization Mode"
+  initial: on
+  icon: mdi:lightning-bolt
+
+energy_notifications:
+  name: "Energy Usage Notifications"
+  initial: on
+  icon: mdi:chart-line
+
+peak_hour_reduction:
+  name: "Peak Hour Energy Reduction"
+  initial: on
+  icon: mdi:clock-alert
+
+smart_energy_management:
+  name: "Smart Energy Management"
+  initial: on
+  icon: mdi:home-lightning-bolt
+
+# ============================================================================
+# SECURITY SYSTEM CONTROLS
+# ============================================================================
+enhanced_security_mode:
+  name: "Enhanced Security Mode"
+  initial: off
+  icon: mdi:shield-plus
+
+security_alerts:
+  name: "Security Alerts Enabled"
+  initial: on
+  icon: mdi:shield-alert
+
+door_window_monitoring:
+  name: "Door/Window Monitoring"
+  initial: on
+  icon: mdi:door-open
+
+# ============================================================================
+# ADVANCED SYSTEM CONTROLS
+# ============================================================================
+system_health_monitoring:
+  name: "System Health Monitoring"
+  initial: on
+  icon: mdi:heart-pulse
+
+predictive_automations:
+  name: "Predictive Automations Enabled"
+  initial: on
+  icon: mdi:crystal-ball
+
+away_mode_lighting:
+  name: "Away Mode Lighting"
+  initial: on
+  icon: mdi:lightbulb-auto-outline
+
+hvac_coordination:
+  name: "HVAC Coordination"
+  initial: on
+  icon: mdi:air-conditioner
+
+power_outage_detected:
+  name: "Power Outage Detected"
+  initial: off
+  icon: mdi:power-plug-off
+
+# ============================================================================
+# PET CARE CONTROLS
+# ============================================================================
+adaptive_pet_care:
+  name: "Adaptive Pet Care"
+  initial: on
+  icon: mdi:paw
+
+atlas_activity_tracking:
+  name: "Atlas Activity Tracking"
+  initial: on
+  icon: mdi:dog
+
+atlas_feeding_reminder:
+  name: "Atlas Feeding Reminder"
+  initial: on
+  icon: mdi:food-variant
+
+atlas_at_vet:
+  name: "Atlas at Vet"
+  initial: off
+  icon: mdi:medical-bag
+
+atlas_social_visit_active:
+  name: "Atlas Social Visit Active"
+  initial: off
+  icon: mdi:account-group
+
+cat_feeding_reminder:
+  name: "Cat Feeding Reminder"
+  initial: on
+  icon: mdi:cat
+
+pet_medication_reminder:
+  name: "Pet Medication Reminder"
+  initial: on
+  icon: mdi:pill
+
+# ============================================================================
+# DUNE-THEMED CONTROLS
+# ============================================================================
+spice_flow_coordination:
+  name: "Spice Flow Coordination (Smart Vacuum)"
+  initial: on
+  icon: mdi:vacuum
+
+fremen_friendly_cleaning:
+  name: "Fremen-Friendly Desert Cleaning"
+  initial: on
+  icon: mdi:broom

@@ -5,7 +5,9 @@
 lovelace:
   # Main dashboard configuration - Mobile Responsive
   mode: yaml
-  filename: responsive-dashboard.yaml
+  resources:
+    - url: /local/dashboard-card.js
+      type: module
   
   # Additional dashboards
   dashboards:
@@ -15,7 +17,7 @@ lovelace:
       title: "Dashboard Navigation"
       icon: mdi:view-dashboard
       show_in_sidebar: true
-      filename: dashboard.yaml
+      filename: ui-lovelace/dashboard.yaml
       
     # Sietch command center - advanced analytics
     dashboards-sietch-command:
@@ -23,7 +25,7 @@ lovelace:
       title: "Sietch Command Center"
       icon: mdi:console-network
       show_in_sidebar: true
-      filename: dashboards/sietch_command.yaml
+      filename: ui-lovelace/dashboards/sietch_command.yaml
       
     # Performance monitoring dashboard
     dashboards-performance-monitoring:
@@ -31,7 +33,7 @@ lovelace:
       title: "Mentat Analytics"
       icon: mdi:speedometer
       show_in_sidebar: true
-      filename: dashboards/performance_monitoring.yaml
+      filename: ui-lovelace/dashboards/performance_monitoring.yaml
       
     # Mobile command dashboard  
     dashboards-mobile-command:
@@ -39,4 +41,4 @@ lovelace:
       title: "Mobile Command"
       icon: mdi:cellphone
       show_in_sidebar: true
-      filename: dashboards/mobile_command.yaml
+      filename: ui-lovelace/dashboards/mobile_command.yaml

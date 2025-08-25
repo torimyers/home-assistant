@@ -1,0 +1,33 @@
+# Media Player Configuration - Echo Dots and Voice Control
+# https://www.home-assistant.io/integrations/media_player/
+
+# Amazon Echo/Alexa Media Player Integration
+# Note: This requires the Alexa Media Player custom component
+# Install via HACS: https://github.com/alandtse/alexa_media_player
+
+# The actual Echo devices will be auto-discovered by the Alexa Media Player integration
+# This file serves as documentation and placeholder for any manual media player configs
+
+# Example manual media player configuration (if needed)
+# media_player:
+#   - platform: alexa
+#     email: !secret amazon_email
+#     password: !secret amazon_password
+#     url: amazon.com
+
+# Device naming convention for automations:
+# Echo Dots:
+# media_player.echo_dot_kitchen
+# media_player.echo_dot_atlas_room
+# 
+# Bose Speakers with Alexa:
+# media_player.bose_bedroom  
+# media_player.bose_office
+
+# Common voice commands that will work with the Alexa integration:
+# "Alexa, turn on Sietch lighting"
+# "Alexa, activate security mode"
+# "Alexa, enable guest mode"
+# "Alexa, what's the system status?"
+# "Alexa, activate climate control"
+# "Alexa, turn on vacation mode"

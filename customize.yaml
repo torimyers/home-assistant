@@ -1,0 +1,113 @@
+# Entity Customizations for Alexa Voice Control
+# https://www.home-assistant.io/docs/configuration/customizing-devices/
+
+# Script customizations for better Alexa recognition - Both friendly and Dune names
+script.adaptive_lighting_system:
+  friendly_name: "Adaptive Lighting"
+  alexa_name: "Adaptive Lighting"
+  alexa_description: "Activate adaptive lighting system - Also responds to Sietch Lighting, Fremen Lighting, Desert Lighting"
+  icon: mdi:lightbulb-group
+
+script.adaptive_lighting_deactivation:
+  friendly_name: "Turn Off Lighting"
+  alexa_name: "Turn Off Lighting"
+  alexa_description: "Deactivate lighting system - Also responds to Deactivate Lighting, Lighting Off, Conserve Energy"
+  icon: mdi:lightbulb-off
+
+script.intelligent_scene_selector:
+  friendly_name: "Smart Scene"
+  alexa_name: "Smart Scene"
+  alexa_description: "Activate intelligent scene selection - Also responds to Intelligent Scene, Mentat Scene, Adaptive Scene"
+  icon: mdi:auto-fix
+
+script.multi_zone_scene_coordination:
+  friendly_name: "Zone Coordination"
+  alexa_name: "Zone Coordination"
+  alexa_description: "Coordinate scenes across zones - Also responds to Multi Zone Scenes, Coordinate Zones, Sietch Coordination"
+  icon: mdi:home-group
+
+script.security_lockdown_mode:
+  friendly_name: "Security Lockdown"
+  alexa_name: "Security Lockdown"
+  alexa_description: "Activate security lockdown mode - Also responds to Lockdown Mode, Security Mode, Defense Protocol"
+  icon: mdi:shield-lock
+
+script.night_security_protocol:
+  friendly_name: "Night Security"
+  alexa_name: "Night Security"
+  alexa_description: "Activate night security protocol - Also responds to Night Mode, Night Watch, Desert Guard"
+  icon: mdi:shield-moon
+
+script.climate_control_system:
+  friendly_name: "Climate Control"
+  alexa_name: "Climate Control"
+  alexa_description: "Activate climate control system - Also responds to Environmental Control, Atmosphere Control, Stillsuit Mode"
+  icon: mdi:thermostat
+
+# Input boolean customizations - Both friendly and Dune names
+input_boolean.vacation_mode:
+  friendly_name: "Vacation Mode"
+  alexa_name: "Vacation Mode"
+  alexa_description: "Enable vacation mode - Also responds to Journey Mode, Travel Mode, Desert Journey"
+  icon: mdi:airplane
+
+input_boolean.guest_mode:
+  friendly_name: "Guest Mode"
+  alexa_name: "Guest Mode"
+  alexa_description: "Enable guest mode - Also responds to Visitor Mode, Welcome Mode, Hospitality Mode"
+  icon: mdi:account-group
+
+input_boolean.maintenance_mode:
+  friendly_name: "Maintenance Mode"
+  alexa_name: "Maintenance Mode"
+  alexa_description: "Enable maintenance mode - Also responds to Service Mode, Repair Mode, Engineering Mode"
+  icon: mdi:wrench
+
+input_boolean.notification_system_enabled:
+  friendly_name: "Notifications"
+  alexa_name: "Notification System"
+  alexa_description: "Control notification system - Also responds to Alert System, Message System, Communication Hub"
+  icon: mdi:bell-circle
+
+input_boolean.motion_lighting_enabled:
+  friendly_name: "Motion Lighting"
+  alexa_name: "Motion Lighting"
+  alexa_description: "Enable motion lighting automation - Also responds to Automatic Lighting, Smart Lighting, Sensor Lighting"
+  icon: mdi:lightbulb-auto
+
+input_boolean.security_monitoring_enabled:
+  friendly_name: "Security Monitoring"
+  alexa_name: "Security Monitoring"
+  alexa_description: "Enable security monitoring - Also responds to Security System, Surveillance Mode, Guard System"
+  icon: mdi:shield-check
+
+input_boolean.climate_automation_enabled:
+  friendly_name: "Climate Automation"
+  alexa_name: "Climate Automation"
+  alexa_description: "Enable climate automation - Also responds to Environmental Automation, Temperature Control, Atmosphere Management"
+  icon: mdi:thermostat-auto
+
+# Sensor customizations for voice status reports
+sensor.sietch_health_score:
+  friendly_name: "Sietch Health Score"
+  alexa_name: "System Health"
+  unit_of_measurement: "%"
+  icon: mdi:heart-pulse
+
+sensor.fremen_activity_level:
+  friendly_name: "Activity Level"
+  alexa_name: "Activity Level"
+  unit_of_measurement: "%"
+  icon: mdi:account-group
+
+sensor.energy_shield_status:
+  friendly_name: "Energy Shield Status"
+  alexa_name: "Energy Status"
+  unit_of_measurement: "%"
+  icon: mdi:shield-sun
+
+sensor.water_conservation_index:
+  friendly_name: "Water Conservation Index"
+  alexa_name: "Water Conservation"
+  unit_of_measurement: "%"
+  icon: mdi:water-percent

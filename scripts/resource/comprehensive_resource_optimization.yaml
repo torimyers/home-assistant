@@ -1,8 +1,7 @@
-comprehensive_resource_optimization:
-  alias: Comprehensive Resource Optimization
-  description: "Complete optimization of all system resources for maximum efficiency"
-  icon: mdi:cog-sync
-  sequence:
+alias: Comprehensive Resource Optimization
+description: "Complete optimization of all system resources for maximum efficiency"
+icon: mdi:cog-sync
+sequence:
     # Analyze all resource metrics
     - variables:
         harvester_efficiency: "{{ states('sensor.harvester_efficiency') | int }}"

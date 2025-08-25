@@ -1,8 +1,7 @@
-morning_routine_preparation:
-  alias: Morning Routine Preparation
-  description: "Prepares systems for morning routine based on predictions"
-  icon: mdi:weather-sunrise
-  sequence:
+alias: Morning Routine Preparation
+description: "Prepares systems for morning routine based on predictions"
+icon: mdi:weather-sunrise
+sequence:
     # Pre-warm systems for morning routine
     - service: scene.turn_on
       target:
@@ -11,7 +10,7 @@ morning_routine_preparation:
     # Adjust climate for morning comfort
     - service: climate.set_temperature
       target:
-        entity_id: climate.sietch_main
+        entity_id: climate.home
       data:
         temperature: 22  # Comfort temperature for morning
     

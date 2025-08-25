@@ -1,8 +1,7 @@
-security_threat_predictor:
-  alias: Security Threat Predictor
-  description: "Predicts potential security threats based on pattern analysis"
-  icon: mdi:shield-search
-  sequence:
+alias: Security Threat Predictor
+description: "Predicts potential security threats based on pattern analysis"
+icon: mdi:shield-search
+sequence:
     # Analyze security patterns
     - service: input_text.set_value
       target:

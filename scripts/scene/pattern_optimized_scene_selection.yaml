@@ -1,8 +1,7 @@
-pattern_optimized_scene_selection:
-  alias: Pattern Optimized Scene Selection
-  description: "Selects scenes optimized for current usage patterns"
-  icon: mdi:chart-line-variant
-  sequence:
+alias: Pattern Optimized Scene Selection
+description: "Selects scenes optimized for current usage patterns"
+icon: mdi:chart-line-variant
+sequence:
     # Analyze current patterns
     - variables:
         motion_pattern: "{{ states('sensor.motion_pattern_analysis') }}"

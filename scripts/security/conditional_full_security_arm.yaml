@@ -1,8 +1,7 @@
-conditional_full_security_arm:
-  alias: Conditional Full Security Arm
-  description: "Arms security system based on conditions and threat assessment"
-  icon: mdi:shield-check
-  sequence:
+alias: Conditional Full Security Arm
+description: "Arms security system based on conditions and threat assessment"
+icon: mdi:shield-check
+sequence:
     # Assess conditions for full arming
     - condition: or
       conditions:

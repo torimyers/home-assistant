@@ -1,8 +1,7 @@
-emergency_security_lockdown:
-  alias: Emergency Security Lockdown
-  description: "Complete security lockdown for emergency situations"
-  icon: mdi:shield-alert
-  sequence:
+alias: Emergency Security Lockdown
+description: "Complete security lockdown for emergency situations"
+icon: mdi:shield-alert
+sequence:
     # Immediate lockdown actions
     - parallel:
         - service: alarm_control_panel.alarm_arm_away

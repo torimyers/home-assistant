@@ -1,8 +1,7 @@
-activity_pattern_analyzer:
-  alias: Activity Pattern Analyzer
-  description: "Advanced AI-like analysis of daily activity patterns to predict and optimize routines"
-  icon: mdi:brain
-  sequence:
+alias: Activity Pattern Analyzer
+description: "Advanced AI-like analysis of daily activity patterns to predict and optimize routines"
+icon: mdi:brain
+sequence:
     # Gather current activity data
     - variables:
         current_hour: "{{ now().hour }}"

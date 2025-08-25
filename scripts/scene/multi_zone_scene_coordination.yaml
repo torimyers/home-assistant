@@ -1,8 +1,7 @@
-multi_zone_scene_coordination:
-  alias: Multi Zone Scene Coordination
-  description: "Coordinates scenes across multiple zones for optimal experience"
-  icon: mdi:home-group
-  sequence:
+alias: Multi Zone Scene Coordination
+description: "Coordinates scenes across multiple zones for optimal experience"
+icon: mdi:home-group
+sequence:
     # Coordinate scenes across zones
     - parallel:
         - sequence:

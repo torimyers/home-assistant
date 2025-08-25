@@ -1,8 +1,7 @@
-peak_production_maintenance:
-  alias: Peak Production Maintenance
-  description: "Maintains peak production efficiency through resource optimization"
-  icon: mdi:chart-line
-  sequence:
+alias: Peak Production Maintenance
+description: "Maintains peak production efficiency through resource optimization"
+icon: mdi:chart-line
+sequence:
     # Enable peak production priority mode
     - service: input_boolean.turn_on
       target:

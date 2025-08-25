@@ -1,8 +1,7 @@
-night_mode_prediction:
-  alias: Night Mode Prediction
-  description: "Prepares systems for night mode based on activity patterns"
-  icon: mdi:weather-night
-  sequence:
+alias: Night Mode Prediction
+description: "Prepares systems for night mode based on activity patterns"
+icon: mdi:weather-night
+sequence:
     # Enable night mode preparations
     - service: input_boolean.turn_on
       target:

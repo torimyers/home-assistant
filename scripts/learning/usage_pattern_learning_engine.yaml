@@ -1,8 +1,7 @@
-usage_pattern_learning_engine:
-  alias: Usage Pattern Learning Engine
-  description: "Advanced learning engine that tracks device usage patterns and optimizes system behavior"
-  icon: mdi:school
-  sequence:
+alias: Usage Pattern Learning Engine
+description: "Advanced learning engine that tracks device usage patterns and optimizes system behavior"
+icon: mdi:school
+sequence:
     # Collect current usage data
     - variables:
         current_time: "{{ now().strftime('%H:%M') }}"

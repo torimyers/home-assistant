@@ -1,8 +1,7 @@
-resource_demand_predictor:
-  alias: Resource Demand Predictor
-  description: "Predicts resource demand and prepares systems accordingly"
-  icon: mdi:chart-bell-curve
-  sequence:
+alias: Resource Demand Predictor
+description: "Predicts resource demand and prepares systems accordingly"
+icon: mdi:chart-bell-curve
+sequence:
     # Analyze demand patterns
     - service: input_text.set_value
       target:

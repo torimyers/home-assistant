@@ -1,8 +1,7 @@
-emergency_system_stabilization:
-  alias: Emergency System Stabilization
-  description: "AI emergency response system that stabilizes all systems during critical situations"
-  icon: mdi:hospital-box
-  sequence:
+alias: Emergency System Stabilization
+description: "AI emergency response system that stabilizes all systems during critical situations"
+icon: mdi:hospital-box
+sequence:
     # Immediate emergency assessment
     - variables:
         emergency_severity: >

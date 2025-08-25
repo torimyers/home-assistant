@@ -1,8 +1,7 @@
-absence_verification_protocol:
-  alias: Absence Verification Protocol
-  description: "Verifies house vacancy and adjusts security settings accordingly"
-  icon: mdi:account-off
-  sequence:
+alias: Absence Verification Protocol
+description: "Verifies house vacancy and adjusts security settings accordingly"
+icon: mdi:account-off
+sequence:
     # Check occupancy sensors
     - service: input_text.set_value
       target:

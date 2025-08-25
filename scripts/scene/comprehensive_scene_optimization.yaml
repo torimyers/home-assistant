@@ -1,8 +1,7 @@
-comprehensive_scene_optimization:
-  alias: Comprehensive Scene Optimization
-  description: "Comprehensive optimization of all scene elements"
-  icon: mdi:tune-variant
-  sequence:
+alias: Comprehensive Scene Optimization
+description: "Comprehensive optimization of all scene elements"
+icon: mdi:tune-variant
+sequence:
     # Comprehensive scene analysis
     - variables:
         activity_level: "{{ states('sensor.fremen_activity_level') | int }}"
@@ -50,7 +49,7 @@ comprehensive_scene_optimization:
     # Optimize climate settings
     - service: climate.set_temperature
       target:
-        entity_id: climate.sietch_main
+        entity_id: climate.home
       data:
         temperature: >
           {% set activity = states('sensor.fremen_activity_level') | int %}

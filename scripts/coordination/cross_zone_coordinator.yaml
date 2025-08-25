@@ -1,12 +1,11 @@
-cross_zone_coordinator:
-  alias: Cross Zone Coordinator
-  description: "Coordinates actions intelligently across multiple zones"
-  icon: mdi:home-group-plus
-  sequence:
-    # Coordinate across all zones
-    - service: script.turn_on
-      target:
-        entity_id: script.multi_zone_scene_coordination
-    - service: script.turn_on
-      target:
-        entity_id: script.intelligent_scene_selector
+alias: Cross Zone Coordinator
+description: "Coordinates actions intelligently across multiple zones"
+icon: mdi:home-group-plus
+sequence:
+  # Coordinate across all zones
+  - service: script.turn_on
+    target:
+      entity_id: script.multi_zone_scene_coordination
+  - service: script.turn_on
+    target:
+      entity_id: script.intelligent_scene_selector

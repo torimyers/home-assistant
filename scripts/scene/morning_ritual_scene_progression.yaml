@@ -1,8 +1,7 @@
-morning_ritual_scene_progression:
-  alias: Morning Ritual Scene Progression
-  description: "Progressive scene changes for morning ritual sequence"
-  icon: mdi:weather-sunrise
-  sequence:
+alias: Morning Ritual Scene Progression
+description: "Progressive scene changes for morning ritual sequence"
+icon: mdi:weather-sunrise
+sequence:
     # Phase 1: Dawn preparation (gentle awakening)
     - service: light.turn_on
       target:
@@ -26,7 +25,7 @@ morning_ritual_scene_progression:
     
     - service: climate.set_temperature
       target:
-        entity_id: climate.sietch_main
+        entity_id: climate.home
       data:
         temperature: 22  # Comfort temperature for morning
     
