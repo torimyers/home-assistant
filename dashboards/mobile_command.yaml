@@ -1,8 +1,32 @@
 # Mobile Command Dashboard - Pocket-Sized Sietch Control
 # Optimized for mobile devices with touch-friendly controls
 
-title: "Mobile Command"
-theme: dune_theme
+title: "📱 Mobile Command"
+theme: default
+
+# Mobile-specific global styling
+card_mod:
+  style: |
+    :host {
+      --primary-color: #D4A574;
+      --accent-color: #FF8C00;
+      --primary-text-color: #2F1B14;
+      --card-background-color: #FFF8DC;
+      --primary-background-color: #F5E6D3;
+      --mdc-button-outline-color: #FF8C00;
+      --mushroom-card-primary-color: #D4A574;
+      --mushroom-card-secondary-color: #8B4513;
+    }
+    
+    /* Mobile optimizations */
+    @media screen and (max-width: 768px) {
+      .view {
+        padding: 8px !important;
+      }
+      ha-card {
+        margin: 4px 0 !important;
+      }
+    }
 
 views:
   - title: "Home"
@@ -16,8 +40,8 @@ views:
     cards:
       # Mobile Header - Compact
       - type: custom:mushroom-title-card
-        title: "🏜️ House Atreides"
-        subtitle: "Mobile Command Center"
+        title: "🏜️ House Dodson"
+        subtitle: "Mobile Command Center (Pocket Sietch)"
         card_mod:
           style: |
             ha-card {
@@ -33,19 +57,22 @@ views:
         cards:
           - type: custom:mushroom-entity-card
             entity: sensor.sietch_health_score
-            name: "System"
+            name: "System Health"
+            secondary_info: "Sietch Status"
             icon: mdi:shield-check
             layout: vertical
             
           - type: custom:mushroom-entity-card
             entity: sensor.spice_production_level
-            name: "Production"
+            name: "Efficiency"
+            secondary_info: "Spice Production"
             icon: mdi:chart-line
             layout: vertical
             
           - type: custom:mushroom-entity-card
             entity: sensor.water_conservation_index
-            name: "Water"
+            name: "Conservation"
+            secondary_info: "Water Management"
             icon: mdi:water-percent
             layout: vertical
 
@@ -347,3 +374,101 @@ views:
             name: "Clear Browser Cache"
             action_name: "Clear"
             service: browser_mod.lovelace_reload
+
+  # Navigation View - Switch between dashboards
+  - title: "Navigate"
+    icon: mdi:compass
+    path: navigate
+    badges: []
+    cards:
+      - type: custom:mushroom-title-card
+        title: "🧭 Dashboard Navigation"
+        subtitle: "Switch to other command centers"
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #800080, #9370DB);
+              color: white;
+              text-align: center;
+              margin-bottom: 8px;
+            }
+
+      # Dashboard Navigation Cards
+      - type: grid
+        columns: 1
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: sensor.sietch_health_score
+            name: "🖥️ Desktop Command"
+            secondary_info: "Full dashboard with analytics (House Dodson Command)"
+            icon: mdi:monitor-dashboard
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-desktop-command
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(45deg, #4169E1, #1E90FF);
+                  color: white;
+                  border: 2px solid #0000CD;
+                  margin: 4px 0;
+                }
+
+          - type: custom:mushroom-entity-card
+            entity: sensor.automation_success_rate
+            name: "🏛️ Command Center"
+            secondary_info: "Advanced monitoring & analytics (Sietch Command)"
+            icon: mdi:console-network
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-dashboards-sietch-command
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(45deg, #228B22, #32CD32);
+                  color: white;
+                  border: 2px solid #006400;
+                  margin: 4px 0;
+                }
+
+          - type: custom:mushroom-entity-card
+            entity: sensor.system_response_time
+            name: "⚡ Performance Monitor"
+            secondary_info: "System diagnostics & metrics (Mentat Analysis)"
+            icon: mdi:speedometer
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-dashboards-performance-monitoring
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(45deg, #FF8C00, #FFA500);
+                  color: white;
+                  border: 2px solid #FF6347;
+                  margin: 4px 0;
+                }
+
+      # Quick Access Info
+      - type: markdown
+        content: |
+          ## 📋 **Dashboard Guide**
+          
+          **📱 Mobile Command** - You are here  
+          *Touch-optimized controls and quick access*
+          
+          **🖥️ Desktop Command** - Best for computers  
+          *Full analytics, detailed views, wide layouts*
+          
+          **🏛️ Sietch Command** - Advanced monitoring  
+          *Deep system analytics and AI insights*
+          
+          **⚡ Performance** - System diagnostics  
+          *Technical metrics and performance data*
+        card_mod:
+          style: |
+            ha-card {
+              background: #FFF8DC;
+              color: #2F1B14;
+              border: 2px solid #D4A574;
+              font-size: 12px;
+            }

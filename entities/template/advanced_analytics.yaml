@@ -5,6 +5,7 @@
 # PREDICTIVE ANALYTICS & FORECASTING
 # ============================================================================
 
+sensor:
   - name: "Spice Harvester Efficiency Trend"
     unique_id: "spice_harvester_efficiency_trend"
     state: >-
