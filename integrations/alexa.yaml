@@ -5,7 +5,7 @@ alexa:
   # Smart Home Skill Configuration
   smart_home:
     # Endpoint configuration
-    endpoint: https://api.amazonalexa.com/v1/events
+    endpoint: https://api.amazonalexa.com/v3/events
     
     # Expose specific entities to Alexa
     filter:
@@ -61,38 +61,26 @@ alexa:
       # Lighting scripts - Both friendly and Dune names
       script.adaptive_lighting_system:
         name: "Adaptive Lighting"
-        aliases: 
-          - "Sietch Lighting"
-          - "Fremen Lighting"
-          - "Desert Lighting"
+        # Note: aliases not supported in entity_config
         description: "Activate adaptive lighting system"
         display_categories: SCENE_TRIGGER
       
       script.adaptive_lighting_deactivation:
         name: "Turn Off Lighting"
-        aliases:
-          - "Deactivate Lighting"
-          - "Lighting Off"
-          - "Conserve Energy"
+        # Note: aliases not supported in entity_config
         description: "Deactivate lighting system"
         display_categories: SCENE_TRIGGER
       
       # Scene controls - Both friendly and Dune names
       script.intelligent_scene_selector:
         name: "Smart Scene"
-        aliases:
-          - "Intelligent Scene"
-          - "Mentat Scene"
-          - "Adaptive Scene"
+        # Note: aliases not supported in entity_config
         description: "Activate intelligent scene selection"
         display_categories: SCENE_TRIGGER
       
       script.multi_zone_scene_coordination:
         name: "Zone Coordination"
-        aliases:
-          - "Multi Zone Scenes"
-          - "Coordinate Zones"
-          - "Sietch Coordination"
+        # Note: aliases not supported in entity_config
         description: "Coordinate scenes across zones"
         display_categories: SCENE_TRIGGER
       

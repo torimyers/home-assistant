@@ -73,7 +73,7 @@ action:
           - condition: trigger
             id: morning_ritual_reminder
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌅 Morning Ritual Guidance"
               message: >-
@@ -109,7 +109,7 @@ action:
           - condition: trigger
             id: morning_low_activity
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🏃 Morning Activity Encouragement"
               message: >-
@@ -144,7 +144,7 @@ action:
           - condition: trigger
             id: evening_no_activity
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌙 Evening Presence Check"
               message: >-
@@ -183,7 +183,7 @@ action:
           - condition: trigger
             id: evening_security_prep
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🛡️ Night Security Preparation"
               message: >-
@@ -226,7 +226,7 @@ action:
           - condition: trigger
             id: high_activity_performance_lag
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚡ Performance Optimization Needed"
               message: >-
@@ -270,7 +270,7 @@ action:
           - condition: trigger
             id: high_activity_poor_conservation
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "💧 Activity vs Conservation Balance"
               message: >-
@@ -309,7 +309,7 @@ action:
           - condition: trigger
             id: all_systems_optimal
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌟 Perfect Sietch Harmony Achieved!"
               message: >-
@@ -353,7 +353,7 @@ action:
           - condition: trigger
             id: daytime_blueprint_inefficiency
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🔧 Blueprint Optimization Opportunity"
               message: >-
@@ -394,7 +394,7 @@ action:
           - condition: trigger
             id: poor_air_high_activity
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌬️ Environmental Optimization Alert"
               message: >-
@@ -435,7 +435,7 @@ action:
           - condition: trigger
             id: night_shield_weakness
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🛡️ Night Shield Reinforcement Needed"
               message: >-

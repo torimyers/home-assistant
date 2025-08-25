@@ -50,7 +50,7 @@ action:
           - condition: trigger
             id: legendary_production
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌟 LEGENDARY: Spice Production Excellence!"
               message: >-
@@ -122,7 +122,7 @@ action:
           - condition: trigger
             id: high_yield_production
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🏆 High Yield Spice Production!"
               message: >-
@@ -172,7 +172,7 @@ action:
           - condition: trigger
             id: production_mastery
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "👑 Production Mastery Achieved!"
               message: >-
@@ -220,7 +220,7 @@ action:
           - condition: trigger
             id: guild_navigator_status
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🚀 Guild Navigator Status Achieved!"
               message: >-
@@ -265,7 +265,7 @@ action:
           - condition: trigger
             id: morning_excellence
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌅 Morning Production Excellence!"
               message: >-
@@ -300,7 +300,7 @@ action:
           - condition: trigger
             id: evening_mastery
         sequence:
-          - service: notify.mobile_app_toris_iphone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🌙 Evening Production Mastery!"
               message: >-

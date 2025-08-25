@@ -78,7 +78,7 @@ action:
           - condition: template
             value_template: "{{ is_night and not is_house_occupied and security_level != 'Normal' }}"
         then:
-          - service: notify.mobile_app_phone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "🚨 Fremen Alert: Unauthorized Movement"
               message: >
@@ -128,7 +128,7 @@ action:
           - condition: template
             value_template: "{{ health_score < 50 }}"
         then:
-          - service: notify.mobile_app_phone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚠️ Sietch Critical: System Failure"
               message: >
@@ -155,7 +155,7 @@ action:
           - condition: template
             value_template: "{{ health_score >= 50 and health_score < 70 }}"
         then:
-          - service: notify.mobile_app_phone
+          - service: notify.mobile_app_tori_phone_2
             data:
               title: "⚠️ Sietch Warning: System Stress"
               message: >
@@ -211,7 +211,7 @@ action:
       - variables:
           correlation_index: "{{ states('sensor.fremen_activity_correlation_index') | float(0) }}"
           
-      - service: notify.mobile_app_phone
+      - service: notify.mobile_app_tori_phone_2
         data:
           title: "🔍 Mentat Analysis: Activity Anomaly"
           message: >
