@@ -1,8 +1,7 @@
-scarcity_prevention_protocol:
-  alias: Scarcity Prevention Protocol
-  description: "Prevents resource scarcity through predictive conservation measures"
-  icon: mdi:shield-alert
-  sequence:
+alias: Scarcity Prevention Protocol
+description: "Prevents resource scarcity through predictive conservation measures"
+icon: mdi:shield-alert
+sequence:
     # Enable predictive resource conservation
     - service: automation.turn_on
       target:

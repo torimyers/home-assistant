@@ -1,0 +1,2319 @@
+=== ATLAS ROOM ===
+
+  button.office_roller_shade_identify: unknown (Study Roller Shade Identify)
+
+  cover.office_roller_shade_cover: closed (Study Roller Shade Cover)
+
+  sensor.office_roller_shade_battery: 9.0 (Study Roller Shade Battery)
+
+  sensor.office_roller_shade_window_covering_type: Rollershade (Atlas Roller Shade Window covering type)
+
+  switch.office_roller_shade_inverted: off (Atlas Roller Shade Inverted)
+
+  update.office_roller_shade_firmware: unknown (Atlas Roller Shade Firmware)
+
+
+
+=== BEDROOM ===
+
+  button.bedroom_roller_shade_remote_identify: unknown (Bedroom Shade Remote Identify)
+
+  button.bennett_roller_shade_identify: unknown (Bedroom Left Roller Shade Identify)
+
+  button.ikea_of_sweden_tradfri_bulb_e26_cws_800lm_identify: unknown (Tori Light Identify)
+
+  button.primary_bedroom_reset: unknown (Primary Bedroom Reset)
+
+  button.tori_roller_shade_identify: unknown (Bedroom Right Roller Shade Identify)
+
+  cover.bennett_roller_shade_cover: closed (Bedroom Left Roller Shade Cover)
+
+  cover.tori_roller_shade_cover: closed (Bedroom Right Roller Shade Cover)
+
+  device_tracker.google_chromecast: not_home (Google-Chromecast)
+
+  device_tracker.litter_robot_litter_robot_4: home (Litter Robot-Litter-Robot 4)
+
+  device_tracker.unknown_3: not_home ([TV]Samsung LED40)
+
+  device_tracker.unknown_9: home (Bose-Smart Speaker)
+
+  light.tori_light: off (Bedroom Tori Light)
+
+  media_player.bedroom: unknown (Bedroom)
+
+  media_player.bedroom_2: off (Bedroom Bose Speaker)
+
+  media_player.tori_s_bedroom_tv: unavailable (tori s bedroom tv)
+
+  media_player.tori_s_bedroom_tv_2: unavailable (tori s bedroom tv 2)
+
+  media_player.tv_samsung_led40: unavailable ([TV]Samsung LED40)
+
+  number.ikea_of_sweden_tradfri_bulb_e26_cws_800lm_on_level: 255 (Tori Light On level)
+
+  number.ikea_of_sweden_tradfri_bulb_e26_cws_800lm_start_up_color_temperature: 65535 (Tori Light Start-up color temperature)
+
+  number.ikea_of_sweden_tradfri_bulb_e26_cws_800lm_start_up_current_level: 255 (Tori Light Start-up current level)
+
+  remote.tori_s_bedroom_tv: unavailable (tori s bedroom tv)
+
+  select.ikea_of_sweden_tradfri_bulb_e26_cws_800lm_start_up_behavior: On (Tori Light Start-up behavior)
+
+  select.primary_bedroom_clean_cycle_wait_time_minutes: 7 (Primary Bedroom Clean cycle wait time minutes)
+
+  select.primary_bedroom_panel_brightness: low (Primary Bedroom Panel brightness)
+
+  sensor.bedroom_left_roller_shade_window_covering_type: Rollershade (Bedroom Left Roller Shade Window covering type)
+
+  sensor.bedroom_right_roller_shade_window_covering_type: Rollershade (Bedroom Right Roller Shade Window covering type)
+
+  sensor.bedroom_roller_shade_remote_battery: 74.0 (Bedroom Shade Remote Battery)
+
+  sensor.bennett_roller_shade_battery: 54.0 (Bedroom Left Roller Shade Battery)
+
+  sensor.primary_bedroom_hopper_status: unknown (Primary Bedroom Hopper status)
+
+  sensor.primary_bedroom_last_seen: 2025-08-22T12:27:11+00:00 (Primary Bedroom Last seen)
+
+  sensor.primary_bedroom_litter_level: 90.0 (Primary Bedroom Litter level)
+
+  sensor.primary_bedroom_pet_weight: 8.77 (Primary Bedroom Pet weight)
+
+  sensor.primary_bedroom_sleep_mode_end_time: unknown (Primary Bedroom Sleep mode end time)
+
+  sensor.primary_bedroom_sleep_mode_start_time: unknown (Primary Bedroom Sleep mode start time)
+
+  sensor.primary_bedroom_status_code: off (Primary Bedroom Status code)
+
+  sensor.primary_bedroom_waste_drawer: 59 (Primary Bedroom Waste drawer)
+
+  sensor.tori_roller_shade_battery: 57.0 (Bedroom Right Roller Shade Battery)
+
+  switch.bedroom_left_roller_shade_inverted: off (Bedroom Left Roller Shade Inverted)
+
+  switch.bedroom_right_roller_shade_inverted: off (Bedroom Right Roller Shade Inverted)
+
+  switch.primary_bedroom_night_light_mode: on (Primary Bedroom Night light mode)
+
+  switch.primary_bedroom_panel_lockout: off (Primary Bedroom Panel lockout)
+
+  update.bedroom_left_roller_shade_firmware: unknown (Bedroom Left Roller Shade Firmware)
+
+  update.bedroom_right_roller_shade_firmware: unknown (Bedroom Right Roller Shade Firmware)
+
+  update.bedroom_shade_remote_firmware: unknown (Bedroom Shade Remote Firmware)
+
+  update.ikea_of_sweden_tradfri_bulb_e26_cws_800lm_firmware: unknown (Tori Light Firmware)
+
+  update.primary_bedroom_firmware: off (Primary Bedroom Firmware)
+
+  vacuum.primary_bedroom_litter_box: docked (Primary Bedroom Litter box)
+
+
+
+=== BEDROOM BATHROOM ===
+
+  button.lumi_lumi_weather_identify: unavailable (Bedroom Bathroom Identify)
+
+  sensor.lumi_lumi_weather_battery: unavailable (Bedroom Bathroom Battery)
+
+  sensor.lumi_lumi_weather_humidity: unavailable (Bedroom Bathroom Humidity)
+
+  sensor.lumi_lumi_weather_pressure: unavailable (Bedroom Bathroom Pressure)
+
+  sensor.lumi_lumi_weather_temperature: unavailable (Bedroom Bathroom Temperature)
+
+
+
+=== FRONT DOOR ===
+
+  binary_sensor.front_door_ding_3: off (Front Door Ding)
+
+  binary_sensor.front_door_motion_3: off (Front Door Motion)
+
+  camera.front_door_3: idle (Front Door Last recording)
+
+  camera.front_door_live_view: idle (Front Door Live view)
+
+  device_tracker.ring_video_doorbell: home (Ring-Video Doorbell)
+
+  device_tracker.ring_video_doorbell_2: not_home (Ring-Video Doorbell)
+
+  event.front_door_ding: 2025-08-01T21:36:34.382+00:00 (Front Door Ding)
+
+  event.front_door_motion: 2025-08-24T23:35:55.671+00:00 (Front Door Motion)
+
+  lock.front_door: locked (Front Door)
+
+  number.front_door_volume: 8.0 (Front Door Volume)
+
+  sensor.front_door_battery: 95 (Front Door Battery)
+
+  sensor.front_door_battery_4: 90 (Front Door Battery)
+
+  sensor.front_door_last_activity_3: 2025-08-24T23:35:53+00:00 (Front Door Last activity)
+
+  sensor.front_door_last_ding_3: unknown (Front Door Last ding)
+
+  sensor.front_door_last_motion_3: 2025-08-24T23:35:53+00:00 (Front Door Last motion)
+
+  sensor.front_door_volume_3: 8 (Front Door Volume)
+
+  switch.front_door_audio: on (Front Door Audio)
+
+  switch.front_door_in_home_chime: on (Front Door In-home chime)
+
+  switch.front_door_led: off (Front Door LED)
+
+  switch.front_door_motion_detection: on (Front Door Motion detection)
+
+  switch.front_door_secure_screen: off (Front Door Secure Screen)
+
+
+
+=== GARAGE ===
+
+  binary_sensor.electric_water_heater_running: off (Electric Water Heater_running)
+
+  binary_sensor.electric_water_heater_shutoff_valve: on (Electric Water Heater_shutoff_valve)
+
+  binary_sensor.lumi_lumi_sensor_wleak_aq1: unavailable (Hot Water Heater Leak)
+
+  binary_sensor.lumi_lumi_vibration_aq1_4: unavailable (Garage Door Vibration)
+
+  button.lumi_lumi_sensor_wleak_aq1_identify: unavailable (Hot Water Heater Leak Identify)
+
+  button.lumi_lumi_vibration_aq1_identify_4: unavailable (Garage Door Vibration Identify)
+
+  sensor.electric_water_heater_alert_count: 0 (Electric Water Heater_alert_count)
+
+  sensor.electric_water_heater_available_hot_water: 100 (Electric Water Heater_available_hot_water)
+
+  sensor.electric_water_heater_compressor_health: unknown (Electric Water Heater_compressor_health)
+
+  sensor.electric_water_heater_override_status:  (Electric Water Heater_override_status)
+
+  sensor.electric_water_heater_power_usage_today: 4.12 (Electric Water Heater_power_usage_today)
+
+  sensor.electric_water_heater_running_state:  (Electric Water Heater_running_state)
+
+  sensor.electric_water_heater_tank_health: 100 (Electric Water Heater_tank_health)
+
+  sensor.electric_water_heater_water_usage_today: unknown (Electric Water Heater_water_usage_today)
+
+  sensor.lumi_lumi_sensor_wleak_aq1_battery: unavailable (Hot Water Heater Leak Battery)
+
+  sensor.lumi_lumi_sensor_wleak_aq1_device_temperature: unavailable (Hot Water Heater Leak Device temperature)
+
+  sensor.lumi_lumi_vibration_aq1_battery_4: unavailable (Garage Door Vibration Battery)
+
+  sensor.lumi_lumi_vibration_aq1_device_temperature_4: unavailable (Garage Door Vibration Device temperature)
+
+  update.lumi_lumi_sensor_wleak_aq1_firmware: unavailable (Hot Water Heater Leak Firmware)
+
+  update.lumi_lumi_vibration_aq1_firmware_4: unavailable (Garage Door Vibration Firmware)
+
+  water_heater.electric_water_heater: electric (Electric Water Heater)
+
+
+
+=== GUEST BATHROOM ===
+
+  button.lumi_lumi_weather_identify_2: unavailable (Guest Bathroom Identify)
+
+  camera.guest_litterbox_live_view: idle (Guest Litterbox Live view)
+
+  event.guest_litterbox_motion: 2025-08-24T18:23:21.476+00:00 (Guest Litterbox Motion)
+
+  number.guest_litterbox_volume: 8.0 (Guest Litterbox Volume)
+
+  sensor.guest_litterbox_battery: 100 (Guest Litterbox Battery)
+
+  sensor.guest_litterbox_last_activity: 2025-08-24T18:23:11+00:00 (Guest Litterbox Last activity)
+
+  sensor.lumi_lumi_weather_battery_2: unavailable (Guest Bathroom Battery)
+
+  sensor.lumi_lumi_weather_humidity_2: unavailable (Guest Bathroom Humidity)
+
+  sensor.lumi_lumi_weather_pressure_2: unavailable (Guest Bathroom Pressure)
+
+  sensor.lumi_lumi_weather_temperature_2: unavailable (Guest Bathroom Temperature)
+
+  siren.guest_litterbox_siren: off (Guest Litterbox Siren)
+
+  switch.guest_litterbox_motion_detection: on (Guest Litterbox Motion detection)
+
+
+
+=== HALLWAY ===
+
+  binary_sensor.lumi_lumi_sensor_wleak_aq1_2: unavailable (AC Leak)
+
+  button.lumi_lumi_sensor_wleak_aq1_identify_2: unavailable (AC Leak Identify)
+
+  number.kitchen_volume: 8.0 (Chime Volume)
+
+  sensor.kitchen_volume: 8 (Chime Volume)
+
+  sensor.lumi_lumi_sensor_wleak_aq1_battery_2: unavailable (AC Leak Battery)
+
+  sensor.lumi_lumi_sensor_wleak_aq1_device_temperature_2: unavailable (AC Leak Device temperature)
+
+  siren.kitchen_siren: unknown (Chime Siren)
+
+  update.lumi_lumi_sensor_wleak_aq1_firmware_2: unavailable (AC Leak Firmware)
+
+
+
+=== KITCHEN ===
+
+  binary_sensor.dishwasher_vibration: unavailable (Dishwasher Vibration)
+
+  binary_sensor.rbr760_ap_wan_status: on (Orbi Router WAN status)
+
+  button.dishwasher_vibration_identify: unavailable (Dishwasher Vibration Identify)
+
+  button.ikea_of_sweden_remote_control_n2_identify_2: unknown (Kitchen Remote Identify)
+
+  button.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_identify: unknown (Kitchen Over Oven Identify)
+
+  button.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_identify_2: unknown (Kitchen Over Sink Identify)
+
+  button.ikea_of_sweden_tradfribulbe12wscandleopal450lm_identify: unknown (Dining Room Table Light 1 Identify)
+
+  button.ikea_of_sweden_tradfribulbe12wscandleopal450lm_identify_2: unknown (Dining Room Table Light 2 Identify)
+
+  button.ikea_of_sweden_tradfribulbe12wscandleopal450lm_identify_3: unknown (Dining Room Table Light 3 Identify)
+
+  button.ikea_of_sweden_tradfribulbe12wscandleopal450lm_identify_4: unknown (Dining Room Table Light 4 Identify)
+
+  light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light: off (Kitchen Over Oven)
+
+  light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2: off (Kitchen Over Sink)
+
+  light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light: off (Dining Room Table Light 1)
+
+  light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2: off (Dining Room Table Light 2)
+
+  light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3: off (Dining Room Table Light 3)
+
+  light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4: off (Dining Room Table Light 4)
+
+  lock.back_door: locked (Back Door)
+
+  number.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_on_level: 255 (Kitchen Over Oven On level)
+
+  number.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_on_off_transition_time: 5 (Kitchen Over Oven On/Off transition time)
+
+  number.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_start_up_current_level: 255 (Kitchen Over Oven Start-up current level)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_on_level: 255 (Dining Room Table Light 1 On level)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_on_level_2: 255 (Dining Room Table Light 3 On level)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_on_level_3: 255 (Dining Room Table Light 2 On level)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_on_level_4: 255 (Dining Room Table Light 4 On level)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_on_off_transition_time: 5 (Dining Room Table Light 1 On/Off transition time)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_on_off_transition_time_2: 5 (Dining Room Table Light 3 On/Off transition time)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_on_off_transition_time_3: 5 (Dining Room Table Light 2 On/Off transition time)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_on_off_transition_time_4: 5 (Dining Room Table Light 4 On/Off transition time)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_color_temperature: 65535 (Dining Room Table Light 1 Start-up color temperature)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_color_temperature_2: 65535 (Dining Room Table Light 3 Start-up color temperature)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_color_temperature_3: 65535 (Dining Room Table Light 2 Start-up color temperature)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_color_temperature_4: 65535 (Dining Room Table Light 4 Start-up color temperature)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_current_level: 255 (Dining Room Table Light 1 Start-up current level)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_current_level_2: 255 (Dining Room Table Light 3 Start-up current level)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_current_level_3: 255 (Dining Room Table Light 2 Start-up current level)
+
+  number.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_current_level_4: 255 (Dining Room Table Light 4 Start-up current level)
+
+  number.over_sink_on_level: 255 (Kitchen Over Sink On level)
+
+  number.over_sink_on_off_transition_time: 5 (Kitchen Over Sink On/Off transition time)
+
+  number.over_sink_start_up_current_level: 255 (Kitchen Over Sink Start-up current level)
+
+  select.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_start_up_behavior: Off (Kitchen Over Oven Start-up behavior)
+
+  select.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_behavior: On (Dining Room Table Light 1 Start-up behavior)
+
+  select.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_behavior_2: Off (Dining Room Table Light 3 Start-up behavior)
+
+  select.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_behavior_3: Off (Dining Room Table Light 2 Start-up behavior)
+
+  select.ikea_of_sweden_tradfribulbe12wscandleopal450lm_start_up_behavior_4: Off (Dining Room Table Light 4 Start-up behavior)
+
+  select.over_sink_start_up_behavior: Off (Kitchen Over Sink Start-up behavior)
+
+  sensor.back_door_battery: 100 (Back Door Battery)
+
+  sensor.dishwasher_vibration_battery: unavailable (Dishwasher Vibration Battery)
+
+  sensor.dishwasher_vibration_device_temperature: unavailable (Dishwasher Vibration Device temperature)
+
+  sensor.ikea_of_sweden_remote_control_n2_battery_2: 100.0 (Kitchen Remote Battery)
+
+  sensor.rbr760_ap_download_speed: 4.5438258098812 (Orbi Router Download speed)
+
+  sensor.rbr760_ap_external_ip: unavailable (External IP)
+
+  sensor.rbr760_ap_upload_speed: 5.45679008017089 (Orbi Router Upload speed)
+
+  switch.back_door_audio: on (Back Door Audio)
+
+  switch.back_door_led: off (Back Door LED)
+
+  switch.back_door_secure_screen: off (Back Door Secure Screen)
+
+  update.dining_room_table_light_1_firmware: unknown (Dining Room Table Light 1 Firmware)
+
+  update.dining_room_table_light_2_firmware: unknown (Dining Room Table Light 2 Firmware)
+
+  update.dining_room_table_light_3_firmware: unknown (Dining Room Table Light 3 Firmware)
+
+  update.dining_room_table_light_4_firmware: unknown (Dining Room Table Light 4 Firmware)
+
+  update.dishwasher_vibration_firmware: unavailable (Dishwasher Vibration Firmware)
+
+  update.kitchen_over_oven_firmware: unknown (Kitchen Over Oven Firmware)
+
+  update.kitchen_over_sink_firmware: unknown (Kitchen Over Sink Firmware)
+
+  update.kitchen_remote_firmware: unknown (Kitchen Remote Firmware)
+
+
+
+=== LAUNDRY ROOM ===
+
+  binary_sensor.lumi_lumi_sensor_wleak_aq1_3: unavailable (Washer Leak)
+
+  binary_sensor.lumi_lumi_vibration_aq1: unavailable (Washer Vibration)
+
+  binary_sensor.lumi_lumi_vibration_aq1_2: unavailable (Dryer Vibration)
+
+  binary_sensor.s7_max_ultra_charging: on (Shai-Hulud Charging)
+
+  binary_sensor.s7_max_ultra_cleaning: off (Shai-Hulud Cleaning)
+
+  binary_sensor.s7_max_ultra_mop_attached: on (Shai-Hulud Mop attached)
+
+  binary_sensor.s7_max_ultra_mop_drying: off (Sietch Mop drying)
+
+  binary_sensor.s7_max_ultra_water_box_attached: on (Shai-Hulud Water box attached)
+
+  binary_sensor.s7_max_ultra_water_shortage: off (Shai-Hulud Water shortage)
+
+  button.lumi_lumi_sensor_wleak_aq1_identify_3: unavailable (Washer Leak Identify)
+
+  button.lumi_lumi_vibration_aq1_identify: unavailable (Washer Vibration Identify)
+
+  button.lumi_lumi_vibration_aq1_identify_2: unavailable (Dryer Vibration Identify)
+
+  button.s7_max_ultra_full_cleaning: unknown (Shai-Hulud Full Cleaning)
+
+  button.s7_max_ultra_kitchen: unknown (Shai-Hulud Kitchen)
+
+  button.s7_max_ultra_quick_clean: unknown (Shai-Hulud Quick clean)
+
+  button.s7_max_ultra_vac_followed_by_mop: unknown (Shai-Hulud Vac followed by Mop)
+
+  device_tracker.beijing_roborock_technology: home (Roborock)
+
+  image.s7_max_ultra_map_0: 2025-08-24T22:33:46.123970+00:00 (Shai-Hulud Map 0)
+
+  number.s7_max_ultra_volume: 50 (Shai-Hulud Volume)
+
+  select.s7_max_ultra_dock_empty_mode: smart (Sietch Empty mode)
+
+  select.s7_max_ultra_mop_intensity: moderate (Shai-Hulud Mop intensity)
+
+  select.s7_max_ultra_mop_mode: standard (Shai-Hulud Mop mode)
+
+  select.s7_max_ultra_selected_map: Map 0 (Shai-Hulud Selected map)
+
+  sensor.lumi_lumi_sensor_wleak_aq1_battery_3: unavailable (Washer Leak Battery)
+
+  sensor.lumi_lumi_sensor_wleak_aq1_device_temperature_3: unavailable (Washer Leak Device temperature)
+
+  sensor.lumi_lumi_vibration_aq1_battery: unavailable (Washer Vibration Battery)
+
+  sensor.lumi_lumi_vibration_aq1_battery_2: unavailable (Dryer Vibration Battery)
+
+  sensor.lumi_lumi_vibration_aq1_device_temperature: unavailable (Washer Vibration Device temperature)
+
+  sensor.lumi_lumi_vibration_aq1_device_temperature_2: unavailable (Dryer Vibration Device temperature)
+
+  sensor.s7_max_ultra_battery: 100 (Shai-Hulud Battery)
+
+  sensor.s7_max_ultra_cleaning_area: 17.0 (Shai-Hulud Cleaning area)
+
+  sensor.s7_max_ultra_cleaning_progress: 0 (Shai-Hulud Cleaning progress)
+
+  sensor.s7_max_ultra_cleaning_time: 1140 (Shai-Hulud Cleaning time)
+
+  sensor.s7_max_ultra_current_room: unknown (Shai-Hulud Current room)
+
+  sensor.s7_max_ultra_dock_error: ok (Sietch Dock error)
+
+  sensor.s7_max_ultra_filter_time_left: 133894 (Shai-Hulud Filter time left)
+
+  sensor.s7_max_ultra_last_clean_begin: 2025-08-20T03:10:22+00:00 (Shai-Hulud Last clean begin)
+
+  sensor.s7_max_ultra_last_clean_end: 2025-08-20T03:32:04+00:00 (Shai-Hulud Last clean end)
+
+  sensor.s7_max_ultra_main_brush_time_left: 673894 (Shai-Hulud Main brush time left)
+
+  sensor.s7_max_ultra_mop_drying_remaining_time: 0 (Sietch Mop drying remaining time)
+
+  sensor.s7_max_ultra_sensor_time_left: 35615 (Shai-Hulud Sensor time left)
+
+  sensor.s7_max_ultra_side_brush_time_left: 313894 (Shai-Hulud Side brush time left)
+
+  sensor.s7_max_ultra_status: charging (Shai-Hulud Status)
+
+  sensor.s7_max_ultra_total_cleaning_area: 4028.3 (Shai-Hulud Total cleaning area)
+
+  sensor.s7_max_ultra_total_cleaning_count: 309 (Shai-Hulud Total cleaning count)
+
+  sensor.s7_max_ultra_total_cleaning_time: 405691 (Shai-Hulud Total cleaning time)
+
+  sensor.s7_max_ultra_vacuum_error: none (Shai-Hulud Vacuum error)
+
+  switch.s7_max_ultra_child_lock: off (Sietch Child lock)
+
+  switch.s7_max_ultra_do_not_disturb: on (Shai-Hulud Do not disturb)
+
+  time.s7_max_ultra_do_not_disturb_begin: 22:00:00 (Shai-Hulud Do not disturb begin)
+
+  time.s7_max_ultra_do_not_disturb_end: 08:00:00 (Shai-Hulud Do not disturb end)
+
+  update.lumi_lumi_sensor_wleak_aq1_firmware_3: unavailable (Washer Leak Firmware)
+
+  update.lumi_lumi_vibration_aq1_firmware: unavailable (Washer Vibration Firmware)
+
+  update.lumi_lumi_vibration_aq1_firmware_2: unavailable (Dryer Vibration Firmware)
+
+  vacuum.s7_max_ultra: docked (Shai-Hulud)
+
+
+
+=== LIVING ROOM ===
+
+  binary_sensor.ikea_of_sweden_tradfri_motion_sensor_motion_2: off (Living Room Sensor)
+
+  binary_sensor.living_room_motion_sensor_occupancy: off (Living room Motion Sensor Occupancy)
+
+  binary_sensor.living_room_motion_sensor_opening: off (Living room Motion Sensor Opening)
+
+  binary_sensor.tp_link_power_strip_1446_cloud_connection: on (TP-LINK_Power Strip_1446 Cloud connection)
+
+  binary_sensor.tp_link_power_strip_173b_cloud_connection: on (TP-LINK_Power Strip_173B Cloud connection)
+
+  button.ikea_of_sweden_remote_control_n2_identify: unknown (Living Room Remote Identify)
+
+  button.ikea_of_sweden_tradfri_motion_sensor_identify_2: unknown (Living Room Sensor Identify)
+
+  button.left_living_room_roller_shade_identify: unknown (Living Room Left Roller Shade Identify)
+
+  button.living_room_lights: 2025-06-16T04:47:54.146098+00:00 (Living Room Lights)
+
+  button.living_room_motion_sensor_identify: unknown (Living room Motion Sensor Identify)
+
+  button.living_room_shade_remote_identify: unavailable (Living Room Shade Remote Identify)
+
+  button.right_living_room_roller_shade_identify: unknown (Living Room Right Roller Shade Identify)
+
+  cover.left_living_room_roller_shade_cover: closed (Living Room Left Roller Shade Cover)
+
+  cover.right_living_room_roller_shade_cover: closed (Living Room Right Roller Shade Cover)
+
+  device_tracker.dodson_roku_ultra: unavailable (Dodson Roku Ultra)
+
+  device_tracker.ecobee: home (ecobee)
+
+  device_tracker.nintendo: not_home (Nintendo)
+
+  device_tracker.roku: home (Roku)
+
+  device_tracker.tp_link: home (TP-Link)
+
+  device_tracker.tp_link_2: home (TP-Link)
+
+  number.living_room_motion_sensor_on_time: unknown (Living room Motion Sensor On time)
+
+  sensor.ikea_of_sweden_remote_control_n2_battery: 100.0 (Living Room Remote Battery)
+
+  sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2: 10.0 (Living Room Sensor Battery)
+
+  sensor.left_living_room_roller_shade_battery: 90.0 (Living Room Left Roller Shade Battery)
+
+  sensor.living_room_left_roller_shade_window_covering_type: Rollershade (Living Room Left Roller Shade Window covering type)
+
+  sensor.living_room_motion_sensor_battery: 68.0 (Living room Motion Sensor Battery)
+
+  sensor.living_room_motion_sensor_illuminance: 42 (Living room Motion Sensor Illuminance)
+
+  sensor.living_room_right_roller_shade_window_covering_type: Rollershade (Living Room Right Roller Shade Window covering type)
+
+  sensor.living_room_shade_remote_battery: unavailable (Living Room Shade Remote Battery)
+
+  sensor.right_living_room_roller_shade_battery: 90.0 (Living Room Right Roller Shade Battery)
+
+  switch.living_room_left_roller_shade_inverted: off (Living Room Left Roller Shade Inverted)
+
+  switch.living_room_motion_sensor_on_only_when_dark: off (Living room Motion Sensor On only when dark)
+
+  switch.living_room_right_roller_shade_inverted: off (Living Room Right Roller Shade Inverted)
+
+  switch.tp_link_power_strip_1446: on (TP-LINK_Power Strip_1446)
+
+  switch.tp_link_power_strip_1446_cat_bed: on (TP-LINK_Power Strip_1446 Cat bed)
+
+  switch.tp_link_power_strip_1446_lamp_by_door: off (TP-LINK_Power Strip_1446 Lamp by Door)
+
+  switch.tp_link_power_strip_1446_led: on (TP-LINK_Power Strip_1446 LED)
+
+  switch.tp_link_power_strip_1446_plug_3: on (Front Door Lock)
+
+  switch.tp_link_power_strip_173b: on (TP-LINK_Power Strip_173B)
+
+  switch.tp_link_power_strip_173b_couch_lamp: off (TP-LINK_Power Strip_173B couch lamp)
+
+  switch.tp_link_power_strip_173b_led: on (TP-LINK_Power Strip_173B LED)
+
+  switch.tp_link_power_strip_173b_phone_charger: on (TP-LINK_Power Strip_173B phone charger)
+
+  switch.tp_link_power_strip_173b_plug_3: on (TP-LINK_Power Strip_173B Plug 3)
+
+  update.living_room_left_roller_shade_firmware: unknown (Living Room Left Roller Shade Firmware)
+
+  update.living_room_motion_sensor_firmware: unknown (Living room Motion Sensor Firmware)
+
+  update.living_room_remote_firmware: unknown (Living Room Remote Firmware)
+
+  update.living_room_right_roller_shade_firmware: unknown (Living Room Right Roller Shade Firmware)
+
+  update.living_room_sensor_firmware: unknown (Living Room Sensor Firmware)
+
+  update.living_room_shade_remote_firmware: unavailable (Living Room Shade Remote Firmware)
+
+
+
+=== NO AREA ASSIGNED ===
+
+  automation.adaptive_context_messaging_system: on (Adaptive Context Messaging System)
+
+  automation.adaptive_motion_lighting_sietch_intelligence: on (Adaptive Motion Lighting - Sietch Intelligence)
+
+  automation.advanced_learning_engine_behavioral_adaptation_system: on (Advanced Learning Engine - Behavioral Adaptation System)
+
+  automation.advanced_threat_detection_system: on (Advanced Threat Detection System)
+
+  automation.all_lights_off_bedtime: on (All Lights Off Bedtime)
+
+  automation.atlas_activity_analysis_desert_guide_status: unavailable (Atlas Activity Analysis - Desert Guide Status)
+
+  automation.atlas_bedtime_sounds: unavailable (Atlas Bedtime Sounds)
+
+  automation.atlas_feeding_reminder: unavailable (Atlas Feeding Reminder)
+
+  automation.atlas_laundry_room_comfort: unavailable (Atlas Laundry Room Comfort)
+
+  automation.atlas_motion_counter: unavailable (Atlas Motion Counter)
+
+  automation.atlas_sounds_auto_stop: unavailable (Atlas Sounds Auto Stop)
+
+  automation.atlas_storm_comfort_sounds_2: unavailable (Atlas Storm Comfort Sounds)
+
+  automation.atlas_weather_comfort: unavailable (Atlas Weather Comfort)
+
+  automation.atlas_weather_comfort_storm_prediction: unavailable (Atlas Weather Comfort - Storm Prediction)
+
+  automation.bathroom_lights_off_after_motion: on (Bathroom Lights Off After Motion)
+
+  automation.bathroom_lights_on_motion: on (Bathroom Lights On Motion)
+
+  automation.bedroom_lights_away_mode: on (Bedroom Lights Away Mode)
+
+  automation.bedroom_lights_away_mode_2: on (Bedroom Lights Away Mode)
+
+  automation.bedroom_phone_bedtime_detection: unavailable (Bedroom Phone Bedtime Detection)
+
+  automation.cat_feeding_reminder: unavailable (Cat Feeding Reminder)
+
+  automation.cat_feeding_schedule: unavailable (Cat Feeding Schedule)
+
+  automation.cat_feeding_schedule_2: unavailable (Cat Feeding Schedule)
+
+  automation.comprehensive_system_status_notification: on (Comprehensive System Status Notification)
+
+  automation.contextual_scene_orchestrator_adaptive_environment_control: on (Contextual Scene Orchestrator - Adaptive Environment Control)
+
+  automation.coriolis_storm_protocol_weather_emergency: unavailable (Coriolis Storm Protocol - Weather Emergency)
+
+  automation.daily_counter_reset: on (Daily Counter Reset)
+
+  automation.daily_counter_reset_automation: unavailable (Daily Counter Reset Automation)
+
+  automation.daily_desert_cycle_reset_midnight_protocol: unavailable (Daily Desert Cycle Reset - Midnight Protocol)
+
+  automation.daily_energy_report: on (Daily Energy Report)
+
+  automation.daily_laundry_counter_reset: unavailable (Daily Laundry Counter Reset)
+
+  automation.dawn_awakening_report: on (Dawn Awakening Report)
+
+  automation.deep_sleep_protection: unavailable (Deep Sleep Protection)
+
+  automation.desert_companion_comfort_environmental_response: unavailable (Desert Companion Comfort - Environmental Response)
+
+  automation.desert_companions_comfort_pack_care: unavailable (Desert Companions Comfort - Pack Care)
+
+  automation.desert_power_conservation_peak_demand_protocol: unavailable (Desert Power Conservation - Peak Demand Protocol)
+
+  automation.desert_wanderer_approaches_perimeter_alert: unavailable (Desert Wanderer Approaches - Perimeter Alert)
+
+  automation.dryer_cycle_completion_detection: unavailable (Dryer Cycle Completion Detection)
+
+  automation.dryer_cycle_start_detection: unavailable (Dryer Cycle Start Detection)
+
+  automation.dryer_cycle_started: on (Dryer Cycle Started)
+
+  automation.dynamic_resource_manager_intelligent_load_balancing: on (Dynamic Resource Manager - Intelligent Load Balancing)
+
+  automation.ellie_fluoxetine_daily_medicine_protocol: unavailable (Ellie Fluoxetine - Daily Medicine Protocol)
+
+  automation.energy_optimization_off_peak: unavailable (Energy Optimization Off Peak)
+
+  automation.energy_optimization_peak_hours: unavailable (Energy Optimization Peak Hours)
+
+  automation.evening_consolidation_report: on (Evening Consolidation Report)
+
+  automation.evening_house_preparation: unavailable (Evening House Preparation)
+
+  automation.evening_sunset_routine: on (Evening Sunset Routine)
+
+  automation.fremen_leader_atlas_respect_protocol: unavailable (Fremen Leader Atlas Respect Protocol)
+
+  automation.fremen_warriors_feeding_tribal_sustenance: unavailable (Fremen Warriors Feeding - Tribal Sustenance)
+
+  automation.front_door_motion_light: on (Front Door Motion Light)
+
+  automation.garage_door_close_after_motion_stops: on (Garage Door Close After Motion Stops)
+
+  automation.garage_door_open_on_motion: on (Garage Door Open on Motion)
+
+  automation.garage_lights_on_when_door_open: on (Garage Lights On When Door Open)
+
+  automation.guest_bathroom_lights_off_after_motion: on (Guest Bathroom Lights Off After Motion)
+
+  automation.guest_bathroom_lights_on_motion: on (Guest Bathroom Lights On Motion)
+
+  automation.guest_departure_blessing_journey_blessed: unavailable (Guest Departure Blessing - Journey Blessed)
+
+  automation.harvester_efficiency_warning_system: on (Harvester Efficiency Warning System)
+
+  automation.house_mode_coordinator: unavailable (House Mode Coordinator)
+
+  automation.house_occupancy_change_monitor: unavailable (House Occupancy Change Monitor)
+
+  automation.intelligent_climate_control_atmospheric_adaptation: on (Intelligent Climate Control - Atmospheric Adaptation)
+
+  automation.intelligent_climate_optimization_system: on (Intelligent Climate Optimization System)
+
+  automation.kitchen_late_night_lights: on (Kitchen Late Night Lights)
+
+  automation.kitchen_lights_off_after_motion: on (Kitchen Lights Off After Motion)
+
+  automation.kitchen_morning_lights_on: on (Kitchen Morning Lights On)
+
+  automation.kitchen_motion_lights_off_2: unavailable (Kitchen Motion Lights Off)
+
+  automation.kitchen_motion_lights_on: unavailable (Kitchen Motion Lights On)
+
+  automation.late_evening_shutdown: unavailable (Late Evening Shutdown)
+
+  automation.laundry_cycle_complete: on (Laundry Cycle Complete)
+
+  automation.laundry_energy_optimization: unavailable (Laundry Energy Optimization)
+
+  automation.laundry_notification_actions: unavailable (Laundry Notification Actions)
+
+  automation.laundry_room_house_mode_coordination: unavailable (Laundry Room House Mode Coordination)
+
+  automation.living_room_lights_on_motion: on (Living Room Lights On Motion)
+
+  automation.living_room_motion_lights_off: unavailable (Living Room Motion Lights Off)
+
+  automation.living_room_motion_lights_on: unavailable (Living Room Motion Lights On)
+
+  automation.load_transfer_reminder: unavailable (Load Transfer Reminder)
+
+  automation.maintenance_bay_operations_extended_work: unavailable (Maintenance Bay Operations - Extended Work)
+
+  automation.midday_status_update: on (Midday Status Update)
+
+  automation.moisture_extraction_process_dry_cycle_begin: unavailable (Moisture Extraction Process - Dry Cycle Begin)
+
+  automation.morning_sunrise_routine: on (Morning Sunrise Routine)
+
+  automation.morning_water_ration_dawn_sustenance: unavailable (Morning Water Ration - Dawn Sustenance)
+
+  automation.motion_pattern_anomaly_detection: on (Motion Pattern Anomaly Detection)
+
+  automation.multi_condition_decision_tree_advanced_logic_matrix: on (Multi-Condition Decision Tree - Advanced Logic Matrix)
+
+  automation.navigator_chamber_motion_lighting: unavailable (Navigator Chamber - Motion Lighting)
+
+  automation.navigator_chamber_sealed_away_protocol: unavailable (Navigator Chamber Sealed - Away Protocol)
+
+  automation.navigator_chamber_water_conservation_spice_trance_sealed: unavailable (Navigator Chamber Water Conservation - Spice Trance Sealed)
+
+  automation.navigator_enters_chamber_spice_trance_ready: unavailable (Navigator Enters Chamber - Spice Trance Ready)
+
+  automation.night_watch_begins_sietch_security: unavailable (Night Watch Begins - Sietch Security)
+
+  automation.nighttime_security_mode: on (Nighttime Security Mode)
+
+  automation.office_lights_off_after_motion: on (Office Lights Off After Motion)
+
+  automation.office_lights_off_late_night: on (Office Lights Off Late Night)
+
+  automation.office_lights_off_late_night_2: on (Office Lights Off Late Night)
+
+  automation.office_lights_on_motion: on (Office Lights On Motion)
+
+  automation.office_work_preparation: on (Office Work Preparation)
+
+  automation.open_shades_morning: unavailable (Open Shades Morning)
+
+  automation.ornithopter_departure_desert_patrol_ready: unavailable (Ornithopter Departure - Desert Patrol Ready)
+
+  automation.ornithopter_secured_bay_sealed: unavailable (Ornithopter Secured - Bay Sealed)
+
+  automation.outworlder_hospitality_guest_comfort: unavailable (Outworlder Hospitality - Guest Comfort)
+
+  automation.outworlder_hospitality_motion_lighting: unavailable (Outworlder Hospitality - Motion Lighting)
+
+  automation.partial_shade_adjustment_hot_day: unavailable (Partial Shade Adjustment Hot Day)
+
+  automation.person_arrives_home: unavailable (Person Arrives Home)
+
+  automation.person_arrives_home_2: on (Person Arrives Home)
+
+  automation.person_leaves_home: unavailable (Person Leaves Home)
+
+  automation.person_leaves_home_2: on (Person Leaves Home)
+
+  automation.pet_activity_tracking: on (Pet Activity Tracking)
+
+  automation.pet_comfort_temperature: on (Pet Comfort Temperature)
+
+  automation.pet_feeding_confirmation: unavailable (Pet Feeding Confirmation)
+
+  automation.pet_medication_ellie: unavailable (Pet Medication Ellie)
+
+  automation.pet_medication_ellie_2: on (Pet Medication Ellie)
+
+  automation.pet_medication_shadow: unavailable (Pet Medication Shadow)
+
+  automation.pet_medication_shadow_2: on (Pet Medication Shadow)
+
+  automation.phone_charging_bedtime: unavailable (Phone Charging Bedtime)
+
+  automation.phone_charging_bedtime_2: on (Phone Charging Bedtime)
+
+  automation.phone_unplugged_morning: unavailable (Phone Unplugged Morning)
+
+  automation.phone_unplugged_morning_2: on (Phone Unplugged Morning)
+
+  automation.predictive_atlas_storm_comfort: unavailable (Predictive Atlas Storm Comfort)
+
+  automation.predictive_automation_engine_anticipatory_intelligence_system: on (Predictive Automation Engine - Anticipatory Intelligence System)
+
+  automation.predictive_bedtime_routine: unavailable (Predictive Bedtime Routine)
+
+  automation.predictive_energy_peak_preparation: unavailable (Predictive Energy Peak Preparation)
+
+  automation.predictive_evening_transition: unavailable (Predictive Evening Transition)
+
+  automation.predictive_laundry_energy_coordination: unavailable (Predictive Laundry Energy Coordination)
+
+  automation.predictive_morning_preparation: unavailable (Predictive Morning Preparation)
+
+  automation.predictive_security_anomaly_detection_matrix: on (Predictive Security - Anomaly Detection Matrix)
+
+  automation.prescient_navigation_future_sight_preparation: unavailable (Prescient Navigation - Future Sight Preparation)
+
+  automation.prescient_vision_future_sight_analysis: unavailable (Prescient Vision - Future Sight Analysis)
+
+  automation.reopen_shades_after_cooling: unavailable (Reopen Shades After Cooling)
+
+  automation.robotic_vacuum_schedule: on (Robotic Vacuum Schedule)
+
+  automation.sacred_water_conservation_temple_sealed: unavailable (Sacred Water Conservation - Temple Sealed)
+
+  automation.sacred_water_ritual_motion_lighting: unavailable (Sacred Water Ritual - Motion Lighting)
+
+  automation.sacred_water_ritual_temple_activation: unavailable (Sacred Water Ritual - Temple Activation)
+
+  automation.security_effectiveness_alert_system: on (Security Effectiveness Alert System)
+
+  automation.severe_weather_protocol: unavailable (Severe Weather Protocol)
+
+  automation.severe_weather_protocol_2: on (Severe Weather Protocol)
+
+  automation.sha_hulud_desert_patrol_after_stillsuit_cleaning: unavailable (Sha-Hulud Desert Patrol After Stillsuit Cleaning)
+
+  automation.shadow_dual_medication_warrior_strength_protocol: unavailable (Shadow Dual Medication - Warrior Strength Protocol)
+
+  automation.shai_hulud_enhanced_desert_patrol: unavailable (Shai-Hulud Enhanced Desert Patrol)
+
+  automation.sietch_entry_protocol_gate_opens: unavailable (Sietch Entry Protocol - Gate Opens)
+
+  automation.sietch_health_warning_system: on (Sietch Health Warning System)
+
+  automation.sietch_maintenance_protocols: unavailable (Sietch Maintenance Protocols)
+
+  automation.sietch_sealed_desert_patrol_departure: unavailable (Sietch Sealed - Desert Patrol Departure)
+
+  automation.sietch_sleep_protocol_all_lights_off: unavailable (Sietch Sleep Protocol - All Lights Off)
+
+  automation.sietch_sustenance_conservation_motion_timeout: unavailable (Sietch Sustenance Conservation - Motion Timeout)
+
+  automation.sietch_sustenance_motion_lighting: unavailable (Sietch Sustenance - Motion Lighting)
+
+  automation.sietch_vital_signs_health_monitoring: unavailable (Sietch Vital Signs - Health Monitoring)
+
+  automation.spice_production_achievement_system: on (Spice Production Achievement System)
+
+  automation.spice_production_critical_system_emergency: unavailable (Spice Production Critical - System Emergency)
+
+  automation.stillsuit_recharge_desert_dreams_begin: unavailable (Stillsuit Recharge - Desert Dreams Begin)
+
+  automation.stilltent_away_conservation_energy_discipline: unavailable (Stilltent Away Conservation - Energy Discipline)
+
+  automation.sunset_over_arrakis_evening_protocol: unavailable (Sunset Over Arrakis - Evening Protocol)
+
+  automation.system_health_monitoring: unavailable (System Health Monitoring)
+
+  automation.system_health_monitoring_2: on (System Health Monitoring)
+
+  automation.tribal_council_assembles_gathering_begins: unavailable (Tribal Council Assembles - Gathering Begins)
+
+  automation.tribal_council_motion_lighting: unavailable (Tribal Council - Motion Lighting)
+
+  automation.usul_awakens_desert_morning_protocol: unavailable (Usul Awakens - Desert Morning Protocol)
+
+  automation.washer_cycle_completion_detection: unavailable (Washer Cycle Completion Detection)
+
+  automation.washer_cycle_start_detection: unavailable (Washer Cycle Start Detection)
+
+  automation.washer_cycle_started: on (Washer Cycle Started)
+
+  automation.water_conservation_alert_system: on (Water Conservation Alert System)
+
+  automation.water_conservation_late_night_protocol: unavailable (Water Conservation - Late Night Protocol)
+
+  automation.water_discipline_daily_report_resource_analysis: unavailable (Water Discipline Daily Report - Resource Analysis)
+
+  automation.water_discipline_protocol_wash_cycle_begin: unavailable (Water Discipline Protocol - Wash Cycle Begin)
+
+  automation.water_leak_emergency: unavailable (Water Leak Emergency)
+
+  automation.water_leak_emergency_2: on (Water Leak Emergency)
+
+  automation.water_loss_emergency_precious_resource_alert: unavailable (Water Loss Emergency - Precious Resource Alert)
+
+  automation.water_of_awakening_morning_rise: unavailable (Water of Awakening - Morning Rise)
+
+  automation.water_reclamation_cycle_complete_desert_efficiency: unavailable (Water Reclamation Cycle Complete - Desert Efficiency)
+
+  automation.weekly_sietch_analysis: on (Weekly Sietch Analysis)
+
+  automation.weekly_vacuum_counter_reset: unavailable (Weekly Vacuum Counter Reset)
+
+  binary_sensor.atlas_room_motion: off (Atlas Room Motion)
+
+  binary_sensor.atlas_room_occupancy: off (Atlas Room Occupancy)
+
+  binary_sensor.atlas_tracker_battery_charging: off (Atlas Tracker battery charging)
+
+  binary_sensor.atlas_tracker_power_saving: on (Atlas Tracker power saving)
+
+  binary_sensor.bedroom_motion: off (Bedroom Motion)
+
+  binary_sensor.bedroom_occupancy: off (Bedroom Occupancy)
+
+  binary_sensor.ellie_tracker_battery_charging: off (Ellie Tracker battery charging)
+
+  binary_sensor.ellie_tracker_power_saving: on (Ellie Tracker power saving)
+
+  binary_sensor.home_motion: on (Home Motion)
+
+  binary_sensor.home_occupancy: on (Home Occupancy)
+
+  binary_sensor.kitchen_motion: on (Kitchen Motion)
+
+  binary_sensor.kitchen_occupancy: on (Kitchen Occupancy)
+
+  binary_sensor.lance_tracker_battery_charging: off (Lance Tracker battery charging)
+
+  binary_sensor.lance_tracker_power_saving: on (Lance Tracker power saving)
+
+  binary_sensor.living_room_motion: on (Living Room Motion)
+
+  binary_sensor.living_room_occupancy: on (Living Room Occupancy)
+
+  binary_sensor.office_motion: on (Office Motion)
+
+  binary_sensor.office_occupancy: on (Office Occupancy)
+
+  binary_sensor.remote_ui: on (Remote UI)
+
+  binary_sensor.safe_for_desert_patrol: unavailable (Safe for Desert Patrol)
+
+  binary_sensor.sha_hulud_maintenance_protocol: unavailable (Sha-Hulud Maintenance Protocol)
+
+  binary_sensor.shadow_tracker_battery_charging: off (Shadow Tracker battery charging)
+
+  binary_sensor.shadow_tracker_power_saving: on (Shadow Tracker power saving)
+
+  binary_sensor.sm_s908u_is_charging: off (Tori Phone 2 Is charging)
+
+  button.atlas_room_identify: unknown (Atlas Room Identify)
+
+  button.bedroom_identify: unknown (Bedroom Identify)
+
+  button.home_clear_hold: unknown (Home Clear Hold)
+
+  button.home_identify: unknown (Home Identify)
+
+  button.kitchen_identify: unknown (Kitchen Identify)
+
+  button.kitchen_lights: 2025-08-24T06:42:32.573172+00:00 (Kitchen Lights)
+
+  button.living_room_identify: unknown (Living Room Identify)
+
+  button.office_identify: unknown (Office Identify)
+
+  camera.backyard_live_view_2: idle (Backyard Live view)
+
+  camera.front_live_view: idle (Front Live view)
+
+  climate.home: cool (Home)
+
+  conversation.home_assistant: unknown (Home Assistant)
+
+  counter.atlas_daily_motion: unavailable (Atlas Daily Motion Events)
+
+  counter.automation_failures: unavailable (Automation Failures Today)
+
+  counter.daily_dry_cycles: unavailable (Daily Dry Cycles)
+
+  counter.daily_wash_cycles: unavailable (Daily Wash Cycles)
+
+  counter.deep_sleep_motion_events: unavailable (Deep Sleep Motion Events)
+
+  counter.motion_sensor_triggers_today: unavailable (Motion Sensor Triggers Today)
+
+  counter.weekly_desert_patrols: unavailable (Weekly Desert Patrols (Sha-Hulud))
+
+  device_tracker.amazon: home (Amazon)
+
+  device_tracker.amazon_2: not_home (Amazon)
+
+  device_tracker.amazon_3: not_home (Amazon)
+
+  device_tracker.amazon_4: home (Amazon-Fire TV Stick 4K (2023))
+
+  device_tracker.amazon_5: not_home (Amazon)
+
+  device_tracker.apple: not_home (Apple)
+
+  device_tracker.apple_2: not_home (Apple)
+
+  device_tracker.atlas_tracker: home (Atlas Tracker)
+
+  device_tracker.azurewave_technology: home (Shark-RV Series)
+
+  device_tracker.compal: not_home (Compal)
+
+  device_tracker.da_pf3bslpz: not_home (DA-PF3BSLPZ)
+
+  device_tracker.dell_latitude_5310: not_home (Dell-Latitude 5310)
+
+  device_tracker.desktop_fo3gk69: not_home (DESKTOP-FO3GK69)
+
+  device_tracker.desktop_i1gjpq7: home (THE-GRID)
+
+  device_tracker.dev_02_3d_46: not_home (DEV-02:3D:46)
+
+  device_tracker.dev_09_eb_fb: not_home (DEV-09:EB:FB)
+
+  device_tracker.dev_0d_ff_c3: not_home (DEV-0D:FF:C3)
+
+  device_tracker.dev_18_92_00: not_home (DEV-18:92:00)
+
+  device_tracker.dev_28_37_c3: not_home (DEV-28:37:C3)
+
+  device_tracker.dev_2e_16_d0: not_home (DEV-2E:16:D0)
+
+  device_tracker.dev_30_6b_13: not_home (DEV-30:6B:13)
+
+  device_tracker.dev_33_ca_2d: not_home (DEV-33:CA:2D)
+
+  device_tracker.dev_34_88_39: not_home (DEV-34:88:39)
+
+  device_tracker.dev_37_07_90: not_home (DEV-37:07:90)
+
+  device_tracker.dev_44_f9_d7: not_home (DEV-44:F9:D7)
+
+  device_tracker.dev_58_01_de: not_home (DEV-58:01:DE)
+
+  device_tracker.dev_59_52_37: not_home (DEV-59:52:37)
+
+  device_tracker.dev_5d_05_9d: not_home (DEV-5D:05:9D)
+
+  device_tracker.dev_5e_0e_2b: not_home (DEV-5E:0E:2B)
+
+  device_tracker.dev_60_a3_98: not_home (DEV-60:A3:98)
+
+  device_tracker.dev_61_60_e6: not_home (DEV-61:60:E6)
+
+  device_tracker.dev_63_dd_c4: not_home (DEV-63:DD:C4)
+
+  device_tracker.dev_66_4b_03: not_home (DEV-66:4B:03)
+
+  device_tracker.dev_6f_c1_bd: not_home (DEV-6F:C1:BD)
+
+  device_tracker.dev_75_ee_ce: not_home (DEV-75:EE:CE)
+
+  device_tracker.dev_77_ca_17: not_home (DEV-77:CA:17)
+
+  device_tracker.dev_79_bf_69: not_home (DEV-79:BF:69)
+
+  device_tracker.dev_7b_e7_de: not_home (DEV-7B:E7:DE)
+
+  device_tracker.dev_84_c9_b2: not_home (DEV-84:C9:B2)
+
+  device_tracker.dev_88_91_1e: not_home (DEV-88:91:1E)
+
+  device_tracker.dev_9d_6d_9e: not_home (DEV-9D:6D:9E)
+
+  device_tracker.dev_a1_da_3e: not_home (DEV-A1:DA:3E)
+
+  device_tracker.dev_a8_01_02: home (DEV-A8:01:02)
+
+  device_tracker.dev_ab_81_02: not_home (DEV-AB:81:02)
+
+  device_tracker.dev_b2_3f_cc: not_home (DEV-B2:3F:CC)
+
+  device_tracker.dev_b7_8d_a6: not_home (DEV-B7:8D:A6)
+
+  device_tracker.dev_b9_4c_2c: not_home (DEV-B9:4C:2C)
+
+  device_tracker.dev_bb_1b_0d: not_home (DEV-BB:1B:0D)
+
+  device_tracker.dev_be_56_9d: not_home (DEV-BE:56:9D)
+
+  device_tracker.dev_be_ba_cf: not_home (DEV-BE:BA:CF)
+
+  device_tracker.dev_c0_93_3a: not_home (DEV-C0:93:3A)
+
+  device_tracker.dev_c7_fb_c9: not_home (DEV-C7:FB:C9)
+
+  device_tracker.dev_d7_7f_d6: home (Apple)
+
+  device_tracker.dev_d8_08_31: not_home (DEV-D8:08:31)
+
+  device_tracker.dev_d8_d6_fb: not_home (DEV-D8:D6:FB)
+
+  device_tracker.dev_d9_f8_bd: not_home (DEV-D9:F8:BD)
+
+  device_tracker.dev_df_f5_35: not_home (DEV-DF:F5:35)
+
+  device_tracker.dev_e4_00_5e: not_home (DEV-E4:00:5E)
+
+  device_tracker.dev_ea_94_14: not_home (DEV-EA:94:14)
+
+  device_tracker.dev_ee_9f_63: not_home (DEV-EE:9F:63)
+
+  device_tracker.dev_f2_e0_cd: not_home (DEV-F2:E0:CD)
+
+  device_tracker.dev_f5_12_7e: not_home (DEV-F5:12:7E)
+
+  device_tracker.ellie_tracker: home (Ellie Tracker)
+
+  device_tracker.enphase_envoy: not_home (Enphase-Envoy)
+
+  device_tracker.hp_probook_455_g8: not_home (HP-ProBook 455 G8)
+
+  device_tracker.lance_tracker: home (Lance Tracker)
+
+  device_tracker.msi: home (MSI)
+
+  device_tracker.nokia: not_home (Nokia)
+
+  device_tracker.pixel_6: home (Pixel 6)
+
+  device_tracker.private: not_home (Private)
+
+  device_tracker.ring: home (Ring)
+
+  device_tracker.ring_2: not_home (Ring)
+
+  device_tracker.ring_floodlight_cam: home (Ring-Floodlight Cam)
+
+  device_tracker.ring_solutions: home (Blink)
+
+  device_tracker.ring_video_doorbell_3: home (Ring-Video Doorbell)
+
+  device_tracker.ring_video_doorbell_4: home (Ring-Video Doorbell)
+
+  device_tracker.samsung_galaxy_s22_ultra: home (DEV-5C:50:2E)
+
+  device_tracker.samsung_galaxy_watch: not_home (Samsung-Galaxy Watch)
+
+  device_tracker.shadow_tracker: home (Shadow Tracker)
+
+  device_tracker.shenzhen_intellirocks_tech: not_home (Shenzhen Intellirocks Tech.)
+
+  device_tracker.sm_s908u: home (Tori Phone 2)
+
+  device_tracker.sony: not_home (Sony)
+
+  device_tracker.texas_instruments: home (Texas Instruments)
+
+  device_tracker.the_grid: not_home (THE_GRID)
+
+  device_tracker.tuya: home (Tuya)
+
+  device_tracker.unknown: not_home (---)
+
+  device_tracker.unknown_10: not_home (---)
+
+  device_tracker.unknown_11: not_home (---)
+
+  device_tracker.unknown_12: not_home (---)
+
+  device_tracker.unknown_13: not_home (---)
+
+  device_tracker.unknown_14: not_home (---)
+
+  device_tracker.unknown_15: not_home (---)
+
+  device_tracker.unknown_16: not_home (---)
+
+  device_tracker.unknown_17: not_home (---)
+
+  device_tracker.unknown_18: not_home (---)
+
+  device_tracker.unknown_19: not_home (---)
+
+  device_tracker.unknown_2: not_home (---)
+
+  device_tracker.unknown_20: home (DEV-79:F3:09)
+
+  device_tracker.unknown_4: home (DEV-6D:88:6C)
+
+  device_tracker.unknown_5: not_home (---)
+
+  device_tracker.unknown_6: not_home (---)
+
+  device_tracker.unknown_7: not_home (---)
+
+  device_tracker.valve_steam_deck: not_home (Steam Deck)
+
+  event.backup_automatic_backup: 2025-08-24T10:36:40.465+00:00 (Backup Automatic backup)
+
+  event.backyard_motion_2: 2025-08-23T11:02:07.300+00:00 (Backyard Motion)
+
+  event.front_motion: 2025-08-24T23:39:24.912+00:00 (Front Motion)
+
+  input_boolean.adaptive_pet_care: unavailable (Adaptive Pet Care)
+
+  input_boolean.atlas_activity_tracking: unavailable (Atlas Activity Tracking)
+
+  input_boolean.atlas_at_vet: unavailable (Atlas at Vet)
+
+  input_boolean.atlas_feeding_reminder: unavailable (Atlas Feeding Reminder)
+
+  input_boolean.atlas_social_visit_active: unavailable (Atlas Social Visit Active)
+
+  input_boolean.away_mode_lighting: unavailable (Away Mode Lighting)
+
+  input_boolean.cat_feeding_reminder: unavailable (Cat Feeding Reminder)
+
+  input_boolean.door_window_monitoring: unavailable (Door/Window Monitoring)
+
+  input_boolean.dryer_cycle_active: unavailable (Dryer Cycle Active)
+
+  input_boolean.energy_notifications: unavailable (Energy Usage Notifications)
+
+  input_boolean.energy_optimization: unavailable (Energy Optimization Mode)
+
+  input_boolean.enhanced_security_mode: unavailable (Enhanced Security Mode)
+
+  input_boolean.fremen_friendly_cleaning: unavailable (Fremen-Friendly Desert Cleaning)
+
+  input_boolean.hvac_coordination: unavailable (HVAC Coordination)
+
+  input_boolean.kitchen_lights_disabled: unavailable (Kitchen Lights Disabled (Nap Mode))
+
+  input_boolean.laundry_energy_optimization: unavailable (Laundry Energy Optimization)
+
+  input_boolean.laundry_notifications: unavailable (Laundry Notifications)
+
+  input_boolean.load_needs_transfer: unavailable (Load Needs Transfer (Washer → Dryer))
+
+  input_boolean.maintenance_mode: unavailable (System Maintenance Mode)
+
+  input_boolean.peak_hour_reduction: unavailable (Peak Hour Energy Reduction)
+
+  input_boolean.pet_medication_reminder: unavailable (Pet Medication Reminder)
+
+  input_boolean.power_outage_detected: unavailable (Power Outage Detected)
+
+  input_boolean.predictive_automations: unavailable (Predictive Automations Enabled)
+
+  input_boolean.security_alerts: unavailable (Security Alerts Enabled)
+
+  input_boolean.smart_energy_management: unavailable (Smart Energy Management)
+
+  input_boolean.spice_flow_coordination: unavailable (Spice Flow Coordination (Smart Vacuum))
+
+  input_boolean.system_health_monitoring: unavailable (System Health Monitoring)
+
+  input_boolean.vacation_mode: unavailable (Vacation Mode Active)
+
+  input_boolean.washer_cycle_active: unavailable (Washer Cycle Active)
+
+  input_button.kitchen_lights: unknown (Kitchen Lights)
+
+  input_datetime.atlas_last_fed: unavailable (Atlas Last Fed)
+
+  input_datetime.atlas_last_flea_tick: unavailable (Atlas Last Flea/Tick Prevention)
+
+  input_datetime.atlas_last_probiotic: unavailable (Atlas Last Probiotic)
+
+  input_datetime.atlas_last_vet_visit: unavailable (Atlas Last Vet Visit)
+
+  input_datetime.cats_last_fed: unavailable (Cats Last Fed)
+
+  input_datetime.charlie_last_flea_tick: unavailable (Charlie Last Flea/Tick Prevention)
+
+  input_datetime.ellie_last_flea_tick: unavailable (Ellie Last Flea/Tick Prevention)
+
+  input_datetime.ellie_last_fluoxetine: unavailable (Ellie Last Fluoxetine)
+
+  input_datetime.lance_last_flea_tick: unavailable (Lance Last Flea/Tick Prevention)
+
+  input_datetime.last_dry_completed: unavailable (Last Dry Completed)
+
+  input_datetime.last_dry_started: unavailable (Last Dry Started)
+
+  input_datetime.last_sha_hulud_patrol: unavailable (Last Sha-Hulud Desert Patrol (Laundry))
+
+  input_datetime.last_wash_completed: unavailable (Last Wash Completed)
+
+  input_datetime.last_wash_started: unavailable (Last Wash Started)
+
+  input_datetime.shadow_last_cerenia: unavailable (Shadow Last Cerenia)
+
+  input_datetime.shadow_last_flea_tick: unavailable (Shadow Last Flea/Tick Prevention)
+
+  input_datetime.shadow_last_steroid: unavailable (Shadow Last Steroid)
+
+  input_number.away_mode_trigger_minutes: unavailable (Away Mode Trigger (Minutes))
+
+  input_number.comfort_temp_max: unavailable (Maximum Comfort Temperature)
+
+  input_number.comfort_temp_min: unavailable (Minimum Comfort Temperature)
+
+  input_number.dryer_cycle_timeout_minutes: unavailable (Dryer Cycle Timeout)
+
+  input_number.energy_optimization_threshold: unavailable (Energy Optimization Threshold)
+
+  input_number.energy_target_daily: unavailable (Daily Energy Target (kWh))
+
+  input_number.evening_routine_time: unavailable (Evening Routine Hour)
+
+  input_number.hvac_temperature_buffer: unavailable (HVAC Temperature Buffer)
+
+  input_number.load_transfer_reminder_minutes: unavailable (Load Transfer Reminder)
+
+  input_number.morning_routine_time: unavailable (Morning Routine Hour)
+
+  input_number.motion_timeout_minutes: unavailable (Motion Sensor Timeout)
+
+  input_number.predictive_office_prep_minutes: unavailable (Office Preparation Lead Time)
+
+  input_number.security_delay_minutes: unavailable (Security Delay (Minutes))
+
+  input_number.washer_cycle_timeout_minutes: unavailable (Washer Cycle Timeout)
+
+  input_select.music_playlist: unavailable (Music Playlist)
+
+  input_select.security_mode_override: unavailable (Security Mode Override)
+
+  input_select.select_music: unavailable (Select Music)
+
+  input_select.speakers: unavailable (speakers)
+
+  input_text.atlas_current_zone: Away (Atlas Current Zone)
+
+  input_text.bedroom_light_state: unavailable (Bedroom Light State)
+
+  input_text.evening_preparation_complete: unavailable (Evening Preparation Complete Time)
+
+  input_text.kitchen_states: unavailable (Kitchen Light States)
+
+  input_text.last_save_time: unavailable (Last Save Time)
+
+  input_text.office_last_mode: unavailable (Office Last Mode)
+
+  input_text.office_left_state: unavailable (Office Left Light State)
+
+  input_text.office_mode_preferences: unavailable (Office Mode Preferences)
+
+  input_text.office_right_state: unavailable (Office Right Light State)
+
+  input_text.office_upper_state: unavailable (Office Upper Light State)
+
+  input_text.predictive_office_state: unavailable (Predictive Office State)
+
+  input_text.switch_states: unavailable (Switch States)
+
+  light.backyard_light: off (Backyard Light)
+
+  light.front_light: off (Front Light)
+
+  media_player.spotify_atlas: idle (Spotify Atlas)
+
+  media_player.spotify_bennett_randle_dodson: playing (Spotify Bennett Randle Dodson)
+
+  number.backyard_volume_2: 8.0 (Backyard Volume)
+
+  number.front_volume: 8.0 (Front Volume)
+
+  person.bennett: home (Bennett)
+
+  person.tori_myers: home (Tori)
+
+  scene.all_kitchen_lights_off_2: unavailable (All Kitchen Lights Off)
+
+  scene.all_kitchen_lights_off_reliable: unavailable (All Kitchen Lights Off Reliable)
+
+  scene.all_kitchen_lights_on_2: unavailable (All Kitchen Lights On)
+
+  scene.all_kitchen_lights_on_enhanced: unavailable (All Kitchen Lights On Enhanced)
+
+  scene.away_mode: unavailable (Away Scene)
+
+  scene.bedtime: unavailable (Bedtime Scene)
+
+  scene.cleaning_mode: unavailable (Cleaning Scene)
+
+  scene.coriolis_storm_protocol: unavailable (Coriolis Storm Protocol)
+
+  scene.council_assembly: unavailable (Council Assembly)
+
+  scene.creative_work_scene: unavailable (Creative Work Scene)
+
+  scene.desert_abundance_protocol: unavailable (Desert Abundance Protocol)
+
+  scene.desert_companions_rest: unavailable (Desert Companions Rest)
+
+  scene.desert_dreams_preparation: unavailable (Desert Dreams Preparation)
+
+  scene.desert_heat_reclamation: unavailable (Desert Heat Reclamation)
+
+  scene.desert_survival_mode_maximum_efficiency: unavailable (Desert Survival Mode Maximum Efficiency)
+
+  scene.dining_lights_on_2: unavailable (Dining Lights On)
+
+  scene.dining_only_lights: unavailable (Dining Only Lights)
+
+  scene.evening_council: unavailable (Evening Council)
+
+  scene.evening_feast_gathering: unavailable (Evening Feast Gathering)
+
+  scene.guild_calculation_mode: unavailable (Guild Calculation Mode)
+
+  scene.hangar_secured: unavailable (Hangar Secured)
+
+  scene.kitchen_cooking_mode: unavailable (Kitchen Cooking Mode)
+
+  scene.kitchen_lights_on_2: unavailable (Kitchen Lights On)
+
+  scene.kitchen_nighttime_mode: unavailable (Kitchen Nighttime Mode)
+
+  scene.kitchen_work_only_lights: unavailable (Kitchen Work Only Lights)
+
+  scene.maintenance_bay_operations: unavailable (Maintenance Bay Operations)
+
+  scene.midday_sustenance_protocol: unavailable (Midday Sustenance Protocol)
+
+  scene.morning_water_ration: unavailable (Morning Water Ration)
+
+  scene.movie_night: unavailable (Movie Night Scene)
+
+  scene.navigator_rest_mode: unavailable (Navigator Rest Mode)
+
+  scene.night_watch_begins_security_mode: unavailable (Night Watch Begins Security Mode)
+
+  scene.nighttime_kitchen_lights_2: unavailable (Nighttime Kitchen Lights)
+
+  scene.ornithopter_departure_prep: unavailable (Ornithopter Departure Prep)
+
+  scene.outworlder_hospitality: unavailable (Outworlder Hospitality)
+
+  scene.party_mode: unavailable (Party Scene)
+
+  scene.photography_scene: unavailable (Photography Scene)
+
+  scene.prescient_vision_mode: unavailable (Prescient Vision Mode)
+
+  scene.romantic_mode: unavailable (Romantic Scene)
+
+  scene.sacred_water_ritual: unavailable (Sacred Water Ritual)
+
+  scene.sardaukar_attack_protocol: unavailable (Sardaukar Attack Protocol)
+
+  scene.shai_hulud_desert_patrol: unavailable (Shai Hulud Desert Patrol)
+
+  scene.sietch_status_report_all_systems: unavailable (Sietch Status Report All Systems)
+
+  scene.sietch_warmth_protocol: unavailable (Sietch Warmth Protocol)
+
+  scene.spice_coffee_ritual: unavailable (Spice Coffee Ritual)
+
+  scene.spice_production_complete: unavailable (Spice Production Complete)
+
+  scene.spice_trance_mode: unavailable (Spice Trance Mode)
+
+  scene.stilltent_sealed: unavailable (Stilltent Sealed)
+
+  scene.storm_shelter_protocol: unavailable (Storm Shelter Protocol)
+
+  scene.sunset_over_arrakis_evening_routine: unavailable (Sunset Over Arrakis Evening Routine)
+
+  scene.test: unavailable (test)
+
+  scene.ultra_minimal_kitchen_late_night: unavailable (Ultra Minimal Kitchen - Late Night)
+
+  scene.usul_awakens_morning_routine: unavailable (Usul Awakens Morning Routine)
+
+  scene.water_conservation_mode: unavailable (Water Conservation Mode)
+
+  scene.water_conservation_wash: unavailable (Water Conservation Wash)
+
+  scene.water_discipline_active: unavailable (Water Discipline Active)
+
+  scene.water_of_awakening: unavailable (Water of Awakening)
+
+  scene.water_shortage_protocol: unavailable (Water Shortage Protocol)
+
+  script.all_blinds_down: unavailable (All Blinds Down)
+
+  script.all_blinds_up: unavailable (All Blinds Up)
+
+  script.all_cat_care_check: unavailable (Complete Cat Care Check)
+
+  script.atlas_comfort_mode: unavailable (Atlas Comfort Mode)
+
+  script.atlas_flea_tick_treatment: unavailable (Atlas Flea/Tick Treatment)
+
+  script.atlas_give_probiotic: unavailable (Give Atlas Probiotic)
+
+  script.atlas_mark_fed: unavailable (Mark Atlas as Fed)
+
+  script.atlas_vet_visit: unavailable (Atlas Vet Visit)
+
+  script.auto_evening_mode: unavailable (Auto Evening Mode)
+
+  script.auto_work_mode: unavailable (Auto Work Mode)
+
+  script.automation_health_check: unavailable (Automation Health Check)
+
+  script.automation_trigger_test: unavailable (Automation Trigger Test)
+
+  script.bedroom_bedtime_mode: unavailable (Bedroom Bedtime Mode)
+
+  script.bedroom_evening_mode: unavailable (Bedroom Evening Mode)
+
+  script.bedroom_morning_mode: unavailable (Bedroom Morning Mode)
+
+  script.bedroom_nap_mode: unavailable (Start Bedroom Nap Mode)
+
+  script.bedroom_night_light_mode: unavailable (Bedroom Night Light Mode)
+
+  script.bedroom_reading_mode: unavailable (Bedroom Reading Mode)
+
+  script.bedtime_house: unavailable (Bedtime House)
+
+  script.cat_comfort_check: unavailable (Cat Comfort Check)
+
+  script.cleaning_mode: unavailable (Cleaning Mode)
+
+  script.comprehensive_sietch_diagnostics: unavailable (Comprehensive Sietch Diagnostics)
+
+  script.comprehensive_troubleshoot: unavailable (Comprehensive Troubleshoot)
+
+  script.coriolis_storm_protocol: unavailable (Coriolis Storm Protocol)
+
+  script.council_assembly: unavailable (Council Assembly)
+
+  script.daily_counter_reset: unavailable (Daily Counter Reset)
+
+  script.debug_motion_triggers: unavailable (Debug Motion Triggers)
+
+  script.desert_companions_evening_care: unavailable (Desert Companions Evening Care)
+
+  script.desert_dreams_preparation: unavailable (Desert Dreams Preparation)
+
+  script.desert_heat_reclamation: unavailable (Desert Heat Reclamation)
+
+  script.desert_survival_mode: unavailable (Desert Survival Mode)
+
+  script.emergency_night_mode: unavailable (Emergency Night Mode)
+
+  script.energy_aware_lighting_adjustment: unavailable (Energy Aware Lighting Adjustment)
+
+  script.evening_feast_gathering: unavailable (Evening Feast Gathering)
+
+  script.evening_wind_down: unavailable (Evening Wind Down)
+
+  script.force_all_lights_off: unavailable (Force All Lights Off)
+
+  script.force_automation_reload: unavailable (Force Automation Reload)
+
+  script.fremen_warriors_care_protocol: unavailable (Fremen Warriors Care Protocol)
+
+  script.full_house_morning_mode: unavailable (Full House Morning Mode)
+
+  script.good_evening_welcome: unavailable (Good Evening Welcome)
+
+  script.good_morning_house: unavailable (Good Morning House)
+
+  script.good_night: unavailable (Good Night)
+
+  script.guild_calculations_mode: unavailable (Guild Calculations Required)
+
+  script.house_secure: unavailable (House Secure)
+
+  script.kitchen_cooking_mode: unavailable (Kitchen Cooking Mode)
+
+  script.kitchen_evening_mode: unavailable (Kitchen Evening Mode)
+
+  script.kitchen_lights_reset: unavailable (Kitchen Lights Reset)
+
+  script.kitchen_lights_status_check: unavailable (Kitchen Lights Status Check)
+
+  script.kitchen_morning_mode: unavailable (Kitchen Morning Mode)
+
+  script.kitchen_work_to_evening_transition: unavailable (Kitchen Work to Evening Transition)
+
+  script.laundry_energy_analysis: unavailable (Laundry Energy Analysis)
+
+  script.laundry_room_diagnostic: unavailable (Laundry Room Diagnostic)
+
+  script.laundry_room_status_check: unavailable (Laundry Room Status Check)
+
+  script.lights_out: unavailable (All Lights Off)
+
+  script.litter_box_status_check: unavailable (Litter Box Status Check)
+
+  script.living_room_nap_mode: unavailable (Start Living Room Nap Mode)
+
+  script.manual_cycle_complete: unavailable (Manual Cycle Complete)
+
+  script.manual_cycle_start: unavailable (Manual Cycle Start)
+
+  script.morning_water_ration: unavailable (Morning Water Ration)
+
+  script.motion_sensor_diagnostic: unavailable (Motion Sensor Diagnostic)
+
+  script.movie_night_enhanced: unavailable (Movie Night Enhanced)
+
+  script.muad_dib_comfort_check: unavailable (Muad'Dib Comfort Check)
+
+  script.party_mode: unavailable (Party Mode)
+
+  script.predictive_laundry_optimization: unavailable (Predictive Laundry Optimization)
+
+  script.predictive_pet_comfort: unavailable (Predictive Pet Comfort)
+
+  script.prescient_vision_mode: unavailable (Prescient Vision Activated)
+
+  script.quick_evening_wind_down: unavailable (Quick Evening Wind Down)
+
+  script.quick_light_reset: unavailable (Quick Light Reset)
+
+  script.reading_mode_enhanced: unavailable (Reading Mode Enhanced)
+
+  script.reset_laundry_states: unavailable (Reset Laundry States)
+
+  script.restore_light_states: unavailable (Restore Light States After Power Outage)
+
+  script.sardaukar_attack_protocol: unavailable (Sardaukar Attack Protocol)
+
+  script.save_light_states: unavailable (Save Current Light States)
+
+  script.sha_hulud_spice_patrol: unavailable (Shai-Hulud Spice Patrol)
+
+  script.sietch_maintenance_check: unavailable (Sietch Maintenance Check)
+
+  script.sietch_morning_systems_check: unavailable (Sietch Morning Systems Check)
+
+  script.sietch_night_security_protocol: unavailable (Sietch Night Security Protocol)
+
+  script.sietch_status_report: unavailable (Sietch Status Report)
+
+  script.sietch_warmth_protocol: unavailable (Sietch Warmth Protocol)
+
+  script.smart_power_recovery: unavailable (Smart Power Recovery)
+
+  script.smart_scene_manager: unavailable (Smart Scene Manager)
+
+  script.soothing_sounds_for_dogs: unavailable (Soothing Sounds for Dogs)
+
+  script.spice_coffee_ritual: unavailable (Spice Coffee Ritual)
+
+  script.spice_flow_optimization: unavailable (Spice Flow Optimization)
+
+  script.spice_trance_mode: unavailable (Enter Spice Trance)
+
+  script.stilltent_sealed: unavailable (Stilltent Sealed)
+
+  script.sunset_over_arrakis_evening_routine: unavailable (Sunset Over Arrakis - Evening Routine)
+
+  script.system_health_check: unavailable (System Health Check)
+
+  script.toggle_play_pause: unavailable (Toggle Play/Pause)
+
+  script.track_automation_failure: unavailable (Track Automation Failure)
+
+  script.usul_awakens_morning_routine: unavailable (Usul Awakens - Morning Routine)
+
+  script.vacation_mode: unavailable (Vacation Mode)
+
+  script.water_discipline_protocol: unavailable (Water Discipline Protocol)
+
+  script.water_of_awakening: unavailable (Water of Awakening)
+
+  script.water_shortage_protocol: unavailable (Water Shortage Protocol)
+
+  script.weekend_sleep_in: unavailable (Weekend Sleep In Mode)
+
+  script.work_focus_mode: unavailable (Work Focus Mode)
+
+  select.home_current_mode: home (Home Current Mode)
+
+  select.home_temperature_display_units: fahrenheit (Home Temperature Display Units)
+
+  sensor.all_standby_energy: unavailable (All standby energy)
+
+  sensor.all_standby_power: unavailable (All standby power)
+
+  sensor.atlas_activity: good (Atlas Activity)
+
+  sensor.atlas_activity_time: 5 (Atlas Activity time)
+
+  sensor.atlas_calories_burned: 1244 (Atlas Calories burned)
+
+  sensor.atlas_daily_goal: 140 (Atlas Daily goal)
+
+  sensor.atlas_day_sleep: 0 (Atlas Day sleep)
+
+  sensor.atlas_night_sleep: 534 (Atlas Night sleep)
+
+  sensor.atlas_rest_time: 5 (Atlas Rest time)
+
+  sensor.atlas_room_battery: 100 (Atlas Room Battery)
+
+  sensor.atlas_room_temperature: 78.98 (Atlas Room Temperature)
+
+  sensor.atlas_sleep: good (Atlas Sleep)
+
+  sensor.atlas_tracker_battery: 47 (Atlas Tracker battery)
+
+  sensor.atlas_tracker_state: operational (Atlas Tracker state)
+
+  sensor.atlas_weather_comfort_prediction: unavailable (Atlas Weather Comfort Prediction)
+
+  sensor.atmospheric_conditions: 62.8 (Atmospheric Conditions)
+
+  sensor.automation_success_rate: 42.3 (Automation Success Rate)
+
+  sensor.available_lights_count: unavailable (Available Lights Count)
+
+  sensor.available_lights_on_count: unavailable (Available Lights On Count)
+
+  sensor.backup_backup_manager_state: idle (Backup Backup Manager state)
+
+  sensor.backup_last_attempted_automatic_backup: 2025-08-24T10:36:12+00:00 (Backup Last attempted automatic backup)
+
+  sensor.backup_last_successful_automatic_backup: 2025-08-24T10:36:39+00:00 (Backup Last successful automatic backup)
+
+  sensor.backup_next_scheduled_automatic_backup: 2025-08-25T10:07:43+00:00 (Backup Next scheduled automatic backup)
+
+  sensor.backyard_battery_2: unknown (Backyard Battery)
+
+  sensor.backyard_last_activity_2: 2025-08-24T04:21:35+00:00 (Backyard Last activity)
+
+  sensor.bedroom_battery: 100 (Bedroom Battery)
+
+  sensor.bedroom_temperature: 71.24 (Bedroom Temperature)
+
+  sensor.blueprint_efficiency_score: unavailable (Blueprint Efficiency Score)
+
+  sensor.charlie_visits_today: 0 (Charlie Visits today)
+
+  sensor.charlie_weight: 7.15 (Charlie Weight)
+
+  sensor.daily_energy_cost_estimate: 0.0 (Daily Energy Cost Estimate)
+
+  sensor.dell_latitude_5310_ssid: unavailable (Dell-Latitude 5310 SSID)
+
+  sensor.desert_survival_status: unavailable (Desert Survival Status)
+
+  sensor.desktop_i1gjpq7_ssid: Series of Tubes (DESKTOP-I1GJPQ7 SSID)
+
+  sensor.dev_02_3d_46_ssid: unavailable (DEV-02:3D:46 SSID)
+
+  sensor.dev_09_eb_fb_ssid: unavailable (DEV-09:EB:FB SSID)
+
+  sensor.dev_0d_ff_c3_ssid: unavailable (DEV-0D:FF:C3 SSID)
+
+  sensor.dev_18_92_00_ssid: unavailable (DEV-18:92:00 SSID)
+
+  sensor.dev_2e_16_d0_ssid: unavailable (DEV-2E:16:D0 SSID)
+
+  sensor.dev_30_6b_13_ssid: unavailable (DEV-30:6B:13 SSID)
+
+  sensor.dev_33_ca_2d_ssid: unavailable (DEV-33:CA:2D SSID)
+
+  sensor.dev_37_07_90_ssid: unavailable (DEV-37:07:90 SSID)
+
+  sensor.dev_44_f9_d7_ssid: unavailable (DEV-44:F9:D7 SSID)
+
+  sensor.dev_59_52_37_ssid: unavailable (DEV-59:52:37 SSID)
+
+  sensor.dev_61_60_e6_ssid: unavailable (DEV-61:60:E6 SSID)
+
+  sensor.dev_63_dd_c4_ssid: unavailable (DEV-63:DD:C4 SSID)
+
+  sensor.dev_66_4b_03_ssid: unavailable (DEV-66:4B:03 SSID)
+
+  sensor.dev_6f_c1_bd_ssid: unavailable (DEV-6F:C1:BD SSID)
+
+  sensor.dev_75_ee_ce_ssid: unavailable (DEV-75:EE:CE SSID)
+
+  sensor.dev_77_ca_17_ssid: unavailable (DEV-77:CA:17 SSID)
+
+  sensor.dev_79_bf_69_ssid: unavailable (DEV-79:BF:69 SSID)
+
+  sensor.dev_84_c9_b2_ssid: unavailable (DEV-84:C9:B2 SSID)
+
+  sensor.dev_9d_6d_9e_ssid: unavailable (DEV-9D:6D:9E SSID)
+
+  sensor.dev_a8_01_02_ssid: unavailable (DEV-A8:01:02 SSID)
+
+  sensor.dev_b2_3f_cc_ssid: unavailable (DEV-B2:3F:CC SSID)
+
+  sensor.dev_be_56_9d_ssid: unavailable (DEV-BE:56:9D SSID)
+
+  sensor.dev_be_ba_cf_ssid: unavailable (DEV-BE:BA:CF SSID)
+
+  sensor.dev_c7_fb_c9_ssid: unavailable (DEV-C7:FB:C9 SSID)
+
+  sensor.dev_d8_08_31_ssid: unavailable (DEV-D8:08:31 SSID)
+
+  sensor.dev_ea_94_14_ssid: unavailable (DEV-EA:94:14 SSID)
+
+  sensor.dev_ee_9f_63_ssid: unavailable (DEV-EE:9F:63 SSID)
+
+  sensor.dev_f2_e0_cd_ssid: unavailable (DEV-F2:E0:CD SSID)
+
+  sensor.dev_f5_12_7e_ssid: unavailable (DEV-F5:12:7E SSID)
+
+  sensor.dune_prescience_forecast: 115.0 (Dune Prescience Forecast)
+
+  sensor.ellie_activity: unavailable (Ellie Activity)
+
+  sensor.ellie_activity_time: 0 (Ellie Activity time)
+
+  sensor.ellie_calories_burned: 236 (Ellie Calories burned)
+
+  sensor.ellie_daily_goal: 160 (Ellie Daily goal)
+
+  sensor.ellie_day_sleep: 0 (Ellie Day sleep)
+
+  sensor.ellie_night_sleep: 0 (Ellie Night sleep)
+
+  sensor.ellie_rest_time: 0 (Ellie Rest time)
+
+  sensor.ellie_sleep: unavailable (Ellie Sleep)
+
+  sensor.ellie_tracker_battery: 100 (Ellie Tracker battery)
+
+  sensor.ellie_tracker_state: operational (Ellie Tracker state)
+
+  sensor.ellie_visits_today: 0 (Ellie Visits today)
+
+  sensor.ellie_weight: 5.87 (Ellie Weight)
+
+  sensor.energy_efficiency_rating: 20.1 (Energy Efficiency Rating)
+
+  sensor.energy_independence_score: 666.2 (Energy Independence Score)
+
+  sensor.energy_preparation_status: unavailable (Energy Preparation Status)
+
+  sensor.energy_shield_optimization_score: 79.7 (Energy Shield Optimization Score)
+
+  sensor.energy_shield_status: unavailable (Energy Shield Status)
+
+  sensor.fremen_activity_correlation_index: 30.9 (Fremen Activity Correlation Index)
+
+  sensor.fremen_activity_level: 100.0 (Fremen Activity Level)
+
+  sensor.front_battery: unknown (Front Battery)
+
+  sensor.front_last_activity: 2025-08-24T23:37:20+00:00 (Front Last activity)
+
+  sensor.harvester_efficiency: 58.6 (Harvester Efficiency)
+
+  sensor.holtzman_energy_consumption: 50.7 (Holtzman Energy Consumption)
+
+  sensor.home_current_humidity: 57.0 (Home Current Humidity)
+
+  sensor.home_current_temperature: 73.76 (Home Current Temperature)
+
+  sensor.house_mode: unavailable (House Mode)
+
+  sensor.kitchen_battery: 100 (Kitchen Battery)
+
+  sensor.kitchen_temperature: 74.66 (Kitchen Temperature)
+
+  sensor.lance_activity: good (Lance Activity)
+
+  sensor.lance_activity_time: 75 (Lance Activity time)
+
+  sensor.lance_calories_burned: 378 (Lance Calories burned)
+
+  sensor.lance_daily_goal: 120 (Lance Daily goal)
+
+  sensor.lance_day_sleep: 0 (Lance Day sleep)
+
+  sensor.lance_night_sleep: 167 (Lance Night sleep)
+
+  sensor.lance_rest_time: 26 (Lance Rest time)
+
+  sensor.lance_sleep: good (Lance Sleep)
+
+  sensor.lance_tracker_battery: 32 (Lance Tracker battery)
+
+  sensor.lance_tracker_state: operational (Lance Tracker state)
+
+  sensor.lance_visits_today: 0 (Lance Visits today)
+
+  sensor.lance_weight: 6.27 (Lance Weight)
+
+  sensor.laundry_energy_impact: unavailable (Laundry Energy Impact)
+
+  sensor.laundry_room_status: unavailable (Laundry Room Status)
+
+  sensor.light_status_summary: unavailable (Light Status Summary)
+
+  sensor.living_room_battery: 100 (Living Room Battery)
+
+  sensor.living_room_temperature: 73.94 (Living Room Temperature)
+
+  sensor.morning_ritual_completion: 100.0 (Morning Ritual Completion)
+
+  sensor.motion_pattern_analysis: Focused (Motion Pattern Analysis)
+
+  sensor.night_security_effectiveness: 85.0 (Night Security Effectiveness)
+
+  sensor.office_battery: 100 (Office Battery)
+
+  sensor.office_preparation_status: unavailable (Office Preparation Status)
+
+  sensor.office_temperature: 77.36 (Office Temperature)
+
+  sensor.peak_energy_demand_forecast: 171.4 (Peak Energy Demand Forecast)
+
+  sensor.pixel_6_battery_level: 88 (Pixel 6 Battery level)
+
+  sensor.pixel_6_battery_state: charging (Pixel 6 Battery state)
+
+  sensor.pixel_6_charger_type: usb (Pixel 6 Charger type)
+
+  sensor.ring_floodlight_cam_ssid: Series of Tubes (Ring-Floodlight Cam SSID)
+
+  sensor.sha_hulud_spice_flow_status: unavailable (Sha-Hulud Spice Flow Status)
+
+  sensor.shadow_activity: ok (Shadow Activity)
+
+  sensor.shadow_activity_time: 80 (Shadow Activity time)
+
+  sensor.shadow_calories_burned: 244 (Shadow Calories burned)
+
+  sensor.shadow_daily_goal: 160 (Shadow Daily goal)
+
+  sensor.shadow_day_sleep: 160 (Shadow Day sleep)
+
+  sensor.shadow_night_sleep: 500 (Shadow Night sleep)
+
+  sensor.shadow_rest_time: 16 (Shadow Rest time)
+
+  sensor.shadow_sleep: low (Shadow Sleep)
+
+  sensor.shadow_tracker_battery: 35 (Shadow Tracker battery)
+
+  sensor.shadow_tracker_state: operational (Shadow Tracker state)
+
+  sensor.shadow_visits_today: 0 (Shadow Visits today)
+
+  sensor.shadow_weight: 8.77 (Shadow Weight)
+
+  sensor.sietch_activity_monitor: unavailable (Sietch Activity Monitor)
+
+  sensor.sietch_health_score: unavailable (Sietch Health Score)
+
+  sensor.sietch_occupancy_distribution: Kitchen (Sietch Occupancy Distribution)
+
+  sensor.sietch_operational_intelligence: 38.9 (Sietch Operational Intelligence)
+
+  sensor.sm_s908u_battery_health: good (Tori Phone 2 Battery health)
+
+  sensor.sm_s908u_battery_level: 37 (Tori Phone 2 Battery level)
+
+  sensor.sm_s908u_battery_power: 0.0 (Tori Phone 2 Battery power)
+
+  sensor.sm_s908u_battery_state: discharging (Tori Phone 2 Battery state)
+
+  sensor.sm_s908u_battery_temperature: 31.4 (Tori Phone 2 Battery temperature)
+
+  sensor.sm_s908u_charger_type: none (Tori Phone 2 Charger type)
+
+  sensor.solar_harvester_production: 455.0 (Solar Harvester Production)
+
+  sensor.sony_ssid: unavailable (Sony SSID)
+
+  sensor.spice_harvester_efficiency_trend: 53.4 (Spice Harvester Efficiency Trend)
+
+  sensor.spice_production_level: 53.4 (Spice Production Level)
+
+  sensor.ssid_11: unavailable (--- SSID)
+
+  sensor.ssid_12: unavailable (--- SSID)
+
+  sensor.ssid_13: unavailable (--- SSID)
+
+  sensor.ssid_14: unavailable (--- SSID)
+
+  sensor.ssid_15: unavailable (--- SSID)
+
+  sensor.ssid_16: unavailable (--- SSID)
+
+  sensor.ssid_17: unavailable (--- SSID)
+
+  sensor.ssid_18: unavailable (--- SSID)
+
+  sensor.ssid_19: unavailable (--- SSID)
+
+  sensor.ssid_20: Series of Tubes (--- SSID)
+
+  sensor.sun_next_dawn: 2025-08-25T11:32:37+00:00 (Sun Next dawn)
+
+  sensor.sun_next_dusk: 2025-08-25T01:20:30+00:00 (Sun Next dusk)
+
+  sensor.sun_next_midnight: 2025-08-25T06:26:14+00:00 (Sun Next midnight)
+
+  sensor.sun_next_noon: 2025-08-25T18:26:27+00:00 (Sun Next noon)
+
+  sensor.sun_next_rising: 2025-08-25T11:57:45+00:00 (Sun Next rising)
+
+  sensor.sun_next_setting: 2025-08-25T00:55:23+00:00 (Sun Next setting)
+
+  sensor.system_response_time: unavailable (System Response Time)
+
+  sensor.time_away: unavailable (Time Away)
+
+  sensor.tuya_ssid: Series of Tubes (Tuya SSID)
+
+  sensor.valve_steam_deck_ssid: unavailable (Steam Deck SSID)
+
+  sensor.water_conservation_index: 52.0 (Water Conservation Index)
+
+  sensor.water_reclamation_efficiency: 52.0 (Water Reclamation Efficiency)
+
+  siren.backyard_siren_2: off (Backyard Siren)
+
+  siren.front_siren: off (Front Siren)
+
+  stt.home_assistant_cloud: unknown (Home Assistant Cloud)
+
+  sun.sun: above_horizon (Sun)
+
+  switch.atlas_live_tracking: off (Atlas Live tracking)
+
+  switch.atlas_tracker_buzzer: off (Atlas Tracker buzzer)
+
+  switch.atlas_tracker_led: off (Atlas Tracker LED)
+
+  switch.backyard_motion_detection_2: on (Backyard Motion detection)
+
+  switch.ellie_live_tracking: off (Ellie Live tracking)
+
+  switch.ellie_tracker_buzzer: off (Ellie Tracker buzzer)
+
+  switch.ellie_tracker_led: off (Ellie Tracker LED)
+
+  switch.front_motion_detection: on (Front Motion detection)
+
+  switch.home_mute: off (Home Mute)
+
+  switch.lance_live_tracking: off (Lance Live tracking)
+
+  switch.lance_tracker_buzzer: off (Lance Tracker buzzer)
+
+  switch.lance_tracker_led: off (Lance Tracker LED)
+
+  switch.shadow_live_tracking: off (Shadow Live tracking)
+
+  switch.shadow_tracker_buzzer: off (Shadow Tracker buzzer)
+
+  switch.shadow_tracker_led: off (Shadow Tracker LED)
+
+  tag.01f721ab_98fd_4919_988b_ef781e0ff461: 2025-03-04T17:20:57.133+00:00 (Tag 01f721ab-98fd-4919-988b-ef781e0ff461)
+
+  todo.errands: 0 (Errands)
+
+  todo.groceries: 0 (Groceries)
+
+  todo.meal_planning: 0 (Meal planning)
+
+  todo.shopping_list: 0 (Shopping List)
+
+  todo.tasks: 0 (Tasks)
+
+  tts.google_en_com: unknown (Google Translate en com)
+
+  tts.home_assistant_cloud: unknown (Home Assistant Cloud)
+
+  update.apexcharts_card_update: off (apexcharts-card update)
+
+  update.browser_mod_update: off (browser_mod update)
+
+  update.card_mod_update: off (card-mod update)
+
+  update.hacs_update: off (HACS update)
+
+  update.mushroom_update: off (Mushroom update)
+
+  update.powercalc_update: off (Powercalc update)
+
+  update.spook_your_homie_update: off (Spook 👻 Your homie update)
+
+  update.spotcast_update: off (Spotcast update)
+
+  update.spotify_lovelace_card_update: off (Spotify Lovelace Card update)
+
+  update.weather_card_update: off (Weather Card update)
+
+  weather.forecast_home: partlycloudy (Forecast Home)
+
+  zone.da_office: 0 (DA Office)
+
+  zone.daaboul_house: 0 (Daaboul House)
+
+  zone.home: 2 (Home)
+
+  zone.hou16: 0 ( HOU16)
+
+  zone.just_cats_vet: 0 (Just Cats Vet)
+
+  zone.myers_parentals: 0 (Myers House)
+
+  zone.vetco_katy: 0 (Vetco Katy)
+
+  zone.waller_co_court: 0 (Waller Co Court)
+
+
+
+=== OFFICE ===
+
+  binary_sensor.ikea_of_sweden_tradfri_motion_sensor_motion: unavailable (Office Sensor)
+
+  binary_sensor.litter_robot_motion: on (Front Yard Motion)
+
+  binary_sensor.office_motion_sensor_occupancy: off (Office Motion Sensor Occupancy)
+
+  binary_sensor.office_motion_sensor_opening: off (Office Motion Sensor Opening)
+
+  button.ikea_of_sweden_tradfri_motion_sensor_identify: unavailable (Office Sensor Identify)
+
+  button.ledvance_a19_rgbw_identify: unknown (Office Right Identify)
+
+  button.ledvance_a19_rgbw_identify_2: unknown (Office Upper Identify)
+
+  button.ledvance_a19_rgbw_identify_3: unknown (Office Left Identify)
+
+  button.left_office_roller_blind_identify: unknown (Office Left Roller Shade Identify)
+
+  button.office_motion_sensor_identify: unknown (Office Motion Sensor Identify)
+
+  button.office_roller_shade_remote_identify: unknown (Office Roller Shade Remote Identify)
+
+  button.rbr760_restart: unknown (RBR760 Restart)
+
+  button.right_office_roller_blind_identify: unknown (Office Right Roller Shade Identify)
+
+  camera.front_yard_live_view: idle (Front Yard Live view)
+
+  camera.litter_robot: idle (Front Yard Last recording)
+
+  cover.office_left_roller_shade_cover: closed (Office Left Roller Shade Cover)
+
+  cover.office_right_roller_shade_cover: open (Office Right Roller Shade Cover)
+
+  device_tracker.bose_smart_speaker: not_home (Office)
+
+  device_tracker.denon_avr_x1500h: home (Denon-AVR-X1500H)
+
+  device_tracker.proxmox_server_solutions: not_home (Proxmox Server Solutions)
+
+  device_tracker.the_grid_2: not_home (THE_GRID)
+
+  device_tracker.tori_desktop: home (TORI-DESKTOP)
+
+  device_tracker.unknown_8: not_home (HL-L2420DW)
+
+  event.front_yard_motion: 2025-08-24T23:39:36.631+00:00 (Front Yard Motion)
+
+  light.ledvance_a19_rgbw_light: on (Office Right)
+
+  light.ledvance_a19_rgbw_light_2: on (Office Upper)
+
+  light.ledvance_a19_rgbw_light_3: on (Office Left)
+
+  media_player.denon_avr_x1500h: off (Denon AVR-X1500H)
+
+  media_player.denon_avr_x1500h_2: idle (Denon AVR-X1500H)
+
+  media_player.office: unavailable (Office)
+
+  media_player.spotify_tori_myers: playing (Spotify Tori Myers)
+
+  number.front_yard_volume: 8.0 (Front Yard Volume)
+
+  number.ledvance_a19_rgbw_default_move_rate: 254 (Office Right Default move rate)
+
+  number.ledvance_a19_rgbw_default_move_rate_2: 254 (Office Upper Default move rate)
+
+  number.ledvance_a19_rgbw_default_move_rate_3: 254 (Office Left Default move rate)
+
+  number.ledvance_a19_rgbw_off_transition_time: 5 (Office Right Off transition time)
+
+  number.ledvance_a19_rgbw_off_transition_time_2: 5 (Office Upper Off transition time)
+
+  number.ledvance_a19_rgbw_off_transition_time_3: 5 (Office Left Off transition time)
+
+  number.ledvance_a19_rgbw_on_level: 255 (Office Right On level)
+
+  number.ledvance_a19_rgbw_on_level_2: 255 (Office Upper On level)
+
+  number.ledvance_a19_rgbw_on_level_3: 255 (Office Left On level)
+
+  number.ledvance_a19_rgbw_on_off_transition_time: 5 (Office Right On/Off transition time)
+
+  number.ledvance_a19_rgbw_on_off_transition_time_2: 5 (Office Upper On/Off transition time)
+
+  number.ledvance_a19_rgbw_on_off_transition_time_3: 5 (Office Left On/Off transition time)
+
+  number.ledvance_a19_rgbw_on_transition_time: 5 (Office Right On transition time)
+
+  number.ledvance_a19_rgbw_on_transition_time_2: 5 (Office Upper On transition time)
+
+  number.ledvance_a19_rgbw_on_transition_time_3: 5 (Office Left On transition time)
+
+  number.office_motion_sensor_on_time: unknown (Office Motion Sensor On time)
+
+  sensor.ikea_of_sweden_tradfri_motion_sensor_battery: unavailable (Office Sensor Battery)
+
+  sensor.left_office_roller_blind_battery: 95.0 (Office Left Roller Shade Battery)
+
+  sensor.left_office_roller_blind_window_covering_type: Rollershade (Office Left Roller Shade Window covering type)
+
+  sensor.litter_robot_battery: 100 (Front Yard Battery)
+
+  sensor.litter_robot_last_activity: 2025-08-24T23:39:57+00:00 (Front Yard Last activity)
+
+  sensor.litter_robot_last_ding: unknown (Front Yard Last ding)
+
+  sensor.litter_robot_last_motion: 2025-08-24T23:39:57+00:00 (Front Yard Last motion)
+
+  sensor.litter_robot_volume: 8 (Front Yard Volume)
+
+  sensor.office_motion_sensor_battery: 82.0 (Office Motion Sensor Battery)
+
+  sensor.office_motion_sensor_illuminance: 0 (Office Motion Sensor Illuminance)
+
+  sensor.office_roller_shade_remote_battery: 74.0 (Office Roller Shade Remote Battery)
+
+  sensor.right_office_roller_blind_battery: 99.0 (Office Right Roller Shade Battery)
+
+  sensor.right_office_roller_blind_window_covering_type: Rollershade (Office Right Roller Shade Window covering type)
+
+  sensor.speedtest_download: 191.89 (SpeedTest Download)
+
+  sensor.speedtest_ping: 36 (SpeedTest Ping)
+
+  sensor.speedtest_upload: 294.9 (SpeedTest Upload)
+
+  siren.front_yard_siren: off (Front Yard Siren)
+
+  switch.front_yard_motion_detection: on (Front Yard Motion detection)
+
+  switch.left_office_roller_blind_inverted: off (Office Left Roller Shade Inverted)
+
+  switch.litter_robot_siren: off (Front Yard Siren)
+
+  switch.office_motion_sensor_on_only_when_dark: off (Office Motion Sensor On only when dark)
+
+  switch.right_office_roller_blind_inverted: off (Office Right Roller Shade Inverted)
+
+  update.ledvance_a19_rgbw_firmware: unknown (Office Right Firmware)
+
+  update.ledvance_a19_rgbw_firmware_2: unknown (Office Upper Firmware)
+
+  update.ledvance_a19_rgbw_firmware_3: unknown (Office Left Firmware)
+
+  update.left_office_roller_blind_firmware: unknown (Office Left Roller Shade Firmware)
+
+  update.office_motion_sensor_firmware: unknown (Office Motion Sensor Firmware)
+
+  update.office_roller_shade_remote_firmware: unknown (Office Roller Shade Remote Firmware)
+
+  update.office_sensor_firmware: unavailable (Office Sensor Firmware)
+
+  update.rbr760_firmware: off (RBR760 Firmware)
+
+  update.right_office_roller_blind_firmware: unknown (Office Right Roller Shade Firmware)

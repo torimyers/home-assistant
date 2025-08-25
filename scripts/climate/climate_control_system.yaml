@@ -1,8 +1,7 @@
-stillsuit_climate:
-  alias: Climate Control System
-  description: "Stillsuit Climate Control - Advanced temperature and humidity management system for optimal comfort and moisture retention"
-  icon: mdi:thermostat
-  sequence:
+alias: Climate Control System
+description: "Stillsuit Climate Control - Advanced temperature and humidity management system for optimal comfort and moisture retention"
+icon: mdi:thermostat
+sequence:
     - service: climate.set_hvac_mode
       target:
         entity_id: climate.thermostat

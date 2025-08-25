@@ -2,8 +2,7 @@
 # Motion Tracking Counters - Sietch Activity Monitoring
 # Track motion sensor events and household activity patterns
 
-counter:
-  atlas_daily_motion:
+atlas_daily_motion:
     name: "Atlas Daily Motion"
     initial: 0
     step: 1

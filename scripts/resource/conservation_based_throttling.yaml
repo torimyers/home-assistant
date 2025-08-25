@@ -1,8 +1,7 @@
-conservation_based_throttling:
-  alias: Conservation Based Throttling
-  description: "Adjusts system throttling based on conservation index"
-  icon: mdi:leaf
-  sequence:
+alias: Conservation Based Throttling
+description: "Adjusts system throttling based on conservation index"
+icon: mdi:leaf
+sequence:
     # Activate conservation mode
     - service: input_boolean.turn_on
       target:

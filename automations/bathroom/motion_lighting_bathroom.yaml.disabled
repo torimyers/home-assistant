@@ -1,3 +1,16 @@
+# DISABLED - Missing bathroom motion sensor and lights
+# This automation is disabled because:
+# 1. binary_sensor.master_bathroom_motion does not exist
+# 2. light.master_bathroom_lights does not exist  
+# 3. scene.bathroom_bright_lights does not exist
+# 4. master_bathroom area may not exist
+#
+# To re-enable, you need to:
+# 1. Set up bathroom motion sensor
+# 2. Set up bathroom lights
+# 3. Create bathroom scene
+# 4. Rename this file back to .yaml
+
 alias: Sacred Water Ritual - Motion Lighting
 description: Sacred Water Ritual - Temple Activation and Conservation
 use_blueprint:

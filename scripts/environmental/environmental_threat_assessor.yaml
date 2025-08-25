@@ -1,8 +1,7 @@
-environmental_threat_assessor:
-  alias: Environmental Threat Assessor
-  description: "Assesses environmental threats and prepares countermeasures"
-  icon: mdi:weather-lightning-rainy
-  sequence:
+alias: Environmental Threat Assessor
+description: "Assesses environmental threats and prepares countermeasures"
+icon: mdi:weather-lightning-rainy
+sequence:
     # Assess environmental threats and respond
     - service: script.turn_on
       target:

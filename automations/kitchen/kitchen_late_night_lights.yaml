@@ -2,7 +2,7 @@ id: kitchen_late_night_lights
 alias: Kitchen Late Night Lights
 description: Water Conservation - Late Night Protocol
 triggers:
-- entity_id: binary_sensor.kitchen_occupancy
+- entity_id: binary_sensor.kitchen_motion
   to: 'on'
   trigger: state
 conditions:

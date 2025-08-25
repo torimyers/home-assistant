@@ -1,18 +1,17 @@
 # Dune-Themed Sophisticated Template Sensors
 # Advanced analytics and calculated entities for Sietch monitoring
 
-sensor:
-  # ============================================================================
-  # SIETCH VITALS & SYSTEM HEALTH
-  # ============================================================================
-  
-  - name: "Sietch Health Score"
+# ============================================================================
+# SIETCH VITALS & SYSTEM HEALTH
+# ============================================================================
+
+- name: "Sietch Health Score"
     unique_id: "sietch_health_score"
     state: >-
       {% set motion_sensors = [
-        'binary_sensor.office_motion_detected',
-        'binary_sensor.kitchen_occupancy', 
-        'binary_sensor.living_room_motion_detected'
+        'binary_sensor.office_motion',
+        'binary_sensor.kitchen_motion', 
+        'binary_sensor.living_room_motion'
       ] %}
       {% set switches = [
         'switch.tp_link_power_strip_173b_couch_lamp',
@@ -46,7 +45,7 @@ sensor:
     device_class: battery
     attributes:
       motion_sensor_status: >-
-        {% set sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {{ sensors | select('states') | select('ne', 'unavailable') | list | length }}/{{ sensors | length }} operational
       device_connectivity: >-
         {% set devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door'] %}
@@ -74,9 +73,9 @@ sensor:
       
       {# Motion activity factor #}
       {% set motion_entities = [
-        'binary_sensor.office_motion_detected',
-        'binary_sensor.kitchen_occupancy',
-        'binary_sensor.living_room_motion_detected'
+        'binary_sensor.office_motion',
+        'binary_sensor.kitchen_motion',
+        'binary_sensor.living_room_motion'
       ] %}
       {% set active_sensors = motion_entities | select('is_state', 'on') | list | length %}
       {% set motion_factor = 1.0 + (active_sensors * 0.15) %}
@@ -94,7 +93,7 @@ sensor:
       current_load: >-
         {{ states.switch | selectattr('state', 'eq', 'on') | list | length }} active devices
       motion_activity: >-
-        {% set motion_entities = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set motion_entities = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {{ motion_entities | select('is_state', 'on') | list | length }}/{{ motion_entities | length }} zones active
       efficiency_grade: >-
         {% set eff = states('sensor.harvester_efficiency') | float %}
@@ -115,7 +114,7 @@ sensor:
       {% set night_bonus = 15 if current_hour >= 22 or current_hour <= 6 else 0 %}
       
       {# Low activity bonus #}
-      {% set motion_sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+      {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
       {% set active_motion = motion_sensors | select('is_state', 'on') | list | length %}
       {% set activity_bonus = 10 if active_motion <= 1 else (5 if active_motion == 2 else 0) %}
       
@@ -152,7 +151,7 @@ sensor:
       {% set base_production = automation_ratio * 100 %}
       
       {# Activity multiplier #}
-      {% set motion_sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+      {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
       {% set motion_activity = motion_sensors | select('is_state', 'on') | list | length %}
       {% set activity_multiplier = 1.0 + (motion_activity * 0.1) %}
       
@@ -195,7 +194,7 @@ sensor:
       {% set total_systems = critical_systems | length %}
       
       {# Motion sensor redundancy #}
-      {% set motion_sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+      {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
       {% set working_motion = motion_sensors | select('states') | select('ne', 'unavailable') | list | length %}
       {% set motion_redundancy = (working_motion >= 2) %}
       
@@ -221,7 +220,7 @@ sensor:
         {% set systems = ['binary_sensor.house_occupied', 'input_boolean.system_health_monitoring'] %}
         {{ systems | select('is_state', 'on') | list | length }}/{{ systems | length }} online
       motion_redundancy: >-
-        {% set sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {{ sensors | select('states') | select('ne', 'unavailable') | list | length }}/{{ sensors | length }} operational
       power_distribution: >-
         {% set devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door'] %}
@@ -243,9 +242,9 @@ sensor:
     unique_id: "fremen_activity_level"
     state: >-
       {% set motion_sensors = [
-        'binary_sensor.office_motion_detected',
-        'binary_sensor.kitchen_occupancy',
-        'binary_sensor.living_room_motion_detected'
+        'binary_sensor.office_motion',
+        'binary_sensor.kitchen_motion',
+        'binary_sensor.living_room_motion'
       ] %}
       {% set active_zones = motion_sensors | select('is_state', 'on') | list | length %}
       {% set total_zones = motion_sensors | length %}
@@ -267,7 +266,7 @@ sensor:
     icon: "mdi:run-fast"
     attributes:
       active_zones: >-
-        {% set sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {{ sensors | select('is_state', 'on') | list | length }}/{{ sensors | length }}
       peak_activity_periods: "06:00-09:00, 17:00-22:00"
       current_period: >-
@@ -290,9 +289,9 @@ sensor:
     unique_id: "sietch_occupancy_distribution"
     state: >-
       {% set zones = [
-        {'name': 'Office', 'sensor': 'binary_sensor.office_motion_detected'},
-        {'name': 'Kitchen', 'sensor': 'binary_sensor.kitchen_occupancy'},
-        {'name': 'Living Room', 'sensor': 'binary_sensor.living_room_motion_detected'}
+        {'name': 'Office', 'sensor': 'binary_sensor.office_motion'},
+        {'name': 'Kitchen', 'sensor': 'binary_sensor.kitchen_motion'},
+        {'name': 'Living Room', 'sensor': 'binary_sensor.living_room_motion'}
       ] %}
       {% set active_zones = zones | selectattr('sensor', 'is_state', 'on') | list %}
       {% set primary_zone = active_zones | first %}
@@ -301,23 +300,23 @@ sensor:
     attributes:
       zone_status: >-
         {%- set zones = [
-          {'name': 'Office', 'sensor': 'binary_sensor.office_motion_detected'},
-          {'name': 'Kitchen', 'sensor': 'binary_sensor.kitchen_occupancy'}, 
-          {'name': 'Living Room', 'sensor': 'binary_sensor.living_room_motion_detected'}
+          {'name': 'Office', 'sensor': 'binary_sensor.office_motion'},
+          {'name': 'Kitchen', 'sensor': 'binary_sensor.kitchen_motion'}, 
+          {'name': 'Living Room', 'sensor': 'binary_sensor.living_room_motion'}
         ] -%}
         {%- for zone in zones -%}
           {{ zone.name }}: {{ 'Active' if is_state(zone.sensor, 'on') else 'Quiet' }}{% if not loop.last %}, {% endif %}
         {%- endfor -%}
       most_active_zone: >-
         {% set zones = [
-          {'name': 'Office', 'sensor': 'binary_sensor.office_motion_detected'},
-          {'name': 'Kitchen', 'sensor': 'binary_sensor.kitchen_occupancy'},
-          {'name': 'Living Room', 'sensor': 'binary_sensor.living_room_motion_detected'}
+          {'name': 'Office', 'sensor': 'binary_sensor.office_motion'},
+          {'name': 'Kitchen', 'sensor': 'binary_sensor.kitchen_motion'},
+          {'name': 'Living Room', 'sensor': 'binary_sensor.living_room_motion'}
         ] %}
         {% set active_zones = zones | selectattr('sensor', 'is_state', 'on') | list %}
         {{ active_zones | first | attr('name') if active_zones else 'None' }}
       activity_distribution: >-
-        {% set zones = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set zones = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {% set active = zones | select('is_state', 'on') | list | length %}
         {% set total = zones | length %}
         {{ (active/total*100) | round }}% zones active
@@ -327,9 +326,9 @@ sensor:
     state: >-
       {% set hour = now().hour %}
       {% set motion_sensors = [
-        'binary_sensor.office_motion_detected',
-        'binary_sensor.kitchen_occupancy', 
-        'binary_sensor.living_room_motion_detected'
+        'binary_sensor.office_motion',
+        'binary_sensor.kitchen_motion', 
+        'binary_sensor.living_room_motion'
       ] %}
       {% set active_count = motion_sensors | select('is_state', 'on') | list | length %}
       
@@ -345,7 +344,7 @@ sensor:
     icon: "mdi:chart-line"
     attributes:
       pattern_type: >-
-        {% set sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {% set active = sensors | select('is_state', 'on') | list | length %}
         {% if active >= 3 %}Multi-Zone
         {% elif active == 2 %}Dual-Zone
@@ -354,7 +353,7 @@ sensor:
         {% endif %}
       efficiency_score: >-
         {% set hour = now().hour %}
-        {% set sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {% set active = sensors | select('is_state', 'on') | list | length %}
         {% set expected = 2 if 8 <= hour <= 17 else 1 %}
         {{ ((active/expected*100) | min(100)) | round }}% efficiency
@@ -383,7 +382,7 @@ sensor:
       {% set time_factor = 1.1 if 6 <= hour <= 18 else 0.95 %}
       
       {# Activity-based air circulation #}
-      {% set motion_sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+      {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
       {% set active_zones = motion_sensors | select('is_state', 'on') | list | length %}
       {% set circulation_factor = 1.0 + (active_zones * 0.05) %}
       
@@ -405,7 +404,7 @@ sensor:
         {% else %}Poor Air Quality
         {% endif %}
       circulation_zones: >-
-        {% set sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {{ sensors | select('is_state', 'on') | list | length }} active zones promoting air flow
       heat_sources: "{{ states.switch | selectattr('state', 'eq', 'on') | list | length }} active heat-generating devices"
       daily_peak: "14:00 - 16:00 (highest atmospheric pressure)"
@@ -462,7 +461,7 @@ sensor:
       {% set success_rate = (enabled_automations / total_automations * 100) if total_automations > 0 else 0 %}
       
       {# Recent execution factor (simulated based on current activity) #}
-      {% set motion_activity = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] | select('is_state', 'on') | list | length %}
+      {% set motion_activity = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] | select('is_state', 'on') | list | length %}
       {% set execution_bonus = motion_activity * 5 %}
       
       {% set final_rate = success_rate + execution_bonus %}
@@ -482,7 +481,7 @@ sensor:
         {% else %}System Error
         {% endif %}
       recent_activity: >-
-        {% set motion = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] | select('is_state', 'on') | list | length %}
+        {% set motion = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] | select('is_state', 'on') | list | length %}
         {{ motion }} automation triggers currently active
 
   - name: "Blueprint Efficiency Score"
@@ -495,7 +494,7 @@ sensor:
       ] %}
       
       {# Simulated efficiency based on motion sensor responsiveness #}
-      {% set motion_sensors = ['binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected', 'binary_sensor.office_motion_detected'] %}
+      {% set motion_sensors = ['binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion', 'binary_sensor.office_motion'] %}
       {% set responsive_sensors = motion_sensors | select('states') | select('ne', 'unavailable') | list | length %}
       {% set sensor_efficiency = (responsive_sensors / motion_sensors | length * 100) if motion_sensors | length > 0 else 0 %}
       
@@ -514,7 +513,7 @@ sensor:
     attributes:
       motion_blueprints: "3 active motion lighting blueprints"
       sensor_responsiveness: >-
-        {% set sensors = ['binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected', 'binary_sensor.office_motion_detected'] %}
+        {% set sensors = ['binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion', 'binary_sensor.office_motion'] %}
         {{ sensors | select('states') | select('ne', 'unavailable') | list | length }}/{{ sensors | length }} sensors responsive
       optimal_hours: "08:00 - 22:00"
       efficiency_rating: >-
@@ -534,7 +533,7 @@ sensor:
       
       {% if is_night %}
         {# Night mode calculations #}
-        {% set motion_sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {% set active_sensors = motion_sensors | select('states') | select('ne', 'unavailable') | list | length %}
         {% set sensor_coverage = (active_sensors / motion_sensors | length * 100) if motion_sensors | length > 0 else 0 %}
         
@@ -556,7 +555,7 @@ sensor:
         {% set hour = now().hour %}
         {{ 'Night Watch Active' if hour >= 22 or hour <= 6 else 'Day Patrol Mode' }}
       sensor_network: >-
-        {% set sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {{ sensors | select('states') | select('ne', 'unavailable') | list | length }}/{{ sensors | length }} perimeter sensors active
       response_devices: >-
         {% set devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door'] %}
@@ -578,7 +577,7 @@ sensor:
       
       {% if is_morning %}
         {# Morning ritual progress based on activity #}
-        {% set morning_zones = ['binary_sensor.kitchen_occupancy', 'binary_sensor.office_motion_detected'] %}
+        {% set morning_zones = ['binary_sensor.kitchen_motion', 'binary_sensor.office_motion'] %}
         {% set active_zones = morning_zones | select('is_state', 'on') | list | length %}
         {% set zone_completion = (active_zones / morning_zones | length * 50) if morning_zones | length > 0 else 0 %}
         
@@ -605,7 +604,7 @@ sensor:
         {% else %}Night Rest
         {% endif %}
       zone_activation: >-
-        {% set zones = ['binary_sensor.kitchen_occupancy', 'binary_sensor.office_motion_detected'] %}
+        {% set zones = ['binary_sensor.kitchen_motion', 'binary_sensor.office_motion'] %}
         {{ zones | select('is_state', 'on') | list | length }}/{{ zones | length }} morning zones active
       device_readiness: >-
         {% set devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door'] %}
@@ -629,7 +628,7 @@ sensor:
       {% set load_penalty = active_switches * 1.5 if active_switches > 8 else 0 %}
       
       {# Sensor responsiveness #}
-      {% set motion_sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+      {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
       {% set responsive_sensors = motion_sensors | select('states') | select('ne', 'unavailable') | list | length %}
       {% set sensor_bonus = (responsive_sensors / motion_sensors | length * 10) if motion_sensors | length > 0 else 0 %}
       
@@ -644,7 +643,7 @@ sensor:
     attributes:
       current_load: "{{ states.switch | selectattr('state', 'eq', 'on') | list | length }} active processes"
       sensor_network: >-
-        {% set sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {{ sensors | select('states') | select('ne', 'unavailable') | list | length }}/{{ sensors | length }} sensors responding
       response_grade: >-
         {% set time = states('sensor.system_response_time') | float %}

@@ -1,8 +1,7 @@
-resource_throttling_protocol:
-  alias: Resource Throttling Protocol
-  description: "Throttles system resources during high demand periods"
-  icon: mdi:speedometer-slow
-  sequence:
+alias: Resource Throttling Protocol
+description: "Throttles system resources during high demand periods"
+icon: mdi:speedometer-slow
+sequence:
     # Enable resource conservation
     - service: input_boolean.turn_on
       target:

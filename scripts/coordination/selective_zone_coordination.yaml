@@ -1,18 +1,17 @@
-selective_zone_coordination:
-  alias: Selective Zone Coordination
-  description: "Selectively coordinates zones based on occupancy and needs"
-  icon: mdi:home-switch
-  sequence:
-    # Selective coordination based on occupancy
-    - choose:
-        - conditions:
-            - condition: template
-              value_template: "{{ states('sensor.sietch_occupancy_distribution') in ['Kitchen', 'Office'] }}"
-          sequence:
-            - service: script.turn_on
-              target:
-                entity_id: script.intelligent_scene_selector
-      default:
-        - service: script.turn_on
-          target:
-            entity_id: script.multi_zone_scene_coordination
+alias: Selective Zone Coordination
+description: "Selectively coordinates zones based on occupancy and needs"
+icon: mdi:home-switch
+sequence:
+  # Selective coordination based on occupancy
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ states('sensor.sietch_occupancy_distribution') in ['Kitchen', 'Office'] }}"
+        sequence:
+          - service: script.turn_on
+            target:
+              entity_id: script.intelligent_scene_selector
+    default:
+      - service: script.turn_on
+        target:
+          entity_id: script.multi_zone_scene_coordination

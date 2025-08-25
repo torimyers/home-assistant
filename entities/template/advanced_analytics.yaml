@@ -1,12 +1,11 @@
 # Advanced Template Sensor Analytics - Dune Intelligence Network
 # Sophisticated calculations, predictive analytics, and AI-level insights
 
-sensor:
-  # ============================================================================
-  # PREDICTIVE ANALYTICS & FORECASTING
-  # ============================================================================
-  
-  - name: "Spice Harvester Efficiency Trend"
+# ============================================================================
+# PREDICTIVE ANALYTICS & FORECASTING
+# ============================================================================
+
+- name: "Spice Harvester Efficiency Trend"
     unique_id: "spice_harvester_efficiency_trend"
     state: >-
       {% set current = states('sensor.spice_production_level') | float(0) %}
@@ -44,9 +43,9 @@ sensor:
     unique_id: "fremen_activity_correlation_index"
     state: >-
       {% set motion_sensors = [
-        'binary_sensor.office_motion_detected',
-        'binary_sensor.kitchen_occupancy', 
-        'binary_sensor.living_room_motion_detected'
+        'binary_sensor.office_motion',
+        'binary_sensor.kitchen_motion', 
+        'binary_sensor.living_room_motion'
       ] %}
       {% set time_of_day = now().hour %}
       {% set day_of_week = now().weekday() %}
@@ -78,7 +77,7 @@ sensor:
     icon: "mdi:chart-line-variant"
     attributes:
       motion_score: >-
-        {% set motion_sensors = ['binary_sensor.office_motion_detected', 'binary_sensor.kitchen_occupancy', 'binary_sensor.living_room_motion_detected'] %}
+        {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {% set active = motion_sensors | select('is_state', 'on') | list | length %}
         {{ (active / motion_sensors | length * 100) | round(1) }}%
       expected_activity: >-

@@ -1,18 +1,17 @@
-emergency_climate_protocol:
-  alias: Emergency Climate Protocol
-  description: "Emergency climate response for extreme conditions"
-  icon: mdi:alert-rhombus
-  sequence:
+alias: Emergency Climate Protocol
+description: "Emergency climate response for extreme conditions"
+icon: mdi:alert-rhombus
+sequence:
     # Emergency climate actions
     - parallel:
         - service: climate.set_hvac_mode
           target:
-            entity_id: climate.sietch_main
+            entity_id: climate.home
           data:
             hvac_mode: "auto"
         - service: climate.set_temperature
           target:
-            entity_id: climate.sietch_main
+            entity_id: climate.home
           data:
             temperature: >
               {% set survival_status = states('sensor.desert_survival_status') %}

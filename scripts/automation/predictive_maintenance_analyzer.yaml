@@ -1,8 +1,7 @@
-predictive_maintenance_analyzer:
-  alias: Predictive Maintenance Analyzer
-  description: "Analyzes system patterns to predict maintenance needs"
-  icon: mdi:wrench-clock
-  sequence:
+alias: Predictive Maintenance Analyzer
+description: "Analyzes system patterns to predict maintenance needs"
+icon: mdi:wrench-clock
+sequence:
     # Analyze system performance trends
     - service: input_text.set_value
       target:

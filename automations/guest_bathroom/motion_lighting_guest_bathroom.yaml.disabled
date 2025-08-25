@@ -1,3 +1,16 @@
+# DISABLED - Missing guest bathroom motion sensor and lights
+# This automation is disabled because:
+# 1. binary_sensor.guest_bathroom_motion does not exist
+# 2. light.guest_bathroom_lights does not exist
+# 3. scene.guest_comfort does not exist
+# 4. guest_bathroom area may not exist
+#
+# To re-enable, you need to:
+# 1. Set up guest bathroom motion sensor
+# 2. Set up guest bathroom lights  
+# 3. Create guest comfort scene
+# 4. Rename this file back to .yaml
+
 alias: Outworlder Hospitality - Motion Lighting
 description: Outworlder Hospitality - Guest Comfort
 use_blueprint:

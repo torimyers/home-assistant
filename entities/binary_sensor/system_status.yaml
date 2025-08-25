@@ -2,14 +2,13 @@
 # System Status Binary Sensors - Dune Monitoring Network
 # Critical status indicators for system health and security
 
-binary_sensor:
-  - name: "House Occupied"
+- name: "House Occupied"
     unique_id: "house_occupied"
     state: >-
       {% set motion_sensors = [
-        'binary_sensor.office_motion_detected',
-        'binary_sensor.kitchen_occupancy', 
-        'binary_sensor.living_room_motion_detected',
+        'binary_sensor.office_motion',
+        'binary_sensor.kitchen_motion', 
+        'binary_sensor.living_room_motion',
         'binary_sensor.guest_bathroom_motion'
       ] %}
       {{ motion_sensors | select('is_state', 'on') | list | length > 0 }}

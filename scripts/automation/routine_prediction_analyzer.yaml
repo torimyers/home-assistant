@@ -1,8 +1,7 @@
-routine_prediction_analyzer:
-  alias: Routine Prediction Analyzer
-  description: "Analyzes daily patterns to predict and prepare for routine activities"
-  icon: mdi:chart-timeline-variant
-  sequence:
+alias: Routine Prediction Analyzer
+description: "Analyzes daily patterns to predict and prepare for routine activities"
+icon: mdi:chart-timeline-variant
+sequence:
     # Analyze current time patterns
     - service: input_text.set_value
       target:

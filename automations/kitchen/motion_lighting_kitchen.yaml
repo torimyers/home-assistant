@@ -3,7 +3,7 @@ description: Sietch Sustenance Conservation - Motion Timeout
 use_blueprint:
   path: motion_lighting.yaml
   input:
-    motion_entity: binary_sensor.kitchen_occupancy
+    motion_entity: binary_sensor.kitchen_motion
     room_name: kitchen
     dune_description: Sietch Sustenance Conservation - Motion Timeout
     activation_type: area

@@ -1,8 +1,7 @@
-optimal_operations_orchestrator:
-  alias: Optimal Operations Orchestrator
-  description: "Orchestrates optimal system operations when all parameters are within normal ranges"
-  icon: mdi:auto-fix
-  sequence:
+alias: Optimal Operations Orchestrator
+description: "Orchestrates optimal system operations when all parameters are within normal ranges"
+icon: mdi:auto-fix
+sequence:
     # Assess optimal operation parameters
     - variables:
         # System health metrics

@@ -1,8 +1,7 @@
-spice_harvest_alert:
-  alias: Critical Alert System
-  description: "Spice Harvest Alert - High-priority notification system with visual and mobile alerts for critical system events"
-  icon: mdi:bell-alert
-  sequence:
+alias: Critical Alert System
+description: "Spice Harvest Alert - High-priority notification system with visual and mobile alerts for critical system events"
+icon: mdi:bell-alert
+sequence:
     - service: notify.mobile_app_tori_phone_2
       data:
         message: "{{ message }}"

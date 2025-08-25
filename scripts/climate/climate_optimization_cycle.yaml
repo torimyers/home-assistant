@@ -1,8 +1,7 @@
-climate_optimization_cycle:
-  alias: Climate Optimization Cycle
-  description: "Optimizes climate settings based on conditions and conservation"
-  icon: mdi:sync
-  sequence:
+alias: Climate Optimization Cycle
+description: "Optimizes climate settings based on conditions and conservation"
+icon: mdi:sync
+sequence:
     # Analyze climate conditions
     - service: input_text.set_value
       target:
@@ -17,7 +16,7 @@ climate_optimization_cycle:
     # Optimize climate settings
     - service: climate.set_temperature
       target:
-        entity_id: climate.sietch_main
+        entity_id: climate.home
       data:
         temperature: >
           {% set conservation = states('sensor.water_conservation_index') | int %}

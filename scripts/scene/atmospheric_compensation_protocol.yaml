@@ -1,8 +1,7 @@
-atmospheric_compensation_protocol:
-  alias: Atmospheric Compensation Protocol
-  description: "Compensates scene lighting and climate for atmospheric conditions"
-  icon: mdi:weather-fog
-  sequence:
+alias: Atmospheric Compensation Protocol
+description: "Compensates scene lighting and climate for atmospheric conditions"
+icon: mdi:weather-fog
+sequence:
     # Analyze atmospheric conditions for compensation
     - variables:
         atmospheric_level: "{{ states('sensor.atmospheric_conditions') | int }}"

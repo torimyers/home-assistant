@@ -1,8 +1,7 @@
-morning_systems_check:
-  alias: Morning Systems Check
-  description: "Sietch Morning Systems Check - Comprehensive morning verification of all critical systems and initialization of daily operations"
-  icon: mdi:check-circle-outline
-  sequence:
+alias: Morning Systems Check
+description: "Sietch Morning Systems Check - Comprehensive morning verification of all critical systems and initialization of daily operations"
+icon: mdi:check-circle-outline
+sequence:
     - service: alarm_control_panel.alarm_disarm
       target:
         entity_id: alarm_control_panel.house

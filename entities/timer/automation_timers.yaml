@@ -2,8 +2,7 @@
 # Automation Timers - Dune Temporal Controls
 # Timer entities for automation delays and scheduling
 
-timer:
-  motion_light_delay:
+motion_light_delay:
     name: "Motion Light Delay"
     duration: "00:10:00"
     icon: mdi:timer-outline

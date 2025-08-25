@@ -1,8 +1,7 @@
-water_conservation_mode:
-  alias: Energy Conservation Mode
-  description: "Water Conservation Mode - Resource optimization system that reduces water and energy consumption across all household appliances"
-  icon: mdi:water-off
-  sequence:
+alias: Energy Conservation Mode
+description: "Water Conservation Mode - Resource optimization system that reduces water and energy consumption across all household appliances"
+icon: mdi:water-off
+sequence:
     - service: switch.turn_off
       target:
         entity_id: 

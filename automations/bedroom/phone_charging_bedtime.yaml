@@ -12,7 +12,7 @@ use_blueprint:
     time_before: '23:59:59'
     person_state_condition: home
     lights_to_turn_off:
-      entity_id: light.tori_light_light
+      entity_id: light.tori_light
     covers_to_close:
       entity_id:
         - cover.bedroom_left_roller_shade

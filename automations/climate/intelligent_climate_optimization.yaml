@@ -88,7 +88,7 @@ action:
               # Full cooling with good energy situation
               - service: climate.set_temperature
                 data:
-                  entity_id: climate.main_thermostat
+                  entity_id: climate.home
                   temperature: "{{ high_threshold - 2 }}"
                   
               - service: fan.turn_on
@@ -100,7 +100,7 @@ action:
               # Energy-conscious cooling
               - service: climate.set_temperature
                 data:
-                  entity_id: climate.main_thermostat  
+                  entity_id: climate.home  
                   temperature: "{{ high_threshold - 1 }}"
                   
               # Use strategic natural cooling
@@ -137,13 +137,13 @@ action:
               # Occupied heating
               - service: climate.set_temperature
                 data:
-                  entity_id: climate.main_thermostat
+                  entity_id: climate.home
                   temperature: "{{ low_threshold + 2 }}"
             else:
               # Minimal heating when unoccupied or low energy
               - service: climate.set_temperature
                 data:
-                  entity_id: climate.main_thermostat
+                  entity_id: climate.home
                   temperature: "{{ low_threshold + 1 }}"
                   
           # Notify of heating action
@@ -170,7 +170,7 @@ action:
           # House occupied - comfort mode
           - service: climate.set_preset_mode
             data:
-              entity_id: climate.main_thermostat
+              entity_id: climate.home
               preset_mode: "comfort"
               
           - service: tts.speak
@@ -181,7 +181,7 @@ action:
           # House empty - energy saving mode
           - service: climate.set_preset_mode
             data:
-              entity_id: climate.main_thermostat
+              entity_id: climate.home
               preset_mode: "away"
               
           # Reduce temperature thresholds when away
@@ -258,7 +258,7 @@ action:
           # Pre-cool/pre-heat during peak solar
           - service: climate.set_temperature
             data:
-              entity_id: climate.main_thermostat
+              entity_id: climate.home
               temperature: >
                 {% if now().month in [6, 7, 8] %}
                   {{ states('input_number.temperature_threshold_low') | float(68) - 1 }}
@@ -274,7 +274,7 @@ action:
           # Return to normal comfort settings
           - service: climate.set_preset_mode
             data:
-              entity_id: climate.main_thermostat
+              entity_id: climate.home
               preset_mode: "comfort"
 
   # Humidity Optimization
@@ -300,7 +300,7 @@ action:
           # Reduce cooling to preserve moisture
           - service: climate.set_temperature
             data:
-              entity_id: climate.main_thermostat
+              entity_id: climate.home
               temperature: "{{ states('input_number.temperature_threshold_high') | float(78) + 1 }}"
               
       - if:
@@ -310,7 +310,7 @@ action:
           # High humidity - dehumidification needed
           - service: climate.set_hvac_mode
             data:
-              entity_id: climate.main_thermostat
+              entity_id: climate.home
               hvac_mode: "dry"
               
           - service: notify.mobile_app_phone
@@ -336,7 +336,7 @@ action:
             sequence:
               - service: climate.set_preset_mode
                 data:
-                  entity_id: climate.main_thermostat
+                  entity_id: climate.home
                   preset_mode: "eco"
                   
               - service: tts.speak
@@ -351,7 +351,7 @@ action:
             sequence:
               - service: climate.set_preset_mode
                 data:
-                  entity_id: climate.main_thermostat
+                  entity_id: climate.home
                   preset_mode: "away"
                   
               # Seal the sietch - turn off ventilation

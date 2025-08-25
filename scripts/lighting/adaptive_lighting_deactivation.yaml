@@ -1,8 +1,7 @@
-adaptive_lighting_deactivation:
-  alias: Adaptive Lighting Deactivation
-  description: "Fremen Lighting Deactivation - Intelligent light deactivation with conservation protocols and security considerations"
-  icon: mdi:lightbulb-off
-  sequence:
+alias: Adaptive Lighting Deactivation
+description: "Fremen Lighting Deactivation - Intelligent light deactivation with conservation protocols and security considerations"
+icon: mdi:lightbulb-off
+sequence:
     # Determine lights to turn off based on zone
     - service: light.turn_off
       target:

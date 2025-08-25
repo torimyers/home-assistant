@@ -1,8 +1,7 @@
-focused_threat_mitigation:
-  alias: Focused Threat Mitigation
-  description: "AI system that focuses response on specific high-priority threats"
-  icon: mdi:target
-  sequence:
+alias: Focused Threat Mitigation
+description: "AI system that focuses response on specific high-priority threats"
+icon: mdi:target
+sequence:
     # Identify primary threat for focused response
     - variables:
         primary_threat: >

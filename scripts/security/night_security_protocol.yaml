@@ -1,8 +1,7 @@
-night_security_protocol:
-  alias: Night Security Protocol
-  description: "Sietch Night Security Protocol - Comprehensive nighttime security activation with door locking, alarm arming, and perimeter monitoring"
-  icon: mdi:shield-moon
-  sequence:
+alias: Night Security Protocol
+description: "Sietch Night Security Protocol - Comprehensive nighttime security activation with door locking, alarm arming, and perimeter monitoring"
+icon: mdi:shield-moon
+sequence:
     - service: lock.lock
       target:
         entity_id:

@@ -3,7 +3,7 @@ alias: Kitchen Morning Lights On
 description: Morning Water Ration - Dawn Sustenance
 trigger:
 - platform: state
-  entity_id: binary_sensor.kitchen_occupancy
+  entity_id: binary_sensor.kitchen_motion
   to: 'on'
 condition:
 - condition: time

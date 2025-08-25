@@ -1,8 +1,7 @@
-daily_pattern_learning_update:
-  alias: Daily Pattern Learning Update
-  description: "Daily consolidation and update of learned patterns for continuous system improvement"
-  icon: mdi:update
-  sequence:
+alias: Daily Pattern Learning Update
+description: "Daily consolidation and update of learned patterns for continuous system improvement"
+icon: mdi:update
+sequence:
     # Calculate daily learning summary
     - variables:
         today: "{{ now().strftime('%A') }}"

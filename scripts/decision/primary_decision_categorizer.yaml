@@ -1,8 +1,7 @@
-primary_decision_categorizer:
-  alias: Primary Decision Categorizer
-  description: "Main AI decision engine that categorizes situations and routes to appropriate response systems"
-  icon: mdi:account-supervisor-circle
-  sequence:
+alias: Primary Decision Categorizer
+description: "Main AI decision engine that categorizes situations and routes to appropriate response systems"
+icon: mdi:account-supervisor-circle
+sequence:
     # Gather comprehensive system state for decision analysis
     - variables:
         # Core metrics for decision making

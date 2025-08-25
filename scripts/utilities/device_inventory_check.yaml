@@ -1,8 +1,7 @@
-device_census:
-  alias: Device Inventory Check
-  description: "Device Census - Comprehensive device monitoring and counting system to track all connected smart home devices"
-  icon: mdi:counter
-  sequence:
+alias: Device Inventory Check
+description: "Device Census - Comprehensive device monitoring and counting system to track all connected smart home devices"
+icon: mdi:counter
+sequence:
     - service: counter.reset
       target:
         entity_id: counter.daily_automation_count

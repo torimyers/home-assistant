@@ -1,8 +1,7 @@
-high_demand_preparation:
-  alias: High Demand Preparation
-  description: "Prepares systems for periods of high resource demand"
-  icon: mdi:gauge-full
-  sequence:
+alias: High Demand Preparation
+description: "Prepares systems for periods of high resource demand"
+icon: mdi:gauge-full
+sequence:
     # Enable high demand optimization mode
     - service: input_boolean.turn_on
       target:

@@ -1,8 +1,7 @@
-security_pattern_learning:
-  alias: Security Pattern Learning
-  description: "Learns and adapts security patterns based on activity and threats"
-  icon: mdi:brain
-  sequence:
+alias: Security Pattern Learning
+description: "Learns and adapts security patterns based on activity and threats"
+icon: mdi:brain
+sequence:
     # Analyze current patterns
     - service: input_text.set_value
       target:

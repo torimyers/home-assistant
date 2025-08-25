@@ -1,8 +1,7 @@
-multi_threat_emergency_response:
-  alias: Multi Threat Emergency Response
-  description: "AI system for handling multiple simultaneous threats intelligently"
-  icon: mdi:shield-alert
-  sequence:
+alias: Multi Threat Emergency Response
+description: "AI system for handling multiple simultaneous threats intelligently"
+icon: mdi:shield-alert
+sequence:
     # Assess multiple threat situation
     - variables:
         active_threats: >

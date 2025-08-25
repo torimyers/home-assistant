@@ -3,7 +3,7 @@ description: Navigator Enters Chamber - Spice Trance Ready and Away Protocol
 use_blueprint:
   path: motion_lighting.yaml
   input:
-    motion_entity: binary_sensor.office_motion_detected
+    motion_entity: binary_sensor.office_motion
     room_name: office
     dune_description: Navigator Enters Chamber - Spice Trance Ready
     activation_type: scene

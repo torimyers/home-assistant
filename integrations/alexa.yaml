@@ -1,0 +1,279 @@
+# Amazon Alexa Integration Configuration
+# https://www.home-assistant.io/integrations/alexa/
+
+alexa:
+  # Smart Home Skill Configuration
+  smart_home:
+    # Endpoint configuration
+    endpoint: https://api.amazonalexa.com/v1/events
+    
+    # Expose specific entities to Alexa
+    filter:
+      include_domains:
+        - light
+        - switch
+        - scene
+        - script
+        - climate
+        - cover
+        - fan
+        - lock
+        - vacuum
+      include_entities:
+        # Motion lighting control
+        - script.adaptive_lighting_system
+        - script.adaptive_lighting_deactivation
+        
+        # Scene controls
+        - script.intelligent_scene_selector
+        - script.multi_zone_scene_coordination
+        
+        # Security controls
+        - script.security_lockdown_mode
+        - script.night_security_protocol
+        
+        # Climate controls
+        - script.climate_control_system
+        - script.emergency_climate_protocol
+        
+        # System modes
+        - input_boolean.vacation_mode
+        - input_boolean.guest_mode
+        - input_boolean.maintenance_mode
+        
+        # Notification controls
+        - input_boolean.notification_system_enabled
+        - input_boolean.night_mode_notifications
+        
+        # Automation controls
+        - input_boolean.motion_lighting_enabled
+        - input_boolean.security_monitoring_enabled
+        - input_boolean.climate_automation_enabled
+      
+      exclude_entities:
+        # Exclude sensitive or internal entities
+        - script.emergency_security_lockdown
+        - script.security_pattern_learning
+        - script.predictive_security_enhancement
+    
+    # Entity configuration for better Alexa integration
+    entity_config:
+      # Lighting scripts - Both friendly and Dune names
+      script.adaptive_lighting_system:
+        name: "Adaptive Lighting"
+        aliases: 
+          - "Sietch Lighting"
+          - "Fremen Lighting"
+          - "Desert Lighting"
+        description: "Activate adaptive lighting system"
+        display_categories: SCENE_TRIGGER
+      
+      script.adaptive_lighting_deactivation:
+        name: "Turn Off Lighting"
+        aliases:
+          - "Deactivate Lighting"
+          - "Lighting Off"
+          - "Conserve Energy"
+        description: "Deactivate lighting system"
+        display_categories: SCENE_TRIGGER
+      
+      # Scene controls - Both friendly and Dune names
+      script.intelligent_scene_selector:
+        name: "Smart Scene"
+        aliases:
+          - "Intelligent Scene"
+          - "Mentat Scene"
+          - "Adaptive Scene"
+        description: "Activate intelligent scene selection"
+        display_categories: SCENE_TRIGGER
+      
+      script.multi_zone_scene_coordination:
+        name: "Zone Coordination"
+        aliases:
+          - "Multi Zone Scenes"
+          - "Coordinate Zones"
+          - "Sietch Coordination"
+        description: "Coordinate scenes across zones"
+        display_categories: SCENE_TRIGGER
+      
+      # Security controls - Both friendly and Dune names
+      script.security_lockdown_mode:
+        name: "Security Lockdown"
+        aliases:
+          - "Lockdown Mode"
+          - "Security Mode"
+          - "Defense Protocol"
+        description: "Activate security lockdown mode"
+        display_categories: SECURITY_PANEL
+      
+      script.night_security_protocol:
+        name: "Night Security"
+        aliases:
+          - "Night Mode"
+          - "Night Watch"
+          - "Desert Guard"
+        description: "Activate night security protocol"
+        display_categories: SECURITY_PANEL
+      
+      # Climate controls - Both friendly and Dune names
+      script.climate_control_system:
+        name: "Climate Control"
+        aliases:
+          - "Environmental Control"
+          - "Atmosphere Control"
+          - "Stillsuit Mode"
+        description: "Activate climate control system"
+        display_categories: THERMOSTAT
+      
+      # System modes - Both friendly and Dune names
+      input_boolean.vacation_mode:
+        name: "Vacation Mode"
+        aliases:
+          - "Journey Mode"
+          - "Travel Mode"
+          - "Desert Journey"
+        description: "Enable vacation mode"
+        display_categories: SWITCH
+      
+      input_boolean.guest_mode:
+        name: "Guest Mode"
+        aliases:
+          - "Visitor Mode"
+          - "Welcome Mode"
+          - "Hospitality Mode"
+        description: "Enable guest mode"
+        display_categories: SWITCH
+      
+      input_boolean.maintenance_mode:
+        name: "Maintenance Mode"
+        aliases:
+          - "Service Mode"
+          - "Repair Mode"
+          - "Engineering Mode"
+        description: "Enable maintenance mode"
+        display_categories: SWITCH
+      
+      input_boolean.notification_system_enabled:
+        name: "Notifications"
+        aliases:
+          - "Alert System"
+          - "Message System"
+          - "Communication Hub"
+        description: "Control notification system"
+        display_categories: SWITCH
+      
+      input_boolean.motion_lighting_enabled:
+        name: "Motion Lighting"
+        aliases:
+          - "Automatic Lighting"
+          - "Smart Lighting"
+          - "Sensor Lighting"
+        description: "Enable motion lighting automation"
+        display_categories: SWITCH
+      
+      input_boolean.security_monitoring_enabled:
+        name: "Security Monitoring"
+        aliases:
+          - "Security System"
+          - "Surveillance Mode"
+          - "Guard System"
+        description: "Enable security monitoring"
+        display_categories: SWITCH
+      
+      input_boolean.climate_automation_enabled:
+        name: "Climate Automation"
+        aliases:
+          - "Environmental Automation"
+          - "Temperature Control"
+          - "Atmosphere Management"
+        description: "Enable climate automation"
+        display_categories: SWITCH
+
+# Alexa Intents for custom voice commands
+intent_script:
+  # Custom lighting intents
+  ActivateSietchLighting:
+    speech:
+      text: "Activating Sietch lighting protocol. The spice must flow."
+    action:
+      - service: script.turn_on
+        target:
+          entity_id: script.adaptive_lighting_system
+  
+  DeactivateSietchLighting:
+    speech:
+      text: "Deactivating lighting systems. Conserving energy for the desert."
+    action:
+      - service: script.turn_on
+        target:
+          entity_id: script.adaptive_lighting_deactivation
+  
+  # Security intents
+  ActivateSecurityMode:
+    speech:
+      text: "Activating security protocols. The Sietch is now protected."
+    action:
+      - service: script.turn_on
+        target:
+          entity_id: script.security_lockdown_mode
+  
+  ActivateNightSecurity:
+    speech:
+      text: "Night watch protocols engaged. Sleep well, the desert is guarded."
+    action:
+      - service: script.turn_on
+        target:
+          entity_id: script.night_security_protocol
+  
+  # System status intents
+  SystemStatus:
+    speech:
+      text: >
+        Sietch status report: 
+        Health score is {{ states('sensor.sietch_health_score') }}%.
+        Activity level at {{ states('sensor.fremen_activity_level') }}%.
+        Energy shield at {{ states('sensor.energy_shield_status') }}%.
+    action: []
+  
+  # Climate control intents
+  ActivateClimateControl:
+    speech:
+      text: "Environmental systems engaging. Maintaining optimal desert conditions."
+    action:
+      - service: script.turn_on
+        target:
+          entity_id: script.climate_control_system
+  
+  # Mode switching intents
+  EnableVacationMode:
+    speech:
+      text: "Vacation mode activated. The Sietch will maintain itself while you journey."
+    action:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.vacation_mode
+  
+  DisableVacationMode:
+    speech:
+      text: "Welcome back. Vacation mode deactivated, resuming normal operations."
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.vacation_mode
+  
+  EnableGuestMode:
+    speech:
+      text: "Guest mode activated. The Sietch welcomes visitors."
+    action:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.guest_mode
+  
+  # Scene activation intents
+  ActivateSmartScene:
+    speech:
+      text: "Engaging intelligent scene adaptation based on current conditions."
+    action:
+      - service: script.turn_on
+        target:
+          entity_id: script.intelligent_scene_selector

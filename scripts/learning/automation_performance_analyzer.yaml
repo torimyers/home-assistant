@@ -1,8 +1,7 @@
-automation_performance_analyzer:
-  alias: Automation Performance Analyzer
-  description: "Analyzes automation performance and suggests optimizations based on success patterns"
-  icon: mdi:chart-timeline-variant
-  sequence:
+alias: Automation Performance Analyzer
+description: "Analyzes automation performance and suggests optimizations based on success patterns"
+icon: mdi:chart-timeline-variant
+sequence:
     # Gather performance metrics
     - variables:
         success_rate: "{{ states('sensor.automation_success_rate') | int }}"

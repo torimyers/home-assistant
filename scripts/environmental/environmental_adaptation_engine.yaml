@@ -1,8 +1,7 @@
-environmental_adaptation_engine:
-  alias: Environmental Adaptation Engine
-  description: "Continuously adapts all systems to changing environmental conditions"
-  icon: mdi:weather-partly-cloudy
-  sequence:
+alias: Environmental Adaptation Engine
+description: "Continuously adapts all systems to changing environmental conditions"
+icon: mdi:weather-partly-cloudy
+sequence:
     # Environmental analysis and adaptation
     - service: script.turn_on
       target:

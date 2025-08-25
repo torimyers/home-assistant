@@ -1,8 +1,7 @@
-emergency_load_shedding:
-  alias: Emergency Load Shedding
-  description: "Emergency load shedding for critical resource conservation"
-  icon: mdi:flash-off
-  sequence:
+alias: Emergency Load Shedding
+description: "Emergency load shedding for critical resource conservation"
+icon: mdi:flash-off
+sequence:
     # Emergency load shedding
     - parallel:
         # Disable all non-essential automations
