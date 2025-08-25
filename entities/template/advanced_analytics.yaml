@@ -211,7 +211,12 @@ sensor:
     device_class: battery
     attributes:
       performance_grade: >-
-        {% set score = states('sensor.sietch_operational_intelligence') | float(0) %}
+        {% set health = states('sensor.sietch_health_score') | float(0) %}
+        {% set activity = states('sensor.fremen_activity_level') | float(0) %}
+        {% set water = states('sensor.water_conservation_index') | float(0) %}
+        {% set energy = states('sensor.energy_shield_status') | float(0) %}
+        {% set automation = states('sensor.automation_success_rate') | float(0) %}
+        {% set score = (health + activity + water + energy + automation) / 5 %}
         {% if score >= 95 %}Legendary Mentat
         {% elif score >= 90 %}Master Strategist
         {% elif score >= 85 %}Skilled Analyst
