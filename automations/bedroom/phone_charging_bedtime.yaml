@@ -1,6 +1,5 @@
 alias: Phone Charging Bedtime
 description: Stillsuit Recharge - Desert Dreams Begin
-area_id: bedroom
 use_blueprint:
   path: person_presence.yaml
   input:
