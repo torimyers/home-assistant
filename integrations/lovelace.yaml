@@ -3,10 +3,8 @@
 # https://www.home-assistant.io/integrations/lovelace/
 
 lovelace:
-  # Main dashboard configuration - House Dodson Command (Desktop optimized)
+  # Main dashboard configuration - House Dodson Command (Desktop optimized) 
   mode: yaml
-  title: "House Dodson Command"
-  filename: responsive-dashboard.yaml
   resources:
     - url: /local/community/lovelace-mushroom/mushroom.js
       type: module
@@ -17,6 +15,13 @@ lovelace:
   
   # Additional dashboards
   dashboards:
+    # Main dashboard - House Dodson Command (set as separate dashboard)
+    house-dodson-command:
+      mode: yaml
+      title: "House Dodson Command" 
+      icon: mdi:home-analytics
+      show_in_sidebar: true
+      filename: responsive-dashboard.yaml
     # Navigation hub dashboard
     lovelace-dashboard-nav:
       mode: yaml
