@@ -2,7 +2,7 @@
 # Pet Care Tracking - Dune Pet Management System
 # Track medication and feeding schedules for household companions
 
-cats_last_fed:
+  cats_last_fed:
     name: "Cats Last Fed"
     has_date: true
     has_time: true

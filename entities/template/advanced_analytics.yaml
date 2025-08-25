@@ -5,7 +5,7 @@
 # PREDICTIVE ANALYTICS & FORECASTING
 # ============================================================================
 
-- name: "Spice Harvester Efficiency Trend"
+  - name: "Spice Harvester Efficiency Trend"
     unique_id: "spice_harvester_efficiency_trend"
     state: >-
       {% set current = states('sensor.spice_production_level') | float(0) %}

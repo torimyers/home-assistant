@@ -5,7 +5,7 @@
 # ENERGY CONSUMPTION ANALYTICS
 # ============================================================================
 
-- name: "Holtzman Energy Consumption"
+  - name: "Holtzman Energy Consumption"
     unique_id: "holtzman_energy_consumption"
     state: >-
       {% set switches = [

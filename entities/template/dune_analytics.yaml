@@ -5,7 +5,7 @@
 # SIETCH VITALS & SYSTEM HEALTH
 # ============================================================================
 
-- name: "Sietch Health Score"
+  - name: "Sietch Health Score"
     unique_id: "sietch_health_score"
     state: >-
       {% set motion_sensors = [
