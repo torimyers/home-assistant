@@ -1,7 +1,9 @@
+# DISABLED - AI logic too overwhelming
 ---
 # Security Effectiveness Alert System - Night Watch Intelligence
-alias: "Security Effectiveness Alert System"  
+# DISABLED - alias: "Security Effectiveness Alert System"  
 description: "Advanced night security monitoring with threat assessment and defensive protocols"
+disabled: true
 trigger:
   - platform: numeric_state
     entity_id: sensor.night_security_effectiveness

@@ -1,4 +1,5 @@
-alias: Pattern Optimized Scene Selection
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Pattern Optimized Scene Selection
 description: "Selects scenes optimized for current usage patterns"
 icon: mdi:chart-line-variant
 sequence:

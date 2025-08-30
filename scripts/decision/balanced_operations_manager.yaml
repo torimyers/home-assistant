@@ -1,4 +1,5 @@
-alias: Balanced Operations Manager
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Balanced Operations Manager
 description: "AI system that balances competing priorities like comfort vs conservation vs security"
 icon: mdi:scale-balance
 sequence:

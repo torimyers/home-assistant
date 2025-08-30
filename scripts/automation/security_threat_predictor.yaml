@@ -1,4 +1,5 @@
-alias: Security Threat Predictor
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Security Threat Predictor
 description: "Predicts potential security threats based on pattern analysis"
 icon: mdi:shield-search
 sequence:

@@ -1,3 +1,4 @@
+# DISABLED - AI logic too overwhelming
 # Predictive Security Enhancement System
 # Advanced security with anomaly detection and predictive measures
 #
@@ -9,6 +10,7 @@
 
 alias: "Predictive Security - Anomaly Detection Matrix"
 description: "Advanced security with predictive threat assessment and adaptive response"
+disabled: true
 trigger:
   # Anomaly detection triggers
   - platform: template

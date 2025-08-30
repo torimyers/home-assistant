@@ -1,4 +1,5 @@
-alias: Energy Conservation Mode
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Energy Conservation Mode
 description: "Water Conservation Mode - Resource optimization system that reduces water and energy consumption across all household appliances"
 icon: mdi:water-off
 sequence:

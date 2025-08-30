@@ -1,4 +1,5 @@
-alias: Atmospheric Scene Adjustment
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Atmospheric Scene Adjustment
 description: "Adjusts scene parameters based on atmospheric conditions"
 icon: mdi:tune
 sequence:

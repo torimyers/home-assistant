@@ -1,4 +1,5 @@
-alias: Night Mode Prediction
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Night Mode Prediction
 description: "Prepares systems for night mode based on activity patterns"
 icon: mdi:weather-night
 sequence:

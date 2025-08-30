@@ -1,4 +1,6 @@
-alias: Primary Decision Categorizer
+# DISABLED - AI logic too overwhelming
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Primary Decision Categorizer
 description: "Main AI decision engine that categorizes situations and routes to appropriate response systems"
 icon: mdi:account-supervisor-circle
 sequence:

@@ -1,4 +1,6 @@
-alias: Security Pattern Learning
+# DISABLED - AI logic too overwhelming
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Security Pattern Learning
 description: "Learns and adapts security patterns based on activity and threats"
 icon: mdi:brain
 sequence:

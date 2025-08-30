@@ -1,4 +1,5 @@
-alias: Evening Routine Prediction
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Evening Routine Prediction
 description: "Predicts and prepares for evening routine activities"
 icon: mdi:weather-sunset
 sequence:

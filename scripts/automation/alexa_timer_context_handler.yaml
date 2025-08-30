@@ -1,4 +1,5 @@
-alias: Alexa Timer Context Handler
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Alexa Timer Context Handler
 description: "Intelligent context detection and response for Alexa timer events based on location, time, and patterns"
 icon: mdi:timer-sand
 sequence:

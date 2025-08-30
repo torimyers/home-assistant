@@ -1,4 +1,5 @@
-alias: Environmental Adaptation Predictor
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Environmental Adaptation Predictor
 description: "Predicts and adapts to environmental changes"
 icon: mdi:weather-partly-cloudy
 sequence:

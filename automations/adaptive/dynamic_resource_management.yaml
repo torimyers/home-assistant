@@ -1,3 +1,4 @@
+# DISABLED - AI logic too overwhelming
 # Dynamic Resource Management System
 # Smart resource optimization with predictive load balancing
 #
@@ -9,6 +10,7 @@
 
 alias: "Dynamic Resource Manager - Intelligent Load Balancing"
 description: "Advanced resource optimization with predictive power management and adaptive throttling"
+disabled: true
 trigger:
   # Harvester efficiency optimization triggers
   - platform: numeric_state

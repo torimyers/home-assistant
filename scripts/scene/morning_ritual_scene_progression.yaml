@@ -1,4 +1,5 @@
-alias: Morning Ritual Scene Progression
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Morning Ritual Scene Progression
 description: "Progressive scene changes for morning ritual sequence"
 icon: mdi:weather-sunrise
 sequence:

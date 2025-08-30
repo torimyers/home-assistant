@@ -1,7 +1,9 @@
+# DISABLED - AI logic too overwhelming
 ---
 # Motion Pattern Anomaly Detection - Tribal Movement Intelligence
-alias: "Motion Pattern Anomaly Detection"
+# DISABLED - alias: "Motion Pattern Anomaly Detection"
 description: "Advanced motion analytics with pattern efficiency monitoring and tribal movement insights"
+disabled: true
 trigger:
   - platform: template
     value_template: >-

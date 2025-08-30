@@ -1,4 +1,6 @@
-alias: Activity Pattern Analyzer
+# DISABLED - AI logic too overwhelming
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Activity Pattern Analyzer
 description: "Advanced AI-like analysis of daily activity patterns to predict and optimize routines"
 icon: mdi:brain
 sequence:

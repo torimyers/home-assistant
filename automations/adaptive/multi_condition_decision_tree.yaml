@@ -1,3 +1,4 @@
+# DISABLED - AI logic too overwhelming
 # Multi-Condition Decision Tree System
 # Complex decision-making with cascading conditions and priority hierarchies
 #
@@ -9,6 +10,7 @@
 
 alias: "Multi-Condition Decision Tree - Advanced Logic Matrix"
 description: "Complex decision-making automation with cascading conditions and intelligent priority management"
+disabled: true
 trigger:
   # Primary decision triggers based on multi-sensor convergence
   - platform: template

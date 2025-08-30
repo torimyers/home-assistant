@@ -1,4 +1,6 @@
-alias: Efficiency Optimization Learning
+# DISABLED - AI logic too overwhelming
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Efficiency Optimization Learning
 description: "Learns optimal efficiency settings and continuously improves system performance"
 icon: mdi:speedometer
 sequence:

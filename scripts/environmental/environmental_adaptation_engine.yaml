@@ -1,4 +1,5 @@
-alias: Environmental Adaptation Engine
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Environmental Adaptation Engine
 description: "Continuously adapts all systems to changing environmental conditions"
 icon: mdi:weather-partly-cloudy
 sequence:

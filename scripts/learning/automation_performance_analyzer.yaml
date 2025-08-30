@@ -1,4 +1,6 @@
-alias: Automation Performance Analyzer
+# DISABLED - AI logic too overwhelming
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Automation Performance Analyzer
 description: "Analyzes automation performance and suggests optimizations based on success patterns"
 icon: mdi:chart-timeline-variant
 sequence:

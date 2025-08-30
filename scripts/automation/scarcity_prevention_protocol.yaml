@@ -1,4 +1,5 @@
-alias: Scarcity Prevention Protocol
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Scarcity Prevention Protocol
 description: "Prevents resource scarcity through predictive conservation measures"
 icon: mdi:shield-alert
 sequence:

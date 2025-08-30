@@ -1,3 +1,4 @@
+# DISABLED - AI logic too overwhelming
 # Advanced Learning Pattern System  
 # Self-improving automation that learns and adapts behavior over time
 #
@@ -9,6 +10,7 @@
 
 alias: "Advanced Learning Engine - Behavioral Adaptation System"
 description: "Self-improving automation with machine learning-like pattern recognition and adaptive behavior"
+disabled: true
 trigger:
   # Learning triggers based on pattern analysis
   - platform: template

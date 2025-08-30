@@ -1,4 +1,5 @@
-alias: Peak Production Maintenance
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Peak Production Maintenance
 description: "Maintains peak production efficiency through resource optimization"
 icon: mdi:chart-line
 sequence:

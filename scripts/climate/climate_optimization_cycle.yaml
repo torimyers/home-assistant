@@ -1,4 +1,5 @@
-alias: Climate Optimization Cycle
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Climate Optimization Cycle
 description: "Optimizes climate settings based on conditions and conservation"
 icon: mdi:sync
 sequence:

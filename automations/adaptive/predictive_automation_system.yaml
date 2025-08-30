@@ -1,3 +1,4 @@
+# DISABLED - AI logic too overwhelming
 # Predictive Automation System
 # Forward-thinking automation with anticipatory actions and proactive optimization
 #
@@ -9,6 +10,7 @@
 
 alias: "Predictive Automation Engine - Anticipatory Intelligence System"
 description: "Forward-thinking automation with predictive modeling and anticipatory actions"
+disabled: true
 trigger:
   # Predictive need anticipation triggers
   - platform: template

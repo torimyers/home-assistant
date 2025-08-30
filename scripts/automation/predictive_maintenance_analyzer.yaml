@@ -1,4 +1,6 @@
-alias: Predictive Maintenance Analyzer
+# DISABLED - AI logic too overwhelming
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Predictive Maintenance Analyzer
 description: "Analyzes system patterns to predict maintenance needs"
 icon: mdi:wrench-clock
 sequence:

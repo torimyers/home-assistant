@@ -1,4 +1,6 @@
-alias: Usage Pattern Learning Engine
+# DISABLED - AI logic too overwhelming
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Usage Pattern Learning Engine
 description: "Advanced learning engine that tracks device usage patterns and optimizes system behavior"
 icon: mdi:school
 sequence:
