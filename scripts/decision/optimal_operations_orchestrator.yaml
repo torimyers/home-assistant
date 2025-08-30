@@ -1,4 +1,5 @@
-alias: Optimal Operations Orchestrator
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Optimal Operations Orchestrator
 description: "Orchestrates optimal system operations when all parameters are within normal ranges"
 icon: mdi:auto-fix
 sequence:

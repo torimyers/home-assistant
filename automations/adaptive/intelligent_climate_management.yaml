@@ -1,3 +1,4 @@
+# DISABLED - AI logic too overwhelming
 # Intelligent Climate Management System
 # Uses atmospheric conditions and environmental sensors for smart climate control
 #
@@ -9,6 +10,7 @@
 
 alias: "Intelligent Climate Control - Atmospheric Adaptation"
 description: "Advanced climate system with predictive environmental adaptation"
+disabled: true
 trigger:
   # Environmental change triggers
   - platform: numeric_state

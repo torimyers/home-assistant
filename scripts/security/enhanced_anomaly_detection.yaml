@@ -1,4 +1,5 @@
-alias: Enhanced Anomaly Detection
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Enhanced Anomaly Detection
 description: "Advanced security anomaly detection with pattern recognition and threat assessment"
 icon: mdi:shield-search
 sequence:

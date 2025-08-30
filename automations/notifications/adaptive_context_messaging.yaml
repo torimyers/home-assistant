@@ -1,7 +1,9 @@
+# DISABLED - AI logic too overwhelming
 ---
 # Adaptive Context Messaging System - Intelligent Contextual Notifications
-alias: "Adaptive Context Messaging System"
+# DISABLED - alias: "Adaptive Context Messaging System"
 description: "Smart notifications that adapt based on time, location, activity patterns, and system performance"
+disabled: true
 trigger:
   # Morning Context Triggers
   - platform: template

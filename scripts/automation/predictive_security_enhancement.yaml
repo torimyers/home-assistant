@@ -1,4 +1,6 @@
-alias: Predictive Security Enhancement
+# DISABLED - AI logic too overwhelming
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Predictive Security Enhancement
 description: "Enhances security based on predictive threat analysis"
 icon: mdi:shield-plus
 sequence:

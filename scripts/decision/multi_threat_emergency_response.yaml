@@ -1,4 +1,5 @@
-alias: Multi Threat Emergency Response
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Multi Threat Emergency Response
 description: "AI system for handling multiple simultaneous threats intelligently"
 icon: mdi:shield-alert
 sequence:

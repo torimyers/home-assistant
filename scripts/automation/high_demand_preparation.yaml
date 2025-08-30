@@ -1,4 +1,5 @@
-alias: High Demand Preparation
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: High Demand Preparation
 description: "Prepares systems for periods of high resource demand"
 icon: mdi:gauge-full
 sequence:

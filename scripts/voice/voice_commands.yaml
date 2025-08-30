@@ -1,7 +1,8 @@
+# DISABLED - AI logic too overwhelming
 # Voice Assistant Commands - Dune Voice Interface
 # Natural language processing for House Atreides command systems
 
-alias: "Process Voice Commands"
+# DISABLED - alias: "Process Voice Commands"
 description: "Processes natural language voice commands with Dune-themed responses"
 icon: mdi:microphone
 mode: parallel

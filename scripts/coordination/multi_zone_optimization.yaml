@@ -1,4 +1,6 @@
-alias: Multi Zone Optimization
+# DISABLED - AI logic too overwhelming
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Multi Zone Optimization
 description: "Optimizes resource usage across all zones intelligently"
 icon: mdi:home-analytics
 sequence:

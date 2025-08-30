@@ -1,4 +1,5 @@
-alias: Resource Demand Predictor
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Resource Demand Predictor
 description: "Predicts resource demand and prepares systems accordingly"
 icon: mdi:chart-bell-curve
 sequence:

@@ -1,4 +1,5 @@
-alias: Emergency Security Lockdown
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Emergency Security Lockdown
 description: "Complete security lockdown for emergency situations"
 icon: mdi:shield-alert
 sequence:

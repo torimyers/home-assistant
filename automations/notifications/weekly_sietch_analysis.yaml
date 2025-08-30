@@ -1,7 +1,9 @@
+# DISABLED - AI logic too overwhelming
 ---
 # Weekly Sietch Analysis - Comprehensive Performance Review
-alias: "Weekly Sietch Analysis"
+# DISABLED - alias: "Weekly Sietch Analysis"
 description: "Deep analytical report with trends, efficiency metrics, and strategic recommendations"
+disabled: true
 trigger:
   - platform: time
     at: "08:00:00"

@@ -1,7 +1,9 @@
+# DISABLED - AI logic too overwhelming
 ---
 # Comprehensive System Status Notification - Multi-Trigger Intelligence  
-alias: "Comprehensive System Status Notification"
+# DISABLED - alias: "Comprehensive System Status Notification"
 description: "Smart comprehensive status updates triggered by significant system changes or scheduled intervals"
+disabled: true
 trigger:
   # Scheduled comprehensive updates
   - platform: time_pattern

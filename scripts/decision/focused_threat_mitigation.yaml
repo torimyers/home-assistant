@@ -1,4 +1,5 @@
-alias: Focused Threat Mitigation
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Focused Threat Mitigation
 description: "AI system that focuses response on specific high-priority threats"
 icon: mdi:target
 sequence:

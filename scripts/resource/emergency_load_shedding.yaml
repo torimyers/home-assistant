@@ -1,4 +1,5 @@
-alias: Emergency Load Shedding
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Emergency Load Shedding
 description: "Emergency load shedding for critical resource conservation"
 icon: mdi:flash-off
 sequence:

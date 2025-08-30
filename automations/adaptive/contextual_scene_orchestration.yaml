@@ -1,3 +1,4 @@
+# DISABLED - AI logic too overwhelming
 # Contextual Scene Orchestration System
 # Intelligent scene management with adaptive parameters and cross-system coordination
 #
@@ -9,6 +10,7 @@
 
 alias: "Contextual Scene Orchestrator - Adaptive Environment Control"
 description: "Advanced scene management with intelligent selection and dynamic parameter adjustment"
+disabled: true
 trigger:
   # Activity-based scene triggers
   - platform: numeric_state
