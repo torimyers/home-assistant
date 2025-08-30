@@ -1,0 +1,32 @@
+---
+# HomeKit Entity Exclusions
+# Excludes non-essential entities to stay under the 150 device limit
+
+exclude_entities:
+  # Duplicate/redundant motion sensors
+  - binary_sensor.front_door_ding_3
+  - binary_sensor.front_door_motion_3
+  - binary_sensor.ikea_of_sweden_tradfri_motion_sensor_motion_2
+  - binary_sensor.ikea_of_sweden_tradfri_motion_sensor_motion
+  
+  # Motion sensor detailed properties (keep main sensors only)
+  - binary_sensor.office_motion_sensor_opening
+  - binary_sensor.office_motion_sensor_occupancy
+  - binary_sensor.living_room_motion_sensor_opening  
+  - binary_sensor.living_room_motion_sensor_occupancy
+  - binary_sensor.litter_robot_motion
+  
+  # Vibration sensors (non-critical for HomeKit)
+  - binary_sensor.lumi_lumi_vibration_aq1
+  - binary_sensor.lumi_lumi_vibration_aq1_2
+  - binary_sensor.lumi_lumi_vibration_aq1_4
+  - binary_sensor.dishwasher_vibration
+  
+  # Water leak sensors (keep monitoring in HA, exclude from HomeKit)
+  - binary_sensor.lumi_lumi_sensor_wleak_aq1
+  - binary_sensor.lumi_lumi_sensor_wleak_aq1_2
+  - binary_sensor.lumi_lumi_sensor_wleak_aq1_3
+  
+  # Custom template sensors (Dune-themed analytics)
+  - binary_sensor.safe_for_desert_patrol
+  - binary_sensor.sha_hulud_maintenance_protocol

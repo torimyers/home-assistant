@@ -5,7 +5,7 @@ description: "Advanced motion analytics with pattern efficiency monitoring and t
 trigger:
   - platform: template
     value_template: >-
-      {{ state_attr('sensor.motion_pattern_analysis', 'efficiency_score').replace('% efficiency', '') | int < 60 }}
+      {{ (state_attr('sensor.motion_pattern_analysis', 'efficiency_score') or '60%').replace('% efficiency', '') | int < 60 }}
     for:
       minutes: 10
     id: pattern_inefficiency
@@ -44,7 +44,7 @@ trigger:
     id: phantom_activity_pattern
   - platform: template
     value_template: >-
-      {{ state_attr('sensor.motion_pattern_analysis', 'efficiency_score').replace('% efficiency', '') | int >= 95 }}
+      {{ (state_attr('sensor.motion_pattern_analysis', 'efficiency_score') or '0%').replace('% efficiency', '') | int >= 95 }}
     for:
       minutes: 15
     id: perfect_motion_efficiency

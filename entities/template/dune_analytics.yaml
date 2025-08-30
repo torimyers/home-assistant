@@ -246,12 +246,12 @@ sensor:
       
       {# Motion sensor redundancy #}
       {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
-      {% set working_motion = motion_sensors | select('states') | select('ne', 'unavailable') | list | length %}
+      {% set working_motion = motion_sensors | reject('is_state', 'unavailable') | list | length %}
       {% set motion_redundancy = (working_motion >= 2) %}
       
       {# Power distribution #}
       {% set power_devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door'] %}
-      {% set working_power = power_devices | select('states') | select('ne', 'unavailable') | list | length %}
+      {% set working_power = power_devices | reject('is_state', 'unavailable') | list | length %}
       {% set power_redundancy = (working_power >= 1) %}
       
       {% if operational_systems == total_systems and motion_redundancy and power_redundancy %}
@@ -272,10 +272,10 @@ sensor:
         {{ systems | select('is_state', 'on') | list | length }}/{{ systems | length }} online
       motion_redundancy: >-
         {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
-        {{ sensors | select('states') | select('ne', 'unavailable') | list | length }}/{{ sensors | length }} operational
+        {{ sensors | reject('is_state', 'unavailable') | list | length }}/{{ sensors | length }} operational
       power_distribution: >-
         {% set devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door'] %}
-        {{ devices | select('states') | select('ne', 'unavailable') | list | length }}/{{ devices | length }} connected
+        {{ devices | reject('is_state', 'unavailable') | list | length }}/{{ devices | length }} connected
       survival_rating: >-
         {% set status = states('sensor.desert_survival_status') %}
         {% if status == 'Thriving' %}⭐⭐⭐⭐⭐
@@ -365,7 +365,7 @@ sensor:
           {'name': 'Living Room', 'sensor': 'binary_sensor.living_room_motion'}
         ] %}
         {% set active_zones = zones | selectattr('sensor', 'is_state', 'on') | list %}
-        {{ active_zones | first | attr('name') if active_zones else 'None' }}
+        {{ active_zones[0].name if active_zones else 'None' }}
       activity_distribution: >-
         {% set zones = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {% set active = zones | select('is_state', 'on') | list | length %}
@@ -407,7 +407,7 @@ sensor:
         {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
         {% set active = sensors | select('is_state', 'on') | list | length %}
         {% set expected = 2 if 8 <= hour <= 17 else 1 %}
-        {{ ((active/expected*100) | min(100)) | round }}% efficiency
+        {{ (((active/expected)*100) | min(100)) | round }}% efficiency
       time_analysis: >-
         {% set hour = now().hour %}
         {% if 6 <= hour <= 8 %}Morning Awakening
@@ -468,7 +468,7 @@ sensor:
         'switch.tp_link_power_strip_1446_lamp_by_door',
         'switch.tp_link_power_strip_1446_cat_bed'
       ] %}
-      {% set operational_shields = critical_devices | select('states') | select('ne', 'unavailable') | list | length %}
+      {% set operational_shields = critical_devices | reject('is_state', 'unavailable') | list | length %}
       {% set total_shields = critical_devices | length %}
       {% set shield_percentage = (operational_shields / total_shields * 100) if total_shields > 0 else 0 %}
       
@@ -484,7 +484,7 @@ sensor:
     attributes:
       shield_generators: >-
         {% set devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door', 'switch.tp_link_power_strip_1446_cat_bed'] %}
-        {{ devices | select('states') | select('ne', 'unavailable') | list | length }}/{{ devices | length }} operational
+        {{ devices | reject('is_state', 'unavailable') | list | length }}/{{ devices | length }} operational
       power_consumption: >-
         {% set devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door', 'switch.tp_link_power_strip_1446_cat_bed'] %}
         {{ devices | select('is_state', 'on') | list | length }} shields drawing power
@@ -548,7 +548,7 @@ sensor:
       
       {# Simulated efficiency based on motion sensor responsiveness #}
       {% set motion_sensors = ['binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion', 'binary_sensor.office_motion'] %}
-      {% set responsive_sensors = motion_sensors | select('states') | select('ne', 'unavailable') | list | length %}
+      {% set responsive_sensors = motion_sensors | reject('is_state', 'unavailable') | list | length %}
       {% set sensor_efficiency = (responsive_sensors / motion_sensors | length * 100) if motion_sensors | length > 0 else 0 %}
       
       {# Time-based performance adjustment #}
@@ -567,7 +567,7 @@ sensor:
       motion_blueprints: "3 active motion lighting blueprints"
       sensor_responsiveness: >-
         {% set sensors = ['binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion', 'binary_sensor.office_motion'] %}
-        {{ sensors | select('states') | select('ne', 'unavailable') | list | length }}/{{ sensors | length }} sensors responsive
+        {{ sensors | reject('is_state', 'unavailable') | list | length }}/{{ sensors | length }} sensors responsive
       optimal_hours: "08:00 - 22:00"
       efficiency_rating: >-
         {% set score = states('sensor.blueprint_efficiency_score') | float %}
@@ -587,12 +587,12 @@ sensor:
       {% if is_night %}
         {# Night mode calculations #}
         {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
-        {% set active_sensors = motion_sensors | select('states') | select('ne', 'unavailable') | list | length %}
+        {% set active_sensors = motion_sensors | reject('is_state', 'unavailable') | list | length %}
         {% set sensor_coverage = (active_sensors / motion_sensors | length * 100) if motion_sensors | length > 0 else 0 %}
         
         {# Security device status #}
         {% set security_devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door'] %}
-        {% set operational_devices = security_devices | select('states') | select('ne', 'unavailable') | list | length %}
+        {% set operational_devices = security_devices | reject('is_state', 'unavailable') | list | length %}
         {% set device_readiness = (operational_devices / security_devices | length * 100) if security_devices | length > 0 else 0 %}
         
         {% set effectiveness = (sensor_coverage * 0.7) + (device_readiness * 0.3) %}
@@ -609,12 +609,12 @@ sensor:
         {{ 'Night Watch Active' if hour >= 22 or hour <= 6 else 'Day Patrol Mode' }}
       sensor_network: >-
         {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
-        {{ sensors | select('states') | select('ne', 'unavailable') | list | length }}/{{ sensors | length }} perimeter sensors active
+        {{ sensors | reject('is_state', 'unavailable') | list | length }}/{{ sensors | length }} perimeter sensors active
       response_devices: >-
         {% set devices = ['switch.tp_link_power_strip_173b_couch_lamp', 'switch.tp_link_power_strip_1446_lamp_by_door'] %}
-        {{ devices | select('states') | select('ne', 'unavailable') | list | length }}/{{ devices | length }} response devices ready
+        {{ devices | reject('is_state', 'unavailable') | list | length }}/{{ devices | length }} response devices ready
       threat_level: >-
-        {% set effectiveness = states('sensor.night_security_effectiveness') | float %}
+        {% set effectiveness = states('sensor.night_security_effectiveness') | float(0) %}
         {% if effectiveness >= 90 %}Fortress Secured
         {% elif effectiveness >= 80 %}High Security
         {% elif effectiveness >= 70 %}Standard Guard
@@ -682,7 +682,7 @@ sensor:
       
       {# Sensor responsiveness #}
       {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
-      {% set responsive_sensors = motion_sensors | select('states') | select('ne', 'unavailable') | list | length %}
+      {% set responsive_sensors = motion_sensors | reject('is_state', 'unavailable') | list | length %}
       {% set sensor_bonus = (responsive_sensors / motion_sensors | length * 10) if motion_sensors | length > 0 else 0 %}
       
       {# Time of day factor #}
@@ -697,13 +697,13 @@ sensor:
       current_load: "{{ states.switch | selectattr('state', 'eq', 'on') | list | length }} active processes"
       sensor_network: >-
         {% set sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
-        {{ sensors | select('states') | select('ne', 'unavailable') | list | length }}/{{ sensors | length }} sensors responding
+        {{ sensors | reject('is_state', 'unavailable') | list | length }}/{{ sensors | length }} sensors responding
       response_grade: >-
         {% set base_response = 95 %}
         {% set active_switches = states.switch | selectattr('state', 'eq', 'on') | list | length %}
         {% set load_penalty = active_switches * 1.5 if active_switches > 8 else 0 %}
         {% set motion_sensors = ['binary_sensor.office_motion', 'binary_sensor.kitchen_motion', 'binary_sensor.living_room_motion'] %}
-        {% set responsive_sensors = motion_sensors | select('states') | select('ne', 'unavailable') | list | length %}
+        {% set responsive_sensors = motion_sensors | reject('is_state', 'unavailable') | list | length %}
         {% set sensor_bonus = (responsive_sensors / motion_sensors | length * 10) if motion_sensors | length > 0 else 0 %}
         {% set hour = now().hour %}
         {% set time_penalty = 0 if 8 <= hour <= 20 else 5 %}
