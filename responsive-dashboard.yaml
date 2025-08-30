@@ -539,6 +539,211 @@ views:
               border: 3px solid #FF8C00;
             }
 
+      # Individual Room Lighting Controls 
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: "## 💡 **Individual Room Lighting**"
+            card_mod:
+              style: |
+                ha-card {
+                  background: #FF8C00;
+                  color: #2F1B14;
+                  text-align: center;
+                }
+
+          # Kitchen Lights
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
+                name: "Kitchen Oven Light"
+                secondary_info: "Food preparation area"
+                icon: mdi:chef-hat
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light', 'on') %}#FFA500{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+              - type: custom:mushroom-entity-card
+                entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
+                name: "Kitchen Sink Light"  
+                secondary_info: "Water work station"
+                icon: mdi:water-pump
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2', 'on') %}#FFA500{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+          # Office Lights Row 1
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: light.ledvance_a19_rgbw_light
+                name: "Office Right Light"
+                secondary_info: "Command station right"
+                icon: mdi:desk-lamp
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('light.ledvance_a19_rgbw_light', 'on') %}#4169E1{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+              - type: custom:mushroom-entity-card
+                entity: light.ledvance_a19_rgbw_light_2
+                name: "Office Upper Light"
+                secondary_info: "Command station ceiling"
+                icon: mdi:ceiling-light
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('light.ledvance_a19_rgbw_light_2', 'on') %}#4169E1{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+          # Office Lights Row 2 + Dining Room
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: light.ledvance_a19_rgbw_light_3
+                name: "Office Left Light"
+                secondary_info: "Command station left"
+                icon: mdi:floor-lamp
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('light.ledvance_a19_rgbw_light_3', 'on') %}#4169E1{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+              - type: custom:mushroom-entity-card
+                entity: light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+                name: "Dining Room (All 4)"
+                secondary_info: "Fremen feast table"
+                icon: mdi:table-chair
+                tap_action:
+                  action: call-service
+                  service: script.toggle
+                  service_data:
+                    entity_id: script.dining_room_lights_toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light', 'on') %}#DC143C{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+          # Living Areas
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.tp_link_power_strip_173b_couch_lamp
+                name: "Living Room Couch"
+                secondary_info: "Tribal gathering area"
+                icon: mdi:sofa
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('switch.tp_link_power_strip_173b_couch_lamp', 'on') %}#228B22{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+              - type: custom:mushroom-entity-card
+                entity: light.tori_light
+                name: "Bedroom Light"
+                secondary_info: "Private quarters"
+                icon: mdi:bed
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('light.tori_light', 'on') %}#9370DB{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+          # Entry & Outdoor
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.tp_link_power_strip_1446_lamp_by_door
+                name: "Entry Door Light"
+                secondary_info: "Sietch portal guardian"
+                icon: mdi:door-open
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('switch.tp_link_power_strip_1446_lamp_by_door', 'on') %}#DAA520{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+              - type: custom:mushroom-entity-card
+                entity: light.front_light
+                name: "Front Yard Light"
+                secondary_info: "Perimeter defense"
+                icon: mdi:home-outline
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('light.front_light', 'on') %}#FF6347{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: light.backyard_light
+                name: "Backyard Light"
+                secondary_info: "Rear perimeter watch"
+                icon: mdi:tree
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: {% if is_state('light.backyard_light', 'on') %}#8FBC8F{% else %}#696969{% endif %};
+                      color: white;
+                    }
+
+              # Master All Lights Control
+              - type: custom:mushroom-entity-card
+                entity: scene.energy_conservation
+                name: "All Lights OFF"
+                secondary_info: "Conservation protocol"
+                icon: mdi:lightbulb-off
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.energy_conservation
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: linear-gradient(45deg, #800080, #4B0082);
+                      color: white;
+                    }
+
       # Room Scene Controls (Only existing scenes)
       - type: vertical-stack
         cards:

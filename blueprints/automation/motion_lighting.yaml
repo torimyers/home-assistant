@@ -155,18 +155,17 @@ trigger:
     to: "on"
 
 condition:
-  - condition: template
-    value_template: >
-      {% if check_light_state %}
-        {% set condition_entity = condition_entity %}
-        {% if condition_entity %}
-          {{ states(condition_entity) == 'off' }}
-        {% else %}
-          true
-        {% endif %}
-      {% else %}
-        true
-      {% endif %}
+  - condition: or
+    conditions:
+      - condition: template
+        value_template: "{{ not (check_light_state | default(false)) }}"
+      - condition: and
+        conditions:
+          - condition: template
+            value_template: "{{ check_light_state | default(false) }}"
+          - condition: state
+            entity_id: !input condition_entity
+            state: "off"
 
 action:
   # Turn on lights based on activation type
@@ -198,7 +197,7 @@ action:
   # Send activation notification
   - condition: template
     value_template: !input enable_notifications
-  - service: notify.{{ notification_device }}
+  - service_template: "notify.{{ notification_device | default('mobile_app_tori_phone_2') }}"
     data:
       message: !input activation_message
   
@@ -254,6 +253,6 @@ action:
   # Send deactivation notification
   - condition: template
     value_template: !input enable_notifications
-  - service: notify.{{ notification_device }}
+  - service_template: "notify.{{ notification_device | default('mobile_app_tori_phone_2') }}"
     data:
       message: !input deactivation_message

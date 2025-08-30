@@ -2,13 +2,9 @@
 # System Status Binary Sensors - Dune Monitoring Network
 # Critical status indicators for system health and security
 
-binary_sensor:
-  - platform: template
-    sensors:
-      house_occupied:
-        friendly_name: "House Occupied"
-        unique_id: "house_occupied"
-        value_template: >-
+- name: "House Occupied"
+  unique_id: "house_occupied"
+  state: >-
           {% set motion_sensors = [
             'binary_sensor.office_motion',
             'binary_sensor.kitchen_motion', 
@@ -17,13 +13,12 @@ binary_sensor:
             'binary_sensor.front_door_motion_3'
           ] %}
           {{ motion_sensors | select('is_state', 'on') | list | length > 0 }}
-        icon_template: "mdi:home-account"
-        device_class: occupancy
+  icon: "mdi:home-account"
+  device_class: occupancy
 
-      all_systems_operational:
-        friendly_name: "All Systems Operational"
-        unique_id: "all_systems_operational"
-        value_template: >-
+- name: "All Systems Operational"
+  unique_id: "all_systems_operational"
+  state: >-
           {% set critical_systems = [
             'sensor.sietch_health_score',
             'sensor.automation_success_rate',
@@ -36,13 +31,12 @@ binary_sensor:
             {% endif %}
           {% endfor %}
           {{ operational_count == critical_systems | length }}
-        icon_template: "mdi:check-circle"
-        device_class: safety
+  icon: "mdi:check-circle"
+  device_class: safety
 
-      critical_alert_status:
-        friendly_name: "Critical Alert Status"
-        unique_id: "critical_alert_status"
-        value_template: >-
+- name: "Critical Alert Status"
+  unique_id: "critical_alert_status"
+  state: >-
           {% set alert_sensors = [
             'sensor.sietch_health_score',
             'sensor.water_conservation_index',
@@ -56,22 +50,20 @@ binary_sensor:
           {% else %}
             {{ false }}
           {% endfor %}
-        icon_template: "mdi:alert-octagon"
-        device_class: problem
+  icon: "mdi:alert-octagon"
+  device_class: problem
 
-      automation_system_healthy:
-        friendly_name: "Automation System Healthy"
-        unique_id: "automation_system_healthy"
-        value_template: >-
+- name: "Automation System Healthy"
+  unique_id: "automation_system_healthy"
+  state: >-
           {% set success_rate = states('sensor.automation_success_rate') | float(0) %}
           {{ success_rate > 85 }}
-        icon_template: "mdi:robot"
-        device_class: connectivity
+  icon: "mdi:robot"
+  device_class: connectivity
 
-      night_mode_active:
-        friendly_name: "Night Mode Active"
-        unique_id: "night_mode_active"
-        value_template: >-
+- name: "Night Mode Active"
+  unique_id: "night_mode_active"
+  state: >-
           {% set current_time = now().hour %}
           {{ current_time >= 22 or current_time <= 6 }}
-        icon_template: "mdi:weather-night"
+  icon: "mdi:weather-night"

@@ -1,0 +1,16 @@
+id: guest_bathroom_lights_off_after_motion
+alias: Guest Bathroom Lights Off After Motion
+description: Guest Departure Blessing - Journey Blessed
+trigger:
+- platform: state
+  entity_id: binary_sensor.guest_bathroom_motion
+  to: 'off'
+  for: 00:15:00
+action:
+- service: light.turn_off
+  target:
+    area_id: guest_bathroom
+- service: notify.mobile_app_tori_phone_2
+  data:
+    message: May your path be blessed with water, shade, and the friendship of the
+      desert.
