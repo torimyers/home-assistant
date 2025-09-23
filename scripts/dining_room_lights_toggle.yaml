@@ -2,11 +2,12 @@
 # Dining Room Lights Toggle Script
 # Controls all 4 dining room table lights as one unit
 
-dining_room_lights_toggle:
-  alias: "Toggle All Dining Room Lights"
-  description: "Fremen Feast - Toggle all dining room table illumination"
-  icon: mdi:table-chair
-  sequence:
+script:
+  dining_room_lights_toggle:
+    alias: "Toggle All Dining Room Lights"
+    description: "Fremen Feast - Toggle all dining room table illumination"
+    icon: mdi:table-chair
+    sequence:
     - choose:
         # If any light is on, turn all off
         - conditions:
