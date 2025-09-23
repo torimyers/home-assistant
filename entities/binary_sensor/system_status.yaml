@@ -2,6 +2,7 @@
 # System Status Binary Sensors - Dune Monitoring Network
 # Critical status indicators for system health and security
 
+binary_sensor:
 - name: "House Occupied"
   unique_id: "house_occupied"
   state: >-
