@@ -1,6 +1,1 @@
-{
-  "task": "m-fix-sunrise-sunset-routines",
-  "branch": "fix/sunrise-sunset-routines",
-  "services": ["automations/system", "blueprints/automation"],
-  "updated": "2025-09-22"
-}
+{"task": "n-convert-motion-blueprints", "branch": "convert/motion-blueprints", "services": ["automations/guest_bathroom", "automations/office", "automations/kitchen", "blueprints/automation"], "updated": "2025-09-22"}
