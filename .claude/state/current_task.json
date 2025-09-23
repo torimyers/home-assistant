@@ -1,6 +1,6 @@
 {
-  "task": "h-fix-empty-entity-references",
-  "branch": "fix/empty-entity-references",
-  "services": ["automations/voice_control", "automations/adaptive"],
+  "task": "h-fix-missing-scenes",
+  "branch": "fix/missing-scenes",
+  "services": ["automations/living_room", "automations/system", "scenes"],
   "updated": "2025-09-22"
 }
