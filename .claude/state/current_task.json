@@ -1,6 +1,6 @@
 {
-  "task": "h-fix-broken-bathroom-automations",
-  "branch": "fix/broken-bathroom-automations",
-  "services": ["automations/bathroom"],
+  "task": "h-fix-empty-entity-references",
+  "branch": "fix/empty-entity-references",
+  "services": ["automations/voice_control", "automations/adaptive"],
   "updated": "2025-09-22"
 }
