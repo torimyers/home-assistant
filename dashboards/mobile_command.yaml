@@ -33,10 +33,10 @@ views:
     icon: mdi:home
     path: home
     badges:
-      - entity: sensor.sietch_health_score
-        name: "Health"
-      - entity: binary_sensor.house_occupied
-        name: "Occupied"
+      - entity: sensor.automation_success_rate
+        name: "Automation"
+      - entity: binary_sensor.kitchen_motion
+        name: "Activity"
     cards:
       # Mobile Header - Compact
       - type: custom:mushroom-title-card
@@ -56,16 +56,16 @@ views:
       - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
-            entity: sensor.sietch_health_score
+            entity: sensor.automation_success_rate
             name: "System Health"
-            secondary_info: "Sietch Status"
+            secondary_info: "Automation Success"
             icon: mdi:shield-check
             layout: vertical
-            
+
           - type: custom:mushroom-entity-card
-            entity: sensor.spice_production_level
+            entity: sensor.energy_efficiency_rating
             name: "Efficiency"
-            secondary_info: "Spice Production"
+            secondary_info: "Energy Rating"
             icon: mdi:chart-line
             layout: vertical
             
@@ -109,14 +109,9 @@ views:
       - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
-            entity: scene.energy_conservation
-            name: "Energy Save"
-            icon: mdi:leaf
-            tap_action:
-              action: call-service
-              service: scene.turn_on
-              service_data:
-                entity_id: scene.energy_conservation
+            entity: switch.tp_link_power_strip_173b_couch_lamp
+            name: "Living Lamp"
+            icon: mdi:lamp
             card_mod:
               style: |
                 ha-card {
@@ -357,15 +352,14 @@ views:
                 }
 
           # All Lights Control
-          - type: custom:mushroom-entity-card
-            entity: scene.energy_conservation
+          - type: button
             name: "All Lights Off"
             icon: mdi:lightbulb-off
             tap_action:
               action: call-service
-              service: scene.turn_on
+              service: light.turn_off
               service_data:
-                entity_id: scene.energy_conservation
+                entity_id: all
             card_mod:
               style: |
                 ha-card {
@@ -492,7 +486,7 @@ views:
               font-size: 14px;
             }
         entities:
-          - entity: binary_sensor.house_occupied
+          - entity: binary_sensor.office_motion
             name: "House Occupied"
             secondary_info: last-changed
           - entity: binary_sensor.all_systems_operational
@@ -625,10 +619,8 @@ views:
       - type: grid
         columns: 1
         cards:
-          - type: custom:mushroom-entity-card
-            entity: sensor.sietch_health_score
+          - type: button
             name: "🖥️ Desktop Command"
-            secondary_info: "Full dashboard with analytics (House Dodson Command)"
             icon: mdi:monitor-dashboard
             tap_action:
               action: navigate

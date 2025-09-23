@@ -1,1 +1,1 @@
-{"task": "o-simplify-complex-automations", "branch": "simplify/complex-automations", "services": ["automations"], "updated": "2025-09-22"}
+{"task": "p-cleanup-unavailable-entities", "branch": "cleanup/unavailable-entities", "services": ["entities", "dashboards", "automations"], "updated": "2025-09-22"}

@@ -96,7 +96,7 @@ views:
           show: true
         graph_span: 24h
         series:
-          - entity: sensor.sietch_health_score
+          - entity: sensor.automation_success_rate
             name: "System Health"
             color: "#32CD32"
           - entity: sensor.automation_success_rate  
@@ -112,15 +112,15 @@ views:
         entities:
           - type: section
             label: "System Health Components"
-          - entity: sensor.sietch_health_score
+          - entity: sensor.automation_success_rate
             name: "Overall Health Score"
             secondary_info: last-updated
           - type: attribute
-            entity: sensor.sietch_health_score
+            entity: sensor.automation_success_rate
             attribute: motion_sensor_status
             name: "Motion Sensors"
           - type: attribute
-            entity: sensor.sietch_health_score
+            entity: sensor.automation_success_rate
             attribute: switch_health
             name: "Device Health"
           
@@ -183,7 +183,7 @@ views:
               red: 55
 
           - type: gauge
-            entity: sensor.spice_production_level
+            entity: sensor.energy_efficiency_rating
             name: "Spice Production"
             unit: "%"
             min: 0
@@ -250,7 +250,7 @@ views:
           - entity: sensor.energy_shield_status
             name: "Energy Shield"
             color: "#FFD700"  
-          - entity: sensor.spice_production_level
+          - entity: sensor.energy_efficiency_rating
             name: "Spice Production"
             color: "#FF8C00"
 
@@ -357,7 +357,7 @@ views:
       - type: entities
         title: "📊 System Statistics"
         entities:
-          - entity: sensor.sietch_health_score
+          - entity: sensor.automation_success_rate
             name: "System Health Score"
             secondary_info: last-updated
           - entity: sensor.automation_success_rate

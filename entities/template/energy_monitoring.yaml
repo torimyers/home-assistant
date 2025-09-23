@@ -52,23 +52,17 @@ sensor:
     unique_id: "energy_efficiency_rating"
     state: >-
       {% set consumption = states('sensor.holtzman_energy_consumption') | float(0) %}
-      {% set occupancy = 1 if is_state('binary_sensor.house_occupied', 'on') else 0.5 %}
-      {% set conservation_mode = is_state('scene.energy_conservation', 'on') %}
-      {% set automation_health = states('sensor.automation_success_rate') | float(90) %}
-      
+      {% set automation_count = states.automation | selectattr('state', 'eq', 'on') | list | length %}
+      {% set total_automations = states.automation | list | length %}
+      {% set automation_health = (automation_count / total_automations * 100) if total_automations > 0 else 90 %}
+
       {# Base efficiency calculation #}
       {% set base_efficiency = 100 - (consumption / 10) %}
-      
-      {# Occupancy adjustment #}
-      {% set occupancy_adjusted = base_efficiency * occupancy %}
-      
-      {# Conservation mode bonus #}
-      {% set conservation_bonus = 15 if conservation_mode else 0 %}
-      
+
       {# Automation health factor #}
       {% set automation_factor = automation_health / 100 %}
-      
-      {% set final_efficiency = (occupancy_adjusted + conservation_bonus) * automation_factor %}
+
+      {% set final_efficiency = base_efficiency * automation_factor %}
       {{ final_efficiency | round(1) }}
     unit_of_measurement: "%"
     icon: "mdi:leaf"
@@ -80,8 +74,10 @@ sensor:
         {% elif rating >= 85 %}B+{% elif rating >= 80 %}B
         {% elif rating >= 75 %}C+{% elif rating >= 70 %}C
         {% else %}Needs Improvement{% endif %}
-      conservation_mode: >-
-        {{ 'Active' if is_state('scene.energy_conservation', 'on') else 'Inactive' }}
+      automation_health: >-
+        {% set enabled = states.automation | selectattr('state', 'eq', 'on') | list | length %}
+        {% set total = states.automation | list | length %}
+        {{ enabled }}/{{ total }} automations active
 
   - name: "Peak Energy Demand Forecast"
     unique_id: "peak_energy_demand_forecast"
@@ -130,162 +126,3 @@ sensor:
         {% if forecast < 100 %}Low{% elif forecast < 200 %}Moderate
         {% elif forecast < 300 %}High{% else %}Critical{% endif %}
 
-  # ============================================================================
-  # RENEWABLE ENERGY SIMULATION
-  # ============================================================================
-
-  - name: "Solar Harvester Production"
-    unique_id: "solar_harvester_production"
-    state: >-
-      {% set hour = now().hour %}
-      {% set month = now().month %}
-      {% set weather_factor = 1.0 %}
-      
-      {# Solar hour calculations #}
-      {% if hour >= 6 and hour <= 18 %}
-        {% if hour >= 10 and hour <= 16 %}
-          {% set solar_efficiency = 0.95 %}
-        {% elif hour >= 8 and hour <= 18 %}
-          {% set solar_efficiency = 0.7 %}
-        {% else %}
-          {% set solar_efficiency = 0.3 %}
-        {% endif %}
-      {% else %}
-        {% set solar_efficiency = 0.0 %}
-      {% endif %}
-      
-      {# Seasonal solar variations #}
-      {% if month in [5, 6, 7, 8] %}
-        {% set seasonal_bonus = 1.3 %}
-      {% elif month in [3, 4, 9, 10] %}
-        {% set seasonal_bonus = 1.0 %}
-      {% else %}
-        {% set seasonal_bonus = 0.6 %}
-      {% endif %}
-      
-      {# Weather simulation (use system health as proxy) #}
-      {% set health = states('sensor.sietch_health_score') | float(85) %}
-      {% if health >= 90 %}
-        {% set weather_factor = 1.1 %}
-      {% elif health < 70 %}
-        {% set weather_factor = 0.8 %}
-      {% endif %}
-      
-      {# Maximum theoretical production: 500W #}
-      {% set max_production = 500 %}
-      {% set current_production = max_production * solar_efficiency * seasonal_bonus * weather_factor %}
-      {{ current_production | round(1) }}
-    unit_of_measurement: "W"
-    icon: "mdi:solar-power"
-    device_class: power
-    attributes:
-      solar_efficiency: >-
-        {% set hour = now().hour %}
-        {% if hour >= 10 and hour <= 16 %}Peak (95%)
-        {% elif hour >= 8 and hour <= 18 %}Good (70%)
-        {% elif hour >= 6 and hour <= 20 %}Low (30%)
-        {% else %}None (0%){% endif %}
-      weather_conditions: >-
-        {% set health = states('sensor.sietch_health_score') | float(85) %}
-        {% if health >= 90 %}Clear Skies (+10%)
-        {% elif health < 70 %}Dust Storm (-20%)
-        {% else %}Partly Cloudy{% endif %}
-
-  - name: "Energy Independence Score"
-    unique_id: "energy_independence_score"
-    state: >-
-      {% set production = states('sensor.solar_harvester_production') | float(0) %}
-      {% set consumption = states('sensor.holtzman_energy_consumption') | float(1) %}
-      {% set shield_status = states('sensor.energy_shield_status') | float(60) %}
-      
-      {# Production vs Consumption ratio #}
-      {% set production_ratio = (production / consumption) * 100 if consumption > 0 else 100 %}
-      
-      {# Energy storage factor (using shield status as proxy) #}
-      {% set storage_factor = shield_status / 100 %}
-      
-      {# Independence calculation #}
-      {% set base_independence = production_ratio * 0.7 + shield_status * 0.3 %}
-      
-      {# Bonus for overproduction #}
-      {% if production > consumption %}
-        {% set overproduction_bonus = min((production - consumption) / consumption * 10, 20) %}
-      {% else %}
-        {% set overproduction_bonus = 0 %}
-      {% endif %}
-      
-      {% set final_score = base_independence + overproduction_bonus %}
-      {{ final_score | round(1) }}
-    unit_of_measurement: "%"
-    icon: "mdi:home-battery"
-    device_class: battery
-    attributes:
-      energy_balance: >-
-        {% set production = states('sensor.solar_harvester_production') | float(0) %}
-        {% set consumption = states('sensor.holtzman_energy_consumption') | float(1) %}
-        {% set balance = production - consumption %}
-        {% if balance > 50 %}Surplus (+{{ balance | round(0) }}W)
-        {% elif balance > 0 %}Slight Surplus (+{{ balance | round(0) }}W)
-        {% elif balance > -50 %}Slight Deficit ({{ balance | round(0) }}W)
-        {% else %}Significant Deficit ({{ balance | round(0) }}W){% endif %}
-      independence_level: >-
-        {% set score = states('sensor.energy_independence_score') | float(0) %}
-        {% if score >= 100 %}Energy Sovereign
-        {% elif score >= 80 %}Highly Independent
-        {% elif score >= 60 %}Moderately Independent
-        {% elif score >= 40 %}Partially Dependent
-        {% else %}Highly Dependent{% endif %}
-
-  # ============================================================================
-  # COST OPTIMIZATION ANALYTICS
-  # ============================================================================
-
-  - name: "Daily Energy Cost Estimate"
-    unique_id: "daily_energy_cost_estimate"
-    state: >-
-      {% set consumption = states('sensor.holtzman_energy_consumption') | float(0) %}
-      {% set production = states('sensor.solar_harvester_production') | float(0) %}
-      {% set hour = now().hour %}
-      
-      {# Time-of-use pricing simulation #}
-      {% if hour >= 16 and hour <= 21 %}
-        {% set rate = 0.35 %}  {# Peak rate $/kWh #}
-      {% elif hour >= 6 and hour <= 16 %}
-        {% set rate = 0.20 %}  {# Mid-peak rate #}
-      {% else %}
-        {% set rate = 0.12 %}  {# Off-peak rate #}
-      {% endif %}
-      
-      {# Net consumption (consumption minus production) #}
-      {% set net_consumption = consumption - production %}
-      {% if net_consumption < 0 %}
-        {% set net_consumption = 0 %}  {# No cost if overproducing #}
-      {% endif %}
-      
-      {# Daily cost estimate (current hourly rate * 24) #}
-      {% set hourly_cost = (net_consumption / 1000) * rate %}
-      {% set daily_cost = hourly_cost * 24 %}
-      {{ daily_cost | round(2) }}
-    unit_of_measurement: "$"
-    icon: "mdi:currency-usd"
-    attributes:
-      current_rate: >-
-        {% set hour = now().hour %}
-        {% if hour >= 16 and hour <= 21 %}Peak ($0.35/kWh)
-        {% elif hour >= 6 and hour <= 16 %}Mid-Peak ($0.20/kWh)
-        {% else %}Off-Peak ($0.12/kWh){% endif %}
-      monthly_projection: >-
-        {% set daily = states('sensor.daily_energy_cost_estimate') | float(0) %}
-        ${{ (daily * 30) | round(2) }}
-      savings_potential: >-
-        {% set production = states('sensor.solar_harvester_production') | float(0) %}
-        {% set hour = now().hour %}
-        {% if hour >= 16 and hour <= 21 %}
-          {% set rate = 0.35 %}
-        {% elif hour >= 6 and hour <= 16 %}
-          {% set rate = 0.20 %}
-        {% else %}
-          {% set rate = 0.12 %}
-        {% endif %}
-        {% set hourly_savings = (production / 1000) * rate %}
-        ${{ (hourly_savings * 24 * 30) | round(2) }}/month
