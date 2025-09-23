@@ -213,7 +213,7 @@ condition:
   # Check if the correct trigger type was activated
   - condition: template
     value_template: >-
-      {% set t_type = trigger_type %}
+      {% set t_type = !input trigger_type %}
       {% if t_type == 'time' %}
         {{ trigger.platform == 'time' }}
       {% elif t_type == 'sunrise' %}
@@ -227,8 +227,8 @@ condition:
   # Person condition check
   - condition: template
     value_template: >-
-      {% if enable_conditions and condition_person %}
-        {{ is_state(condition_person, 'home') }}
+      {% if !input enable_conditions and !input condition_person %}
+        {{ is_state(!input condition_person, 'home') }}
       {% else %}
         true
       {% endif %}

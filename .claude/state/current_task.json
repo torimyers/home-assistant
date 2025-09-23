@@ -1,6 +1,6 @@
 {
-  "task": "h-fix-missing-scenes",
-  "branch": "fix/missing-scenes",
-  "services": ["automations/living_room", "automations/system", "scenes"],
+  "task": "m-fix-sunrise-sunset-routines",
+  "branch": "fix/sunrise-sunset-routines",
+  "services": ["automations/system", "blueprints/automation"],
   "updated": "2025-09-22"
 }
