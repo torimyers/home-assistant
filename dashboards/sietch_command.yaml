@@ -42,7 +42,7 @@ views:
       - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
-            entity: sensor.sietch_health_score
+            entity: sensor.automation_success_rate
             name: "Sietch Health"
             icon: mdi:shield-check
             primary_info: state
@@ -59,7 +59,7 @@ views:
                   --card-secondary-color: #5D4E37;
                 }
                 .icon {
-                  color: {% if states('sensor.sietch_health_score')|float >= 90 %}#228B22{% elif states('sensor.sietch_health_score')|float >= 75 %}#FF8C00{% else %}#DC143C{% endif %} !important;
+                  color: {% if states('sensor.automation_success_rate')|float >= 90 %}#228B22{% elif states('sensor.automation_success_rate')|float >= 75 %}#FF8C00{% else %}#DC143C{% endif %} !important;
                 }
 
           - type: custom:mushroom-entity-card
@@ -81,7 +81,7 @@ views:
                 }
 
           - type: custom:mushroom-entity-card
-            entity: sensor.spice_production_level
+            entity: sensor.energy_efficiency_rating
             name: "Spice Production"
             icon: mdi:shimmer
             primary_info: state
@@ -128,7 +128,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: gauge
-                entity: sensor.sietch_health_score
+                entity: sensor.automation_success_rate
                 name: "Sietch Health Score"
                 unit: "%"
                 min: 0
@@ -190,15 +190,14 @@ views:
           # Quick Action Controls
           - type: horizontal-stack
             cards:
-              - type: custom:mushroom-entity-card
-                entity: scene.energy_conservation
-                name: "Energy Conservation"
-                icon: mdi:leaf
+              - type: button
+                name: "All Lights Off"
+                icon: mdi:lightbulb-off
                 tap_action:
                   action: call-service
-                  service: scene.turn_on
+                  service: light.turn_off
                   service_data:
-                    entity_id: scene.energy_conservation
+                    entity_id: all
                 card_mod:
                   style: |
                     ha-card {
@@ -562,7 +561,7 @@ views:
           - type: entities
             title: "📈 System Performance Summary"
             entities:
-              - entity: sensor.sietch_health_score
+              - entity: sensor.automation_success_rate
                 name: "Overall Health"
                 icon: mdi:heart-pulse
               - entity: sensor.harvester_efficiency
@@ -571,7 +570,7 @@ views:
               - entity: sensor.water_conservation_index
                 name: "Water Discipline"
                 icon: mdi:water-percent
-              - entity: sensor.spice_production_level
+              - entity: sensor.energy_efficiency_rating
                 name: "Spice Yield"
                 icon: mdi:shimmer
               - entity: sensor.fremen_activity_level
@@ -600,30 +599,23 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
-                entity: binary_sensor.house_occupied
+                entity: binary_sensor.kitchen_motion
                 name: "Sietch Occupied"
                 icon: mdi:home-account
                 card_mod:
                   style: |
                     ha-card {
-                      background: {% if is_state('binary_sensor.house_occupied', 'on') %}linear-gradient(45deg, #228B22, #32CD32){% else %}linear-gradient(45deg, #8B0000, #DC143C){% endif %};
+                      background: {% if is_state('binary_sensor.kitchen_motion', 'on') %}linear-gradient(45deg, #228B22, #32CD32){% else %}linear-gradient(45deg, #8B0000, #DC143C){% endif %};
                       color: white;
-                      border: 2px solid {% if is_state('binary_sensor.house_occupied', 'on') %}#006400{% else %}#8B0000{% endif %};
+                      border: 2px solid {% if is_state('binary_sensor.kitchen_motion', 'on') %}#006400{% else %}#8B0000{% endif %};
                     }
 
               - type: custom:mushroom-entity-card
-                entity: input_boolean.system_health_monitoring
-                name: "Health Monitor"
-                icon: mdi:monitor-dashboard
+                entity: input_boolean.notification_system_enabled
+                name: "Notifications"
+                icon: mdi:bell-circle
                 tap_action:
                   action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('input_boolean.system_health_monitoring', 'on') %}linear-gradient(45deg, #228B22, #32CD32){% else %}linear-gradient(45deg, #8B0000, #DC143C){% endif %};
-                      color: white;
-                      border: 2px solid {% if is_state('input_boolean.system_health_monitoring', 'on') %}#006400{% else %}#8B0000{% endif %};
-                    }
 
   # ==========================================================================
   # VIEW 2: DETAILED ANALYTICS - Deep Dive into Sensor Data
@@ -653,7 +645,7 @@ views:
         entities:
           - type: section
             label: "Sietch Vitals & System Health"
-          - entity: sensor.sietch_health_score
+          - entity: sensor.automation_success_rate
             name: "Health Score"
             secondary_info: attribute
             attribute: status_level
@@ -665,7 +657,7 @@ views:
             name: "Water Conservation"
             secondary_info: attribute
             attribute: conservation_level
-          - entity: sensor.spice_production_level
+          - entity: sensor.energy_efficiency_rating
             name: "Spice Production"
             secondary_info: attribute
             attribute: guild_rating
@@ -804,15 +796,14 @@ views:
 
           - type: horizontal-stack
             cards:
-              - type: custom:mushroom-entity-card
-                entity: scene.energy_conservation
-                name: "Conserve Resources"
-                icon: mdi:leaf
+              - type: button
+                name: "All Lights Off"
+                icon: mdi:lightbulb-off
                 tap_action:
                   action: call-service
-                  service: scene.turn_on
+                  service: light.turn_off
                   service_data:
-                    entity_id: scene.energy_conservation
+                    entity_id: all
 
               - type: custom:mushroom-entity-card
                 entity: scene.system_storm_mode
@@ -825,14 +816,14 @@ views:
                     entity_id: scene.system_storm_mode
 
               - type: custom:mushroom-entity-card
-                entity: scene.water_emergency
-                name: "Water Emergency"
-                icon: mdi:water-alert
+                entity: scene.system_storm_mode
+                name: "Storm Protocol"
+                icon: mdi:weather-lightning
                 tap_action:
                   action: call-service
                   service: scene.turn_on
                   service_data:
-                    entity_id: scene.water_emergency
+                    entity_id: scene.system_storm_mode
 
           # Room-specific scenes
           - type: markdown

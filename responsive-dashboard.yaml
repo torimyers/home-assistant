@@ -188,7 +188,7 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
-                entity: sensor.spice_production_level
+                entity: sensor.energy_efficiency_rating
                 name: "Production Level"
                 secondary_info: "Energy & resource efficiency (Spice Production)"
                 icon: mdi:shimmer
@@ -318,14 +318,9 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
-                entity: scene.energy_conservation
-                name: "Conserve Resources"
-                icon: mdi:leaf
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.energy_conservation
+                entity: switch.tp_link_power_strip_173b_couch_lamp
+                name: "Living Room Lamp"
+                icon: mdi:lamp
 
               - type: custom:mushroom-entity-card
                 entity: scene.system_storm_mode
@@ -338,14 +333,14 @@ views:
                     entity_id: scene.system_storm_mode
 
               - type: custom:mushroom-entity-card
-                entity: scene.water_emergency
+                entity: scene.system_storm_mode
                 name: "Water Emergency"
                 icon: mdi:water-alert
                 tap_action:
                   action: call-service
                   service: scene.turn_on
                   service_data:
-                    entity_id: scene.water_emergency
+                    entity_id: scene.system_storm_mode
 
       # Notification Controls
       - type: vertical-stack
@@ -412,7 +407,7 @@ views:
         entities:
           - type: section
             label: "Sietch Vitals & System Health"
-          - entity: sensor.sietch_health_score
+          - entity: sensor.automation_success_rate
             name: "Health Score"
             secondary_info: attribute
             attribute: status_level
@@ -424,7 +419,7 @@ views:
             name: "Water Conservation"
             secondary_info: attribute
             attribute: conservation_level
-          - entity: sensor.spice_production_level
+          - entity: sensor.energy_efficiency_rating
             name: "Spice Production"
             secondary_info: attribute
             attribute: guild_rating
@@ -725,15 +720,10 @@ views:
 
               # Master All Lights Control
               - type: custom:mushroom-entity-card
-                entity: scene.energy_conservation
-                name: "All Lights OFF"
-                secondary_info: "Conservation protocol"
-                icon: mdi:lightbulb-off
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.energy_conservation
+                entity: light.kitchen_lights
+                name: "Kitchen Lights"
+                secondary_info: "Main kitchen lighting"
+                icon: mdi:lightbulb
                 card_mod:
                   style: |
                     ha-card {
@@ -848,7 +838,7 @@ views:
       - type: entities
         title: "🔍 System Status Monitors"
         entities:
-          - entity: binary_sensor.house_occupied
+          - entity: binary_sensor.kitchen_motion
             name: "Sietch Occupied"
             icon: mdi:home-account
           - entity: input_boolean.notification_system_enabled

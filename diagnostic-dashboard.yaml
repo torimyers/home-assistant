@@ -8,10 +8,10 @@ views:
       - type: entities
         title: "Core Template Sensors"
         entities:
-          - sensor.sietch_health_score
+          - sensor.automation_success_rate
           - sensor.harvester_efficiency
           - sensor.water_conservation_index
-          - sensor.spice_production_level
+          - sensor.energy_efficiency_rating
           - sensor.desert_survival_status
           - sensor.fremen_activity_level
           - sensor.sietch_occupancy_distribution
@@ -31,7 +31,7 @@ views:
           - binary_sensor.office_motion
           - binary_sensor.kitchen_motion
           - binary_sensor.living_room_motion
-          - binary_sensor.house_occupied
+          - binary_sensor.kitchen_motion
 
       # Test input booleans
       - type: entities
