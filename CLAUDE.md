@@ -144,3 +144,6 @@ gh workflow run deploy.yaml -f force_restart=true
 
 ---
 *Claude Code is configured for Home Assistant development with automated testing, deployment, and maintenance workflows.*
+## Sessions System Behaviors
+
+@CLAUDE.sessions.md
