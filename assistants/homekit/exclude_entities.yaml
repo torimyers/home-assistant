@@ -1,8 +1,6 @@
 ---
 # HomeKit Entity Exclusions
 # Excludes non-essential entities to stay under the 150 device limit
-
-exclude_entities:
   # Duplicate/redundant motion sensors
   - binary_sensor.front_door_ding_3
   - binary_sensor.front_door_motion_3
