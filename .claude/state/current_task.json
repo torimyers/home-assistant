@@ -1,1 +1,1 @@
-{"task": "n-convert-motion-blueprints", "branch": "convert/motion-blueprints", "services": ["automations/guest_bathroom", "automations/office", "automations/kitchen", "blueprints/automation"], "updated": "2025-09-22"}
+{"task": "o-simplify-complex-automations", "branch": "simplify/complex-automations", "services": ["automations"], "updated": "2025-09-22"}
