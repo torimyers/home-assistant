@@ -30,63 +30,23 @@ views:
       # Dashboard Navigation Cards
       - type: horizontal-stack
         cards:
-          - type: custom:mushroom-entity-card
-            entity: sensor.sietch_health_score
-            name: "House Atreides Command"
-            icon: mdi:castle
-            secondary_info: "Main responsive dashboard with comprehensive controls"
+          - type: button
+            name: "Main Dashboard"
+            icon: mdi:view-dashboard
             tap_action:
               action: navigate
               navigation_path: /lovelace/0
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #228B22, #32CD32);
-                  color: white;
-                  border: 2px solid #006400;
-                }
 
-          - type: custom:mushroom-entity-card
-            entity: sensor.spice_production_level
-            name: "Sietch Command Center"
-            icon: mdi:console-network
-            secondary_info: "Advanced template sensor analytics and monitoring"
+          - type: button
+            name: "Mobile Command"
+            icon: mdi:cellphone
             tap_action:
               action: navigate
-              navigation_path: /dashboards-sietch-command
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #4169E1, #1E90FF);
-                  color: white;
-                  border: 2px solid #0000CD;
-                }
+              navigation_path: /lovelace-mobile-command
 
       # System Status Overview
       - type: horizontal-stack
         cards:
-          - type: gauge
-            entity: sensor.sietch_health_score
-            name: "System Health"
-            unit: "%"
-            min: 0
-            max: 100
-            severity:
-              green: 85
-              yellow: 70
-              red: 50
-
-          - type: gauge
-            entity: sensor.fremen_activity_level
-            name: "Activity Level"
-            unit: "%"
-            min: 0
-            max: 100
-            severity:
-              green: 70
-              yellow: 40
-              red: 20
-
           - type: gauge
             entity: sensor.automation_success_rate
             name: "Automation Success"
@@ -102,9 +62,9 @@ views:
       - type: entities
         title: "=� Quick System Status"
         entities:
-          - entity: binary_sensor.house_occupied
-            name: "House Occupied"
-            icon: mdi:home-account
+          - entity: binary_sensor.kitchen_motion
+            name: "Kitchen Activity"
+            icon: mdi:motion-sensor
           - entity: sensor.desert_survival_status
             name: "Survival Status"
             icon: mdi:shield-cross
@@ -129,24 +89,6 @@ views:
             name: "Emergency Alerts"
             icon: mdi:alert-octagon
 
-      # Emergency Scene Controls
-      - type: horizontal-stack
-        cards:
-          - type: custom:mushroom-entity-card
-            entity: scene.energy_conservation
-            name: "Emergency Conservation"
-            icon: mdi:leaf
-            tap_action:
-              action: call-service
-              service: scene.turn_on
-              service_data:
-                entity_id: scene.energy_conservation
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #228B22, #32CD32);
-                  color: white;
-                }
 
           - type: custom:mushroom-entity-card
             entity: scene.system_storm_mode

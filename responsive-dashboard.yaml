@@ -47,17 +47,17 @@ views:
               color: #2F1B14;
             }
 
-      # Quick Navigation to Other Dashboards
+      # Quick Navigation to Other Dashboards  
       - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
-            entity: sensor.sietch_health_score
-            name: "System Command Center"
-            secondary_info: "Advanced monitoring & analytics (Sietch Command)"
-            icon: mdi:castle
+            entity: sensor.house_occupied
+            name: "System Overview"
+            secondary_info: "Basic system status and controls"
+            icon: mdi:home
             tap_action:
               action: navigate
-              navigation_path: /dashboards-sietch_command
+              navigation_path: "#system"
             card_mod:
               style: |
                 ha-card {
@@ -67,13 +67,10 @@ views:
                 }
 
           - type: custom:mushroom-entity-card
-            entity: sensor.fremen_activity_level
-            name: "Analytics View"
-            secondary_info: "Activity patterns & insights (Fremen Analytics)"
-            icon: mdi:chart-line
-            tap_action:
-              action: navigate
-              navigation_path: "#analytics"
+            entity: sensor.current_energy_usage
+            name: "Energy Monitor"
+            secondary_info: "Energy usage and basic monitoring"
+            icon: mdi:flash
             card_mod:
               style: |
                 ha-card {
@@ -102,9 +99,9 @@ views:
       - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
-            entity: sensor.fremen_activity_level
-            name: "📱 Mobile Command"
-            secondary_info: "Touch-optimized mobile dashboard (Pocket Sietch)"
+            entity: person.torib
+            name: "📱 Mobile Command" 
+            secondary_info: "Touch-optimized mobile dashboard"
             icon: mdi:cellphone
             tap_action:
               action: navigate
@@ -152,46 +149,46 @@ views:
           - type: horizontal-stack
             cards:
               - type: gauge
-                entity: sensor.sietch_health_score
-                name: "System Health"
+                entity: sensor.processor_use_percent
+                name: "CPU Usage"
                 unit: "%"
                 min: 0
                 max: 100
                 severity:
-                  green: 85
-                  yellow: 70
-                  red: 50
-                needle: true
-
-              - type: gauge
-                entity: sensor.harvester_efficiency
-                name: "System Efficiency"
-                unit: "%"
-                min: 0
-                max: 100
-                severity:
-                  green: 85
-                  yellow: 70
-                  red: 55
-                needle: true
-
-              - type: gauge
-                entity: sensor.water_conservation_index
-                name: "Water Conservation"
-                unit: "%"
-                min: 0
-                max: 100
-                severity:
-                  green: 80
+                  green: 0
                   yellow: 60
-                  red: 45
+                  red: 80
+                needle: true
+
+              - type: gauge
+                entity: sensor.memory_use_percent
+                name: "Memory Usage"
+                unit: "%"
+                min: 0
+                max: 100
+                severity:
+                  green: 0
+                  yellow: 70
+                  red: 85
+                needle: true
+
+              - type: gauge
+                entity: sensor.current_energy_usage
+                name: "Energy Usage"
+                unit: "W"
+                min: 0
+                max: 3000
+                severity:
+                  green: 0
+                  yellow: 1500
+                  red: 2500
                 needle: true
 
           # Template Sensor Status Cards
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
-                entity: sensor.spice_production_level
+                entity: sensor.energy_efficiency_rating
                 name: "Production Level"
                 secondary_info: "Energy & resource efficiency (Spice Production)"
                 icon: mdi:shimmer
@@ -321,14 +318,9 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
-                entity: scene.energy_conservation
-                name: "Conserve Resources"
-                icon: mdi:leaf
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.energy_conservation
+                entity: switch.tp_link_power_strip_173b_couch_lamp
+                name: "Living Room Lamp"
+                icon: mdi:lamp
 
               - type: custom:mushroom-entity-card
                 entity: scene.system_storm_mode
@@ -341,14 +333,14 @@ views:
                     entity_id: scene.system_storm_mode
 
               - type: custom:mushroom-entity-card
-                entity: scene.water_emergency
+                entity: scene.system_storm_mode
                 name: "Water Emergency"
                 icon: mdi:water-alert
                 tap_action:
                   action: call-service
                   service: scene.turn_on
                   service_data:
-                    entity_id: scene.water_emergency
+                    entity_id: scene.system_storm_mode
 
       # Notification Controls
       - type: vertical-stack
@@ -415,7 +407,7 @@ views:
         entities:
           - type: section
             label: "Sietch Vitals & System Health"
-          - entity: sensor.sietch_health_score
+          - entity: sensor.automation_success_rate
             name: "Health Score"
             secondary_info: attribute
             attribute: status_level
@@ -427,7 +419,7 @@ views:
             name: "Water Conservation"
             secondary_info: attribute
             attribute: conservation_level
-          - entity: sensor.spice_production_level
+          - entity: sensor.energy_efficiency_rating
             name: "Spice Production"
             secondary_info: attribute
             attribute: guild_rating
@@ -728,15 +720,10 @@ views:
 
               # Master All Lights Control
               - type: custom:mushroom-entity-card
-                entity: scene.energy_conservation
-                name: "All Lights OFF"
-                secondary_info: "Conservation protocol"
-                icon: mdi:lightbulb-off
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.energy_conservation
+                entity: light.kitchen_lights
+                name: "Kitchen Lights"
+                secondary_info: "Main kitchen lighting"
+                icon: mdi:lightbulb
                 card_mod:
                   style: |
                     ha-card {
@@ -851,7 +838,7 @@ views:
       - type: entities
         title: "🔍 System Status Monitors"
         entities:
-          - entity: binary_sensor.house_occupied
+          - entity: binary_sensor.kitchen_motion
             name: "Sietch Occupied"
             icon: mdi:home-account
           - entity: input_boolean.notification_system_enabled

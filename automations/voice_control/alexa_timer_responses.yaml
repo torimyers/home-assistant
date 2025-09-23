@@ -3,12 +3,11 @@ description: "Intelligent responses and actions when Alexa timers are set or exp
 trigger:
   # Timer started events
   - platform: state
-    entity_id: 
+    entity_id:
       - sensor.echo_dot_kitchen_next_timer
       - sensor.echo_dot_atlas_room_next_timer
       - sensor.bose_bedroom_next_timer
       - sensor.bose_office_next_timer
-    to: 
     from: "unavailable"
     id: "timer_started"
   

@@ -6,8 +6,7 @@ use_blueprint:
     motion_entity: binary_sensor.living_room_motion
     room_name: living_room
     dune_description: Tribal Council Assembles - Gathering Begins
-    activation_type: scene
-    scene_entity: scene.living_room_gathering
+    activation_type: area
     area_id: living_room
     check_light_state: true
     condition_entity: switch.tp_link_power_strip_173b_couch_lamp
