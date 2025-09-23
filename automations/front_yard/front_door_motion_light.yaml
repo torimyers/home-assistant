@@ -1,14 +1,17 @@
-id: front_door_motion_light
-alias: Front Door Motion Light
+alias: Front Door - Motion Light
 description: Desert Wanderer Approaches - Perimeter Alert
-trigger:
-- platform: state
-  entity_id: binary_sensor.front_door_motion_3
-  to: 'on'
-action:
-- service: switch.turn_on
-  target:
-    entity_id: switch.front_door_led
-- service: notify.mobile_app_tori_phone_2
-  data:
-    message: Desert wanderer detected at sietch perimeter. Approach monitored.
+use_blueprint:
+  path: motion_lighting.yaml
+  input:
+    motion_entity: binary_sensor.front_door_motion_3
+    room_name: front_door
+    dune_description: Desert Wanderer Approaches - Perimeter Alert
+    activation_type: area
+    area_id: front_yard
+    check_light_state: false
+    timeout_minutes: 5
+    enable_notifications: true
+    notification_device: mobile_app_tori_phone_2
+    activation_message: Desert wanderer detected at sietch perimeter. Approach monitored.
+    deactivation_message: Perimeter secured. Desert approach clear.
+    enable_additional_actions: false
