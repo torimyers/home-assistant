@@ -187,33 +187,33 @@ blueprint:
           unit_of_measurement: seconds
 
 variables:
-  trigger_time_var: input trigger_time
-  sun_offset_var: input sun_offset
-  scenes_list: input scenes_to_activate
-  scripts_list: input scripts_to_run
-  lights_list: input lights_switches
-  counters_list: input counters_to_reset
-  inputs_list: input inputs_to_reset
-  delay_seconds: input delay_between_actions
+  trigger_time_var: trigger_time
+  sun_offset_var: sun_offset
+  scenes_list: scenes_to_activate
+  scripts_list: scripts_to_run
+  lights_list: lights_switches
+  counters_list: counters_to_reset
+  inputs_list: inputs_to_reset
+  delay_seconds: delay_between_actions
 
 trigger:
   # Time-based trigger
   - platform: time
-    at: input trigger_time
+    at: trigger_time
   # Sunrise trigger
   - platform: sun
     event: sunrise
-    offset: input sun_offset
+    offset: sun_offset
   # Sunset trigger  
   - platform: sun
     event: sunset
-    offset: input sun_offset
+    offset: sun_offset
 
 condition:
   # Check if the correct trigger type was activated
   - condition: template
     value_template: >-
-      {% set t_type = input trigger_type %}
+      {% set t_type = trigger_type %}
       {% if t_type == 'time' %}
         {{ trigger.platform == 'time' }}
       {% elif t_type == 'sunrise' %}
@@ -227,8 +227,8 @@ condition:
   # Person condition check
   - condition: template
     value_template: >-
-      {% if input enable_conditions and input condition_person %}
-        {{ is_state(input condition_person, 'home') }}
+      {% if enable_conditions and condition_person %}
+        {{ is_state(condition_person, 'home') }}
       {% else %}
         true
       {% endif %}
@@ -306,7 +306,7 @@ action:
     then:
       - service: "{{ notification_service }}"
         data:
-          message: input notification_message
+          message: notification_message
           title: "{{ notification_title if notification_title else none }}"
 
 mode: single
