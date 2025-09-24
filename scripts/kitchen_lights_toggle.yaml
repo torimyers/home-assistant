@@ -2,12 +2,11 @@
 # Kitchen Lights Toggle Script
 # Controls both kitchen lights as one unit for food preparation
 
-script:
-  kitchen_lights_toggle:
-    alias: "Toggle Kitchen Lights"
-    description: "Spice Kitchen - Toggle food preparation area illumination"
-    icon: mdi:chef-hat
-    sequence:
+kitchen_lights_toggle:
+  alias: "Toggle Kitchen Lights"
+  description: "Spice Kitchen - Toggle food preparation area illumination"
+  icon: mdi:chef-hat
+  sequence:
     - choose:
         # If any light is on, turn all off
         - conditions:
