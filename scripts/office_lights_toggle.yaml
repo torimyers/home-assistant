@@ -31,18 +31,18 @@ office_lights_toggle:
             - service: notify.mobile_app_tori_phone_2
               data:
                 message: "🖥️ Command center enters dormancy. The screens rest until the next strategic session."
-      
-      # Default: Turn all on with work lighting
-      default:
-        - service: light.turn_on
-          target:
-            entity_id:
-              - light.ledvance_a19_rgbw_light
-              - light.ledvance_a19_rgbw_light_2
-              - light.ledvance_a19_rgbw_light_3
-          data:
-            brightness_pct: 85
-            color_temp: 250  # Cool white for focus
-        - service: notify.mobile_app_tori_phone_2
-          data:
-            message: "🖥️ Command center activated. All systems ready for strategic operations and data analysis."
+
+        # Default: Turn all on with work lighting
+        default:
+          - service: light.turn_on
+            target:
+              entity_id:
+                - light.ledvance_a19_rgbw_light
+                - light.ledvance_a19_rgbw_light_2
+                - light.ledvance_a19_rgbw_light_3
+            data:
+              brightness_pct: 85
+              color_temp: 250  # Cool white for focus
+          - service: notify.mobile_app_tori_phone_2
+            data:
+              message: "🖥️ Command center activated. All systems ready for strategic operations and data analysis."

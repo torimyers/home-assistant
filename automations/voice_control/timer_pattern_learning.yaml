@@ -25,11 +25,11 @@ action:
         sequence:
           - variables:
               kitchen_timers_today: >
-                {{ states.logbook.logs | selectattr('entity_id', 'equalto', 'sensor.echo_dot_kitchen_next_timer') 
-                   | selectattr('when', 'ge', now().replace(hour=0, minute=0, second=0)) | list | length }}
+                {{ states.logbook.logs | selectattr('entity_id', 'equalto', 'sensor.echo_dot_kitchen_next_timer')
+                | selectattr('when', 'ge', now().replace(hour=0, minute=0, second=0)) | list | length }}
               office_timers_today: >
                 {{ states.logbook.logs | selectattr('entity_id', 'equalto', 'sensor.bose_office_next_timer')
-                   | selectattr('when', 'ge', now().replace(hour=0, minute=0, second=0)) | list | length }}
+                | selectattr('when', 'ge', now().replace(hour=0, minute=0, second=0)) | list | length }}
               most_common_duration: >
                 {% set durations = [15, 30, 45, 60] %}
                 {% set counts = namespace(data={}) %}
