@@ -199,15 +199,15 @@ variables:
 trigger:
   # Time-based trigger
   - platform: time
-    at: trigger_time
+    at: "{{ trigger_time }}"
   # Sunrise trigger
   - platform: sun
     event: sunrise
-    offset: sun_offset
-  # Sunset trigger  
+    offset: "{{ sun_offset }}"
+  # Sunset trigger
   - platform: sun
     event: sunset
-    offset: sun_offset
+    offset: "{{ sun_offset }}"
 
 condition:
   # Check if the correct trigger type was activated

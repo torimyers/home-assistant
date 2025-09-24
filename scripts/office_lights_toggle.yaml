@@ -2,12 +2,11 @@
 # Office Lights Toggle Script
 # Controls all 3 office RGBW lights as one unit for command center
 
-script:
-  office_lights_toggle:
-    alias: "Toggle All Office Lights"
-    description: "Command Center - Toggle all office workstation illumination"
-    icon: mdi:desk
-    sequence:
+office_lights_toggle:
+  alias: "Toggle All Office Lights"
+  description: "Command Center - Toggle all office workstation illumination"
+  icon: mdi:desk
+  sequence:
     - choose:
         # If any light is on, turn all off
         - conditions:
