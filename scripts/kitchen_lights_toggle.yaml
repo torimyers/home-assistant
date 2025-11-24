@@ -28,16 +28,16 @@ kitchen_lights_toggle:
               data:
                 message: "🍽️ The spice kitchen rests. Food preparation complete until the next meal."
 
-        # Default: Turn all on
-        default:
-          - service: light.turn_on
-            target:
-              entity_id:
-                - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
-                - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
-            data:
-              brightness_pct: 95
-              color_temp: 320  # Warm-neutral for cooking
-          - service: notify.mobile_app_tori_phone_2
-            data:
-              message: "🍽️ Spice kitchen illuminated. Ready for food preparation and the sacred meal rituals."
+      # Default: Turn all on
+      default:
+        - service: light.turn_on
+          target:
+            entity_id:
+              - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
+              - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
+          data:
+            brightness_pct: 95
+            color_temp: 320  # Warm-neutral for cooking
+        - service: notify.mobile_app_tori_phone_2
+          data:
+            message: "🍽️ Spice kitchen illuminated. Ready for food preparation and the sacred meal rituals."

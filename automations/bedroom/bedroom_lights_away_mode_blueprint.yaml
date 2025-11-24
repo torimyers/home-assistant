@@ -9,7 +9,7 @@ use_blueprint:
     person_entity: person.tori_myers
     presence_condition: "not_home"
     action_type: "light_off"
-    light_entity: light.tori_light_light
+    light_entity: light.tori_light
     enable_notifications: true
     notification_device: "mobile_app_tori_phone_2"
     notification_message: "Stilltent secured for desert patrol absence. Energy conserved."

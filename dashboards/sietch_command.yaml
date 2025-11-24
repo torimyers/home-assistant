@@ -15,21 +15,6 @@ theme: default
 background: var(--lovelace-background, '#FFF8DC')
 
 # Custom card-mod styling for Dune theme
-card_mod:
-  style: |
-    :host {
-      --primary-color: #D4A574;
-      --accent-color: #FF8C00;
-      --primary-text-color: #2F1B14;
-      --secondary-text-color: #5D4E37;
-      --divider-color: #D4A574;
-      --card-background-color: #FFF8DC;
-      --primary-background-color: #F5E6D3;
-      --secondary-background-color: #EDE0C8;
-      --ha-card-border-radius: 15px;
-      --ha-card-box-shadow: 0 4px 8px rgba(139, 110, 74, 0.3);
-    }
-
 views:
   - title: "Main Command"
     path: main-command
@@ -50,18 +35,6 @@ views:
             secondary_info_attribute: status_level
             tap_action:
               action: more-info
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #F5E6D3, #EDE0C8);
-                  border: 2px solid #D4A574;
-                  --card-primary-color: #2F1B14;
-                  --card-secondary-color: #5D4E37;
-                }
-                .icon {
-                  color: {% if states('sensor.automation_success_rate')|float >= 90 %}#228B22{% elif states('sensor.automation_success_rate')|float >= 75 %}#FF8C00{% else %}#DC143C{% endif %} !important;
-                }
-
           - type: custom:mushroom-entity-card
             entity: sensor.desert_survival_status
             name: "Survival Status"
@@ -71,15 +44,6 @@ views:
             secondary_info_attribute: survival_rating
             tap_action:
               action: more-info
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #F5E6D3, #EDE0C8);
-                  border: 2px solid #D4A574;
-                  --card-primary-color: #2F1B14;
-                  --card-secondary-color: #5D4E37;
-                }
-
           - type: custom:mushroom-entity-card
             entity: sensor.energy_efficiency_rating
             name: "Spice Production"
@@ -89,23 +53,6 @@ views:
             secondary_info_attribute: current_yield
             tap_action:
               action: more-info
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #F5E6D3, #EDE0C8);
-                  border: 2px solid #FF8C00;
-                  --card-primary-color: #2F1B14;
-                  --card-secondary-color: #5D4E37;
-                }
-                .icon {
-                  color: #FF8C00 !important;
-                  animation: shimmer 2s ease-in-out infinite alternate;
-                }
-                @keyframes shimmer {
-                  0% { opacity: 0.7; }
-                  100% { opacity: 1.0; }
-                }
-
       # ========================================================================
       # SECTION 1: SIETCH COMMAND CENTER - Main Control Panel
       # ========================================================================
@@ -115,16 +62,6 @@ views:
             content: |
               # 🏜️ **SIETCH COMMAND CENTER**
               *Main Control Systems & Vitals*
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #D4A574, #F5E6D3);
-                  color: #2F1B14;
-                  text-align: center;
-                  border: 3px solid #FF8C00;
-                  font-weight: bold;
-                }
-
           - type: horizontal-stack
             cards:
               - type: gauge
@@ -138,15 +75,6 @@ views:
                   yellow: 70
                   red: 50
                 needle: true
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: radial-gradient(circle, #FFF8DC, #F5E6D3);
-                      border: 2px solid #D4A574;
-                      --paper-gauge-color: #228B22;
-                      --label-badge-text-color: #2F1B14;
-                    }
-
               - type: gauge
                 entity: sensor.harvester_efficiency
                 name: "Harvester Efficiency"
@@ -158,15 +86,6 @@ views:
                   yellow: 70
                   red: 55
                 needle: true
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: radial-gradient(circle, #FFF8DC, #F5E6D3);
-                      border: 2px solid #D4A574;
-                      --paper-gauge-color: #FF8C00;
-                      --label-badge-text-color: #2F1B14;
-                    }
-
               - type: gauge
                 entity: sensor.water_conservation_index
                 name: "Water Conservation"
@@ -178,15 +97,6 @@ views:
                   yellow: 60
                   red: 45
                 needle: true
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: radial-gradient(circle, #FFF8DC, #F5E6D3);
-                      border: 2px solid #4169E1;
-                      --paper-gauge-color: #4169E1;
-                      --label-badge-text-color: #2F1B14;
-                    }
-
           # Quick Action Controls
           - type: horizontal-stack
             cards:
@@ -198,14 +108,6 @@ views:
                   service: light.turn_off
                   service_data:
                     entity_id: all
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #228B22, #32CD32);
-                      color: white;
-                      border: 2px solid #006400;
-                    }
-
               - type: custom:mushroom-entity-card
                 entity: scene.system_storm_mode
                 name: "Storm Protocol"
@@ -215,14 +117,6 @@ views:
                   service: scene.turn_on
                   service_data:
                     entity_id: scene.system_storm_mode
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #4169E1, #1E90FF);
-                      color: white;
-                      border: 2px solid #0000CD;
-                    }
-
               - type: custom:mushroom-entity-card
                 entity: scene.system_goodnight
                 name: "Night Protocols"
@@ -232,14 +126,6 @@ views:
                   service: scene.turn_on
                   service_data:
                     entity_id: scene.system_goodnight
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #2F1B14, #5D4E37);
-                      color: white;
-                      border: 2px solid #1C1C1C;
-                    }
-
       # ========================================================================
       # SECTION 2: FREMEN ACTIVITY DASHBOARD - Motion & Presence Analytics
       # ========================================================================
@@ -249,16 +135,6 @@ views:
             content: |
               # 🏃 **FREMEN ACTIVITY DASHBOARD**
               *Motion Analysis & Presence Monitoring*
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #FF8C00, #F5E6D3);
-                  color: #2F1B14;
-                  text-align: center;
-                  border: 3px solid #D4A574;
-                  font-weight: bold;
-                }
-
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
@@ -268,22 +144,6 @@ views:
                 primary_info: state
                 secondary_info: attribute
                 secondary_info_attribute: tribal_status
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #FFF8DC, #F5E6D3);
-                      border: 2px solid #FF8C00;
-                      --card-primary-color: #2F1B14;
-                    }
-                    .icon {
-                      color: #FF8C00 !important;
-                      animation: pulse 1.5s ease-in-out infinite;
-                    }
-                    @keyframes pulse {
-                      0%, 100% { transform: scale(1); }
-                      50% { transform: scale(1.1); }
-                    }
-
               - type: custom:mushroom-entity-card
                 entity: sensor.sietch_occupancy_distribution
                 name: "Primary Zone"
@@ -291,14 +151,6 @@ views:
                 primary_info: state
                 secondary_info: attribute
                 secondary_info_attribute: activity_distribution
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #FFF8DC, #F5E6D3);
-                      border: 2px solid #D4A574;
-                      --card-primary-color: #2F1B14;
-                    }
-
               - type: custom:mushroom-entity-card
                 entity: sensor.motion_pattern_analysis
                 name: "Motion Pattern"
@@ -306,14 +158,6 @@ views:
                 primary_info: state
                 secondary_info: attribute
                 secondary_info_attribute: efficiency_score
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #FFF8DC, #F5E6D3);
-                      border: 2px solid #228B22;
-                      --card-primary-color: #2F1B14;
-                    }
-
           # Motion Sensor Status Grid
           - type: entities
             title: "🎯 Zone Monitoring Network"
@@ -327,22 +171,6 @@ views:
               - entity: binary_sensor.living_room_motion_detected
                 name: "Gathering Hall"
                 icon: mdi:sofa
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(145deg, #F5E6D3, #EDE0C8);
-                  border: 2px solid #D4A574;
-                  --primary-text-color: #2F1B14;
-                  --secondary-text-color: #5D4E37;
-                }
-                .card-header {
-                  background: linear-gradient(90deg, #D4A574, #FF8C00);
-                  color: #2F1B14;
-                  font-weight: bold;
-                  padding: 16px;
-                  margin: -16px -16px 16px -16px;
-                }
-
       # ========================================================================
       # SECTION 3: ENVIRONMENTAL CONTROL PANEL - Atmospheric Systems
       # ========================================================================
@@ -352,16 +180,6 @@ views:
             content: |
               # 🌬️ **ENVIRONMENTAL CONTROL**
               *Atmospheric Monitoring & Energy Systems*
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #4169E1, #87CEEB);
-                  color: white;
-                  text-align: center;
-                  border: 3px solid #1E90FF;
-                  font-weight: bold;
-                }
-
           - type: horizontal-stack
             cards:
               - type: gauge
@@ -375,15 +193,6 @@ views:
                   yellow: 75
                   red: 65
                 needle: true
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: radial-gradient(circle, #F0F8FF, #E6F3FF);
-                      border: 2px solid #4169E1;
-                      --paper-gauge-color: #4169E1;
-                      --label-badge-text-color: #2F1B14;
-                    }
-
               - type: gauge
                 entity: sensor.energy_shield_status
                 name: "Energy Shield"
@@ -395,15 +204,6 @@ views:
                   yellow: 60
                   red: 40
                 needle: true
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: radial-gradient(circle, #F0F8FF, #E6F3FF);
-                      border: 2px solid #FF8C00;
-                      --paper-gauge-color: #FF8C00;
-                      --label-badge-text-color: #2F1B14;
-                    }
-
           - type: entities
             title: "⚡ Power Distribution Network"
             entities:
@@ -416,22 +216,6 @@ views:
               - entity: switch.tp_link_power_strip_1446_cat_bed
                 name: "Companion Rest Area"
                 icon: mdi:bed
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(145deg, #E6F3FF, #CCE7FF);
-                  border: 2px solid #4169E1;
-                  --primary-text-color: #2F1B14;
-                  --secondary-text-color: #5D4E37;
-                }
-                .card-header {
-                  background: linear-gradient(90deg, #4169E1, #1E90FF);
-                  color: white;
-                  font-weight: bold;
-                  padding: 16px;
-                  margin: -16px -16px 16px -16px;
-                }
-
       # ========================================================================
       # SECTION 4: AUTOMATION COMMAND INTERFACE - System Intelligence
       # ========================================================================
@@ -441,16 +225,6 @@ views:
             content: |
               # 🤖 **AUTOMATION COMMAND**
               *System Intelligence & Blueprint Control*
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #32CD32, #228B22);
-                  color: white;
-                  text-align: center;
-                  border: 3px solid #006400;
-                  font-weight: bold;
-                }
-
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
@@ -460,17 +234,6 @@ views:
                 primary_info: state
                 secondary_info: attribute
                 secondary_info_attribute: success_grade
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #F0FFF0, #E6FFE6);
-                      border: 2px solid #228B22;
-                      --card-primary-color: #2F1B14;
-                    }
-                    .icon {
-                      color: #228B22 !important;
-                    }
-
               - type: custom:mushroom-entity-card
                 entity: sensor.blueprint_efficiency_score
                 name: "Blueprint Efficiency"
@@ -478,14 +241,6 @@ views:
                 primary_info: state
                 secondary_info: attribute
                 secondary_info_attribute: efficiency_rating
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #F0FFF0, #E6FFE6);
-                      border: 2px solid #32CD32;
-                      --card-primary-color: #2F1B14;
-                    }
-
               - type: custom:mushroom-entity-card
                 entity: sensor.system_response_time
                 name: "Response Time"
@@ -493,14 +248,6 @@ views:
                 primary_info: state
                 secondary_info: attribute
                 secondary_info_attribute: response_grade
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #F0FFF0, #E6FFE6);
-                      border: 2px solid #FF8C00;
-                      --card-primary-color: #2F1B14;
-                    }
-
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
@@ -510,17 +257,6 @@ views:
                 primary_info: state
                 secondary_info: attribute
                 secondary_info_attribute: threat_level
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #2F1B14, #5D4E37);
-                      color: white;
-                      border: 2px solid #4169E1;
-                    }
-                    .icon {
-                      color: #87CEEB !important;
-                    }
-
               - type: custom:mushroom-entity-card
                 entity: sensor.morning_ritual_completion
                 name: "Morning Ritual"
@@ -528,17 +264,6 @@ views:
                 primary_info: state
                 secondary_info: attribute
                 secondary_info_attribute: completion_status
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #FFE4B5, #F5DEB3);
-                      border: 2px solid #FF8C00;
-                      --card-primary-color: #2F1B14;
-                    }
-                    .icon {
-                      color: #FF8C00 !important;
-                    }
-
       # ========================================================================
       # SECTION 5: DAILY SIETCH REPORT - Summary Dashboard
       # ========================================================================
@@ -548,16 +273,6 @@ views:
             content: |
               # 📊 **DAILY SIETCH REPORT**
               *Operations Summary & Performance Metrics*
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #800080, #9370DB);
-                  color: white;
-                  text-align: center;
-                  border: 3px solid #4B0082;
-                  font-weight: bold;
-                }
-
           - type: entities
             title: "📈 System Performance Summary"
             entities:
@@ -579,22 +294,6 @@ views:
               - entity: sensor.atmospheric_conditions
                 name: "Air Quality"
                 icon: mdi:weather-partly-cloudy
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(145deg, #F8F8FF, #E6E6FA);
-                  border: 2px solid #9370DB;
-                  --primary-text-color: #2F1B14;
-                  --secondary-text-color: #5D4E37;
-                }
-                .card-header {
-                  background: linear-gradient(90deg, #800080, #9370DB);
-                  color: white;
-                  font-weight: bold;
-                  padding: 16px;
-                  margin: -16px -16px 16px -16px;
-                }
-
           # Critical Status Indicators
           - type: horizontal-stack
             cards:
@@ -602,14 +301,6 @@ views:
                 entity: binary_sensor.kitchen_motion
                 name: "Sietch Occupied"
                 icon: mdi:home-account
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('binary_sensor.kitchen_motion', 'on') %}linear-gradient(45deg, #228B22, #32CD32){% else %}linear-gradient(45deg, #8B0000, #DC143C){% endif %};
-                      color: white;
-                      border: 2px solid {% if is_state('binary_sensor.kitchen_motion', 'on') %}#006400{% else %}#8B0000{% endif %};
-                    }
-
               - type: custom:mushroom-entity-card
                 entity: input_boolean.notification_system_enabled
                 name: "Notifications"
@@ -629,16 +320,6 @@ views:
         content: |
           # 🔍 **DETAILED ANALYTICS**
           *Deep Sensor Analysis & Historical Trends*
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(135deg, #D4A574, #F5E6D3);
-              color: #2F1B14;
-              text-align: center;
-              border: 3px solid #FF8C00;
-              font-weight: bold;
-            }
-
       # Detailed sensor breakdown
       - type: entities
         title: "🎯 Template Sensor Status Report"
@@ -711,22 +392,6 @@ views:
             name: "System Response"
             secondary_info: attribute
             attribute: current_load
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(145deg, #F5E6D3, #EDE0C8);
-              border: 2px solid #D4A574;
-              --primary-text-color: #2F1B14;
-              --secondary-text-color: #5D4E37;
-            }
-            .card-header {
-              background: linear-gradient(90deg, #D4A574, #FF8C00);
-              color: #2F1B14;
-              font-weight: bold;
-              padding: 16px;
-              margin: -16px -16px 16px -16px;
-            }
-
   # ==========================================================================
   # VIEW 3: CONTROLS - Interactive Command Interface
   # ==========================================================================
@@ -739,29 +404,11 @@ views:
         content: |
           # 🎛️ **COMMAND CONTROLS**
           *Interactive Sietch Management Interface*
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(135deg, #2F1B14, #5D4E37);
-              color: #D4A574;
-              text-align: center;
-              border: 3px solid #FF8C00;
-              font-weight: bold;
-            }
-
       # Scene Controls
       - type: vertical-stack
         cards:
           - type: markdown
             content: "## 🏛️ **System Scenes**"
-            card_mod:
-              style: |
-                ha-card {
-                  background: #D4A574;
-                  color: #2F1B14;
-                  text-align: center;
-                }
-
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
@@ -828,14 +475,6 @@ views:
           # Room-specific scenes
           - type: markdown
             content: "## 🏠 **Room Protocols**"
-            card_mod:
-              style: |
-                ha-card {
-                  background: #D4A574;
-                  color: #2F1B14;
-                  text-align: center;
-                }
-
           - type: horizontal-stack
             cards:
               - type: custom:mushroom-entity-card
@@ -873,15 +512,6 @@ views:
         cards:
           - type: markdown
             content: "## 🚨 **Emergency Protocols**"
-            card_mod:
-              style: |
-                ha-card {
-                  background: #DC143C;
-                  color: white;
-                  text-align: center;
-                  font-weight: bold;
-                }
-
           - type: horizontal-stack
             cards:
               - type: button
@@ -892,15 +522,6 @@ views:
                   service: homeassistant.turn_on
                   service_data:
                     entity_id: group.all_switches
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #DC143C;
-                      color: white;
-                      border: 2px solid #8B0000;
-                      font-weight: bold;
-                    }
-
               - type: button
                 name: "Emergency Shutdown"
                 icon: mdi:power
@@ -909,15 +530,6 @@ views:
                   service: homeassistant.turn_off
                   service_data:
                     entity_id: group.all_switches
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #8B0000;
-                      color: white;
-                      border: 2px solid #DC143C;
-                      font-weight: bold;
-                    }
-
               - type: button
                 name: "Security Lockdown"
                 icon: mdi:shield-lock
@@ -926,11 +538,3 @@ views:
                   service: scene.turn_on
                   service_data:
                     entity_id: scene.front_yard_security
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #4B0082;
-                      color: white;
-                      border: 2px solid #6A0DAD;
-                      font-weight: bold;
-                    }
