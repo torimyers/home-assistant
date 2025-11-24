@@ -1,20 +1,13 @@
 # ============================================================================
-# OPTIMIZED DUNE DASHBOARD - Streamlined for Performance & Integration
+# HOUSE DODSON COMMAND - Main Navigation Dashboard
 # ============================================================================
-# Optimizations:
-# - Removed all non-existent scene references
-# - Streamlined card configurations for better performance  
-# - Integrated new template sensors from dune_analytics.yaml
-# - Added proper navigation to Sietch Command Center
-# - Simplified CSS for faster loading
-# - Updated entity references to existing ones only
-# - Mobile-responsive design with clean layouts
+# Optimized lightweight dashboard with navigation to sub-dashboards
+# Replaces 851-line monolithic dashboard with modular approach
 # ============================================================================
 
 title: "House Dodson Command"
 theme: default
 
-# Global card-mod styling for Dune theme (simplified for performance)
 card_mod:
   style: |
     :host {
@@ -27,459 +20,89 @@ card_mod:
     }
 
 views:
-  # ============================================================================
-  # VIEW 1: MAIN DASHBOARD - Optimized Overview
-  # ============================================================================
-  - title: "Overview"
-    icon: mdi:home-analytics
-    path: main-overview
+  - title: "Command Center"
+    icon: mdi:castle
+    path: main
     badges: []
     cards:
-      # Navigation Header
+      # Header
       - type: custom:mushroom-title-card
         title: "🏜️ House Dodson Command"
-        subtitle: "Home monitoring systems online - smart home control center"
+        subtitle: "Unified home automation control - all systems operational"
         card_mod:
           style: |
             ha-card {
               background: linear-gradient(135deg, #D4A574, #F5E6D3);
-              border: 2px solid #FF8C00;
+              border: 3px solid #FF8C00;
               color: #2F1B14;
             }
 
-      # Quick Navigation to Other Dashboards  
+      # Dashboard Navigation Grid
       - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
             entity: sensor.house_occupied
-            name: "System Overview"
-            secondary_info: "Basic system status and controls"
-            icon: mdi:home
+            name: "📊 Overview"
+            secondary_info: "System status & monitoring"
+            icon: mdi:view-dashboard
             tap_action:
               action: navigate
-              navigation_path: "#system"
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #228B22, #32CD32);
-                  color: white;
-                  border: 2px solid #006400;
-                }
-
-          - type: custom:mushroom-entity-card
-            entity: sensor.current_energy_usage
-            name: "Energy Monitor"
-            secondary_info: "Energy usage and basic monitoring"
-            icon: mdi:flash
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #4169E1, #1E90FF);
-                  color: white;
-                  border: 2px solid #0000CD;
-                }
+              navigation_path: /lovelace-dashboards-overview
 
           - type: custom:mushroom-entity-card
             entity: sensor.automation_success_rate
-            name: "Control Systems"
-            secondary_info: "Automation controls & scenes (Mentat Logic)"
+            name: "📈 Analytics"
+            secondary_info: "Sensor analysis & metrics"
+            icon: mdi:chart-line
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-dashboards-analytics
+
+          - type: custom:mushroom-entity-card
+            entity: sensor.current_energy_usage
+            name: "🎛️ Controls"
+            secondary_info: "Lights, scenes & automation"
             icon: mdi:console
             tap_action:
               action: navigate
-              navigation_path: "#controls"
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #800080, #9370DB);
-                  color: white;
-                  border: 2px solid #4B0082;
-                }
+              navigation_path: /lovelace-dashboards-controls
 
-      # Mobile/Desktop Navigation
+      # Specialized Dashboards
       - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
             entity: person.torib
-            name: "📱 Mobile Command" 
-            secondary_info: "Touch-optimized mobile dashboard"
+            name: "📱 Mobile"
+            secondary_info: "Touch-optimized interface"
             icon: mdi:cellphone
             tap_action:
               action: navigate
               navigation_path: /lovelace-mobile-command
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #FF6347, #FF4500);
-                  color: white;
-                  border: 2px solid #DC143C;
-                }
-          
+
           - type: custom:mushroom-entity-card
             entity: sensor.system_response_time
-            name: "⚡ Performance Monitor"
-            secondary_info: "System diagnostics & metrics (Mentat Analysis)"
+            name: "⚡ Performance"
+            secondary_info: "System diagnostics"
             icon: mdi:speedometer
             tap_action:
               action: navigate
               navigation_path: /lovelace-dashboards-performance-monitoring
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #FF8C00, #FFA500);
-                  color: white;
-                  border: 2px solid #FF6347;
-                }
 
-      # System Health Overview
-      - type: vertical-stack
-        cards:
-          - type: markdown
-            content: |
-              ## 📊 **SYSTEM STATUS**
-              *Real-time home monitoring and health assessment (Sietch Vitals)*
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #FF8C00, #F5E6D3);
-                  color: #2F1B14;
-                  text-align: center;
-                  border: 2px solid #D4A574;
-                }
+          - type: custom:mushroom-entity-card
+            entity: sensor.blueprint_efficiency_score
+            name: "🏰 Sietch"
+            secondary_info: "Advanced analytics"
+            icon: mdi:castle
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-dashboards-sietch-command
 
-          - type: horizontal-stack
-            cards:
-              - type: gauge
-                entity: sensor.processor_use_percent
-                name: "CPU Usage"
-                unit: "%"
-                min: 0
-                max: 100
-                severity:
-                  green: 0
-                  yellow: 60
-                  red: 80
-                needle: true
-
-              - type: gauge
-                entity: sensor.memory_use_percent
-                name: "Memory Usage"
-                unit: "%"
-                min: 0
-                max: 100
-                severity:
-                  green: 0
-                  yellow: 70
-                  red: 85
-                needle: true
-
-              - type: gauge
-                entity: sensor.current_energy_usage
-                name: "Energy Usage"
-                unit: "W"
-                min: 0
-                max: 3000
-                severity:
-                  green: 0
-                  yellow: 1500
-                  red: 2500
-                needle: true
-
-          # Template Sensor Status Cards
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: sensor.energy_efficiency_rating
-                name: "Production Level"
-                secondary_info: "Energy & resource efficiency (Spice Production)"
-                icon: mdi:shimmer
-                primary_info: state
-
-              - type: custom:mushroom-entity-card
-                entity: sensor.desert_survival_status
-                name: "Home Status"
-                secondary_info: "Overall system wellness (Desert Survival)"
-                icon: mdi:shield-cross
-                primary_info: state
-
-              - type: custom:mushroom-entity-card
-                entity: sensor.atmospheric_conditions
-                name: "Environment"
-                secondary_info: "Climate & air quality (Atmospheric)"
-                icon: mdi:weather-partly-cloudy
-                primary_info: state
-
-      # Motion & Activity Section
-      - type: vertical-stack
-        cards:
-          - type: markdown
-            content: |
-              ## 🏃 **HOUSEHOLD ACTIVITY**
-              *Motion detection and presence monitoring (Fremen Activity)*
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #32CD32, #228B22);
-                  color: white;
-                  text-align: center;
-                  border: 2px solid #006400;
-                }
-
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: sensor.fremen_activity_level
-                name: "Activity Level"
-                secondary_info: "Current household movement (Fremen Activity)"
-                icon: mdi:run-fast
-                primary_info: state
-
-              - type: custom:mushroom-entity-card
-                entity: sensor.sietch_occupancy_distribution
-                name: "Primary Area"
-                secondary_info: "Most active room (Occupancy Distribution)"
-                icon: mdi:home-analytics
-                primary_info: state
-
-              - type: custom:mushroom-entity-card
-                entity: sensor.motion_pattern_analysis
-                name: "Motion Patterns"
-                secondary_info: "Movement analysis & trends (Pattern Analysis)"
-                icon: mdi:chart-line
-                primary_info: state
-
-          # Motion Sensor Status
-          - type: entities
-            title: "🎯 Motion Sensor Network"
-            entities:
-              - entity: binary_sensor.office_motion
-                name: "Office Motion"
-                secondary_info: "Work area sensor (Office Sanctum)"
-                icon: mdi:desk
-              - entity: binary_sensor.kitchen_motion
-                name: "Kitchen Motion"  
-                secondary_info: "Cooking area sensor (Ration Preparation)"
-                icon: mdi:chef-hat
-              - entity: binary_sensor.living_room_motion
-                name: "Living Room Motion"
-                secondary_info: "Main area sensor (Gathering Hall)"
-                icon: mdi:sofa
-
-      # Quick Scene Controls (Only existing scenes)
-      - type: vertical-stack
-        cards:
-          - type: markdown
-            content: |
-              ## 🎛️ **SCENE CONTROLS**
-              *Available system scenes and automation*
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #4169E1, #87CEEB);
-                  color: white;
-                  text-align: center;
-                  border: 2px solid #1E90FF;
-                }
-
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: scene.morning_awakening
-                name: "Morning Scene"
-                secondary_info: "Morning wake-up routine (Dawn Awakening)"
-                icon: mdi:weather-sunrise
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.morning_awakening
-
-              - type: custom:mushroom-entity-card
-                entity: scene.evening_routine
-                name: "Evening Scene"
-                secondary_info: "Evening wind-down routine (Sunset Protocol)"
-                icon: mdi:weather-sunset
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.evening_routine
-
-              - type: custom:mushroom-entity-card
-                entity: scene.system_goodnight
-                name: "Goodnight Scene"
-                secondary_info: "Bedtime preparation (Night Rest)"
-                icon: mdi:weather-night
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.system_goodnight
-
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: switch.tp_link_power_strip_173b_couch_lamp
-                name: "Living Room Lamp"
-                icon: mdi:lamp
-
-              - type: custom:mushroom-entity-card
-                entity: scene.system_storm_mode
-                name: "Storm Defense"
-                icon: mdi:weather-lightning
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.system_storm_mode
-
-              - type: custom:mushroom-entity-card
-                entity: scene.system_storm_mode
-                name: "Water Emergency"
-                icon: mdi:water-alert
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.system_storm_mode
-
-      # Notification Controls
-      - type: vertical-stack
-        cards:
-          - type: markdown
-            content: |
-              ## 🔔 **NOTIFICATION CONTROLS**
-              *Manage system notifications and alerts*
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #800080, #9370DB);
-                  color: white;
-                  text-align: center;
-                  border: 2px solid #4B0082;
-                }
-
-          - type: entities
-            title: "Notification Settings"
-            entities:
-              - entity: input_boolean.notification_system_enabled
-                name: "System Notifications"
-                icon: mdi:bell-circle
-              - entity: input_boolean.daily_reports_enabled
-                name: "Daily Reports"
-                icon: mdi:calendar-today
-              - entity: input_boolean.threshold_alerts_enabled
-                name: "Threshold Alerts"
-                icon: mdi:alert-circle
-              - entity: input_boolean.achievement_notifications_enabled
-                name: "Achievement Alerts"
-                icon: mdi:trophy-award
-              - entity: input_boolean.emergency_alerts_enabled
-                name: "Emergency Alerts"
-                icon: mdi:alert-octagon
-              - entity: input_boolean.night_mode_notifications
-                name: "Night Mode Quiet"
-                icon: mdi:weather-night
-
-  # ============================================================================
-  # VIEW 2: ANALYTICS - Deep Dive into Template Sensors
-  # ============================================================================
-  - title: "Analytics"
-    icon: mdi:chart-line
-    path: analytics
-    badges: []
-    cards:
-      - type: markdown
-        content: |
-          # 🔍 **DETAILED ANALYTICS**
-          *Deep sensor analysis and system intelligence*
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(135deg, #D4A574, #F5E6D3);
-              color: #2F1B14;
-              text-align: center;
-              border: 3px solid #FF8C00;
-            }
-
-      # Template Sensor Breakdown
-      - type: entities
-        title: "🎯 Template Sensor Status Report"
-        entities:
-          - type: section
-            label: "Sietch Vitals & System Health"
-          - entity: sensor.automation_success_rate
-            name: "Health Score"
-            secondary_info: attribute
-            attribute: status_level
-          - entity: sensor.harvester_efficiency
-            name: "Harvester Efficiency"
-            secondary_info: attribute
-            attribute: efficiency_grade
-          - entity: sensor.water_conservation_index
-            name: "Water Conservation"
-            secondary_info: attribute
-            attribute: conservation_level
-          - entity: sensor.energy_efficiency_rating
-            name: "Spice Production"
-            secondary_info: attribute
-            attribute: guild_rating
-          - entity: sensor.desert_survival_status
-            name: "Survival Status"
-            secondary_info: attribute
-            attribute: survival_rating
-          - type: section
-            label: "Motion & Presence Analytics"
-          - entity: sensor.fremen_activity_level
-            name: "Activity Level"
-            secondary_info: attribute
-            attribute: current_period
-          - entity: sensor.sietch_occupancy_distribution
-            name: "Occupancy Distribution"
-            secondary_info: attribute
-            attribute: most_active_zone
-          - entity: sensor.motion_pattern_analysis
-            name: "Motion Pattern"
-            secondary_info: attribute
-            attribute: time_analysis
-          - type: section
-            label: "Environmental Monitoring"
-          - entity: sensor.atmospheric_conditions
-            name: "Atmospheric Conditions"
-            secondary_info: attribute
-            attribute: atmosphere_quality
-          - entity: sensor.energy_shield_status
-            name: "Energy Shield"
-            secondary_info: attribute
-            attribute: shield_strength
-          - type: section
-            label: "Automation Intelligence"
-          - entity: sensor.automation_success_rate
-            name: "Automation Success"
-            secondary_info: attribute
-            attribute: recent_activity
-          - entity: sensor.blueprint_efficiency_score
-            name: "Blueprint Efficiency"
-            secondary_info: attribute
-            attribute: sensor_responsiveness
-          - entity: sensor.night_security_effectiveness
-            name: "Night Security"
-            secondary_info: attribute
-            attribute: security_mode
-          - entity: sensor.morning_ritual_completion
-            name: "Morning Ritual"
-            secondary_info: attribute
-            attribute: ritual_phase
-          - entity: sensor.system_response_time
-            name: "System Response"
-            secondary_info: attribute
-            attribute: current_load
-
-      # Performance Metrics Dashboard
+      # Quick Status Overview
       - type: horizontal-stack
         cards:
           - type: gauge
             entity: sensor.automation_success_rate
-            name: "Automation Success"
+            name: "System Health"
             unit: "%"
             min: 0
             max: 100
@@ -489,364 +112,70 @@ views:
               red: 55
 
           - type: gauge
-            entity: sensor.blueprint_efficiency_score
-            name: "Blueprint Efficiency"
+            entity: sensor.processor_use_percent
+            name: "CPU Usage"
             unit: "%"
             min: 0
             max: 100
             severity:
-              green: 85
-              yellow: 70
-              red: 55
+              green: 0
+              yellow: 60
+              red: 80
 
           - type: gauge
-            entity: sensor.system_response_time
-            name: "Response Time"
-            unit: "%"
+            entity: sensor.current_energy_usage
+            name: "Energy"
+            unit: "W"
             min: 0
-            max: 100
+            max: 3000
             severity:
-              green: 85
-              yellow: 75
-              red: 65
+              green: 0
+              yellow: 1500
+              red: 2500
 
-  # ============================================================================
-  # VIEW 3: CONTROLS - Interactive Command Interface
-  # ============================================================================
-  - title: "Controls"
-    icon: mdi:console
-    path: controls
-    badges: []
-    cards:
-      - type: markdown
-        content: |
-          # 🎛️ **COMMAND CONTROLS**
-          *Interactive Sietch management interface*
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(135deg, #2F1B14, #5D4E37);
-              color: #D4A574;
-              text-align: center;
-              border: 3px solid #FF8C00;
-            }
-
-      # Individual Room Lighting Controls 
-      - type: vertical-stack
+      # Quick Scene Controls
+      - type: horizontal-stack
         cards:
-          - type: markdown
-            content: "## 💡 **Individual Room Lighting**"
-            card_mod:
-              style: |
-                ha-card {
-                  background: #FF8C00;
-                  color: #2F1B14;
-                  text-align: center;
-                }
+          - type: custom:mushroom-entity-card
+            entity: scene.morning_awakening
+            name: "Morning"
+            icon: mdi:weather-sunrise
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.morning_awakening
 
-          # Kitchen Lights
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
-                name: "Kitchen Oven Light"
-                secondary_info: "Food preparation area"
-                icon: mdi:chef-hat
-                tap_action:
-                  action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light', 'on') %}#FFA500{% else %}#696969{% endif %};
-                      color: white;
-                    }
+          - type: custom:mushroom-entity-card
+            entity: scene.evening_routine
+            name: "Evening"
+            icon: mdi:weather-sunset
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.evening_routine
 
-              - type: custom:mushroom-entity-card
-                entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
-                name: "Kitchen Sink Light"  
-                secondary_info: "Water work station"
-                icon: mdi:water-pump
-                tap_action:
-                  action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2', 'on') %}#FFA500{% else %}#696969{% endif %};
-                      color: white;
-                    }
+          - type: custom:mushroom-entity-card
+            entity: scene.system_goodnight
+            name: "Goodnight"
+            icon: mdi:weather-night
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              service_data:
+                entity_id: scene.system_goodnight
 
-          # Office Lights Row 1
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: light.ledvance_a19_rgbw_light
-                name: "Office Right Light"
-                secondary_info: "Command station right"
-                icon: mdi:desk-lamp
-                tap_action:
-                  action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('light.ledvance_a19_rgbw_light', 'on') %}#4169E1{% else %}#696969{% endif %};
-                      color: white;
-                    }
-
-              - type: custom:mushroom-entity-card
-                entity: light.ledvance_a19_rgbw_light_2
-                name: "Office Upper Light"
-                secondary_info: "Command station ceiling"
-                icon: mdi:ceiling-light
-                tap_action:
-                  action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('light.ledvance_a19_rgbw_light_2', 'on') %}#4169E1{% else %}#696969{% endif %};
-                      color: white;
-                    }
-
-          # Office Lights Row 2 + Dining Room
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: light.ledvance_a19_rgbw_light_3
-                name: "Office Left Light"
-                secondary_info: "Command station left"
-                icon: mdi:floor-lamp
-                tap_action:
-                  action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('light.ledvance_a19_rgbw_light_3', 'on') %}#4169E1{% else %}#696969{% endif %};
-                      color: white;
-                    }
-
-              - type: custom:mushroom-entity-card
-                entity: light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
-                name: "Dining Room (All 4)"
-                secondary_info: "Fremen feast table"
-                icon: mdi:table-chair
-                tap_action:
-                  action: call-service
-                  service: script.toggle
-                  service_data:
-                    entity_id: script.dining_room_lights_toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light', 'on') %}#DC143C{% else %}#696969{% endif %};
-                      color: white;
-                    }
-
-          # Living Areas
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: switch.tp_link_power_strip_173b_couch_lamp
-                name: "Living Room Couch"
-                secondary_info: "Tribal gathering area"
-                icon: mdi:sofa
-                tap_action:
-                  action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('switch.tp_link_power_strip_173b_couch_lamp', 'on') %}#228B22{% else %}#696969{% endif %};
-                      color: white;
-                    }
-
-              - type: custom:mushroom-entity-card
-                entity: light.tori_light
-                name: "Bedroom Light"
-                secondary_info: "Private quarters"
-                icon: mdi:bed
-                tap_action:
-                  action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('light.tori_light', 'on') %}#9370DB{% else %}#696969{% endif %};
-                      color: white;
-                    }
-
-          # Entry & Outdoor
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: switch.tp_link_power_strip_1446_lamp_by_door
-                name: "Entry Door Light"
-                secondary_info: "Sietch portal guardian"
-                icon: mdi:door-open
-                tap_action:
-                  action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('switch.tp_link_power_strip_1446_lamp_by_door', 'on') %}#DAA520{% else %}#696969{% endif %};
-                      color: white;
-                    }
-
-              - type: custom:mushroom-entity-card
-                entity: light.front_light
-                name: "Front Yard Light"
-                secondary_info: "Perimeter defense"
-                icon: mdi:home-outline
-                tap_action:
-                  action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('light.front_light', 'on') %}#FF6347{% else %}#696969{% endif %};
-                      color: white;
-                    }
-
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: light.backyard_light
-                name: "Backyard Light"
-                secondary_info: "Rear perimeter watch"
-                icon: mdi:tree
-                tap_action:
-                  action: toggle
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: {% if is_state('light.backyard_light', 'on') %}#8FBC8F{% else %}#696969{% endif %};
-                      color: white;
-                    }
-
-              # Master All Lights Control
-              - type: custom:mushroom-entity-card
-                entity: light.kitchen_lights
-                name: "Kitchen Lights"
-                secondary_info: "Main kitchen lighting"
-                icon: mdi:lightbulb
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: linear-gradient(45deg, #800080, #4B0082);
-                      color: white;
-                    }
-
-      # Room Scene Controls (Only existing scenes)
-      - type: vertical-stack
-        cards:
-          - type: markdown
-            content: "## 🏠 **Room Protocols**"
-            card_mod:
-              style: |
-                ha-card {
-                  background: #D4A574;
-                  color: #2F1B14;
-                  text-align: center;
-                }
-
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: scene.kitchen_morning_routine
-                name: "Kitchen Dawn"
-                icon: mdi:chef-hat
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.kitchen_morning_routine
-
-              - type: custom:mushroom-entity-card
-                entity: scene.office_work_mode
-                name: "Office Command"
-                icon: mdi:desk
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.office_work_mode
-
-              - type: custom:mushroom-entity-card
-                entity: scene.living_room_gathering
-                name: "Hall Gathering"
-                icon: mdi:sofa
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.living_room_gathering
-
-          - type: horizontal-stack
-            cards:
-              - type: custom:mushroom-entity-card
-                entity: scene.bathroom_bright_lights
-                name: "Bathroom Illumination"
-                icon: mdi:lightbulb
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.bathroom_bright_lights
-
-              - type: custom:mushroom-entity-card
-                entity: scene.front_yard_security
-                name: "Perimeter Guard"
-                icon: mdi:security
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.front_yard_security
-
-              - type: custom:mushroom-entity-card
-                entity: scene.garage_work_mode
-                name: "Hangar Operations"
-                icon: mdi:garage
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.garage_work_mode
-
-      # Power Control Panel
-      - type: vertical-stack
-        cards:
-          - type: markdown
-            content: "## ⚡ **Power Distribution Network**"
-            card_mod:
-              style: |
-                ha-card {
-                  background: #4169E1;
-                  color: white;
-                  text-align: center;
-                }
-
-          - type: entities
-            title: "Critical Power Systems"
-            entities:
-              - entity: switch.tp_link_power_strip_173b_couch_lamp
-                name: "Couch Illumination Grid"
-                icon: mdi:floor-lamp
-              - entity: switch.tp_link_power_strip_1446_lamp_by_door
-                name: "Entry Portal Light"
-                icon: mdi:door-open
-              - entity: switch.tp_link_power_strip_1446_cat_bed
-                name: "Companion Rest Area"
-                icon: mdi:bed
-
-      # System Status Indicators
+      # Motion Sensors Quick View
       - type: entities
-        title: "🔍 System Status Monitors"
+        title: "🎯 Motion Sensors"
         entities:
+          - entity: binary_sensor.office_motion
+            name: "Office"
+            icon: mdi:desk
           - entity: binary_sensor.kitchen_motion
-            name: "Sietch Occupied"
-            icon: mdi:home-account
-          - entity: input_boolean.notification_system_enabled
-            name: "Notification System"
-            icon: mdi:bell-check
-          - entity: input_boolean.daily_reports_enabled
-            name: "Daily Reports Active"
-            icon: mdi:calendar-check
-          - entity: input_boolean.emergency_alerts_enabled
-            name: "Emergency System"
-            icon: mdi:alert-octagon-outline
+            name: "Kitchen"
+            icon: mdi:chef-hat
+          - entity: binary_sensor.living_room_motion
+            name: "Living Room"
+            icon: mdi:sofa

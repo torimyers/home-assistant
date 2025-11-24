@@ -5,29 +5,6 @@ title: "📱 Mobile Command"
 theme: default
 
 # Mobile-specific global styling
-card_mod:
-  style: |
-    :host {
-      --primary-color: #D4A574;
-      --accent-color: #FF8C00;
-      --primary-text-color: #2F1B14;
-      --card-background-color: #FFF8DC;
-      --primary-background-color: #F5E6D3;
-      --mdc-button-outline-color: #FF8C00;
-      --mushroom-card-primary-color: #D4A574;
-      --mushroom-card-secondary-color: #8B4513;
-    }
-    
-    /* Mobile optimizations */
-    @media screen and (max-width: 768px) {
-      .view {
-        padding: 8px !important;
-      }
-      ha-card {
-        margin: 4px 0 !important;
-      }
-    }
-
 views:
   - title: "Home"
     icon: mdi:home
@@ -42,16 +19,6 @@ views:
       - type: custom:mushroom-title-card
         title: "🏜️ House Dodson"
         subtitle: "Mobile Command Center (Pocket Sietch)"
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(135deg, #D4A574, #F5E6D3);
-              border: 2px solid #FF8C00;
-              color: #2F1B14;
-              text-align: center;
-              margin-bottom: 8px;
-            }
-
       # Quick Status - Single Row
       - type: horizontal-stack
         cards:
@@ -85,26 +52,12 @@ views:
             icon: mdi:bell
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('input_boolean.notification_system_enabled', 'on') %}#32CD32{% else %}#666666{% endif %};
-                  color: white;
-                }
-
           - type: custom:mushroom-entity-card
             entity: input_boolean.vacation_mode
             name: "Away Mode"
             icon: mdi:airplane
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('input_boolean.vacation_mode', 'on') %}#FF8C00{% else %}#666666{% endif %};
-                  color: white;
-                }
-
       # Emergency Quick Access
       - type: horizontal-stack
         cards:
@@ -112,13 +65,6 @@ views:
             entity: switch.tp_link_power_strip_173b_couch_lamp
             name: "Living Lamp"
             icon: mdi:lamp
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #228B22, #32CD32);
-                  color: white;
-                }
-
           - type: custom:mushroom-entity-card
             entity: scene.system_storm_mode
             name: "Storm Mode"
@@ -128,13 +74,6 @@ views:
               service: scene.turn_on
               service_data:
                 entity_id: scene.system_storm_mode
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #4169E1, #1E90FF);
-                  color: white;
-                }
-
   - title: "Control"
     icon: mdi:tune
     path: control
@@ -144,16 +83,6 @@ views:
       - type: custom:mushroom-title-card
         title: "🏠 Room Lighting Controls"
         subtitle: "Quick access to all room lights"
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(135deg, #D4A574, #F5E6D3);
-              border: 2px solid #FF8C00;
-              color: #2F1B14;
-              text-align: center;
-              margin-bottom: 8px;
-            }
-
       # Kitchen Lighting
       - type: horizontal-stack
         cards:
@@ -163,26 +92,12 @@ views:
             icon: mdi:chef-hat
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light', 'on') %}#FFA500{% else %}#696969{% endif %};
-                  color: white;
-                }
-
           - type: custom:mushroom-entity-card
             entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
             name: "Kitchen Sink"
             icon: mdi:water-pump
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2', 'on') %}#FFA500{% else %}#696969{% endif %};
-                  color: white;
-                }
-
       # Office Lighting  
       - type: horizontal-stack
         cards:
@@ -192,26 +107,12 @@ views:
             icon: mdi:desk-lamp
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('light.ledvance_a19_rgbw_light', 'on') %}#4169E1{% else %}#696969{% endif %};
-                  color: white;
-                }
-
           - type: custom:mushroom-entity-card
             entity: light.ledvance_a19_rgbw_light_2
             name: "Office Upper"
             icon: mdi:ceiling-light
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('light.ledvance_a19_rgbw_light_2', 'on') %}#4169E1{% else %}#696969{% endif %};
-                  color: white;
-                }
-
       - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
@@ -220,13 +121,6 @@ views:
             icon: mdi:floor-lamp
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('light.ledvance_a19_rgbw_light_3', 'on') %}#4169E1{% else %}#696969{% endif %};
-                  color: white;
-                }
-
           # Dining Room Button (All 4 lights)
           - type: custom:mushroom-entity-card
             entity: light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
@@ -235,13 +129,6 @@ views:
             tap_action:
               action: call-service
               service: script.toggle_dining_room_lights
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light', 'on') %}#DC143C{% else %}#696969{% endif %};
-                  color: white;
-                }
-
       # Living Areas
       - type: horizontal-stack
         cards:
@@ -251,26 +138,12 @@ views:
             icon: mdi:sofa
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('switch.tp_link_power_strip_173b_couch_lamp', 'on') %}#228B22{% else %}#696969{% endif %};
-                  color: white;
-                }
-
           - type: custom:mushroom-entity-card
             entity: light.tori_light
             name: "Bedroom"
             icon: mdi:bed
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('light.tori_light', 'on') %}#9370DB{% else %}#696969{% endif %};
-                  color: white;
-                }
-
       # Entry & Outdoor
       - type: horizontal-stack
         cards:
@@ -280,26 +153,12 @@ views:
             icon: mdi:door-open
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('switch.tp_link_power_strip_1446_lamp_by_door', 'on') %}#DAA520{% else %}#696969{% endif %};
-                  color: white;
-                }
-
           - type: custom:mushroom-entity-card
             entity: light.front_light
             name: "Front Yard"
             icon: mdi:home-outline
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('light.front_light', 'on') %}#FF6347{% else %}#696969{% endif %};
-                  color: white;
-                }
-
       - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
@@ -308,13 +167,6 @@ views:
             icon: mdi:tree
             tap_action:
               action: toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: {% if is_state('light.backyard_light', 'on') %}#8FBC8F{% else %}#696969{% endif %};
-                  color: white;
-                }
-
           # Group Controls
           - type: custom:mushroom-entity-card
             entity: script.office_lights_toggle
@@ -325,13 +177,6 @@ views:
               service: script.toggle
               service_data:
                 entity_id: script.office_lights_toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #4169E1, #1E90FF);
-                  color: white;
-                }
-
       # Group Controls Row 2
       - type: horizontal-stack
         cards:
@@ -344,13 +189,6 @@ views:
               service: script.toggle
               service_data:
                 entity_id: script.kitchen_lights_toggle
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #FFA500, #FF8C00);
-                  color: white;
-                }
-
           # All Lights Control
           - type: button
             name: "All Lights Off"
@@ -360,26 +198,10 @@ views:
               service: light.turn_off
               service_data:
                 entity_id: all
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #800080, #4B0082);
-                  color: white;
-                }
-
       # Mobile Controls Header
       - type: custom:mushroom-title-card
         title: "⚙️ System Controls"
         subtitle: "Essential system management"
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(135deg, #4169E1, #6495ED);
-              color: white;
-              text-align: center;
-              margin-bottom: 8px;
-            }
-
       # System Modes - Toggle Grid
       - type: grid
         columns: 2
@@ -419,11 +241,6 @@ views:
       # House Mode Selector
       - type: entities
         title: "🏠 House Mode"
-        card_mod:
-          style: |
-            ha-card {
-              font-size: 14px;
-            }
         entities:
           - entity: input_select.house_mode
             name: "Current Mode"
@@ -433,11 +250,6 @@ views:
       # Quick Thresholds
       - type: entities
         title: "🎯 Quick Adjustments"
-        card_mod:
-          style: |
-            ha-card {
-              font-size: 14px;
-            }
         entities:
           - entity: input_number.motion_timeout_minutes
             name: "Motion Timeout"
@@ -453,15 +265,6 @@ views:
       - type: custom:mushroom-title-card
         title: "📊 System Monitor"
         subtitle: "Status and analytics"
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(135deg, #228B22, #32CD32);
-              color: white;
-              text-align: center;
-              margin-bottom: 8px;
-            }
-
       # Key Metrics - Mobile Optimized
       - type: grid
         columns: 1
@@ -480,11 +283,6 @@ views:
       # Status Indicators - Compact
       - type: entities
         title: "🚦 System Status"
-        card_mod:
-          style: |
-            ha-card {
-              font-size: 14px;
-            }
         entities:
           - entity: binary_sensor.office_motion
             name: "House Occupied"
@@ -499,11 +297,6 @@ views:
       # Recent Activity - Mobile List
       - type: entities
         title: "📈 Recent Activity"
-        card_mod:
-          style: |
-            ha-card {
-              font-size: 14px;
-            }
         entities:
           - entity: counter.atlas_daily_motion
             name: "Motion Events Today"
@@ -538,23 +331,9 @@ views:
       - type: custom:mushroom-title-card
         title: "⚙️ Quick Settings"
         subtitle: "Mobile configuration"
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(135deg, #DC143C, #FF6347);
-              color: white;
-              text-align: center;
-              margin-bottom: 8px;
-            }
-
       # Notification Settings
       - type: entities
         title: "🔔 Notifications"
-        card_mod:
-          style: |
-            ha-card {
-              font-size: 14px;
-            }
         entities:
           - entity: input_boolean.daily_reports_enabled
             name: "Daily Reports"
@@ -568,11 +347,6 @@ views:
       # System Preferences
       - type: entities
         title: "🎛️ Preferences"
-        card_mod:
-          style: |
-            ha-card {
-              font-size: 14px;
-            }
         entities:
           - entity: input_select.climate_mode
             name: "Climate Mode"
@@ -606,15 +380,6 @@ views:
       - type: custom:mushroom-title-card
         title: "🧭 Dashboard Navigation"
         subtitle: "Switch to other command centers"
-        card_mod:
-          style: |
-            ha-card {
-              background: linear-gradient(135deg, #800080, #9370DB);
-              color: white;
-              text-align: center;
-              margin-bottom: 8px;
-            }
-
       # Dashboard Navigation Cards
       - type: grid
         columns: 1
@@ -625,15 +390,6 @@ views:
             tap_action:
               action: navigate
               navigation_path: /lovelace-desktop-command
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #4169E1, #1E90FF);
-                  color: white;
-                  border: 2px solid #0000CD;
-                  margin: 4px 0;
-                }
-
           - type: custom:mushroom-entity-card
             entity: sensor.automation_success_rate
             name: "🏛️ Command Center"
@@ -642,15 +398,6 @@ views:
             tap_action:
               action: navigate
               navigation_path: /lovelace-dashboards-sietch-command
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #228B22, #32CD32);
-                  color: white;
-                  border: 2px solid #006400;
-                  margin: 4px 0;
-                }
-
           - type: custom:mushroom-entity-card
             entity: sensor.system_response_time
             name: "⚡ Performance Monitor"
@@ -659,15 +406,6 @@ views:
             tap_action:
               action: navigate
               navigation_path: /lovelace-dashboards-performance-monitoring
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(45deg, #FF8C00, #FFA500);
-                  color: white;
-                  border: 2px solid #FF6347;
-                  margin: 4px 0;
-                }
-
       # Quick Access Info
       - type: markdown
         content: |
@@ -684,11 +422,3 @@ views:
           
           **⚡ Performance** - System diagnostics  
           *Technical metrics and performance data*
-        card_mod:
-          style: |
-            ha-card {
-              background: #FFF8DC;
-              color: #2F1B14;
-              border: 2px solid #D4A574;
-              font-size: 12px;
-            }

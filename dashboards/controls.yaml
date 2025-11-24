@@ -1,0 +1,266 @@
+# ============================================================================
+# CONTROLS DASHBOARD - Interactive Command Interface
+# ============================================================================
+# Streamlined for performance - verbose styling removed
+# Part of split dashboard optimization (was responsive-dashboard.yaml view 3)
+# ============================================================================
+
+title: "Controls"
+theme: default
+
+card_mod:
+  style: |
+    :host {
+      --primary-color: #D4A574;
+      --accent-color: #FF8C00;
+      --primary-text-color: #2F1B14;
+      --card-background-color: #FFF8DC;
+      --primary-background-color: #F5E6D3;
+      --ha-card-border-radius: 10px;
+    }
+
+views:
+  - title: "Controls"
+    icon: mdi:console
+    path: controls
+    badges: []
+    cards:
+      - type: markdown
+        content: |
+          # 🎛️ **COMMAND CONTROLS**
+          *Interactive Sietch management interface*
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #2F1B14, #5D4E37);
+              color: #D4A574;
+              text-align: center;
+              border: 3px solid #FF8C00;
+            }
+
+      # Individual Room Lighting Controls
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: "## 💡 **Individual Room Lighting**"
+
+          # Kitchen Lights
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
+                name: "Kitchen Oven Light"
+                secondary_info: "Food preparation area"
+                icon: mdi:chef-hat
+                tap_action:
+                  action: toggle
+
+              - type: custom:mushroom-entity-card
+                entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
+                name: "Kitchen Sink Light"
+                secondary_info: "Water work station"
+                icon: mdi:water-pump
+                tap_action:
+                  action: toggle
+
+          # Office Lights Row 1
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: light.ledvance_a19_rgbw_light
+                name: "Office Right Light"
+                secondary_info: "Command station right"
+                icon: mdi:desk-lamp
+                tap_action:
+                  action: toggle
+
+              - type: custom:mushroom-entity-card
+                entity: light.ledvance_a19_rgbw_light_2
+                name: "Office Upper Light"
+                secondary_info: "Command station ceiling"
+                icon: mdi:ceiling-light
+                tap_action:
+                  action: toggle
+
+          # Office Lights Row 2 + Dining Room
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: light.ledvance_a19_rgbw_light_3
+                name: "Office Left Light"
+                secondary_info: "Command station left"
+                icon: mdi:floor-lamp
+                tap_action:
+                  action: toggle
+
+              - type: custom:mushroom-entity-card
+                entity: light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+                name: "Dining Room (All 4)"
+                secondary_info: "Fremen feast table"
+                icon: mdi:table-chair
+                tap_action:
+                  action: call-service
+                  service: script.toggle
+                  service_data:
+                    entity_id: script.dining_room_lights_toggle
+
+          # Living Areas
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.tp_link_power_strip_173b_couch_lamp
+                name: "Living Room Couch"
+                secondary_info: "Tribal gathering area"
+                icon: mdi:sofa
+                tap_action:
+                  action: toggle
+
+              - type: custom:mushroom-entity-card
+                entity: light.tori_light
+                name: "Bedroom Light"
+                secondary_info: "Private quarters"
+                icon: mdi:bed
+                tap_action:
+                  action: toggle
+
+          # Entry & Outdoor
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.tp_link_power_strip_1446_lamp_by_door
+                name: "Entry Door Light"
+                secondary_info: "Sietch portal guardian"
+                icon: mdi:door-open
+                tap_action:
+                  action: toggle
+
+              - type: custom:mushroom-entity-card
+                entity: light.front_light
+                name: "Front Yard Light"
+                secondary_info: "Perimeter defense"
+                icon: mdi:home-outline
+                tap_action:
+                  action: toggle
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: light.backyard_light
+                name: "Backyard Light"
+                secondary_info: "Rear perimeter watch"
+                icon: mdi:tree
+                tap_action:
+                  action: toggle
+
+              # Master All Lights Control
+              - type: custom:mushroom-entity-card
+                entity: light.kitchen_lights
+                name: "Kitchen Lights"
+                secondary_info: "Main kitchen lighting"
+                icon: mdi:lightbulb
+
+      # Room Scene Controls
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: "## 🏠 **Room Protocols**"
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: scene.kitchen_morning_routine
+                name: "Kitchen Dawn"
+                icon: mdi:chef-hat
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.kitchen_morning_routine
+
+              - type: custom:mushroom-entity-card
+                entity: scene.office_work_mode
+                name: "Office Command"
+                icon: mdi:desk
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.office_work_mode
+
+              - type: custom:mushroom-entity-card
+                entity: scene.living_room_gathering
+                name: "Hall Gathering"
+                icon: mdi:sofa
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.living_room_gathering
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: scene.bathroom_bright_lights
+                name: "Bathroom Illumination"
+                icon: mdi:lightbulb
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.bathroom_bright_lights
+
+              - type: custom:mushroom-entity-card
+                entity: scene.front_yard_security
+                name: "Perimeter Guard"
+                icon: mdi:security
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.front_yard_security
+
+              - type: custom:mushroom-entity-card
+                entity: scene.garage_work_mode
+                name: "Hangar Operations"
+                icon: mdi:garage
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.garage_work_mode
+
+      # Power Control Panel
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: "## ⚡ **Power Distribution Network**"
+
+          - type: entities
+            title: "Critical Power Systems"
+            entities:
+              - entity: switch.tp_link_power_strip_173b_couch_lamp
+                name: "Couch Illumination Grid"
+                icon: mdi:floor-lamp
+              - entity: switch.tp_link_power_strip_1446_lamp_by_door
+                name: "Entry Portal Light"
+                icon: mdi:door-open
+              - entity: switch.tp_link_power_strip_1446_cat_bed
+                name: "Companion Rest Area"
+                icon: mdi:bed
+
+      # System Status Indicators
+      - type: entities
+        title: "🔍 System Status Monitors"
+        entities:
+          - entity: binary_sensor.kitchen_motion
+            name: "Sietch Occupied"
+            icon: mdi:home-account
+          - entity: input_boolean.notification_system_enabled
+            name: "Notification System"
+            icon: mdi:bell-check
+          - entity: input_boolean.daily_reports_enabled
+            name: "Daily Reports Active"
+            icon: mdi:calendar-check
+          - entity: input_boolean.emergency_alerts_enabled
+            name: "Emergency System"
+            icon: mdi:alert-octagon-outline

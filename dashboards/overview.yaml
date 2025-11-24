@@ -1,0 +1,304 @@
+# ============================================================================
+# HOUSE DODSON OVERVIEW - Main Dashboard View
+# ============================================================================
+# Streamlined for performance - verbose styling removed
+# Part of split dashboard optimization (was responsive-dashboard.yaml view 1)
+# ============================================================================
+
+title: "House Dodson Overview"
+theme: default
+
+card_mod:
+  style: |
+    :host {
+      --primary-color: #D4A574;
+      --accent-color: #FF8C00;
+      --primary-text-color: #2F1B14;
+      --card-background-color: #FFF8DC;
+      --primary-background-color: #F5E6D3;
+      --ha-card-border-radius: 10px;
+    }
+
+views:
+  - title: "Overview"
+    icon: mdi:home-analytics
+    path: main-overview
+    badges: []
+    cards:
+      # Navigation Header
+      - type: custom:mushroom-title-card
+        title: "🏜️ House Dodson Command"
+        subtitle: "Home monitoring systems online - smart home control center"
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #D4A574, #F5E6D3);
+              border: 2px solid #FF8C00;
+              color: #2F1B14;
+            }
+
+      # Quick Navigation to Other Dashboards
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: sensor.house_occupied
+            name: "System Overview"
+            secondary_info: "Basic system status and controls"
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: "#system"
+
+          - type: custom:mushroom-entity-card
+            entity: sensor.current_energy_usage
+            name: "Energy Monitor"
+            secondary_info: "Energy usage and basic monitoring"
+            icon: mdi:flash
+
+          - type: custom:mushroom-entity-card
+            entity: sensor.automation_success_rate
+            name: "Control Systems"
+            secondary_info: "Automation controls & scenes (Mentat Logic)"
+            icon: mdi:console
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-dashboards-controls
+
+      # Dashboard Navigation
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: person.torib
+            name: "📱 Mobile Command"
+            secondary_info: "Touch-optimized mobile dashboard"
+            icon: mdi:cellphone
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-mobile-command
+
+          - type: custom:mushroom-entity-card
+            entity: sensor.system_response_time
+            name: "⚡ Performance Monitor"
+            secondary_info: "System diagnostics & metrics (Mentat Analysis)"
+            icon: mdi:speedometer
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-dashboards-performance-monitoring
+
+      # System Health Overview
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: |
+              ## 📊 **SYSTEM STATUS**
+              *Real-time home monitoring and health assessment (Sietch Vitals)*
+
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                entity: sensor.processor_use_percent
+                name: "CPU Usage"
+                unit: "%"
+                min: 0
+                max: 100
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 80
+                needle: true
+
+              - type: gauge
+                entity: sensor.memory_use_percent
+                name: "Memory Usage"
+                unit: "%"
+                min: 0
+                max: 100
+                severity:
+                  green: 0
+                  yellow: 70
+                  red: 85
+                needle: true
+
+              - type: gauge
+                entity: sensor.current_energy_usage
+                name: "Energy Usage"
+                unit: "W"
+                min: 0
+                max: 3000
+                severity:
+                  green: 0
+                  yellow: 1500
+                  red: 2500
+                needle: true
+
+          # Template Sensor Status Cards
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.energy_efficiency_rating
+                name: "Production Level"
+                secondary_info: "Energy & resource efficiency (Spice Production)"
+                icon: mdi:shimmer
+                primary_info: state
+
+              - type: custom:mushroom-entity-card
+                entity: sensor.desert_survival_status
+                name: "Home Status"
+                secondary_info: "Overall system wellness (Desert Survival)"
+                icon: mdi:shield-cross
+                primary_info: state
+
+              - type: custom:mushroom-entity-card
+                entity: sensor.atmospheric_conditions
+                name: "Environment"
+                secondary_info: "Climate & air quality (Atmospheric)"
+                icon: mdi:weather-partly-cloudy
+                primary_info: state
+
+      # Motion & Activity Section
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: |
+              ## 🏃 **HOUSEHOLD ACTIVITY**
+              *Motion detection and presence monitoring (Fremen Activity)*
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.fremen_activity_level
+                name: "Activity Level"
+                secondary_info: "Current household movement (Fremen Activity)"
+                icon: mdi:run-fast
+                primary_info: state
+
+              - type: custom:mushroom-entity-card
+                entity: sensor.sietch_occupancy_distribution
+                name: "Primary Area"
+                secondary_info: "Most active room (Occupancy Distribution)"
+                icon: mdi:home-analytics
+                primary_info: state
+
+              - type: custom:mushroom-entity-card
+                entity: sensor.motion_pattern_analysis
+                name: "Motion Patterns"
+                secondary_info: "Movement analysis & trends (Pattern Analysis)"
+                icon: mdi:chart-line
+                primary_info: state
+
+          # Motion Sensor Status
+          - type: entities
+            title: "🎯 Motion Sensor Network"
+            entities:
+              - entity: binary_sensor.office_motion
+                name: "Office Motion"
+                secondary_info: "Work area sensor (Office Sanctum)"
+                icon: mdi:desk
+              - entity: binary_sensor.kitchen_motion
+                name: "Kitchen Motion"
+                secondary_info: "Cooking area sensor (Ration Preparation)"
+                icon: mdi:chef-hat
+              - entity: binary_sensor.living_room_motion
+                name: "Living Room Motion"
+                secondary_info: "Main area sensor (Gathering Hall)"
+                icon: mdi:sofa
+
+      # Quick Scene Controls
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: |
+              ## 🎛️ **SCENE CONTROLS**
+              *Available system scenes and automation*
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: scene.morning_awakening
+                name: "Morning Scene"
+                secondary_info: "Morning wake-up routine (Dawn Awakening)"
+                icon: mdi:weather-sunrise
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.morning_awakening
+
+              - type: custom:mushroom-entity-card
+                entity: scene.evening_routine
+                name: "Evening Scene"
+                secondary_info: "Evening wind-down routine (Sunset Protocol)"
+                icon: mdi:weather-sunset
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.evening_routine
+
+              - type: custom:mushroom-entity-card
+                entity: scene.system_goodnight
+                name: "Goodnight Scene"
+                secondary_info: "Bedtime preparation (Night Rest)"
+                icon: mdi:weather-night
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.system_goodnight
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.tp_link_power_strip_173b_couch_lamp
+                name: "Living Room Lamp"
+                icon: mdi:lamp
+
+              - type: custom:mushroom-entity-card
+                entity: scene.system_storm_mode
+                name: "Storm Defense"
+                icon: mdi:weather-lightning
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.system_storm_mode
+
+              - type: custom:mushroom-entity-card
+                entity: scene.system_storm_mode
+                name: "Water Emergency"
+                icon: mdi:water-alert
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.system_storm_mode
+
+      # Notification Controls
+      - type: vertical-stack
+        cards:
+          - type: markdown
+            content: |
+              ## 🔔 **NOTIFICATION CONTROLS**
+              *Manage system notifications and alerts*
+
+          - type: entities
+            title: "Notification Settings"
+            entities:
+              - entity: input_boolean.notification_system_enabled
+                name: "System Notifications"
+                icon: mdi:bell-circle
+              - entity: input_boolean.daily_reports_enabled
+                name: "Daily Reports"
+                icon: mdi:calendar-today
+              - entity: input_boolean.threshold_alerts_enabled
+                name: "Threshold Alerts"
+                icon: mdi:alert-circle
+              - entity: input_boolean.achievement_notifications_enabled
+                name: "Achievement Alerts"
+                icon: mdi:trophy-award
+              - entity: input_boolean.emergency_alerts_enabled
+                name: "Emergency Alerts"
+                icon: mdi:alert-octagon
+              - entity: input_boolean.night_mode_notifications
+                name: "Night Mode Quiet"
+                icon: mdi:weather-night

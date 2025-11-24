@@ -1,0 +1,148 @@
+# ============================================================================
+# ANALYTICS DASHBOARD - Detailed Sensor Analysis
+# ============================================================================
+# Streamlined for performance - verbose styling removed
+# Part of split dashboard optimization (was responsive-dashboard.yaml view 2)
+# ============================================================================
+
+title: "Analytics"
+theme: default
+
+card_mod:
+  style: |
+    :host {
+      --primary-color: #D4A574;
+      --accent-color: #FF8C00;
+      --primary-text-color: #2F1B14;
+      --card-background-color: #FFF8DC;
+      --primary-background-color: #F5E6D3;
+      --ha-card-border-radius: 10px;
+    }
+
+views:
+  - title: "Analytics"
+    icon: mdi:chart-line
+    path: analytics
+    badges: []
+    cards:
+      - type: markdown
+        content: |
+          # 🔍 **DETAILED ANALYTICS**
+          *Deep sensor analysis and system intelligence*
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, #D4A574, #F5E6D3);
+              color: #2F1B14;
+              text-align: center;
+              border: 3px solid #FF8C00;
+            }
+
+      # Template Sensor Breakdown
+      - type: entities
+        title: "🎯 Template Sensor Status Report"
+        entities:
+          - type: section
+            label: "Sietch Vitals & System Health"
+          - entity: sensor.automation_success_rate
+            name: "Health Score"
+            secondary_info: attribute
+            attribute: status_level
+          - entity: sensor.harvester_efficiency
+            name: "Harvester Efficiency"
+            secondary_info: attribute
+            attribute: efficiency_grade
+          - entity: sensor.water_conservation_index
+            name: "Water Conservation"
+            secondary_info: attribute
+            attribute: conservation_level
+          - entity: sensor.energy_efficiency_rating
+            name: "Spice Production"
+            secondary_info: attribute
+            attribute: guild_rating
+          - entity: sensor.desert_survival_status
+            name: "Survival Status"
+            secondary_info: attribute
+            attribute: survival_rating
+          - type: section
+            label: "Motion & Presence Analytics"
+          - entity: sensor.fremen_activity_level
+            name: "Activity Level"
+            secondary_info: attribute
+            attribute: current_period
+          - entity: sensor.sietch_occupancy_distribution
+            name: "Occupancy Distribution"
+            secondary_info: attribute
+            attribute: most_active_zone
+          - entity: sensor.motion_pattern_analysis
+            name: "Motion Pattern"
+            secondary_info: attribute
+            attribute: time_analysis
+          - type: section
+            label: "Environmental Monitoring"
+          - entity: sensor.atmospheric_conditions
+            name: "Atmospheric Conditions"
+            secondary_info: attribute
+            attribute: atmosphere_quality
+          - entity: sensor.energy_shield_status
+            name: "Energy Shield"
+            secondary_info: attribute
+            attribute: shield_strength
+          - type: section
+            label: "Automation Intelligence"
+          - entity: sensor.automation_success_rate
+            name: "Automation Success"
+            secondary_info: attribute
+            attribute: recent_activity
+          - entity: sensor.blueprint_efficiency_score
+            name: "Blueprint Efficiency"
+            secondary_info: attribute
+            attribute: sensor_responsiveness
+          - entity: sensor.night_security_effectiveness
+            name: "Night Security"
+            secondary_info: attribute
+            attribute: security_mode
+          - entity: sensor.morning_ritual_completion
+            name: "Morning Ritual"
+            secondary_info: attribute
+            attribute: ritual_phase
+          - entity: sensor.system_response_time
+            name: "System Response"
+            secondary_info: attribute
+            attribute: current_load
+
+      # Performance Metrics Dashboard
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.automation_success_rate
+            name: "Automation Success"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 85
+              yellow: 70
+              red: 55
+
+          - type: gauge
+            entity: sensor.blueprint_efficiency_score
+            name: "Blueprint Efficiency"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 85
+              yellow: 70
+              red: 55
+
+          - type: gauge
+            entity: sensor.system_response_time
+            name: "Response Time"
+            unit: "%"
+            min: 0
+            max: 100
+            severity:
+              green: 85
+              yellow: 75
+              red: 65
