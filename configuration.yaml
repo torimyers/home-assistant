@@ -1,3 +1,18 @@
+# Home Assistant Minimal Configuration
+# Simplified setup for stability and debugging
+
+# Core Home Assistant settings
 homeassistant:
-  # Load packages
-  packages: !include_dir_named integrations
+  name: Home
+  unit_system: imperial
+
+  # Customizations
+  customize: !include customize.yaml
+
+# Load integrations from integrations/ directory
+# This preserves all your device connections
+packages: !include_dir_named integrations
+
+# Default config provides essential components
+# (frontend, history, logbook, etc.)
+default_config:

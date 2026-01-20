@@ -1,0 +1,12 @@
+- id: 'test_simple_automation'
+  alias: Test Simple Automation
+  description: Basic test to verify automation system works
+  trigger:
+    - platform: state
+      entity_id: sun.sun
+      to: 'above_horizon'
+  action:
+    - service: persistent_notification.create
+      data:
+        title: "Automation Test"
+        message: "Simple automation triggered successfully at sunrise!"
