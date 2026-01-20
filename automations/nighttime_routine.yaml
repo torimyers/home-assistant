@@ -45,7 +45,7 @@
 
   trigger:
     - platform: state
-      entity_id: binary_sensor.tori_phone_is_charging
+      entity_id: binary_sensor.tori_pixel_10_pro_xl_is_charging
       to: 'on'
 
   condition:
@@ -59,3 +59,110 @@
         entity_id: light.tori_light
 
   mode: single
+
+- id: turn_off_everything_10pm_away
+  alias: Turn Off Everything at 10 PM if Nobody Home
+  description: Turn off all lights at 10 PM if both people are away
+
+  trigger:
+    - platform: time
+      at: "22:00:00"
+
+  condition:
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'not_home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'not_home'
+
+  action:
+    # Turn off all lights
+    - service: light.turn_off
+      target:
+        entity_id: all
+    # Turn off living room switches
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+  mode: single
+
+- id: welcome_home_after_10pm
+  alias: Welcome Home After 10 PM
+  description: Turn on living room + kitchen when arriving home after 10PM. Bedroom only if nobody else home. Auto-off after 45min
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'home'
+
+  condition:
+    - condition: time
+      after: "22:00:00"
+      before: "05:00:00"
+
+  action:
+    # Always turn on living room and kitchen
+    - service: light.turn_on
+      target:
+        area_id: living_room
+      data:
+        brightness_pct: 100
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+    - service: light.turn_on
+      target:
+        area_id: kitchen
+      data:
+        brightness_pct: 100
+
+    # Smart bedroom logic: only turn on bedroom if nobody else was already home
+    - choose:
+        # If the OTHER person was already home when you arrived, skip bedroom
+        - conditions:
+            - condition: template
+              value_template: >
+                {% if trigger.entity_id == 'person.tori_myers' %}
+                  {{ is_state('person.bennett', 'home') }}
+                {% elif trigger.entity_id == 'person.bennett' %}
+                  {{ is_state('person.tori_myers', 'home') }}
+                {% else %}
+                  false
+                {% endif %}
+          sequence: []
+      # Nobody else was home, turn on bedroom too
+      default:
+        - service: light.turn_on
+          target:
+            area_id: bedroom
+          data:
+            brightness_pct: 100
+
+    # Wait 45 minutes
+    - delay:
+        minutes: 45
+
+    # Turn off all the lights after 45 minutes
+    - service: light.turn_off
+      target:
+        area_id:
+          - living_room
+          - kitchen
+          - bedroom
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+  mode: restart

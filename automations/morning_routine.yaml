@@ -23,7 +23,7 @@
             - or:
                 - and:
                     - condition: state
-                      entity_id: binary_sensor.tori_phone_is_charging
+                      entity_id: binary_sensor.tori_pixel_10_pro_xl_is_charging
                       state: 'off'
                     - condition: state
                       entity_id: person.tori_myers
