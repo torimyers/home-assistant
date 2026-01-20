@@ -1,0 +1,39 @@
+- id: evening_sunset_routine
+  alias: Evening Sunset Routine
+  description: Turn on lights 30 minutes before sunset
+
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: "-00:30:00"
+
+  action:
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+    - service: light.turn_on
+      target:
+        area_id:
+          - office
+          - bedroom
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+    - service: cover.close_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
+          - cover.tori_roller_shade_cover
+          - cover.bennett_roller_shade_cover
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        title: "Evening Mode"
+        message: "Sunset approaching. Evening lights on, shades closed."
+
+  mode: single

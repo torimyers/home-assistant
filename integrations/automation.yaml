@@ -1,6 +1,4 @@
 ---
-# This handles the loading of my automations
-#
+# This handles the loading of automations
 # https://www.home-assistant.io/docs/automation/
-#
-automation: !include_dir_list ../automations
+automation: !include_dir_merge_list ../automations

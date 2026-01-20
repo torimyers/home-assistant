@@ -1,0 +1,61 @@
+- id: nighttime_dimming_10pm
+  alias: Nighttime Dimming at 10 PM
+  description: Dim office and kitchen lights, turn off dining room at 10 PM
+
+  trigger:
+    - platform: time
+      at: "22:00:00"
+
+  action:
+    # Dim office lights to 30%
+    - service: light.turn_on
+      target:
+        area_id: office
+      data:
+        brightness_pct: 30
+
+    # Dim kitchen lights to 30%
+    - service: light.turn_on
+      target:
+        area_id: kitchen
+      data:
+        brightness_pct: 30
+
+    # Turn off all 4 dining room table lights
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+
+    # Turn off living room lamp switches
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+  mode: single
+
+- id: bedroom_lamp_off_when_charging
+  alias: Bedroom Lamp Off When Charging
+  description: Turn off bedroom lamp when phone plugged in and home
+
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.tori_phone_is_charging
+      to: 'on'
+
+  condition:
+    - condition: state
+      entity_id: person.tori_myers
+      state: 'home'
+
+  action:
+    - service: light.turn_off
+      target:
+        entity_id: light.tori_light
+
+  mode: single

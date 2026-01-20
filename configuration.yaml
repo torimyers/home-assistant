@@ -4,14 +4,14 @@
 # Core Home Assistant settings
 homeassistant:
   name: Home
-  unit_system: imperial
+  unit_system: us_customary
 
   # Customizations
   customize: !include customize.yaml
 
-# Load integrations from integrations/ directory
-# This preserves all your device connections
-packages: !include_dir_named integrations
+  # Load integrations from integrations/ directory
+  # This preserves all your device connections
+  packages: !include_dir_named integrations
 
 # Default config provides essential components
 # (frontend, history, logbook, etc.)

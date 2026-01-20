@@ -1,0 +1,52 @@
+- id: morning_sunrise_routine
+  alias: Morning Sunrise Routine
+  description: Open shades and turn on lights 30 minutes after sunrise
+
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: "+00:30:00"
+
+  action:
+    # Always open office and living room shades (not bedroom - different schedules)
+    - service: cover.open_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
+
+    # If anyone is unplugged and home, turn on office and kitchen lights
+    - choose:
+        - conditions:
+            - or:
+                - and:
+                    - condition: state
+                      entity_id: binary_sensor.tori_phone_is_charging
+                      state: 'off'
+                    - condition: state
+                      entity_id: person.tori_myers
+                      state: 'home'
+                - condition: state
+                  entity_id: person.bennett
+                  state: 'home'
+          sequence:
+            - service: light.turn_on
+              target:
+                area_id:
+                  - office
+                  - kitchen
+              data:
+                brightness_pct: 100
+            - service: notify.mobile_app_tori_phone_2
+              data:
+                title: "Good Morning"
+                message: "Sunrise! Shades open, office & kitchen lights on."
+      default:
+        - service: notify.mobile_app_tori_phone_2
+          data:
+            title: "Good Morning"
+            message: "Sunrise! Shades are open."
+
+  mode: single

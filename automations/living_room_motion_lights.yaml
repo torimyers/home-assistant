@@ -1,0 +1,65 @@
+- id: living_room_motion_lights
+  alias: Living Room Motion Lights
+  description: Turn on living room lights when motion detected (100% + switches day, 30% late evening, disabled at night)
+
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.living_room_motion
+      to: 'on'
+
+  action:
+    - choose:
+        # Sleep time (12 AM - 5 AM): Disabled completely
+        - conditions:
+            - condition: time
+              after: "00:00:00"
+              before: "05:00:00"
+          sequence: []
+        # Late evening (10 PM - 12 AM): Only ceiling lights at 30%, no switches
+        - conditions:
+            - condition: time
+              after: "22:00:00"
+              before: "23:59:59"
+          sequence:
+            - service: light.turn_on
+              target:
+                area_id: living_room
+              data:
+                brightness_pct: 30
+      # Normal hours (5 AM - 10 PM): All lights at 100% + switches
+      default:
+        - service: light.turn_on
+          target:
+            area_id: living_room
+          data:
+            brightness_pct: 100
+        - service: switch.turn_on
+          target:
+            entity_id:
+              - switch.tp_link_power_strip_173b_couch_lamp
+              - switch.tp_link_power_strip_1446_lamp_by_door
+
+  mode: restart
+
+- id: living_room_motion_lights_off
+  alias: Living Room Motion Lights Off
+  description: Turn off living room lights 10 minutes after no motion
+
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.living_room_motion
+      to: 'off'
+      for:
+        minutes: 10
+
+  action:
+    - service: light.turn_off
+      target:
+        area_id: living_room
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+  mode: restart
