@@ -1,6 +1,15 @@
 ---
-# Lovelace Dashboard Configuration - Simple default setup
+# Custom Lovelace Dashboard
 # https://www.home-assistant.io/integrations/lovelace/
-#
-# Using default UI mode - Home Assistant will auto-generate the dashboard
-# based on your devices and integrations
+
+lovelace:
+  mode: yaml
+  resources: []
+
+  dashboards:
+    lovelace-home:
+      mode: yaml
+      title: Home
+      icon: mdi:home
+      show_in_sidebar: true
+      filename: ui-lovelace.yaml

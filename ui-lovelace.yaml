@@ -1,0 +1,150 @@
+---
+title: Home
+views:
+  # Overview Tab
+  - title: Home
+    path: home
+    icon: mdi:home
+    cards:
+      # People Card
+      - type: entities
+        title: People
+        show_header_toggle: false
+        entities:
+          - person.tori_myers
+          - person.bennett
+
+      # Locks Card
+      - type: entities
+        title: Locks & Security
+        show_header_toggle: false
+        entities:
+          - lock.front_door
+          - lock.back_door
+
+      # Quick Lighting Card
+      - type: light
+        entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
+        name: Kitchen Over Oven
+
+      - type: light
+        entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
+        name: Kitchen Over Sink
+
+      # Living Room Switches
+      - type: entities
+        title: Living Room
+        entities:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+      # Bedroom Light
+      - type: light
+        entity: light.tori_light
+        name: Bedroom Lamp
+
+  # Lighting Tab
+  - title: Lights
+    path: lights
+    icon: mdi:lightbulb-group
+    cards:
+      # Kitchen Lights
+      - type: entities
+        title: Kitchen
+        show_header_toggle: true
+        entities:
+          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
+          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
+
+      # Dining Room Lights
+      - type: entities
+        title: Dining Room
+        show_header_toggle: true
+        entities:
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+
+      # Office Lights
+      - type: entities
+        title: Office
+        show_header_toggle: true
+        entities:
+          - light.ledvance_a19_rgbw_light
+          - light.ledvance_a19_rgbw_light_2
+          - light.ledvance_a19_rgbw_light_3
+
+      # Living Room
+      - type: entities
+        title: Living Room
+        show_header_toggle: false
+        entities:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+      # Bedroom
+      - type: entities
+        title: Bedroom
+        entities:
+          - light.tori_light
+
+  # Covers/Shades Tab
+  - title: Shades
+    path: shades
+    icon: mdi:window-shutter
+    cards:
+      - type: entities
+        title: Living Room Shades
+        entities:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+
+      - type: entities
+        title: Office Shades
+        entities:
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
+
+      - type: entities
+        title: Bedroom Shades
+        entities:
+          - cover.tori_roller_shade_cover
+          - cover.bennett_roller_shade_cover
+
+  # Automations Tab
+  - title: Automations
+    path: automations
+    icon: mdi:robot
+    cards:
+      - type: entities
+        title: Motion Lighting
+        show_header_toggle: false
+        entities:
+          - automation.kitchen_motion_lights
+          - automation.office_motion_lights
+          - automation.living_room_motion_lights
+
+      - type: entities
+        title: Daily Routines
+        show_header_toggle: false
+        entities:
+          - automation.morning_sunrise_routine
+          - automation.evening_sunset_routine
+          - automation.nighttime_dimming_10pm
+
+      - type: entities
+        title: Arrival & Security
+        show_header_toggle: false
+        entities:
+          - automation.welcome_home_after_10pm
+          - automation.turn_off_everything_10pm_away
+          - automation.auto_lock_front_door
+          - automation.auto_unlock_arriving_home
+          - automation.announce_arrival_home
+
+      - type: entities
+        title: Personal
+        show_header_toggle: false
+        entities:
+          - automation.bedroom_lamp_off_when_charging
