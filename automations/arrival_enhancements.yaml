@@ -1,0 +1,129 @@
+- id: auto_unlock_when_stopped_at_home
+  alias: Auto-Unlock When Stopped at Home
+  description: Only unlock door when arriving home AND stopped moving (not driving or walking past)
+
+  trigger:
+    - platform: state
+      entity_id: person.tori_myers
+      to: 'home'
+    - platform: state
+      entity_id: person.bennett
+      to: 'home'
+
+  condition:
+    # Only unlock if the person who arrived is now still/stationary
+    - condition: template
+      value_template: >
+        {% if trigger.entity_id == 'person.tori_myers' %}
+          {{ is_state('sensor.tori_pixel_10_pro_xl_detected_activity', 'still') }}
+        {% elif trigger.entity_id == 'person.bennett' %}
+          true
+        {% else %}
+          false
+        {% endif %}
+
+  action:
+    - service: lock.unlock
+      target:
+        entity_id: lock.front_door
+
+  mode: restart
+
+- id: notify_heading_home
+  alias: Notify When Heading Home
+  description: Send notification when someone leaves a known location and is traveling home
+
+  trigger:
+    # Tori leaving known zones
+    - platform: state
+      entity_id: person.tori_myers
+      from:
+        - zone.da_office
+        - zone.hou16
+        - zone.myers_parentals
+        - zone.daaboul_house
+        - zone.waller_co_court
+      to: 'not_home'
+
+    # Bennett leaving known zones
+    - platform: state
+      entity_id: person.bennett
+      from:
+        - zone.da_office
+        - zone.hou16
+        - zone.myers_parentals
+        - zone.daaboul_house
+        - zone.waller_co_court
+      to: 'not_home'
+
+  condition:
+    # Only notify if someone else is home to receive it
+    - condition: template
+      value_template: >
+        {% if trigger.entity_id == 'person.tori_myers' %}
+          {{ is_state('person.bennett', 'home') }}
+        {% elif trigger.entity_id == 'person.bennett' %}
+          {{ is_state('person.tori_myers', 'home') }}
+        {% else %}
+          false
+        {% endif %}
+
+  action:
+    # Announce on speakers
+    - service: tts.google_say
+      target:
+        entity_id:
+          - media_player.bedroom
+          - media_player.office
+      data:
+        message: >
+          {% set person_name = 'Tori' if trigger.entity_id == 'person.tori_myers' else 'Bennett' %}
+          {% set from_zone = trigger.from_state.state | replace('_', ' ') | title %}
+          {{ person_name }} left {{ from_zone }} and is heading home
+
+    # Also send phone notification
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "On the way home"
+        message: >
+          {% set person_name = 'Tori' if trigger.entity_id == 'person.tori_myers' else 'Bennett' %}
+          {% set from_zone = trigger.from_state.state | replace('_', ' ') | title %}
+          {{ person_name }} left {{ from_zone }} and is heading home
+
+  mode: restart
+
+- id: notify_activity_change_near_home
+  alias: Notify Walking or Driving Near Home
+  description: Send notification when activity detected while getting close to home
+
+  trigger:
+    - platform: state
+      entity_id: sensor.tori_pixel_10_pro_xl_detected_activity
+      to:
+        - 'automotive'
+        - 'walking'
+
+  condition:
+    # Only if Tori is away but Bennett is home
+    - condition: state
+      entity_id: person.tori_myers
+      state: 'not_home'
+    - condition: state
+      entity_id: person.bennett
+      state: 'home'
+
+  action:
+    - service: tts.google_say
+      target:
+        entity_id:
+          - media_player.bedroom
+          - media_player.office
+      data:
+        message: >
+          {% if trigger.to_state.state == 'automotive' %}
+            Tori is driving
+          {% else %}
+            Tori is walking
+          {% endif %}
+
+  mode: restart

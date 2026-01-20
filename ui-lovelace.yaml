@@ -6,12 +6,29 @@ views:
     path: home
     icon: mdi:home
     cards:
-      # People Cards with Details
-      - type: person
-        entity: person.tori_myers
+      # People Status
+      - type: glance
+        title: People
+        show_state: true
+        state_color: true
+        entities:
+          - entity: person.tori_myers
+            name: Tori
+          - entity: person.bennett
+            name: Bennett
 
-      - type: person
-        entity: person.bennett
+      # Phone & Activity Status
+      - type: entities
+        title: Phone & Activity Status
+        show_header_toggle: false
+        entities:
+          - entity: sensor.tori_pixel_10_pro_xl_detected_activity
+            name: Tori Activity
+            icon: mdi:walk
+          - entity: binary_sensor.tori_pixel_10_pro_xl_is_charging
+            name: Tori Phone Charging
+          - entity: sensor.tori_pixel_10_pro_xl_battery_level
+            name: Tori Battery
 
       # Locks Card
       - type: entities
