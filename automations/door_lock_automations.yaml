@@ -1,0 +1,77 @@
+- id: auto_lock_front_door
+  alias: Auto-Lock Front Door After 5 Minutes
+  description: Automatically lock front door 5 minutes after being unlocked
+
+  trigger:
+    - platform: state
+      entity_id: lock.front_door
+      to: 'unlocked'
+      for:
+        minutes: 5
+
+  action:
+    - service: lock.lock
+      target:
+        entity_id: lock.front_door
+
+  mode: restart
+
+- id: auto_unlock_arriving_home
+  alias: Auto-Unlock Front Door When Arriving Home
+  description: Unlock front door when Tori or Bennett arrives home
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'home'
+
+  action:
+    - service: lock.unlock
+      target:
+        entity_id: lock.front_door
+
+  mode: single
+
+- id: announce_arrival_home
+  alias: Announce When Someone Arrives Home
+  description: Announce "X is home" on speakers when arriving, only if someone else is already home
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'home'
+
+  condition:
+    # Only announce if someone else is already home to hear it
+    - condition: template
+      value_template: >
+        {% if trigger.entity_id == 'person.tori_myers' %}
+          {{ is_state('person.bennett', 'home') }}
+        {% elif trigger.entity_id == 'person.bennett' %}
+          {{ is_state('person.tori_myers', 'home') }}
+        {% else %}
+          false
+        {% endif %}
+
+  action:
+    # Announce on all media players
+    - service: tts.google_say
+      target:
+        entity_id:
+          - media_player.bedroom
+          - media_player.office
+      data:
+        message: >
+          {% if trigger.entity_id == 'person.tori_myers' %}
+            Tori is home
+          {% elif trigger.entity_id == 'person.bennett' %}
+            Bennett is home
+          {% else %}
+            Someone is home
+          {% endif %}
+
+  mode: single

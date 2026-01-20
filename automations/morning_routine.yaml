@@ -39,12 +39,12 @@
                   - kitchen
               data:
                 brightness_pct: 100
-            - service: notify.mobile_app_tori_phone_2
+            - service: notify.mobile_app_tori_pixel_10_pro_xl
               data:
                 title: "Good Morning"
                 message: "Sunrise! Shades open, office & kitchen lights on."
       default:
-        - service: notify.mobile_app_tori_phone_2
+        - service: notify.mobile_app_tori_pixel_10_pro_xl
           data:
             title: "Good Morning"
             message: "Sunrise! Shades are open."

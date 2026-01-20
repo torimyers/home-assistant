@@ -31,7 +31,7 @@
           - cover.office_right_roller_shade_cover
           - cover.tori_roller_shade_cover
           - cover.bennett_roller_shade_cover
-    - service: notify.mobile_app_tori_phone_2
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
       data:
         title: "Evening Mode"
         message: "Sunset approaching. Evening lights on, shades closed."
