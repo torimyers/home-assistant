@@ -6,13 +6,12 @@ views:
     path: home
     icon: mdi:home
     cards:
-      # People Card
-      - type: entities
-        title: People
-        show_header_toggle: false
-        entities:
-          - person.tori_myers
-          - person.bennett
+      # People Cards with Details
+      - type: person
+        entity: person.tori_myers
+
+      - type: person
+        entity: person.bennett
 
       # Locks Card
       - type: entities
