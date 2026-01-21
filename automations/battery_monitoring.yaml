@@ -36,6 +36,22 @@
         - sensor.ikea_of_sweden_remote_control_n2_battery
         - sensor.ikea_of_sweden_remote_control_n2_battery_2
         - sensor.dishwasher_vibration_battery
+        # Ring Alarm System
+        - sensor.base_station_battery
+        - sensor.keypad_battery
+        # Ring Alarm - Doors
+        - sensor.back_door_battery
+        # Ring Alarm - Windows
+        - sensor.back_window_battery
+        - sensor.left_window_battery
+        - sensor.right_window_battery
+        - sensor.left_window_battery_2
+        - sensor.right_window_battery_2
+        - sensor.tori_window_battery
+        - sensor.bennett_window_battery
+        - sensor.window_battery
+        # Ring Alarm - Other
+        - sensor.mailbox_sensor_battery
       below: 20
       for:
         hours: 1
@@ -69,6 +85,10 @@
         - sensor.bedroom_battery
         - sensor.ikea_of_sweden_tradfri_motion_sensor_battery
         - sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
+        # Ring Alarm (Critical - affects security)
+        - sensor.base_station_battery
+        - sensor.keypad_battery
+        - sensor.mailbox_sensor_battery
       below: 10
 
   action:

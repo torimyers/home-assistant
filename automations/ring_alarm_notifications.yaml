@@ -1,0 +1,201 @@
+- id: door_opened_while_away
+  alias: Alert When Door Opens While Away
+  description: Send notification when front or back door opens while nobody is home
+
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.front_door
+        - binary_sensor.back_door
+      to: 'on'
+
+  condition:
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'not_home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'not_home'
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🚨 Door Opened While Away"
+        message: >
+          {{ trigger.to_state.attributes.friendly_name }} was opened while nobody is home!
+        data:
+          tag: "door_alert_{{ trigger.entity_id }}"
+          priority: high
+          ttl: 0
+          importance: high
+
+  mode: queued
+  max: 5
+
+- id: window_opened_while_away
+  alias: Alert When Window Opens While Away
+  description: Send notification when any window opens while nobody is home
+
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.back_window
+        - binary_sensor.left_window
+        - binary_sensor.right_window
+        - binary_sensor.left_window_2
+        - binary_sensor.right_window_2
+        - binary_sensor.tori_window
+        - binary_sensor.bennett_window
+        - binary_sensor.window
+      to: 'on'
+
+  condition:
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'not_home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'not_home'
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "⚠️ Window Opened While Away"
+        message: >
+          {{ trigger.to_state.attributes.friendly_name }} was opened while nobody is home!
+        data:
+          tag: "window_alert_{{ trigger.entity_id }}"
+          priority: high
+
+  mode: queued
+  max: 10
+
+- id: auto_arm_alarm_when_leaving
+  alias: Auto-Arm Alarm When Everyone Leaves
+  description: Automatically arm the Ring Alarm in Away mode when both people leave
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'not_home'
+
+  condition:
+    # Only arm if BOTH people are away
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'not_home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'not_home'
+    # Don't arm if already armed
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: alarm_control_panel.alarm
+          state: 'armed_away'
+
+  action:
+    # Wait 5 minutes to allow for quick returns
+    - delay:
+        minutes: 5
+
+    # Check again that both are still away
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'not_home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'not_home'
+
+    # Arm the alarm
+    - service: alarm_control_panel.alarm_arm_away
+      target:
+        entity_id: alarm_control_panel.alarm
+
+    # Send confirmation
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🔒 Ring Alarm Armed"
+        message: "Ring Alarm automatically armed in Away mode since everyone left."
+
+  mode: restart
+
+- id: mailbox_opened_notification
+  alias: Mailbox Opened - Mail Delivery
+  description: Send notification when mailbox is opened
+
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.mailbox_sensor
+      to: 'on'
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "📬 Mailbox Opened"
+        message: "The mailbox was just opened. You may have mail!"
+        data:
+          tag: "mailbox_alert"
+          actions:
+            - action: "MAILBOX_CHECKED"
+              title: "Mail Retrieved"
+
+  mode: single
+
+- id: mailbox_checked_acknowledgment
+  alias: Mailbox - Mail Retrieved Acknowledgment
+  description: Clear mailbox notification when mail is retrieved
+
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "MAILBOX_CHECKED"
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        message: "clear_notification"
+        data:
+          tag: "mailbox_alert"
+
+  mode: single
+
+- id: disarm_alarm_when_arriving_home
+  alias: Auto-Disarm Alarm When Arriving Home
+  description: Automatically disarm Ring Alarm when someone arrives home
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'home'
+
+  condition:
+    # Only disarm if alarm is armed
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: alarm_control_panel.alarm
+          state: 'armed_away'
+        - condition: state
+          entity_id: alarm_control_panel.alarm
+          state: 'armed_home'
+
+  action:
+    - service: alarm_control_panel.alarm_disarm
+      target:
+        entity_id: alarm_control_panel.alarm
+
+  mode: restart

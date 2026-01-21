@@ -22,6 +22,11 @@ views:
         title: Phone & Activity Status
         show_header_toggle: false
         entities:
+          - entity: sensor.tori_pixel_10_pro_xl_detected_activity
+            name: Tori Activity
+            icon: mdi:walk
+          - entity: binary_sensor.tori_pixel_10_pro_xl_is_charging
+            name: Tori Phone Charging
           - entity: sensor.tori_pixel_10_pro_xl_battery_level
             name: Tori Battery
 
@@ -213,7 +218,25 @@ views:
         show_header_toggle: false
         entities:
           - automation.morning_sunrise_routine
-          - automation.nighttime_dimming_10pm
+          - automation.evening_sunset_routine
+          - automation.nighttime_dimming_at_10_pm
+
+      - type: entities
+        title: Arrival & Security
+        show_header_toggle: false
+        entities:
+          - automation.welcome_home_after_10_pm
+          - automation.turn_off_everything_at_10_pm_if_nobody_home
+          - automation.auto_lock_front_door_after_5_minutes
+          - automation.auto_unlock_when_stopped_at_home
+          - automation.announce_when_someone_arrives_home
+          - automation.notify_when_heading_home
+
+      - type: entities
+        title: Personal
+        show_header_toggle: false
+        entities:
+          - automation.bedroom_lamp_off_when_charging
 
   # Battery Monitor Tab
   - title: Batteries
