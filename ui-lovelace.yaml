@@ -223,17 +223,6 @@ views:
 
           **🔴 Critical:** Below 20% | **🟡 Low:** 20-40% | **🟢 Good:** Above 40%
 
-      # Door & Lock Batteries
-      - type: entities
-        title: 🚪 Doors & Locks
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.front_door_battery
-            name: Front Door Lock
-          - entity: sensor.back_door_battery
-            name: Back Door Lock
-
       # Ring Alarm System
       - type: entities
         title: 🔔 Ring Alarm System
@@ -244,17 +233,10 @@ views:
             name: Base Station
           - entity: sensor.keypad_battery
             name: Keypad
-
-      # Ring Alarm - Doors
-      - type: entities
-        title: 🚪 Ring Alarm - Doors
-        show_header_toggle: false
-        state_color: true
-        entities:
           - entity: sensor.front_door_battery
-            name: Front Door Sensor
+            name: Front Door Contact Sensor
           - entity: sensor.back_door_battery
-            name: Back Door Sensor
+            name: Back Door Contact Sensor
 
       # Ring Alarm - Windows
       - type: entities
@@ -295,9 +277,13 @@ views:
         state_color: true
         entities:
           - entity: sensor.kitchen_battery
-            name: Kitchen Motion
+            name: Kitchen Motion Sensor
           - entity: sensor.bedroom_battery
-            name: Bedroom Motion
+            name: Bedroom Motion Sensor
+          - entity: sensor.living_room_motion_sensor_battery
+            name: Living Room Motion Sensor
+          - entity: sensor.office_motion_sensor_battery
+            name: Office Motion Sensor
           - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery
             name: IKEA Motion Sensor 1
           - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
