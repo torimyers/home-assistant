@@ -93,7 +93,7 @@
         - condition: state
           entity_id: person.bennett
           state: 'home'
-    - service: tts.google_say
+    - service: tts.google_translate_say
       target:
         entity_id:
           - media_player.bedroom

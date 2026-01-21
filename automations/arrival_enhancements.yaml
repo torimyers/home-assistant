@@ -70,7 +70,7 @@
 
   action:
     # Announce on speakers
-    - service: tts.google_say
+    - service: tts.google_translate_say
       target:
         entity_id:
           - media_player.bedroom
@@ -113,7 +113,7 @@
       state: 'home'
 
   action:
-    - service: tts.google_say
+    - service: tts.google_translate_say
       target:
         entity_id:
           - media_player.bedroom
