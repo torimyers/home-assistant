@@ -6,9 +6,9 @@ views:
     path: home
     icon: mdi:home
     cards:
-      # People Status
+      # People Status - House Dodson Members
       - type: glance
-        title: People
+        title: 🏠 House Dodson Members
         show_state: true
         state_color: true
         entities:
@@ -16,10 +16,17 @@ views:
             name: Tori
           - entity: person.bennett
             name: Bennett
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(255, 140, 0, 0.05) 100%);
+              border: 2px solid #D4A574;
+              box-shadow: 0 4px 8px rgba(212, 165, 116, 0.2);
+            }
 
       # Phone & Activity Status
       - type: entities
-        title: Phone & Activity Status
+        title: 📱 Communications & Activity
         show_header_toggle: false
         entities:
           - entity: sensor.tori_pixel_10_pro_xl_detected_activity
@@ -29,10 +36,15 @@ views:
             name: Tori Phone Charging
           - entity: sensor.tori_pixel_10_pro_xl_battery_level
             name: Tori Battery
+        card_mod:
+          style: |
+            ha-card {
+              border-left: 4px solid #D4A574;
+            }
 
       # Locks & Security Card
       - type: entities
-        title: Locks & Security
+        title: 🔒 Security & Hazard Detection
         show_header_toggle: false
         entities:
           - lock.front_door
@@ -41,6 +53,13 @@ views:
             name: Water Leak - Water Heater
           - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
             name: Water Leak - Laundry Room
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, rgba(255, 140, 0, 0.05) 0%, rgba(212, 165, 116, 0.05) 100%);
+              border-left: 4px solid #FF8C00;
+              box-shadow: 0 2px 8px rgba(255, 140, 0, 0.2);
+            }
 
       # Quick Lighting Card
       - type: light
@@ -68,30 +87,97 @@ views:
         entity: weather.forecast_home
         show_forecast: true
 
-      # Quick Actions
+      # Analytics - Phone Battery Trend
+      - type: custom:mini-graph-card
+        name: 📱 Phone Battery Trend
+        icon: mdi:battery-charging
+        entities:
+          - entity: sensor.tori_pixel_10_pro_xl_battery_level
+            name: Tori Phone
+            color: "#FF8C00"
+        hours_to_show: 24
+        points_per_hour: 2
+        line_width: 3
+        animate: true
+        show:
+          fill: fade
+          points: false
+          legend: false
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(255, 140, 0, 0.05) 100%);
+              border-left: 4px solid #D4A574;
+            }
+
+      # Analytics - Critical Device Batteries
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: 🔒 Front Lock
+            entities:
+              - sensor.front_door_battery
+            hours_to_show: 168
+            line_color: "#FF8C00"
+            line_width: 2
+            points_per_hour: 0.25
+            show:
+              fill: fade
+              points: false
+              legend: false
+
+          - type: custom:mini-graph-card
+            name: 🔒 Back Lock
+            entities:
+              - sensor.back_door_battery
+            hours_to_show: 168
+            line_color: "#D4A574"
+            line_width: 2
+            points_per_hour: 0.25
+            show:
+              fill: fade
+              points: false
+              legend: false
+
+      # Quick Actions - Enhanced with Bubble Card
       - type: markdown
         content: "### ⚡ Quick Actions"
 
       - type: horizontal-stack
         cards:
-          - type: button
+          - type: custom:bubble-card
+            card_type: button
             name: Goodnight
             icon: mdi:weather-night
+            button_type: state
             tap_action:
               action: call-service
               service: script.goodnight_routine
-          - type: button
+            styles: |
+              .bubble-button-card-container {
+                background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+              }
+
+          - type: custom:bubble-card
+            card_type: button
             name: Leaving Home
             icon: mdi:exit-run
+            button_type: state
             tap_action:
               action: call-service
               service: script.leaving_home_routine
+            styles: |
+              .bubble-button-card-container {
+                background: linear-gradient(135deg, #d84315 0%, #bf360c 100%);
+              }
 
       - type: horizontal-stack
         cards:
-          - type: button
-            name: Lock Doors
+          - type: custom:bubble-card
+            card_type: button
+            name: Lock All
             icon: mdi:lock
+            button_type: state
             tap_action:
               action: call-service
               service: lock.lock
@@ -99,14 +185,25 @@ views:
                 entity_id:
                   - lock.front_door
                   - lock.back_door
-          - type: button
+            styles: |
+              .bubble-button-card-container {
+                background: linear-gradient(135deg, #FF8C00 0%, #D4A574 100%);
+              }
+
+          - type: custom:bubble-card
+            card_type: button
             name: Lights Off
             icon: mdi:lightbulb-off
+            button_type: state
             tap_action:
               action: call-service
               service: light.turn_off
               target:
                 entity_id: all
+            styles: |
+              .bubble-button-card-container {
+                background: linear-gradient(135deg, #424242 0%, #212121 100%);
+              }
 
   # Lighting Tab
   - title: Lights
@@ -217,126 +314,89 @@ views:
     cards:
       - type: markdown
         content: >
-          ## 🔋 Battery Monitor
+          ## 🔋 Sietch Power Reserves
 
-          Track all battery-powered devices to prevent automation failures.
+          Monitoring all battery-powered devices. Devices below 40% are highlighted.
 
-          **🔴 Critical:** Below 20% | **🟡 Low:** 20-40% | **🟢 Good:** Above 40%
+          **🔴 Critical:** <20% | **🟡 Low:** 20-40% | **🟢 Good:** >40%
 
-      # Ring Alarm System
-      - type: entities
-        title: 🔔 Ring Alarm System
-        show_header_toggle: false
-        state_color: true
+      # Critical & Low Batteries - Auto-discovered
+      - type: custom:battery-state-card
+        title: "⚠️ Batteries Needing Attention"
+        sort_by_level: "asc"
+        collapse: 2
+        filter:
+          include:
+            - name: entity_id
+              value: "*battery*"
+          exclude:
+            - name: state
+              value: 100
+            - name: state
+              value: ">40"
+        card_mod:
+          style: |
+            ha-card {
+              border-left: 4px solid var(--warning-color);
+            }
+
+      # All Batteries - Grouped by Category
+      - type: custom:battery-state-card
+        title: "🔔 Ring Alarm System"
+        sort_by_level: "asc"
+        collapse: 10
         entities:
-          - entity: sensor.base_station_battery
-            name: Base Station
-          - entity: sensor.keypad_battery
-            name: Keypad
-          - entity: sensor.front_door_battery
-            name: Front Door Contact Sensor
-          - entity: sensor.back_door_battery
-            name: Back Door Contact Sensor
+          - sensor.base_station_battery
+          - sensor.keypad_battery
+          - sensor.front_door_battery
+          - sensor.back_door_battery
+          - sensor.back_window_battery
+          - sensor.left_window_battery
+          - sensor.right_window_battery
+          - sensor.left_window_battery_2
+          - sensor.right_window_battery_2
+          - sensor.tori_window_battery
+          - sensor.bennett_window_battery
+          - sensor.window_battery
+          - sensor.mailbox_sensor_battery
 
-      # Ring Alarm - Windows
-      - type: entities
-        title: 🪟 Ring Alarm - Windows
-        show_header_toggle: false
-        state_color: true
+      - type: custom:battery-state-card
+        title: "🚶 Motion Sensors"
+        sort_by_level: "asc"
+        collapse: 6
         entities:
-          - entity: sensor.back_window_battery
-            name: Kitchen Back Window
-          - entity: sensor.left_window_battery
-            name: Office Left Window
-          - entity: sensor.right_window_battery
-            name: Office Right Window
-          - entity: sensor.left_window_battery_2
-            name: Living Room Left Window
-          - entity: sensor.right_window_battery_2
-            name: Living Room Right Window
-          - entity: sensor.tori_window_battery
-            name: Tori Bedroom Window
-          - entity: sensor.bennett_window_battery
-            name: Bennett Bedroom Window
-          - entity: sensor.window_battery
-            name: Atlas Room Window
+          - sensor.kitchen_battery
+          - sensor.bedroom_battery
+          - sensor.living_room_motion_sensor_battery
+          - sensor.office_motion_sensor_battery
+          - sensor.ikea_of_sweden_tradfri_motion_sensor_battery
+          - sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
 
-      # Ring Alarm - Other
-      - type: entities
-        title: 📬 Ring Alarm - Other
-        show_header_toggle: false
-        state_color: true
+      - type: custom:battery-state-card
+        title: "🪟 Roller Shades"
+        sort_by_level: "asc"
+        collapse: 7
         entities:
-          - entity: sensor.mailbox_sensor_battery
-            name: Mailbox Sensor
+          - sensor.bennett_roller_shade_battery
+          - sensor.tori_roller_shade_battery
+          - sensor.left_living_room_roller_shade_battery
+          - sensor.right_living_room_roller_shade_battery
+          - sensor.left_office_roller_blind_battery
+          - sensor.right_office_roller_blind_battery
+          - sensor.bedroom_roller_shade_remote_battery
 
-      # Motion Sensors
-      - type: entities
-        title: 🚶 Motion Sensors
-        show_header_toggle: false
-        state_color: true
+      - type: custom:battery-state-card
+        title: "🐾 Pet Trackers & Remotes"
+        sort_by_level: "asc"
+        collapse: 7
         entities:
-          - entity: sensor.kitchen_battery
-            name: Kitchen Motion Sensor
-          - entity: sensor.bedroom_battery
-            name: Bedroom Motion Sensor
-          - entity: sensor.living_room_motion_sensor_battery
-            name: Living Room Motion Sensor
-          - entity: sensor.office_motion_sensor_battery
-            name: Office Motion Sensor
-          - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery
-            name: IKEA Motion Sensor 1
-          - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
-            name: IKEA Motion Sensor 2
-
-      # Roller Shades
-      - type: entities
-        title: 🪟 Roller Shades
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.bennett_roller_shade_battery
-            name: Bennett Bedroom Shade
-          - entity: sensor.tori_roller_shade_battery
-            name: Tori Bedroom Shade
-          - entity: sensor.left_living_room_roller_shade_battery
-            name: Living Room Left Shade
-          - entity: sensor.right_living_room_roller_shade_battery
-            name: Living Room Right Shade
-          - entity: sensor.left_office_roller_blind_battery
-            name: Office Left Shade
-          - entity: sensor.right_office_roller_blind_battery
-            name: Office Right Shade
-          - entity: sensor.bedroom_roller_shade_remote_battery
-            name: Bedroom Remote
-
-      # Pet Trackers
-      - type: entities
-        title: 🐾 Pet Trackers
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.atlas_tracker_battery
-            name: Atlas Tracker
-          - entity: sensor.ellie_tracker_battery
-            name: Ellie Tracker
-          - entity: sensor.shadow_tracker_battery
-            name: Shadow Tracker
-          - entity: sensor.lance_tracker_battery
-            name: Lance Tracker
-
-      # Remotes & Sensors
-      - type: entities
-        title: 🎛️ Remotes & Other Sensors
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.ikea_of_sweden_remote_control_n2_battery
-            name: IKEA Remote 1
-          - entity: sensor.ikea_of_sweden_remote_control_n2_battery_2
-            name: IKEA Remote 2
-          - entity: sensor.dishwasher_vibration_battery
-            name: Dishwasher Sensor
+          - sensor.atlas_tracker_battery
+          - sensor.ellie_tracker_battery
+          - sensor.shadow_tracker_battery
+          - sensor.lance_tracker_battery
+          - sensor.ikea_of_sweden_remote_control_n2_battery
+          - sensor.ikea_of_sweden_remote_control_n2_battery_2
+          - sensor.dishwasher_vibration_battery
 
   # Security Tab (includes Cameras, Alarm, Locks, Sensors)
   - title: Security
@@ -348,38 +408,77 @@ views:
           ## 🛡️ Security & Surveillance
           Ring Alarm · Cameras · Locks · Door/Window Sensors
 
-      # Ring Alarm Panel
+      # Ring Alarm Panel - Enhanced Styling
       - type: alarm-panel
         entity: alarm_control_panel.alarm
-        name: Ring Alarm
+        name: Ring Alarm - Sietch Defense
         states:
           - arm_home
           - arm_away
           - disarmed
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%);
+              border: 3px solid #FF8C00;
+              box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+            }
 
-      # Door Locks
+      # Door Locks - Enhanced Security Display
       - type: entities
-        title: 🔒 Door Locks
+        title: 🔒 Sietch Entry Seals
         show_header_toggle: false
         state_color: true
         entities:
           - lock.front_door
           - lock.back_door
+        card_mod:
+          style: |
+            ha-card {
+              background: linear-gradient(135deg, rgba(212, 165, 116, 0.05) 0%, rgba(255, 140, 0, 0.05) 100%);
+              border-left: 4px solid #D4A574;
+              box-shadow: 0 2px 8px rgba(212, 165, 116, 0.2);
+            }
 
-      # Ring Cameras
+      # Ring Cameras - Enhanced with Card-mod Styling
       - type: markdown
-        content: "### 📹 Ring Cameras (via Homebridge)"
+        content: "### 📹 Ring Surveillance Network"
 
       - type: horizontal-stack
         cards:
           - type: picture-entity
             entity: camera.front_770e
             show_name: true
-            name: Front
+            name: Front Camera
+            camera_view: auto
+            card_mod:
+              style: |
+                ha-card {
+                  border: 2px solid #D4A574;
+                  box-shadow: 0 4px 8px rgba(212, 165, 116, 0.3);
+                  transition: transform 0.2s, box-shadow 0.2s;
+                }
+                ha-card:hover {
+                  transform: scale(1.02);
+                  box-shadow: 0 6px 12px rgba(255, 140, 0, 0.4);
+                }
+
           - type: picture-entity
             entity: camera.front_yard_9747
             show_name: true
             name: Front Yard
+            camera_view: auto
+            card_mod:
+              style: |
+                ha-card {
+                  border: 2px solid #D4A574;
+                  box-shadow: 0 4px 8px rgba(212, 165, 116, 0.3);
+                  transition: transform 0.2s, box-shadow 0.2s;
+                }
+                ha-card:hover {
+                  transform: scale(1.02);
+                  box-shadow: 0 6px 12px rgba(255, 140, 0, 0.4);
+                }
 
       - type: horizontal-stack
         cards:
@@ -387,15 +486,52 @@ views:
             entity: camera.front_door_4ae9
             show_name: true
             name: Front Door
+            camera_view: auto
+            card_mod:
+              style: |
+                ha-card {
+                  border: 2px solid #D4A574;
+                  box-shadow: 0 4px 8px rgba(212, 165, 116, 0.3);
+                  transition: transform 0.2s, box-shadow 0.2s;
+                }
+                ha-card:hover {
+                  transform: scale(1.02);
+                  box-shadow: 0 6px 12px rgba(255, 140, 0, 0.4);
+                }
+
           - type: picture-entity
             entity: camera.backyard_f84a
             show_name: true
             name: Backyard
+            camera_view: auto
+            card_mod:
+              style: |
+                ha-card {
+                  border: 2px solid #D4A574;
+                  box-shadow: 0 4px 8px rgba(212, 165, 116, 0.3);
+                  transition: transform 0.2s, box-shadow 0.2s;
+                }
+                ha-card:hover {
+                  transform: scale(1.02);
+                  box-shadow: 0 6px 12px rgba(255, 140, 0, 0.4);
+                }
 
       - type: picture-entity
         entity: camera.guest_litterbox_b7e3
         show_name: true
-        name: Litter Box
+        name: Litter Box Monitor
+        camera_view: auto
+        card_mod:
+          style: |
+            ha-card {
+              border: 2px solid #D4A574;
+              box-shadow: 0 4px 8px rgba(212, 165, 116, 0.3);
+              transition: transform 0.2s, box-shadow 0.2s;
+            }
+            ha-card:hover {
+              transform: scale(1.02);
+              box-shadow: 0 6px 12px rgba(255, 140, 0, 0.4);
+            }
 
       # Door Contact Sensors
       - type: entities
