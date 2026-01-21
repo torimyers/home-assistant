@@ -1,0 +1,85 @@
+---
+# Routine Scripts for Quick Actions
+
+goodnight_routine:
+  alias: Goodnight Routine
+  description: Execute bedtime routine - locks doors, turns off lights, arms alarm
+  sequence:
+    # Turn off all lights
+    - service: light.turn_off
+      target:
+        entity_id: all
+
+    # Turn off living room lamp switches
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+    # Lock all doors
+    - service: lock.lock
+      target:
+        entity_id:
+          - lock.front_door
+          - lock.back_door
+
+    # Arm alarm in Home mode
+    - service: alarm_control_panel.alarm_arm_home
+      target:
+        entity_id: alarm_control_panel.alarm
+
+    # Send confirmation
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🌙 Goodnight"
+        message: "Lights off, doors locked, alarm armed. Sleep well!"
+  mode: single
+
+leaving_home_routine:
+  alias: Leaving Home Routine
+  description: Secure home when leaving - locks doors, turns off lights/appliances, arms alarm
+  sequence:
+    # Turn off all lights
+    - service: light.turn_off
+      target:
+        entity_id: all
+
+    # Turn off living room lamp switches
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+    # Close all shades for privacy
+    - service: cover.close_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
+
+    # Lock all doors
+    - service: lock.lock
+      target:
+        entity_id:
+          - lock.front_door
+          - lock.back_door
+
+    # Wait 30 seconds to allow time to leave
+    - delay:
+        seconds: 30
+
+    # Arm alarm in Away mode
+    - service: alarm_control_panel.alarm_arm_away
+      target:
+        entity_id: alarm_control_panel.alarm
+
+    # Send confirmation
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🏠 Leaving Home"
+        message: "Home secured! Lights off, doors locked, shades closed, alarm armed in Away mode."
+  mode: single

@@ -1,0 +1,165 @@
+- id: lock_doors_when_arming_alarm
+  alias: Lock Doors When Arming Alarm
+  description: Automatically lock all doors when Ring Alarm is armed
+
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to:
+        - 'armed_home'
+        - 'armed_away'
+
+  action:
+    - service: lock.lock
+      target:
+        entity_id:
+          - lock.front_door
+          - lock.back_door
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🔒 Doors Locked"
+        message: "All doors automatically locked when alarm armed."
+
+  mode: single
+
+- id: alert_if_doors_unlocked_at_bedtime
+  alias: Alert If Doors Unlocked at Bedtime
+  description: Send notification if any door is unlocked after 11 PM
+
+  trigger:
+    - platform: time
+      at: "23:00:00"
+
+  condition:
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: lock.front_door
+          state: 'unlocked'
+        - condition: state
+          entity_id: lock.back_door
+          state: 'unlocked'
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🚪 Door Unlocked at Bedtime"
+        message: >
+          {% set unlocked = [] %}
+          {% if is_state('lock.front_door', 'unlocked') %}{% set _ = unlocked.append('Front Door') %}{% endif %}
+          {% if is_state('lock.back_door', 'unlocked') %}{% set _ = unlocked.append('Back Door') %}{% endif %}
+          {{ unlocked | join(', ') }} is unlocked. Lock before bed?
+        data:
+          priority: high
+          actions:
+            - action: "LOCK_ALL_DOORS"
+              title: "Lock All Doors"
+
+  mode: single
+
+- id: lock_all_doors_action
+  alias: Lock All Doors - Notification Action
+  description: Lock all doors when notification action is tapped
+
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "LOCK_ALL_DOORS"
+
+  action:
+    - service: lock.lock
+      target:
+        entity_id:
+          - lock.front_door
+          - lock.back_door
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🔒 Doors Locked"
+        message: "All doors are now locked. Goodnight!"
+
+  mode: single
+
+- id: disable_motion_lighting_when_alarm_armed
+  alias: Disable Motion Lighting When Alarm Armed Away
+  description: Prevent motion lights from triggering false alarms when armed away
+
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: 'armed_away'
+
+  action:
+    - service: automation.turn_off
+      target:
+        entity_id:
+          - automation.kitchen_motion_lights
+          - automation.office_motion_lights
+          - automation.living_room_motion_lights
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🚫 Motion Lighting Disabled"
+        message: "Motion-activated lights disabled while alarm is armed away."
+
+  mode: single
+
+- id: enable_motion_lighting_when_alarm_disarmed
+  alias: Enable Motion Lighting When Alarm Disarmed
+  description: Re-enable motion lights when alarm is disarmed
+
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: 'disarmed'
+
+  action:
+    - service: automation.turn_on
+      target:
+        entity_id:
+          - automation.kitchen_motion_lights
+          - automation.office_motion_lights
+          - automation.living_room_motion_lights
+
+  mode: single
+
+- id: flash_lights_on_alarm_trigger
+  alias: Flash Lights When Alarm Triggered
+  description: Flash all lights when alarm is triggered to deter intruders
+
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: 'triggered'
+
+  action:
+    # Flash lights 5 times
+    - repeat:
+        count: 5
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: all
+            data:
+              brightness_pct: 100
+          - delay:
+              milliseconds: 500
+          - service: light.turn_off
+            target:
+              entity_id: all
+          - delay:
+              milliseconds: 500
+
+    # Send critical notification
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🚨 ALARM TRIGGERED!"
+        message: "Ring Alarm has been triggered! Check cameras immediately!"
+        data:
+          priority: high
+          ttl: 0
+          importance: high
+
+  mode: single

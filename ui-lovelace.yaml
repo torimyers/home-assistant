@@ -69,11 +69,28 @@ views:
         show_forecast: true
 
       # Quick Actions
+      - type: markdown
+        content: "### ⚡ Quick Actions"
+
       - type: horizontal-stack
-        title: Quick Actions
         cards:
           - type: button
-            name: Lock All Doors
+            name: Goodnight
+            icon: mdi:weather-night
+            tap_action:
+              action: call-service
+              service: script.goodnight_routine
+          - type: button
+            name: Leaving Home
+            icon: mdi:exit-run
+            tap_action:
+              action: call-service
+              service: script.leaving_home_routine
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Lock Doors
             icon: mdi:lock
             tap_action:
               action: call-service
@@ -83,53 +100,13 @@ views:
                   - lock.front_door
                   - lock.back_door
           - type: button
-            name: All Lights Off
+            name: Lights Off
             icon: mdi:lightbulb-off
             tap_action:
               action: call-service
               service: light.turn_off
               target:
                 entity_id: all
-
-  # Cameras Tab
-  - title: Cameras
-    path: cameras
-    icon: mdi:cctv
-    cards:
-      - type: markdown
-        content: |
-          ## Ring Cameras
-          All cameras now streaming via Homebridge
-
-      - type: picture-entity
-        entity: camera.front_770e
-        title: Front
-        show_name: true
-        show_state: false
-
-      - type: picture-entity
-        entity: camera.front_yard_9747
-        title: Front Yard
-        show_name: true
-        show_state: false
-
-      - type: picture-entity
-        entity: camera.front_door_4ae9
-        title: Front Door
-        show_name: true
-        show_state: false
-
-      - type: picture-entity
-        entity: camera.backyard_f84a
-        title: Backyard
-        show_name: true
-        show_state: false
-
-      - type: picture-entity
-        entity: camera.guest_litterbox_b7e3
-        title: Litter Box
-        show_name: true
-        show_state: false
 
   # Lighting Tab
   - title: Lights
@@ -177,10 +154,10 @@ views:
         entities:
           - light.tori_light
 
-  # Covers/Shades Tab
-  - title: Shades
-    path: shades
-    icon: mdi:window-shutter
+  # Climate Tab
+  - title: Climate
+    path: climate
+    icon: mdi:home-thermometer
     cards:
       - type: entities
         title: Living Room Shades
@@ -205,43 +182,38 @@ views:
     path: automations
     icon: mdi:robot
     cards:
+      - type: markdown
+        content: |
+          ## 🤖 Automation Controls
+          Enable/disable automations and run quick routines
+
       - type: entities
-        title: Motion Lighting
+        title: 📋 Quick Routines
         show_header_toggle: false
+        entities:
+          - script.goodnight_routine
+          - script.leaving_home_routine
+
+      - type: entities
+        title: 💡 Motion Lighting
+        show_header_toggle: true
         entities:
           - automation.kitchen_motion_lights
           - automation.office_motion_lights
           - automation.living_room_motion_lights
 
       - type: entities
-        title: Daily Routines
-        show_header_toggle: false
+        title: 🌅 Daily Routines
+        show_header_toggle: true
         entities:
           - automation.morning_sunrise_routine
           - automation.evening_sunset_routine
           - automation.nighttime_dimming_at_10_pm
 
-      - type: entities
-        title: Arrival & Security
-        show_header_toggle: false
-        entities:
-          - automation.welcome_home_after_10_pm
-          - automation.turn_off_everything_at_10_pm_if_nobody_home
-          - automation.auto_lock_front_door_after_5_minutes
-          - automation.auto_unlock_when_stopped_at_home
-          - automation.announce_when_someone_arrives_home
-          - automation.notify_when_heading_home
-
-      - type: entities
-        title: Personal
-        show_header_toggle: false
-        entities:
-          - automation.bedroom_lamp_off_when_charging
-
-  # Battery Monitor Tab
-  - title: Batteries
-    path: batteries
-    icon: mdi:battery-alert
+  # Monitoring Tab
+  - title: Monitoring
+    path: monitoring
+    icon: mdi:gauge
     cards:
       - type: markdown
         content: >
@@ -380,15 +352,15 @@ views:
           - entity: sensor.dishwasher_vibration_battery
             name: Dishwasher Sensor
 
-  # Security Tab
+  # Security Tab (includes Cameras, Alarm, Locks, Sensors)
   - title: Security
     path: security
     icon: mdi:shield-home
     cards:
       - type: markdown
         content: |
-          ## 🛡️ Ring Alarm System
-          Monitor all doors, windows, and control the alarm system
+          ## 🛡️ Security & Surveillance
+          Ring Alarm · Cameras · Locks · Door/Window Sensors
 
       # Ring Alarm Panel
       - type: alarm-panel
@@ -399,9 +371,49 @@ views:
           - arm_away
           - disarmed
 
-      # Doors
+      # Door Locks
       - type: entities
-        title: 🚪 Doors
+        title: 🔒 Door Locks
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - lock.front_door
+          - lock.back_door
+
+      # Ring Cameras
+      - type: markdown
+        content: "### 📹 Ring Cameras (via Homebridge)"
+
+      - type: horizontal-stack
+        cards:
+          - type: picture-entity
+            entity: camera.front_770e
+            show_name: true
+            name: Front
+          - type: picture-entity
+            entity: camera.front_yard_9747
+            show_name: true
+            name: Front Yard
+
+      - type: horizontal-stack
+        cards:
+          - type: picture-entity
+            entity: camera.front_door_4ae9
+            show_name: true
+            name: Front Door
+          - type: picture-entity
+            entity: camera.backyard_f84a
+            show_name: true
+            name: Backyard
+
+      - type: picture-entity
+        entity: camera.guest_litterbox_b7e3
+        show_name: true
+        name: Litter Box
+
+      # Door Contact Sensors
+      - type: entities
+        title: 🚪 Door Sensors
         show_header_toggle: false
         state_color: true
         entities:
@@ -473,3 +485,16 @@ views:
           - entity: binary_sensor.mailbox_sensor
             name: Mailbox
             icon: mdi:mailbox
+
+      # Water Leak Detection
+      - type: entities
+        title: 💧 Water Leak Detection
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_2
+            name: Water Heater
+            icon: mdi:water-alert
+          - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
+            name: Laundry Room
+            icon: mdi:water-alert

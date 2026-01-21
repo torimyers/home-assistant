@@ -1,0 +1,167 @@
+- id: pause_appliance_notifications_during_sleep
+  alias: Pause Appliance Notifications During Sleep Time
+  description: Don't send washer/dryer notifications between midnight and 6 AM
+
+  trigger:
+    - platform: state
+      entity_id:
+        - input_boolean.washer_cycle_active
+        - input_boolean.dryer_cycle_active
+      from: 'on'
+      to: 'off'
+
+  condition:
+    - condition: time
+      after: "00:00:00"
+      before: "06:00:00"
+
+  action:
+    # Don't send notification, just log it
+    - service: logbook.log
+      data:
+        name: "Appliance Cycle Complete (Silent)"
+        message: >
+          {{ trigger.to_state.attributes.friendly_name }} completed during sleep hours. Notification suppressed.
+
+  mode: queued
+  max: 2
+
+- id: morning_welcome_announcement
+  alias: Morning Welcome Announcement
+  description: Friendly morning greeting when someone wakes up and phone is unplugged
+
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.tori_pixel_10_pro_xl_is_charging
+      from: 'on'
+      to: 'off'
+
+  condition:
+    # Only between 5 AM and 10 AM
+    - condition: time
+      after: "05:00:00"
+      before: "10:00:00"
+    # Only if at home
+    - condition: state
+      entity_id: person.tori_myers
+      state: 'home'
+
+  action:
+    - service: tts.google_translate_say
+      target:
+        entity_id:
+          - media_player.bedroom
+          - media_player.office
+      data:
+        message: >
+          Good morning! It's {{ now().strftime('%I:%M %p') }}.
+          {% if is_state('weather.forecast_home', 'sunny') %}
+          It's going to be a sunny day!
+          {% elif is_state('weather.forecast_home', 'rainy') %}
+          Don't forget an umbrella, it's rainy today.
+          {% else %}
+          Have a great day!
+          {% endif %}
+
+  mode: single
+
+- id: welcome_home_lights_daytime
+  alias: Welcome Home Lights - Daytime
+  description: Turn on lights when arriving home during daytime if it's cloudy
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'home'
+
+  condition:
+    # Only during daytime
+    - condition: sun
+      after: sunrise
+      before: sunset
+    # Only if cloudy/rainy
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: weather.forecast_home
+          state: 'cloudy'
+        - condition: state
+          entity_id: weather.forecast_home
+          state: 'rainy'
+
+  action:
+    - service: light.turn_on
+      target:
+        area_id:
+          - living_room
+          - kitchen
+      data:
+        brightness_pct: 75
+
+  mode: restart
+
+- id: reminder_close_shades_on_hot_days
+  alias: Reminder to Close Shades on Hot Days
+  description: Suggest closing shades when it's hot and sunny to reduce AC load
+
+  trigger:
+    - platform: time
+      at: "12:00:00"
+
+  condition:
+    # Only if someone is home
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
+    # Only if sunny
+    - condition: state
+      entity_id: weather.forecast_home
+      state: 'sunny'
+    # Check if any shades are open (would need to add this condition based on your shade states)
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "☀️ Hot & Sunny"
+        message: "It's hot and sunny. Consider closing shades to reduce AC usage."
+        data:
+          actions:
+            - action: "CLOSE_ALL_SHADES"
+              title: "Close All Shades"
+
+  mode: single
+
+- id: close_all_shades_action
+  alias: Close All Shades - Notification Action
+  description: Close all shades when notification action is tapped
+
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "CLOSE_ALL_SHADES"
+
+  action:
+    - service: cover.close_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
+          - cover.tori_roller_shade_cover
+          - cover.bennett_roller_shade_cover
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🪟 Shades Closed"
+        message: "All shades closed to keep the house cool!"
+
+  mode: single
