@@ -323,26 +323,32 @@ views:
       # Critical & Low Batteries - Auto-discovered
       - type: custom:battery-state-card
         title: "⚠️ Batteries Needing Attention"
-        sort_by_level: "asc"
-        collapse: 2
+        sort:
+          by: "state"
+        collapse: 8
         filter:
           include:
             - name: entity_id
               value: "*battery*"
+          exclude:
             - name: state
-              operator: "<"
               value: 41
-        card_mod:
-          style: |
-            ha-card {
-              border-left: 4px solid var(--warning-color);
-            }
+              operator: ">"
+        colors:
+          steps:
+            - value: 20
+              color: '#ff0000'
+            - value: 40
+              color: '#ffff00'
+            - value: 100
+              color: '#00ff00'
+          gradient: true
 
       # All Batteries - Grouped by Category
       - type: custom:battery-state-card
         title: "🔔 Ring Alarm System"
-        sort_by_level: "asc"
-        collapse: 10
+        sort:
+          by: "state"
         entities:
           - sensor.base_station_battery
           - sensor.keypad_battery
@@ -360,8 +366,8 @@ views:
 
       - type: custom:battery-state-card
         title: "🚶 Motion Sensors"
-        sort_by_level: "asc"
-        collapse: 6
+        sort:
+          by: "state"
         entities:
           - sensor.kitchen_battery
           - sensor.bedroom_battery
@@ -372,8 +378,8 @@ views:
 
       - type: custom:battery-state-card
         title: "🪟 Roller Shades"
-        sort_by_level: "asc"
-        collapse: 7
+        sort:
+          by: "state"
         entities:
           - sensor.bennett_roller_shade_battery
           - sensor.tori_roller_shade_battery
@@ -385,8 +391,8 @@ views:
 
       - type: custom:battery-state-card
         title: "🐾 Pet Trackers & Remotes"
-        sort_by_level: "asc"
-        collapse: 7
+        sort:
+          by: "state"
         entities:
           - sensor.atlas_tracker_battery
           - sensor.ellie_tracker_battery
