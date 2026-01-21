@@ -22,11 +22,6 @@ views:
         title: Phone & Activity Status
         show_header_toggle: false
         entities:
-          - entity: sensor.tori_pixel_10_pro_xl_detected_activity
-            name: Tori Activity
-            icon: mdi:walk
-          - entity: binary_sensor.tori_pixel_10_pro_xl_is_charging
-            name: Tori Phone Charging
           - entity: sensor.tori_pixel_10_pro_xl_battery_level
             name: Tori Battery
 
@@ -69,27 +64,26 @@ views:
         show_forecast: true
 
       # Quick Actions
-      - type: entities
+      - type: horizontal-stack
         title: Quick Actions
-        show_header_toggle: false
-        entities:
-          - entity: script.lock_all_doors
+        cards:
+          - type: button
             name: Lock All Doors
             icon: mdi:lock
             tap_action:
               action: call-service
               service: lock.lock
-              service_data:
+              target:
                 entity_id:
                   - lock.front_door
                   - lock.back_door
-          - entity: scene.all_lights_off
+          - type: button
             name: All Lights Off
             icon: mdi:lightbulb-off
             tap_action:
               action: call-service
               service: light.turn_off
-              service_data:
+              target:
                 entity_id: all
 
   # Cameras Tab
@@ -97,36 +91,40 @@ views:
     path: cameras
     icon: mdi:cctv
     cards:
-      - type: picture-glance
-        title: Front Door
-        camera_image: camera.front_door
-        entities:
-          - binary_sensor.front_door
-        camera_view: live
+      - type: markdown
+        content: |
+          ## Ring Cameras
+          All cameras now streaming via Homebridge
 
-      - type: picture-glance
-        title: Backyard
-        camera_image: camera.backyard
-        entities: []
-        camera_view: live
+      - type: picture-entity
+        entity: camera.front_770e
+        title: Front
+        show_name: true
+        show_state: false
 
-      - type: picture-glance
+      - type: picture-entity
+        entity: camera.front_yard_9747
         title: Front Yard
-        camera_image: camera.front
-        entities: []
-        camera_view: live
+        show_name: true
+        show_state: false
 
-      - type: picture-glance
-        title: Garden
-        camera_image: camera.garden
-        entities: []
-        camera_view: live
+      - type: picture-entity
+        entity: camera.front_door_4ae9
+        title: Front Door
+        show_name: true
+        show_state: false
 
-      - type: picture-glance
+      - type: picture-entity
+        entity: camera.backyard_f84a
+        title: Backyard
+        show_name: true
+        show_state: false
+
+      - type: picture-entity
+        entity: camera.guest_litterbox_b7e3
         title: Litter Box
-        camera_image: camera.litter_robot
-        entities: []
-        camera_view: live
+        show_name: true
+        show_state: false
 
   # Lighting Tab
   - title: Lights
@@ -215,24 +213,7 @@ views:
         show_header_toggle: false
         entities:
           - automation.morning_sunrise_routine
-          - automation.evening_sunset_routine
           - automation.nighttime_dimming_10pm
-
-      - type: entities
-        title: Arrival & Security
-        show_header_toggle: false
-        entities:
-          - automation.welcome_home_after_10pm
-          - automation.turn_off_everything_10pm_away
-          - automation.auto_lock_front_door
-          - automation.auto_unlock_arriving_home
-          - automation.announce_arrival_home
-
-      - type: entities
-        title: Personal
-        show_header_toggle: false
-        entities:
-          - automation.bedroom_lamp_off_when_charging
 
   # Battery Monitor Tab
   - title: Batteries
@@ -258,22 +239,59 @@ views:
           - entity: sensor.back_door_battery
             name: Back Door Lock
 
-      # Camera Batteries
+      # Ring Alarm System
       - type: entities
-        title: 📹 Cameras
+        title: 🔔 Ring Alarm System
         show_header_toggle: false
         state_color: true
         entities:
-          - entity: sensor.front_battery
-            name: Front Camera
-          - entity: sensor.backyard_battery
-            name: Backyard Camera
-          - entity: sensor.garden_battery
-            name: Garden Camera
-          - entity: sensor.guest_litterbox_battery
-            name: Litter Box Camera
-          - entity: sensor.litter_robot_battery
-            name: Litter Robot
+          - entity: sensor.base_station_battery
+            name: Base Station
+          - entity: sensor.keypad_battery
+            name: Keypad
+
+      # Ring Alarm - Doors
+      - type: entities
+        title: 🚪 Ring Alarm - Doors
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: sensor.front_door_battery
+            name: Front Door Sensor
+          - entity: sensor.back_door_battery
+            name: Back Door Sensor
+
+      # Ring Alarm - Windows
+      - type: entities
+        title: 🪟 Ring Alarm - Windows
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: sensor.back_window_battery
+            name: Kitchen Back Window
+          - entity: sensor.left_window_battery
+            name: Office Left Window
+          - entity: sensor.right_window_battery
+            name: Office Right Window
+          - entity: sensor.left_window_battery_2
+            name: Living Room Left Window
+          - entity: sensor.right_window_battery_2
+            name: Living Room Right Window
+          - entity: sensor.tori_window_battery
+            name: Tori Bedroom Window
+          - entity: sensor.bennett_window_battery
+            name: Bennett Bedroom Window
+          - entity: sensor.window_battery
+            name: Atlas Room Window
+
+      # Ring Alarm - Other
+      - type: entities
+        title: 📬 Ring Alarm - Other
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: sensor.mailbox_sensor_battery
+            name: Mailbox Sensor
 
       # Motion Sensors
       - type: entities
@@ -338,3 +356,97 @@ views:
             name: IKEA Remote 2
           - entity: sensor.dishwasher_vibration_battery
             name: Dishwasher Sensor
+
+  # Security Tab
+  - title: Security
+    path: security
+    icon: mdi:shield-home
+    cards:
+      - type: markdown
+        content: |
+          ## 🛡️ Ring Alarm System
+          Monitor all doors, windows, and control the alarm system
+
+      # Ring Alarm Panel
+      - type: alarm-panel
+        entity: alarm_control_panel.alarm
+        name: Ring Alarm
+        states:
+          - arm_home
+          - arm_away
+          - disarmed
+
+      # Doors
+      - type: entities
+        title: 🚪 Doors
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: binary_sensor.front_door
+            name: Front Door
+            icon: mdi:door
+          - entity: binary_sensor.back_door
+            name: Back Door
+            icon: mdi:door
+
+      # Office Windows
+      - type: entities
+        title: 🪟 Office Windows
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: binary_sensor.left_window
+            name: Office Left Window
+            icon: mdi:window-closed
+          - entity: binary_sensor.right_window
+            name: Office Right Window
+            icon: mdi:window-closed
+
+      # Living Room Windows
+      - type: entities
+        title: 🪟 Living Room Windows
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: binary_sensor.left_window_2
+            name: Living Room Left Window
+            icon: mdi:window-closed
+          - entity: binary_sensor.right_window_2
+            name: Living Room Right Window
+            icon: mdi:window-closed
+
+      # Bedroom Windows
+      - type: entities
+        title: 🪟 Bedroom Windows
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: binary_sensor.tori_window
+            name: Tori's Window
+            icon: mdi:window-closed
+          - entity: binary_sensor.bennett_window
+            name: Bennett's Window
+            icon: mdi:window-closed
+
+      # Other Windows
+      - type: entities
+        title: 🪟 Other Windows
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: binary_sensor.back_window
+            name: Kitchen Back Window
+            icon: mdi:window-closed
+          - entity: binary_sensor.window
+            name: Atlas Room Window
+            icon: mdi:window-closed
+
+      # Mailbox
+      - type: entities
+        title: 📬 Mailbox
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: binary_sensor.mailbox_sensor
+            name: Mailbox
+            icon: mdi:mailbox
