@@ -1,0 +1,194 @@
+- id: washer_cycle_complete_notification
+  alias: Washer Cycle Complete - Actionable Notification
+  description: Send actionable notification when washer finishes with option to acknowledge or snooze
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.washer_cycle_active
+      from: 'on'
+      to: 'off'
+
+  action:
+    # Set load needs transfer flag
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.load_needs_transfer
+
+    # Send actionable notification
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Washer Finished"
+        message: "The washer cycle is complete. Move load to dryer?"
+        data:
+          actions:
+            - action: "WASHER_MOVED"
+              title: "Moved to Dryer"
+            - action: "WASHER_SNOOZE"
+              title: "Remind in 10 min"
+
+    # Also announce on speakers if someone is home
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
+    - service: tts.google_say
+      target:
+        entity_id:
+          - media_player.bedroom
+          - media_player.office
+      data:
+        message: "The washer cycle is complete. Don't forget to move the load to the dryer."
+
+  mode: single
+
+- id: washer_notification_moved
+  alias: Washer - Load Moved to Dryer
+  description: Handle when user confirms load was moved
+
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "WASHER_MOVED"
+
+  action:
+    # Clear the transfer flag
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.load_needs_transfer
+
+    # Confirmation notification
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Load Transfer"
+        message: "Great! Load marked as moved to dryer."
+
+  mode: single
+
+- id: washer_notification_snooze
+  alias: Washer - Snooze Reminder
+  description: Snooze washer reminder for 10 minutes
+
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "WASHER_SNOOZE"
+
+  action:
+    # Wait 10 minutes
+    - delay:
+        minutes: 10
+
+    # Send reminder again
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Reminder: Washer"
+        message: "Don't forget to move the load from the washer to the dryer!"
+        data:
+          actions:
+            - action: "WASHER_MOVED"
+              title: "Moved to Dryer"
+            - action: "WASHER_SNOOZE"
+              title: "Remind in 10 min"
+
+  mode: restart
+
+- id: dryer_cycle_complete_notification
+  alias: Dryer Cycle Complete - Actionable Notification
+  description: Send actionable notification when dryer finishes
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.dryer_cycle_active
+      from: 'on'
+      to: 'off'
+
+  action:
+    # Send actionable notification
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Dryer Finished"
+        message: "The dryer cycle is complete. Fold the laundry?"
+        data:
+          actions:
+            - action: "DRYER_DONE"
+              title: "Done"
+            - action: "DRYER_SNOOZE"
+              title: "Remind in 15 min"
+
+    # Also announce on speakers if someone is home
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
+    - service: tts.google_say
+      target:
+        entity_id:
+          - media_player.bedroom
+          - media_player.office
+      data:
+        message: "The dryer cycle is complete. Time to fold the laundry."
+
+    # Clear the transfer flag since laundry is done
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.load_needs_transfer
+
+  mode: single
+
+- id: dryer_notification_done
+  alias: Dryer - Acknowledged
+  description: Handle when user confirms laundry is done
+
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "DRYER_DONE"
+
+  action:
+    # Confirmation notification
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Laundry Complete"
+        message: "All done! Thanks for taking care of the laundry."
+
+  mode: single
+
+- id: dryer_notification_snooze
+  alias: Dryer - Snooze Reminder
+  description: Snooze dryer reminder for 15 minutes
+
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "DRYER_SNOOZE"
+
+  action:
+    # Wait 15 minutes
+    - delay:
+        minutes: 15
+
+    # Send reminder again
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Reminder: Dryer"
+        message: "The dryer finished a while ago. Time to fold the laundry!"
+        data:
+          actions:
+            - action: "DRYER_DONE"
+              title: "Done"
+            - action: "DRYER_SNOOZE"
+              title: "Remind in 15 min"
+
+  mode: restart

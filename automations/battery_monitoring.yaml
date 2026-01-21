@@ -1,0 +1,106 @@
+- id: low_battery_alert
+  alias: Low Battery Alert
+  description: Notify when any battery drops below 20%
+
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        # Doors & Locks
+        - sensor.front_door_battery
+        - sensor.back_door_battery
+        # Cameras
+        - sensor.front_battery
+        - sensor.backyard_battery
+        - sensor.garden_battery
+        - sensor.guest_litterbox_battery
+        - sensor.litter_robot_battery
+        # Motion Sensors
+        - sensor.kitchen_battery
+        - sensor.bedroom_battery
+        - sensor.ikea_of_sweden_tradfri_motion_sensor_battery
+        - sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
+        # Roller Shades
+        - sensor.bennett_roller_shade_battery
+        - sensor.tori_roller_shade_battery
+        - sensor.left_living_room_roller_shade_battery
+        - sensor.right_living_room_roller_shade_battery
+        - sensor.left_office_roller_blind_battery
+        - sensor.right_office_roller_blind_battery
+        - sensor.bedroom_roller_shade_remote_battery
+        # Pet Trackers
+        - sensor.atlas_tracker_battery
+        - sensor.ellie_tracker_battery
+        - sensor.shadow_tracker_battery
+        - sensor.lance_tracker_battery
+        # Remotes & Sensors
+        - sensor.ikea_of_sweden_remote_control_n2_battery
+        - sensor.ikea_of_sweden_remote_control_n2_battery_2
+        - sensor.dishwasher_vibration_battery
+      below: 20
+      for:
+        hours: 1
+
+  action:
+    # Send notification
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🔋 Low Battery Alert"
+        message: >
+          {{ trigger.to_state.attributes.friendly_name }} is at {{ trigger.to_state.state }}%
+        data:
+          tag: "battery_{{ trigger.entity_id }}"
+          priority: high
+
+  mode: queued
+  max: 10
+
+- id: critical_battery_alert
+  alias: Critical Battery Alert
+  description: Urgent notification when any battery drops below 10%
+
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        # Doors & Locks (Critical - affects security)
+        - sensor.front_door_battery
+        - sensor.back_door_battery
+        # Motion Sensors (Critical - affects automations)
+        - sensor.kitchen_battery
+        - sensor.bedroom_battery
+        - sensor.ikea_of_sweden_tradfri_motion_sensor_battery
+        - sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
+      below: 10
+
+  action:
+    # Send urgent notification
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🚨 CRITICAL: Battery Almost Dead"
+        message: >
+          {{ trigger.to_state.attributes.friendly_name }} is at {{ trigger.to_state.state }}%! Replace immediately.
+        data:
+          tag: "battery_critical_{{ trigger.entity_id }}"
+          priority: high
+          ttl: 0
+          importance: high
+
+    # Announce on speakers if someone is home
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
+    - service: tts.google_say
+      target:
+        entity_id:
+          - media_player.bedroom
+          - media_player.office
+      data:
+        message: >
+          Critical battery alert! {{ trigger.to_state.attributes.friendly_name }} is almost dead at {{ trigger.to_state.state }} percent. Replace the battery immediately.
+
+  mode: queued
+  max: 5

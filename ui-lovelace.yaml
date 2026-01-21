@@ -30,13 +30,17 @@ views:
           - entity: sensor.tori_pixel_10_pro_xl_battery_level
             name: Tori Battery
 
-      # Locks Card
+      # Locks & Security Card
       - type: entities
         title: Locks & Security
         show_header_toggle: false
         entities:
           - lock.front_door
           - lock.back_door
+          - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_2
+            name: Water Leak - Water Heater
+          - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
+            name: Water Leak - Laundry Room
 
       # Quick Lighting Card
       - type: light
@@ -58,6 +62,71 @@ views:
       - type: light
         entity: light.tori_light
         name: Bedroom Lamp
+
+      # Weather Card
+      - type: weather-forecast
+        entity: weather.forecast_home
+        show_forecast: true
+
+      # Quick Actions
+      - type: entities
+        title: Quick Actions
+        show_header_toggle: false
+        entities:
+          - entity: script.lock_all_doors
+            name: Lock All Doors
+            icon: mdi:lock
+            tap_action:
+              action: call-service
+              service: lock.lock
+              service_data:
+                entity_id:
+                  - lock.front_door
+                  - lock.back_door
+          - entity: scene.all_lights_off
+            name: All Lights Off
+            icon: mdi:lightbulb-off
+            tap_action:
+              action: call-service
+              service: light.turn_off
+              service_data:
+                entity_id: all
+
+  # Cameras Tab
+  - title: Cameras
+    path: cameras
+    icon: mdi:cctv
+    cards:
+      - type: picture-glance
+        title: Front Door
+        camera_image: camera.front_door
+        entities:
+          - binary_sensor.front_door
+        camera_view: live
+
+      - type: picture-glance
+        title: Backyard
+        camera_image: camera.backyard
+        entities: []
+        camera_view: live
+
+      - type: picture-glance
+        title: Front Yard
+        camera_image: camera.front
+        entities: []
+        camera_view: live
+
+      - type: picture-glance
+        title: Garden
+        camera_image: camera.garden
+        entities: []
+        camera_view: live
+
+      - type: picture-glance
+        title: Litter Box
+        camera_image: camera.litter_robot
+        entities: []
+        camera_view: live
 
   # Lighting Tab
   - title: Lights
@@ -164,3 +233,108 @@ views:
         show_header_toggle: false
         entities:
           - automation.bedroom_lamp_off_when_charging
+
+  # Battery Monitor Tab
+  - title: Batteries
+    path: batteries
+    icon: mdi:battery-alert
+    cards:
+      - type: markdown
+        content: >
+          ## 🔋 Battery Monitor
+
+          Track all battery-powered devices to prevent automation failures.
+
+          **🔴 Critical:** Below 20% | **🟡 Low:** 20-40% | **🟢 Good:** Above 40%
+
+      # Door & Lock Batteries
+      - type: entities
+        title: 🚪 Doors & Locks
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: sensor.front_door_battery
+            name: Front Door Lock
+          - entity: sensor.back_door_battery
+            name: Back Door Lock
+
+      # Camera Batteries
+      - type: entities
+        title: 📹 Cameras
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: sensor.front_battery
+            name: Front Camera
+          - entity: sensor.backyard_battery
+            name: Backyard Camera
+          - entity: sensor.garden_battery
+            name: Garden Camera
+          - entity: sensor.guest_litterbox_battery
+            name: Litter Box Camera
+          - entity: sensor.litter_robot_battery
+            name: Litter Robot
+
+      # Motion Sensors
+      - type: entities
+        title: 🚶 Motion Sensors
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: sensor.kitchen_battery
+            name: Kitchen Motion
+          - entity: sensor.bedroom_battery
+            name: Bedroom Motion
+          - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery
+            name: IKEA Motion Sensor 1
+          - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
+            name: IKEA Motion Sensor 2
+
+      # Roller Shades
+      - type: entities
+        title: 🪟 Roller Shades
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: sensor.bennett_roller_shade_battery
+            name: Bennett Bedroom Shade
+          - entity: sensor.tori_roller_shade_battery
+            name: Tori Bedroom Shade
+          - entity: sensor.left_living_room_roller_shade_battery
+            name: Living Room Left Shade
+          - entity: sensor.right_living_room_roller_shade_battery
+            name: Living Room Right Shade
+          - entity: sensor.left_office_roller_blind_battery
+            name: Office Left Shade
+          - entity: sensor.right_office_roller_blind_battery
+            name: Office Right Shade
+          - entity: sensor.bedroom_roller_shade_remote_battery
+            name: Bedroom Remote
+
+      # Pet Trackers
+      - type: entities
+        title: 🐾 Pet Trackers
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: sensor.atlas_tracker_battery
+            name: Atlas Tracker
+          - entity: sensor.ellie_tracker_battery
+            name: Ellie Tracker
+          - entity: sensor.shadow_tracker_battery
+            name: Shadow Tracker
+          - entity: sensor.lance_tracker_battery
+            name: Lance Tracker
+
+      # Remotes & Sensors
+      - type: entities
+        title: 🎛️ Remotes & Other Sensors
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - entity: sensor.ikea_of_sweden_remote_control_n2_battery
+            name: IKEA Remote 1
+          - entity: sensor.ikea_of_sweden_remote_control_n2_battery_2
+            name: IKEA Remote 2
+          - entity: sensor.dishwasher_vibration_battery
+            name: Dishwasher Sensor

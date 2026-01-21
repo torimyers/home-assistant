@@ -1,0 +1,164 @@
+- id: water_leak_emergency
+  alias: Water Leak Emergency Alert
+  description: Critical alerts when water leak detected - repeated announcements and notifications
+
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.lumi_lumi_sensor_wleak_aq1_2
+        - binary_sensor.lumi_lumi_sensor_wleak_aq1_3
+      to: 'on'
+
+  action:
+    # Determine location
+    - variables:
+        leak_location: >
+          {% if trigger.entity_id == 'binary_sensor.lumi_lumi_sensor_wleak_aq1_2' %}
+            Water Heater
+          {% else %}
+            Laundry Room
+          {% endif %}
+
+    # Send CRITICAL notification to Tori (and Bennett when app is set up)
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🚨 WATER LEAK DETECTED!"
+        message: "Water leak at {{ leak_location }}! Shut off water valve immediately!"
+        data:
+          tag: "water_leak_emergency"
+          priority: high
+          ttl: 0
+          importance: high
+          actions:
+            - action: "LEAK_SHUTOFF_DONE"
+              title: "Valve Closed"
+            - action: "LEAK_FALSE_ALARM"
+              title: "False Alarm"
+
+    # Announce on speakers if someone is home
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
+    - service: tts.google_say
+      target:
+        entity_id:
+          - media_player.bedroom
+          - media_player.office
+      data:
+        message: "Emergency! Water leak detected at the {{ leak_location }}! Shut off the main water valve immediately!"
+
+    # Start repeating alerts
+    - repeat:
+        while:
+          - condition: or
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.lumi_lumi_sensor_wleak_aq1_2
+                state: 'on'
+              - condition: state
+                entity_id: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
+                state: 'on'
+        sequence:
+          # Wait 2 minutes between announcements
+          - delay:
+              minutes: 2
+
+          # Check if someone is home for announcements
+          - choose:
+              - conditions:
+                  - condition: or
+                    conditions:
+                      - condition: state
+                        entity_id: person.tori_myers
+                        state: 'home'
+                      - condition: state
+                        entity_id: person.bennett
+                        state: 'home'
+                sequence:
+                  - service: tts.google_say
+                    target:
+                      entity_id:
+                        - media_player.bedroom
+                        - media_player.office
+                    data:
+                      message: "Reminder: Water leak still detected at the {{ leak_location }}!"
+
+          # Send another notification
+          - service: notify.mobile_app_tori_pixel_10_pro_xl
+            data:
+              title: "🚨 Water Leak Still Active"
+              message: "Water still leaking at {{ leak_location }}! Check water valve!"
+              data:
+                tag: "water_leak_reminder"
+                priority: high
+
+  mode: restart
+
+- id: water_leak_shutoff_acknowledged
+  alias: Water Leak - Valve Closed Acknowledged
+  description: Stop alerts when user confirms valve is closed
+
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "LEAK_SHUTOFF_DONE"
+
+  action:
+    # Send confirmation
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Water Leak Protocol"
+        message: "Acknowledged. Monitor the area and call plumber if needed."
+        data:
+          tag: "water_leak_emergency"
+
+    # Announce confirmation if home
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
+    - service: tts.google_say
+      target:
+        entity_id:
+          - media_player.bedroom
+          - media_player.office
+      data:
+        message: "Water valve closure acknowledged. Leak alerts paused."
+
+  mode: single
+
+- id: water_leak_false_alarm
+  alias: Water Leak - False Alarm
+  description: Clear alerts for false alarm
+
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "LEAK_FALSE_ALARM"
+
+  action:
+    # Clear notification
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        message: "clear_notification"
+        data:
+          tag: "water_leak_emergency"
+
+    # Log false alarm
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Water Leak False Alarm"
+        message: "Leak alert cleared. Check sensor if this happens frequently."
+
+  mode: single
