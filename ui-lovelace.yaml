@@ -329,11 +329,9 @@ views:
           include:
             - name: entity_id
               value: "*battery*"
-          exclude:
             - name: state
-              value: 100
-            - name: state
-              value: ">40"
+              operator: "<"
+              value: 41
         card_mod:
           style: |
             ha-card {
