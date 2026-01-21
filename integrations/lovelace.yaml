@@ -4,7 +4,15 @@
 
 lovelace:
   mode: yaml
-  resources: []
+  resources:
+    - url: /hacsfiles/bubble-card/bubble-card.js
+      type: module
+    - url: /hacsfiles/battery-state-card/battery-state-card.js
+      type: module
+    - url: /hacsfiles/lovelace-card-mod/card-mod.js
+      type: module
+    - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
+      type: module
 
   dashboards:
     lovelace-home:
