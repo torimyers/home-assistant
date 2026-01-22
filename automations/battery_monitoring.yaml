@@ -53,8 +53,7 @@
         # Ring Alarm - Other
         - sensor.mailbox_sensor_battery
       below: 20
-      for:
-        hours: 1
+      for: "01:00:00"
 
   action:
     # Send notification

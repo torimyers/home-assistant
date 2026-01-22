@@ -7,7 +7,7 @@ goodnight_routine:
   sequence:
     # Turn off all lights
     - service: light.turn_off
-      target:
+      data:
         entity_id: all
 
     # Turn off living room lamp switches
@@ -42,7 +42,7 @@ leaving_home_routine:
   sequence:
     # Turn off all lights
     - service: light.turn_off
-      target:
+      data:
         entity_id: all
 
     # Turn off living room lamp switches
