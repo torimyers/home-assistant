@@ -139,45 +139,43 @@ views:
               points: false
               legend: false
 
-      # Quick Actions - Enhanced with Bubble Card
+      # Quick Actions
       - type: markdown
         content: "### ⚡ Quick Actions"
 
       - type: horizontal-stack
         cards:
-          - type: custom:bubble-card
-            card_type: button
+          - type: button
             name: Goodnight
             icon: mdi:weather-night
-            button_type: state
             tap_action:
               action: call-service
               service: script.goodnight_routine
-            styles: |
-              .bubble-button-card-container {
-                background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
-              }
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+                  color: white;
+                }
 
-          - type: custom:bubble-card
-            card_type: button
+          - type: button
             name: Leaving Home
             icon: mdi:exit-run
-            button_type: state
             tap_action:
               action: call-service
               service: script.leaving_home_routine
-            styles: |
-              .bubble-button-card-container {
-                background: linear-gradient(135deg, #d84315 0%, #bf360c 100%);
-              }
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(135deg, #d84315 0%, #bf360c 100%);
+                  color: white;
+                }
 
       - type: horizontal-stack
         cards:
-          - type: custom:bubble-card
-            card_type: button
+          - type: button
             name: Lock All
             icon: mdi:lock
-            button_type: state
             tap_action:
               action: call-service
               service: lock.lock
@@ -185,25 +183,27 @@ views:
                 entity_id:
                   - lock.front_door
                   - lock.back_door
-            styles: |
-              .bubble-button-card-container {
-                background: linear-gradient(135deg, #FF8C00 0%, #D4A574 100%);
-              }
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(135deg, #FF8C00 0%, #D4A574 100%);
+                  color: white;
+                }
 
-          - type: custom:bubble-card
-            card_type: button
+          - type: button
             name: Lights Off
             icon: mdi:lightbulb-off
-            button_type: state
             tap_action:
               action: call-service
               service: light.turn_off
               data:
                 entity_id: all
-            styles: |
-              .bubble-button-card-container {
-                background: linear-gradient(135deg, #424242 0%, #212121 100%);
-              }
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(135deg, #424242 0%, #212121 100%);
+                  color: white;
+                }
 
   # Lighting Tab
   - title: Lights
