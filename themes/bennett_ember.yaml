@@ -1,0 +1,104 @@
+---
+# Bennett's Ember Theme
+# Reds, blacks, and fire-inspired dark tones
+
+Bennett Ember:
+  # Main colors
+  primary-color: '#D32F2F'  # Deep red
+  accent-color: '#FF5722'   # Bright ember orange
+  dark-primary-color: '#B71C1C'  # Dark red
+  light-primary-color: '#FFCDD2'
+
+  # Text colors
+  primary-text-color: '#E0E0E0'  # Light grey on dark
+  text-primary-color: '#FFFFFF'
+  secondary-text-color: '#BDBDBD'
+  disabled-text-color: '#616161'
+  label-badge-border-color: '#D32F2F'
+
+  # Sidebar
+  sidebar-icon-color: '#FF5722'
+  sidebar-text-color: '#E0E0E0'
+  sidebar-selected-text-color: '#D32F2F'
+  sidebar-selected-icon-color: '#D32F2F'
+  sidebar-background-color: '#1A1A1A'
+
+  # Background colors
+  primary-background-color: '#121212'  # Almost black
+  secondary-background-color: '#1E1E1E'  # Dark grey
+  divider-color: 'rgba(211, 47, 47, 0.3)'
+
+  # Card colors
+  card-background-color: '#1E1E1E'
+  paper-card-background-color: '#1E1E1E'
+  paper-dialog-background-color: '#212121'
+  paper-item-icon-color: '#FF5722'
+  paper-item-icon-active-color: '#D32F2F'
+
+  # Table colors
+  table-row-background-color: '#1E1E1E'
+  table-row-alternative-background-color: '#252525'
+
+  # Toggle colors
+  paper-toggle-button-checked-button-color: '#D32F2F'
+  paper-toggle-button-checked-bar-color: '#EF5350'
+  paper-toggle-button-unchecked-button-color: '#424242'
+  paper-toggle-button-unchecked-bar-color: '#616161'
+
+  # Slider colors
+  paper-slider-knob-color: '#D32F2F'
+  paper-slider-knob-start-color: '#D32F2F'
+  paper-slider-pin-color: '#D32F2F'
+  paper-slider-active-color: '#D32F2F'
+  paper-slider-container-color: 'rgba(211, 47, 47, 0.3)'
+
+  # States and badges
+  state-icon-color: '#FF5722'
+  state-icon-active-color: '#D32F2F'
+  state-icon-unavailable-color: '#616161'
+
+  # Switches
+  switch-checked-color: '#D32F2F'
+  switch-unchecked-color: '#424242'
+  switch-checked-button-color: '#FFFFFF'
+  switch-unchecked-button-color: '#9E9E9E'
+  switch-checked-track-color: '#EF5350'
+  switch-unchecked-track-color: '#616161'
+
+  # Badges
+  label-badge-red: '#D32F2F'  # Deep red
+  label-badge-blue: '#1976D2'  # Cool blue accent
+  label-badge-green: '#388E3C'  # Muted green
+  label-badge-yellow: '#FFA726'  # Fire orange
+  label-badge-grey: '#757575'  # Grey
+
+  # Weather card
+  weather-card-background-color: 'rgba(211, 47, 47, 0.1)'
+
+  # Custom entity colors
+  state-active-color: '#D32F2F'
+  state-inactive-color: '#424242'
+  state-on-color: '#D32F2F'
+  state-off-color: '#616161'
+  state-home-color: '#FF5722'
+  state-not-home-color: '#424242'
+  state-unknown-color: '#757575'
+  state-idle-color: '#EF5350'
+
+  # Chart colors
+  chart-color-1: '#D32F2F'
+  chart-color-2: '#FF5722'
+  chart-color-3: '#EF5350'
+  chart-color-4: '#FF7043'
+  chart-color-5: '#E57373'
+  chart-color-6: '#FFAB91'
+  chart-color-7: '#EF9A9A'
+  chart-color-8: '#FFCCBC'
+
+  # Additional dark theme specifics
+  mode: dark
+  app-header-background-color: '#1A1A1A'
+  app-header-text-color: '#E0E0E0'
+  code-editor-background-color: '#1E1E1E'
+  codemirror-text-color: '#E0E0E0'
+  markdown-code-background-color: '#2C2C2C'

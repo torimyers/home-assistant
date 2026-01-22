@@ -24,6 +24,54 @@ views:
               box-shadow: 0 4px 8px rgba(212, 165, 116, 0.2);
             }
 
+      # Theme Selector
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Tori's Forest
+            icon: mdi:pine-tree
+            tap_action:
+              action: call-service
+              service: frontend.set_theme
+              data:
+                name: "Tori Forest"
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+                  color: white;
+                }
+
+          - type: button
+            name: Bennett's Ember
+            icon: mdi:fire
+            tap_action:
+              action: call-service
+              service: frontend.set_theme
+              data:
+                name: "Bennett Ember"
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(135deg, #D32F2F 0%, #EF5350 100%);
+                  color: white;
+                }
+
+          - type: button
+            name: Default
+            icon: mdi:palette
+            tap_action:
+              action: call-service
+              service: frontend.set_theme
+              data:
+                name: "default"
+            card_mod:
+              style: |
+                ha-card {
+                  background: linear-gradient(135deg, #607D8B 0%, #90A4AE 100%);
+                  color: white;
+                }
+
       # Phone & Activity Status
       - type: entities
         title: 📱 Phone & Activity

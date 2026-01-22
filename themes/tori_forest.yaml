@@ -1,0 +1,95 @@
+---
+# Tori's Forest Theme
+# Greens, blues, and earthy tones
+
+Tori Forest:
+  # Main colors
+  primary-color: '#4CAF50'  # Forest green
+  accent-color: '#2196F3'    # Sky blue
+  dark-primary-color: '#388E3C'
+  light-primary-color: '#C8E6C9'
+
+  # Text colors
+  primary-text-color: '#2E7D32'  # Dark green
+  text-primary-color: '#FFFFFF'
+  secondary-text-color: '#689F38'
+  disabled-text-color: '#BDBDBD'
+  label-badge-border-color: '#4CAF50'
+
+  # Sidebar
+  sidebar-icon-color: '#689F38'
+  sidebar-text-color: '#2E7D32'
+  sidebar-selected-text-color: '#2196F3'
+  sidebar-selected-icon-color: '#2196F3'
+
+  # Background colors
+  primary-background-color: '#F1F8E9'  # Light cream/green
+  secondary-background-color: '#E8F5E9'  # Very light green
+  divider-color: 'rgba(76, 175, 80, 0.2)'
+
+  # Card colors
+  card-background-color: '#FFFFFF'
+  paper-card-background-color: '#FFFFFF'
+  paper-dialog-background-color: '#FFFFFF'
+  paper-item-icon-color: '#689F38'
+  paper-item-icon-active-color: '#2196F3'
+
+  # Table colors
+  table-row-background-color: '#FFFFFF'
+  table-row-alternative-background-color: '#F1F8E9'
+
+  # Toggle colors
+  paper-toggle-button-checked-button-color: '#4CAF50'
+  paper-toggle-button-checked-bar-color: '#81C784'
+  paper-toggle-button-unchecked-button-color: '#757575'
+  paper-toggle-button-unchecked-bar-color: '#BDBDBD'
+
+  # Slider colors
+  paper-slider-knob-color: '#4CAF50'
+  paper-slider-knob-start-color: '#4CAF50'
+  paper-slider-pin-color: '#4CAF50'
+  paper-slider-active-color: '#4CAF50'
+  paper-slider-container-color: 'rgba(76, 175, 80, 0.3)'
+
+  # States and badges
+  state-icon-color: '#689F38'
+  state-icon-active-color: '#2196F3'
+  state-icon-unavailable-color: '#BDBDBD'
+
+  # Switches
+  switch-checked-color: '#4CAF50'
+  switch-unchecked-color: '#757575'
+  switch-checked-button-color: '#FFFFFF'
+  switch-unchecked-button-color: '#FFFFFF'
+  switch-checked-track-color: '#81C784'
+  switch-unchecked-track-color: '#BDBDBD'
+
+  # Badges
+  label-badge-red: '#795548'  # Earthy brown
+  label-badge-blue: '#2196F3'  # Sky blue
+  label-badge-green: '#4CAF50'  # Forest green
+  label-badge-yellow: '#FDD835'  # Sunlight
+  label-badge-grey: '#795548'  # Bark brown
+
+  # Weather card
+  weather-card-background-color: 'rgba(76, 175, 80, 0.1)'
+
+  # Custom entity colors
+  state-active-color: '#4CAF50'
+  state-inactive-color: '#B0BEC5'
+  state-on-color: '#4CAF50'
+  state-off-color: '#9E9E9E'
+  state-home-color: '#2196F3'
+  state-not-home-color: '#795548'
+  state-unknown-color: '#607D8B'
+  state-idle-color: '#81C784'
+
+  # Chart colors
+  chart-color-1: '#4CAF50'
+  chart-color-2: '#2196F3'
+  chart-color-3: '#81C784'
+  chart-color-4: '#64B5F6'
+  chart-color-5: '#A5D6A7'
+  chart-color-6: '#90CAF9'
+  chart-color-7: '#C8E6C9'
+  chart-color-8: '#BBDEFB'
