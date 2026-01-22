@@ -1,0 +1,53 @@
+---
+# Dining Room Lights Toggle Script
+# Controls all 4 dining room table lights as one unit
+
+dining_room_lights_toggle:
+  alias: "Toggle All Dining Room Lights"
+  description: "Fremen Feast - Toggle all dining room table illumination"
+  icon: mdi:table-chair
+  sequence:
+    - choose:
+        # If any light is on, turn all off
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+                  state: "on"
+                - condition: state
+                  entity_id: light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+                  state: "on"
+                - condition: state
+                  entity_id: light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+                  state: "on"
+                - condition: state
+                  entity_id: light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+                  state: "on"
+          sequence:
+            - service: light.turn_off
+              target:
+                entity_id:
+                  - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+                  - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+                  - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+                  - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+            - service: notify.mobile_app_tori_phone_2
+              data:
+                message: "🍽️ Dining feast concludes. The table rests in darkness until the next gathering."
+
+      # Default: Turn all on
+      default:
+        - service: light.turn_on
+          target:
+            entity_id:
+              - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+              - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+              - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+              - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+          data:
+            brightness_pct: 90
+            color_temp: 370  # Warm white
+        - service: notify.mobile_app_tori_phone_2
+          data:
+            message: "🍽️ The dining table is prepared for a Fremen feast. Gather for nourishment and fellowship."

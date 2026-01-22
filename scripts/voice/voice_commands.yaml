@@ -1,0 +1,90 @@
+# DISABLED - AI logic too overwhelming
+# Voice Assistant Commands - Voice Interface
+# Natural language processing for voice command systems
+
+voice_command_processor:
+  alias: "Process Voice Commands"
+  description: "Processes natural language voice commands"
+  icon: mdi:microphone
+  mode: parallel
+  max: 10
+
+  fields:
+    command:
+      name: "Voice Command"
+      description: "The voice command to process"
+      required: true
+      selector:
+        text:
+          multiline: false
+
+  variables:
+    # Command processing variables
+    command_lower: "{{ command | lower }}"
+    
+    # Response templates
+    acknowledgments:
+      - "Command acknowledged"
+      - "As you command"
+      - "Executing now"
+      - "By your will"
+      - "Confirmed"
+    
+    status_reports:
+      health_good: "The system is healthy. All systems operational"
+      health_concerning: "System health needs attention - monitoring advised"
+      production_high: "Production levels are high"
+      production_low: "Production concerns noted"
+
+  sequence:
+    # System Status Commands
+    - if:
+        - condition: or
+          conditions:
+            - condition: template
+              value_template: "{{ 'status' in command_lower or 'health' in command_lower or 'report' in command_lower }}"
+      then:
+        - service: tts.speak
+          data:
+            entity_id: media_player.alexa_echo
+            message: "System status report requested"
+
+    # Lighting Control Commands
+    - if:
+        - condition: or
+          conditions:
+            - condition: template
+              value_template: "{{ 'lights on' in command_lower or 'illuminate' in command_lower }}"
+      then:
+        - service: light.turn_on
+          target:
+            area_id: ["living_room", "kitchen", "office"]
+        - service: tts.speak
+          data:
+            entity_id: media_player.alexa_echo
+            message: "{{ acknowledgments | random }}. Lights activated."
+
+    - if:
+        - condition: or
+          conditions:
+            - condition: template
+              value_template: "{{ 'lights off' in command_lower or 'darkness' in command_lower or 'dim' in command_lower }}"
+      then:
+        - service: light.turn_off
+          target:
+            area_id: ["living_room", "kitchen", "office"]
+        - service: tts.speak
+          data:
+            entity_id: media_player.alexa_echo
+            message: "{{ acknowledgments | random }}. Lights deactivated."
+
+    # Unknown Command Fallback
+    - if:
+        - condition: template
+          value_template: >
+            {{ not ('status' in command_lower or 'health' in command_lower or 'lights' in command_lower) }}
+      then:
+        - service: tts.speak
+          data:
+            entity_id: media_player.alexa_echo
+            message: "Command not recognized. Please rephrase."

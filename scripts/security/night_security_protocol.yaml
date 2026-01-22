@@ -1,0 +1,38 @@
+alias: Night Security Protocol
+description: "Sietch Night Security Protocol - Comprehensive nighttime security activation with door locking, alarm arming, and perimeter monitoring"
+icon: mdi:shield-moon
+sequence:
+    - service: lock.lock
+      target:
+        entity_id:
+          - lock.front_door
+          - lock.back_door
+          - lock.garage_door
+    - service: alarm_control_panel.alarm_arm_night
+      target:
+        entity_id: alarm_control_panel.house
+    - service: light.turn_on
+      target:
+        entity_id: light.security_perimeter_lights
+      data:
+        brightness: 50
+    - service: light.turn_off
+      target:
+        entity_id: 
+          - light.living_room_lights
+          - light.kitchen_lights
+          - light.dining_room_lights
+    - service: cover.close_cover
+      target:
+        entity_id:
+          - cover.all_blinds
+          - cover.curtains
+    - service: climate.set_temperature
+      target:
+        entity_id: climate.thermostat
+      data:
+        temperature: 68
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "Night watch begins. The sietch is secure for the dark hours."
+        title: "Security Protocol Activated"

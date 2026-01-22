@@ -1,0 +1,13 @@
+alias: Environmental Threat Assessor
+description: "Assesses environmental threats and prepares countermeasures"
+icon: mdi:weather-lightning-rainy
+sequence:
+    # Assess environmental threats and respond
+    - service: script.turn_on
+      target:
+        entity_id: script.atmospheric_compensation_protocol
+    - condition: template
+      value_template: "{{ states('sensor.atmospheric_conditions') | int < 40 }}"
+    - service: script.turn_on
+      target:
+        entity_id: script.emergency_climate_protocol

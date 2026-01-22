@@ -1,0 +1,17 @@
+alias: Device Inventory Check
+description: "Device Census - Comprehensive device monitoring and counting system to track all connected smart home devices"
+icon: mdi:counter
+sequence:
+    - service: counter.reset
+      target:
+        entity_id: counter.daily_automation_count
+    - service: homeassistant.update_entity
+      target:
+        entity_id: sensor.connected_devices
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "Device census complete. All sietch systems accounted for."
+    - service: persistent_notification.create
+      data:
+        title: "Daily Device Census"
+        message: "Connected devices: {{ states('sensor.connected_devices') }}"

@@ -1,0 +1,25 @@
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Predictive Security Arming
+description: "Intelligent security system arming based on occupancy patterns and threat assessment"
+icon: mdi:shield-plus
+sequence:
+    # Assess current security status
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.motion_sensitivity
+      data:
+        value: >
+          {% set activity = states('sensor.fremen_activity_level') | int %}
+          {% set base_sensitivity = 50 %}
+          {% if activity < 20 %}
+            {{ base_sensitivity + 30 }}  # Higher sensitivity when quiet
+          {% elif activity > 80 %}
+            {{ base_sensitivity - 20 }}  # Lower sensitivity when active
+          {% else %}
+            {{ base_sensitivity }}
+          {% endif %}
+    
+    # Predictive arming notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🛡️ Predictive security protocols engaged. Sensitivity adjusted for current activity."

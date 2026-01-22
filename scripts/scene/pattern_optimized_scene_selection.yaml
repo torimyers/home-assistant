@@ -1,0 +1,99 @@
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Pattern Optimized Scene Selection
+description: "Selects scenes optimized for current usage patterns"
+icon: mdi:chart-line-variant
+sequence:
+    # Analyze current patterns
+    - variables:
+        motion_pattern: "{{ states('sensor.motion_pattern_analysis') }}"
+        activity_level: "{{ states('sensor.fremen_activity_level') | int }}"
+        occupancy_distribution: "{{ states('sensor.sietch_occupancy_distribution') }}"
+        time_context: >
+          {% set hour = now().hour %}
+          {% if 6 <= hour < 12 %}
+            morning
+          {% elif 12 <= hour < 17 %}
+            afternoon
+          {% elif 17 <= hour < 22 %}
+            evening
+          {% else %}
+            night
+          {% endif %}
+    
+    # Select scene based on pattern optimization
+    - choose:
+        # High activity patterns
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ motion_pattern == 'Full Activity' and activity_level > 70 }}
+          sequence:
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ occupancy_distribution == 'Kitchen' }}"
+                  sequence:
+                    - service: scene.turn_on
+                      target:
+                        entity_id: scene.kitchen_morning_routine
+                - conditions:
+                    - condition: template
+                      value_template: "{{ occupancy_distribution == 'Office' }}"
+                  sequence:
+                    - service: scene.turn_on
+                      target:
+                        entity_id: scene.office_work_mode
+              default:
+                - service: scene.turn_on
+                  target:
+                    entity_id: scene.living_room_gathering
+        
+        # Focused activity patterns
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ motion_pattern == 'Focused' }}
+          sequence:
+            - service: scene.turn_on
+              target:
+                entity_id: >
+                  {% if time_context == 'morning' %}
+                    scene.morning_awakening
+                  {% elif time_context == 'evening' %}
+                    scene.evening_routine
+                  {% else %}
+                    scene.office_work_mode
+                  {% endif %}
+        
+        # Distributed patterns
+        - conditions:
+            - condition: template
+              value_template: >
+                {{ motion_pattern == 'Distributed' }}
+          sequence:
+            - service: script.turn_on
+              target:
+                entity_id: script.multi_zone_scene_coordination
+      
+      # Default for unusual patterns
+      default:
+        - service: scene.turn_on
+          target:
+            entity_id: scene.energy_conservation
+    
+    # Log pattern-optimized selection
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.resource_management_log
+      data:
+        value: >
+          Pattern Optimized Selection: {{ now().strftime('%H:%M') }} -
+          Motion: {{ motion_pattern }} -
+          Activity: {{ activity_level }}% -
+          Occupancy: {{ occupancy_distribution }} -
+          Context: {{ time_context }}
+    
+    # Selection notification
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🎯 Pattern-optimized scene selected based on {{ motion_pattern }} activity pattern."

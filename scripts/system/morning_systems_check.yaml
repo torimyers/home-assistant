@@ -1,0 +1,48 @@
+alias: Morning Systems Check
+description: "Sietch Morning Systems Check - Comprehensive morning verification of all critical systems and initialization of daily operations"
+icon: mdi:check-circle-outline
+sequence:
+    - service: alarm_control_panel.alarm_disarm
+      target:
+        entity_id: alarm_control_panel.house
+    - service: homeassistant.update_entity
+      target:
+        entity_id:
+          - sensor.system_uptime
+          - sensor.processor_use
+          - sensor.memory_use_percent
+          - sensor.disk_use_percent
+    - delay: '00:00:02'
+    - service: climate.set_temperature
+      target:
+        entity_id: climate.thermostat
+      data:
+        temperature: 72
+    - service: cover.open_cover
+      target:
+        entity_id:
+          - cover.all_blinds
+          - cover.curtains
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.living_room_lights
+          - light.kitchen_lights
+      data:
+        brightness: 80
+    - service: light.turn_off
+      target:
+        entity_id: light.security_perimeter_lights
+    - service: script.turn_on
+      target:
+        entity_id: script.harvester_diagnostics
+    - delay: '00:00:05'
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: |
+          Morning systems check complete:
+          - Security: Disarmed
+          - Climate: Set to 72°F
+          - Lighting: Morning mode active
+          - System Health: {{ states('sensor.processor_use') }}% CPU, {{ states('sensor.memory_use_percent') }}% Memory
+        title: "Sietch Morning Status"

@@ -1,0 +1,44 @@
+alias: System Health Check
+description: "Sietch System Health Check - Comprehensive monitoring of vital system metrics with automated alerting for critical issues"
+icon: mdi:medical-bag
+sequence:
+    - service: homeassistant.update_entity
+      target:
+        entity_id:
+          - sensor.system_uptime
+          - sensor.processor_use
+          - sensor.memory_use_percent
+          - sensor.disk_use_percent
+          - sensor.system_health_score
+    - delay: '00:00:03'
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: |
+          System Health Check:
+          - Health Score: {{ states('sensor.system_health_score') | default('Unknown') }}/100
+          - CPU Usage: {{ states('sensor.processor_use') | default('Unknown') }}%
+          - Memory Usage: {{ states('sensor.memory_use_percent') | default('Unknown') }}%
+          - Disk Usage: {{ states('sensor.disk_use_percent') | default('Unknown') }}%
+          - Uptime: {{ states('sensor.system_uptime') | default('Unknown') }}
+        title: "Sietch Vital Signs Report"
+    - condition: numeric_state
+      entity_id: sensor.processor_use
+      above: 85
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "ALERT: High CPU usage detected at {{ states('sensor.processor_use') }}%. System may require attention."
+        title: "System Health Warning"
+    - condition: numeric_state
+      entity_id: sensor.memory_use_percent
+      above: 90
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "ALERT: High memory usage detected at {{ states('sensor.memory_use_percent') }}%. System may require attention."
+        title: "System Health Warning"
+    - condition: numeric_state
+      entity_id: sensor.disk_use_percent
+      above: 85
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "ALERT: High disk usage detected at {{ states('sensor.disk_use_percent') }}%. Storage cleanup may be required."
+        title: "System Health Warning"

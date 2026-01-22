@@ -1,0 +1,46 @@
+# DISABLED - AI logic too overwhelming
+# DISABLED - AI logic too overwhelming
+# DISABLED - alias: Security Pattern Learning
+description: "Learns and adapts security patterns based on activity and threats"
+icon: mdi:brain
+sequence:
+    # Analyze current patterns
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.security_intelligence_log
+      data:
+        value: >
+          Pattern Learning Update: {{ now().strftime('%H:%M') }} -
+          Security Score: {{ states('sensor.night_security_effectiveness') }}% -
+          Activity: {{ states('sensor.fremen_activity_level') }}% -
+          Pattern: {{ states('sensor.motion_pattern_analysis') }}
+    
+    # Update security effectiveness based on learning
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.motion_sensitivity
+      data:
+        value: >
+          {% set current_effectiveness = states('sensor.night_security_effectiveness') | int %}
+          {% set activity_pattern = states('sensor.motion_pattern_analysis') %}
+          {% set base_sensitivity = 50 %}
+          
+          {% if current_effectiveness < 60 %}
+            {% if activity_pattern == 'Anomalous' %}
+              {{ base_sensitivity + 40 }}
+            {% else %}
+              {{ base_sensitivity + 20 }}
+            {% endif %}
+          {% elif current_effectiveness > 85 %}
+            {{ base_sensitivity - 10 }}
+          {% else %}
+            {{ base_sensitivity }}
+          {% endif %}
+    
+    # Learning notification
+    - condition: template
+      value_template: >
+        {{ states('sensor.night_security_effectiveness') | int < 70 }}
+    - service: notify.mobile_app_tori_phone_2
+      data:
+        message: "🧠 Security patterns updated. Sensitivity adjusted based on threat analysis."
