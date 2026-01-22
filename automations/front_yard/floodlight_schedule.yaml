@@ -1,0 +1,29 @@
+---
+# Front Floodlight - On all night for security
+# Turns on at sunset, off at sunrise
+
+- id: front_floodlight_on_sunset
+  alias: "Front Floodlight - Turn On at Sunset"
+  description: "Turn on front floodlight at sunset for security"
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: "-00:30:00"  # 30 minutes before sunset
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.front_light
+  mode: single
+
+- id: front_floodlight_off_sunrise
+  alias: "Front Floodlight - Turn Off at Sunrise"
+  description: "Turn off front floodlight at sunrise"
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: "00:15:00"  # 15 minutes after sunrise
+  action:
+    - service: light.turn_off
+      target:
+        entity_id: light.front_light
+  mode: single

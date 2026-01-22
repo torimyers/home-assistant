@@ -5,10 +5,15 @@ goodnight_routine:
   alias: Goodnight Routine
   description: Execute bedtime routine - locks doors, turns off lights, arms alarm
   sequence:
-    # Turn off all lights
+    # Turn off indoor lights
     - service: light.turn_off
-      data:
-        entity_id: all
+      target:
+        entity_id:
+          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
+          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
+          - light.tori_light
+
+    # Keep floodlights on for security (managed by schedules)
 
     # Turn off living room lamp switches
     - service: switch.turn_off
@@ -40,10 +45,20 @@ leaving_home_routine:
   alias: Leaving Home Routine
   description: Secure home when leaving - locks doors, turns off lights/appliances, arms alarm
   sequence:
-    # Turn off all lights
+    # Turn off indoor lights
     - service: light.turn_off
-      data:
-        entity_id: all
+      target:
+        entity_id:
+          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
+          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
+          - light.tori_light
+
+    # Turn on floodlights for security
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.front_light
+          - light.backyard_light
 
     # Turn off living room lamp switches
     - service: switch.turn_off
