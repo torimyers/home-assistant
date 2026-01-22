@@ -6,9 +6,9 @@ views:
     path: home
     icon: mdi:home
     cards:
-      # People Status - House Dodson Members
+      # People Status
       - type: glance
-        title: 🏠 House Dodson Members
+        title: 👥 People
         show_state: true
         state_color: true
         entities:
@@ -26,7 +26,7 @@ views:
 
       # Phone & Activity Status
       - type: entities
-        title: 📱 Communications & Activity
+        title: 📱 Phone & Activity
         show_header_toggle: false
         entities:
           - entity: sensor.tori_pixel_10_pro_xl_detected_activity
@@ -44,7 +44,7 @@ views:
 
       # Locks & Security Card
       - type: entities
-        title: 🔒 Security & Hazard Detection
+        title: 🔒 Locks & Security
         show_header_toggle: false
         entities:
           - lock.front_door
@@ -314,9 +314,9 @@ views:
     cards:
       - type: markdown
         content: >
-          ## 🔋 Sietch Power Reserves
+          ## 🔋 Battery Monitor
 
-          Monitoring all battery-powered devices. Devices below 40% are highlighted.
+          Track all battery-powered devices. Devices below 40% are highlighted.
 
           **🔴 Critical:** <20% | **🟡 Low:** 20-40% | **🟢 Good:** >40%
 
@@ -448,7 +448,7 @@ views:
       # Ring Alarm Panel - Enhanced Styling
       - type: alarm-panel
         entity: alarm_control_panel.alarm
-        name: Ring Alarm - Sietch Defense
+        name: Ring Alarm
         states:
           - arm_home
           - arm_away
@@ -463,7 +463,7 @@ views:
 
       # Door Locks - Enhanced Security Display
       - type: entities
-        title: 🔒 Sietch Entry Seals
+        title: 🔒 Door Locks
         show_header_toggle: false
         state_color: true
         entities:
@@ -479,7 +479,7 @@ views:
 
       # Ring Cameras - Enhanced with Card-mod Styling
       - type: markdown
-        content: "### 📹 Ring Surveillance Network"
+        content: "### 📹 Ring Cameras"
 
       - type: horizontal-stack
         cards:
