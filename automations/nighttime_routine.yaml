@@ -62,7 +62,7 @@
 
 - id: turn_off_everything_10pm_away
   alias: Turn Off Everything at 10 PM if Nobody Home
-  description: Turn off all lights at 10 PM if both people are away
+  description: Turn off all lights at 10 PM if both people are away (except security lights)
 
   trigger:
     - platform: time
@@ -79,16 +79,32 @@
           state: 'not_home'
 
   action:
-    # Turn off all lights
+    # Turn off indoor lights (excluding security lights)
     - service: light.turn_off
       target:
-        entity_id: all
+        entity_id:
+          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
+          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+          - light.ledvance_a19_rgbw_light
+          - light.ledvance_a19_rgbw_light_2
+          - light.ledvance_a19_rgbw_light_3
+          - light.tori_light
     # Turn off living room switches
     - service: switch.turn_off
       target:
         entity_id:
           - switch.tp_link_power_strip_173b_couch_lamp
           - switch.tp_link_power_strip_1446_lamp_by_door
+    # Ensure security lights stay ON for safety
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.front_light
+          - light.backyard_light
 
   mode: single
 

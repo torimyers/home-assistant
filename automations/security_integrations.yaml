@@ -152,6 +152,13 @@
           - delay:
               milliseconds: 500
 
+    # Turn security lights back ON after flashing
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.front_light
+          - light.backyard_light
+
     # Send critical notification
     - service: notify.mobile_app_tori_pixel_10_pro_xl
       data:
