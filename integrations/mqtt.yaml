@@ -1,0 +1,9 @@
+---
+# MQTT Broker Configuration
+mqtt:
+  broker: 127.0.0.1  # localhost (same Unraid server)
+  port: 1883
+  # For basic setup, use anonymous auth
+  # To add authentication later, uncomment:
+  # username: !secret mqtt_username
+  # password: !secret mqtt_password
