@@ -75,6 +75,12 @@
             - condition: state
               entity_id: input_boolean.nap_mode
               state: 'off'
+            - condition: state
+              entity_id: input_boolean.do_not_disturb
+              state: 'off'
+            - condition: state
+              entity_id: input_boolean.focus_mode
+              state: 'off'
           sequence:
             - service: tts.google_translate_say
               target:
@@ -127,6 +133,12 @@
     - condition: state
       entity_id: input_boolean.nap_mode
       state: 'off'
+    - condition: state
+      entity_id: input_boolean.do_not_disturb
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.focus_mode
+      state: 'off'
 
   action:
     - service: tts.google_translate_say
@@ -162,6 +174,12 @@
       state: 'home'
     - condition: state
       entity_id: input_boolean.nap_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.do_not_disturb
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.focus_mode
       state: 'off'
   action:
     - service: tts.google_translate_say

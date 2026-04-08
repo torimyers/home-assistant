@@ -9,6 +9,11 @@
       for:
         minutes: 5
 
+  condition:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
+
   action:
     - service: lock.lock
       target:
@@ -26,6 +31,11 @@
       to: 'unlocked'
       for:
         minutes: 5
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'off'
 
   action:
     - service: lock.lock
@@ -142,6 +152,15 @@
         {% else %}
           false
         {% endif %}
+    - condition: state
+      entity_id: input_boolean.nap_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.do_not_disturb
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.focus_mode
+      state: 'off'
 
   action:
     # Announce on all media players

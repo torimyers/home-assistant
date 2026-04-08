@@ -1,0 +1,147 @@
+# Storm mode activates automatically from weather or manually via input_boolean.storm_mode
+
+- id: storm_mode_auto_on
+  alias: Storm Mode - Auto Enable on Stormy Weather
+  description: Automatically enable storm mode when weather turns stormy
+
+  trigger:
+    - platform: state
+      entity_id: weather.forecast_home
+      to:
+        - lightning
+        - lightning-rainy
+        - hail
+        - pouring
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.storm_mode
+      state: 'off'
+
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.storm_mode
+
+  mode: single
+
+- id: storm_mode_auto_off
+  alias: Storm Mode - Auto Disable When Weather Clears
+  description: Automatically disable storm mode when weather clears
+
+  trigger:
+    - platform: state
+      entity_id: weather.forecast_home
+      to:
+        - sunny
+        - partlycloudy
+        - clear-night
+        - cloudy
+        - windy
+        - windy-variant
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.storm_mode
+      state: 'on'
+
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.storm_mode
+
+  mode: single
+
+- id: storm_mode_activate
+  alias: Storm Mode - Activate
+  description: Close all shades and adjust lighting when storm mode enabled
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.storm_mode
+      to: 'on'
+
+  action:
+    # Close all shades
+    - service: cover.close_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
+          - cover.tori_roller_shade_cover
+          - cover.bennett_roller_shade_cover
+
+    # Warm indoor lighting only if after sunset
+    - choose:
+        - conditions:
+            - condition: sun
+              after: sunset
+          sequence:
+            - service: light.turn_on
+              target:
+                area_id:
+                  - living_room
+                  - kitchen
+                  - office
+              data:
+                brightness_pct: 80
+                kelvin: 2700
+      default: []
+
+    # Floodlights on for visibility
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.front_770e
+          - light.backyard_f84a
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Storm Mode On"
+        message: "Stormy weather detected. All shades closed."
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "Storm Mode On"
+        message: "Stormy weather detected. All shades closed."
+
+  mode: single
+
+- id: storm_mode_deactivate
+  alias: Storm Mode - Deactivate
+  description: Reopen shades when storm mode disabled (daytime only)
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.storm_mode
+      to: 'off'
+
+  action:
+    - choose:
+        - conditions:
+            - condition: sun
+              after: sunrise
+              before: sunset
+          sequence:
+            - service: cover.open_cover
+              target:
+                entity_id:
+                  - cover.living_room_left_roller_shade_cover
+                  - cover.right_living_room_roller_shade_cover
+                  - cover.office_left_roller_shade_cover
+                  - cover.office_right_roller_shade_cover
+                  - cover.tori_roller_shade_cover
+                  - cover.bennett_roller_shade_cover
+      default: []
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Storm Mode Off"
+        message: "Weather cleared. Storm mode disabled."
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "Storm Mode Off"
+        message: "Weather cleared. Storm mode disabled."
+
+  mode: single

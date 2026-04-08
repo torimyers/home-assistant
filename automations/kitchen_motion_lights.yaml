@@ -9,6 +9,11 @@
       entity_id: binary_sensor.kitchen_motion
       to: 'on'
 
+  condition:
+    - condition: state
+      entity_id: input_boolean.party_mode
+      state: 'off'
+
   action:
     - choose:
         # Sleep time (12 AM - 5 AM): Only sink light at 10%
@@ -77,6 +82,14 @@
       to: 'off'
       for:
         minutes: 10
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.cooking_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.party_mode
+      state: 'off'
 
   action:
     - service: light.turn_off

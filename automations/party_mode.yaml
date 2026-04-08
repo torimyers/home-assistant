@@ -1,0 +1,33 @@
+- id: party_mode_activate
+  alias: Party Mode - Activate
+  description: Full brightness in all social areas, motion lights suppressed
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.party_mode
+      to: 'on'
+
+  action:
+    - service: light.turn_on
+      target:
+        area_id:
+          - living_room
+          - kitchen
+      data:
+        brightness_pct: 100
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.dining_room_table_light_1
+          - light.dining_room_table_light_2
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+      data:
+        brightness_pct: 100
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+  mode: single

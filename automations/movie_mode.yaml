@@ -1,0 +1,53 @@
+- id: movie_mode_activate
+  alias: Movie Mode - Activate
+  description: Dim living room, close shades for movie watching
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.movie_mode
+      to: 'on'
+
+  action:
+    - service: cover.close_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+    - service: light.turn_on
+      target:
+        area_id: living_room
+      data:
+        brightness_pct: 20
+        kelvin: 2500
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+  mode: single
+
+- id: movie_mode_deactivate
+  alias: Movie Mode - Deactivate
+  description: Reopen living room shades when movie mode ends (daytime only)
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.movie_mode
+      to: 'off'
+
+  action:
+    - choose:
+        - conditions:
+            - condition: sun
+              after: sunrise
+              before: sunset
+          sequence:
+            - service: cover.open_cover
+              target:
+                entity_id:
+                  - cover.living_room_left_roller_shade_cover
+                  - cover.right_living_room_roller_shade_cover
+      default: []
+
+  mode: single

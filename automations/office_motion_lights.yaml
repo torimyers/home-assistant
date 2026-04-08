@@ -9,6 +9,11 @@
       entity_id: binary_sensor.office_motion
       to: 'on'
 
+  condition:
+    - condition: state
+      entity_id: input_boolean.focus_mode
+      state: 'off'
+
   action:
     - choose:
         # Sleep time (12 AM - 5 AM): Only upper light at 10%
@@ -77,6 +82,11 @@
       to: 'off'
       for:
         minutes: 10
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.focus_mode
+      state: 'off'
 
   action:
     - service: light.turn_off

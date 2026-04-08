@@ -1,0 +1,17 @@
+- id: cooking_mode_activate
+  alias: Cooking Mode - Activate
+  description: Set kitchen lights to full brightness for cooking
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.cooking_mode
+      to: 'on'
+
+  action:
+    - service: light.turn_on
+      target:
+        area_id: kitchen
+      data:
+        brightness_pct: 100
+
+  mode: single

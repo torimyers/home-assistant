@@ -50,6 +50,9 @@
         - condition: state
           entity_id: input_boolean.nap_mode
           state: 'off'
+        - condition: state
+          entity_id: input_boolean.do_not_disturb
+          state: 'off'
     - service: tts.google_translate_say
       target:
         entity_id:
@@ -173,6 +176,9 @@
               state: 'home'
         - condition: state
           entity_id: input_boolean.nap_mode
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.do_not_disturb
           state: 'off'
     - service: tts.google_translate_say
       target:

@@ -38,6 +38,58 @@ goodnight_routine:
         message: "Lights off, doors locked, alarm armed. Sleep well!"
   mode: single
 
+dinner_mode:
+  alias: Dinner Mode
+  description: Dining room warm and bright, living room ambient
+  sequence:
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.dining_room_table_light_1
+          - light.dining_room_table_light_2
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+      data:
+        brightness_pct: 70
+        kelvin: 2700
+    - service: light.turn_on
+      target:
+        area_id: living_room
+      data:
+        brightness_pct: 50
+        kelvin: 2700
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+  mode: single
+
+cleaning_mode:
+  alias: Cleaning Mode
+  description: All lights at full brightness, all shades open
+  sequence:
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.indoor_lights
+          - light.dining_room_table_light_1
+          - light.dining_room_table_light_2
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+      data:
+        brightness_pct: 100
+    - service: cover.open_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
+          - cover.tori_roller_shade_cover
+          - cover.bennett_roller_shade_cover
+  mode: single
+
 leaving_home_routine:
   alias: Leaving Home Routine
   description: Secure home when leaving - locks doors, turns off lights/appliances, arms alarm

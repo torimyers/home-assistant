@@ -1,0 +1,18 @@
+- id: focus_mode_activate
+  alias: Focus Mode - Activate
+  description: Set office lights to optimal work brightness, suppress TTS and motion off
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.focus_mode
+      to: 'on'
+
+  action:
+    - service: light.turn_on
+      target:
+        area_id: office
+      data:
+        brightness_pct: 100
+        kelvin: 4000
+
+  mode: single

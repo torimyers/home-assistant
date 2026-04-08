@@ -6,6 +6,11 @@
     - platform: time
       at: "22:00:00"
 
+  condition:
+    - condition: state
+      entity_id: input_boolean.party_mode
+      state: 'off'
+
   action:
     # Dim office lights to 30%
     - service: light.turn_on

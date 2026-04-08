@@ -18,6 +18,12 @@
     - condition: state
       entity_id: input_boolean.reading_mode_living_room
       state: 'off'
+    - condition: state
+      entity_id: input_boolean.movie_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.party_mode
+      state: 'off'
 
   action:
     - choose:
@@ -94,6 +100,12 @@
       state: 'off'
     - condition: state
       entity_id: input_boolean.reading_mode_living_room
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.movie_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.party_mode
       state: 'off'
 
   action:

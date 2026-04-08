@@ -1,0 +1,192 @@
+- id: vacation_mode_activate
+  alias: Vacation Mode - Activate
+  description: Secure home and enable occupancy simulation when on vacation
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.vacation_mode
+      to: 'on'
+
+  action:
+    # Turn off all indoor lights and switches
+    - service: homeassistant.turn_off
+      target:
+        entity_id:
+          - light.indoor_lights
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+    # Close all shades
+    - service: cover.close_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
+          - cover.tori_roller_shade_cover
+          - cover.bennett_roller_shade_cover
+
+    # Lock all doors
+    - service: lock.lock
+      target:
+        entity_id:
+          - lock.front_door
+          - lock.back_door
+
+    # Arm alarm in away mode
+    - service: alarm_control_panel.alarm_arm_away
+      target:
+        entity_id: alarm_control_panel.alarm
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Vacation Mode On"
+        message: "Home secured. Lights off, shades closed, doors locked, alarm armed. Occupancy simulation active at sunset."
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "Vacation Mode On"
+        message: "Home secured. Lights off, shades closed, doors locked, alarm armed. Occupancy simulation active at sunset."
+
+  mode: single
+
+- id: vacation_mode_deactivate
+  alias: Vacation Mode - Deactivate
+  description: Reopen main shades and notify on return
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.vacation_mode
+      to: 'off'
+
+  action:
+    - service: cover.open_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Welcome Home!"
+        message: "Vacation mode off. Shades opened. Remember to disarm the alarm."
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "Welcome Home!"
+        message: "Vacation mode off. Shades opened. Remember to disarm the alarm."
+
+  mode: single
+
+# Occupancy simulation — only runs when vacation_mode is on
+
+- id: vacation_sim_evening_on
+  alias: Vacation Simulation - Evening Lights On
+  description: Simulate coming home in the evening
+
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: "+00:15:00"
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'on'
+
+  action:
+    - service: light.turn_on
+      target:
+        area_id:
+          - living_room
+          - kitchen
+      data:
+        brightness_pct: 80
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+  mode: single
+
+- id: vacation_sim_late_evening
+  alias: Vacation Simulation - Late Evening Transition
+  description: Simulate winding down — kitchen off, living room dim, bedroom on
+
+  trigger:
+    - platform: time
+      at: "21:30:00"
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'on'
+
+  action:
+    - service: light.turn_off
+      target:
+        area_id: kitchen
+    - service: light.turn_on
+      target:
+        area_id: living_room
+      data:
+        brightness_pct: 40
+    - service: light.turn_on
+      target:
+        area_id: bedroom
+      data:
+        brightness_pct: 30
+
+  mode: single
+
+- id: vacation_sim_bedtime
+  alias: Vacation Simulation - Bedtime
+  description: Simulate going to bed — living room off, bedroom very dim
+
+  trigger:
+    - platform: time
+      at: "22:45:00"
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'on'
+
+  action:
+    - service: light.turn_off
+      target:
+        area_id: living_room
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+    - service: light.turn_on
+      target:
+        area_id: bedroom
+      data:
+        brightness_pct: 10
+
+  mode: single
+
+- id: vacation_sim_lights_off
+  alias: Vacation Simulation - Lights Off
+  description: All simulation lights off for the night
+
+  trigger:
+    - platform: time
+      at: "23:30:00"
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'on'
+
+  action:
+    - service: light.turn_off
+      target:
+        area_id: bedroom
+
+  mode: single

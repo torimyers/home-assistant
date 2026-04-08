@@ -48,6 +48,9 @@
     - condition: state
       entity_id: input_boolean.nap_mode
       state: 'off'
+    - condition: state
+      entity_id: input_boolean.do_not_disturb
+      state: 'off'
 
   action:
     - service: tts.google_translate_say
@@ -105,47 +108,35 @@
 
   mode: restart
 
-- id: reminder_close_shades_on_hot_days
-  alias: Reminder to Close Shades on Hot Days
-  description: Suggest closing shades when it's hot and sunny to reduce AC load
+- id: auto_close_shades_hot_day
+  alias: Auto-Close Shades on Hot Sunny Days
+  description: Automatically close all shades at noon when it's sunny to reduce AC load
 
   trigger:
     - platform: time
       at: "12:00:00"
 
   condition:
-    # Only if someone is home
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: person.tori_myers
-          state: 'home'
-        - condition: state
-          entity_id: person.bennett
-          state: 'home'
-    # Only if sunny
     - condition: state
       entity_id: weather.forecast_home
       state: 'sunny'
-    # Check if any shades are open (would need to add this condition based on your shade states)
 
   action:
+    - service: cover.close_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
     - service: notify.mobile_app_tori_pixel_10_pro_xl
       data:
-        title: "☀️ Hot & Sunny"
-        message: "It's hot and sunny. Consider closing shades to reduce AC usage."
-        data:
-          actions:
-            - action: "CLOSE_ALL_SHADES"
-              title: "Close All Shades"
+        title: "☀️ Shades Closed"
+        message: "Sunny day — shades closed automatically to keep the house cool."
     - service: notify.mobile_app_pixel_10
       data:
-        title: "☀️ Hot & Sunny"
-        message: "It's hot and sunny. Consider closing shades to reduce AC usage."
-        data:
-          actions:
-            - action: "CLOSE_ALL_SHADES"
-              title: "Close All Shades"
+        title: "☀️ Shades Closed"
+        message: "Sunny day — shades closed automatically to keep the house cool."
 
   mode: single
 
