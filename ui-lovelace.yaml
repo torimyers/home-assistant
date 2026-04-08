@@ -181,7 +181,7 @@ views:
         name: More
 
       - type: grid
-        columns: 2
+        columns: 3
         square: false
         cards:
           - type: custom:bubble-card
@@ -220,6 +220,15 @@ views:
               tap_action:
                 action: navigate
                 navigation_path: "#shades"
+          - type: custom:bubble-card
+            card_type: button
+            entity: climate.home
+            name: Climate
+            icon: mdi:thermostat
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#climate"
 
       # ================================================================
       # BOTTOM NAVIGATION BAR
@@ -764,6 +773,42 @@ views:
               - entity: input_boolean.storm_mode
                 name: Storm Mode
                 icon: mdi:weather-lightning
+
+      # --- Climate ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#climate"
+            name: Climate
+            icon: mdi:thermostat
+          - type: thermostat
+            entity: climate.home
+            name: Ecobee
+          - type: entities
+            title: Room Temperatures
+            entities:
+              - entity: sensor.home_current_temperature
+                name: Main (Ecobee)
+                icon: mdi:thermostat
+              - entity: sensor.office_temperature
+                name: Office
+                icon: mdi:desk
+              - entity: sensor.bedroom_temperature
+                name: Bedroom
+                icon: mdi:bed
+              - entity: sensor.living_room_temperature
+                name: Living Room
+                icon: mdi:sofa
+              - entity: sensor.kitchen_temperature
+                name: Kitchen
+                icon: mdi:chef-hat
+          - type: entities
+            title: Humidity
+            entities:
+              - entity: sensor.home_current_humidity
+                name: Home
+                icon: mdi:water-percent
 
       # --- Shades ---
       - type: vertical-stack

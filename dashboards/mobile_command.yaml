@@ -57,6 +57,13 @@ views:
             tap_action:
               action: toggle
           - type: button
+            entity: climate.home
+            name: "Climate"
+            icon: mdi:thermostat
+            tap_action:
+              action: navigate
+              navigation_path: "#climate-mobile"
+          - type: button
             entity: input_boolean.nap_mode
             name: "Modes"
             icon: mdi:tune
@@ -309,6 +316,36 @@ views:
               - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
                 name: Laundry Room
                 icon: mdi:water-alert
+
+      # --- Climate ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#climate-mobile"
+            name: Climate
+            icon: mdi:thermostat
+          - type: thermostat
+            entity: climate.home
+            name: Ecobee
+          - type: entities
+            title: Room Temperatures
+            entities:
+              - entity: sensor.home_current_temperature
+                name: Main (Ecobee)
+                icon: mdi:thermostat
+              - entity: sensor.office_temperature
+                name: Office
+                icon: mdi:desk
+              - entity: sensor.bedroom_temperature
+                name: Bedroom
+                icon: mdi:bed
+              - entity: sensor.living_room_temperature
+                name: Living Room
+                icon: mdi:sofa
+              - entity: sensor.kitchen_temperature
+                name: Kitchen
+                icon: mdi:chef-hat
 
       # --- Shades ---
       - type: vertical-stack
