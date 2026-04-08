@@ -1,0 +1,117 @@
+# Ring Video Doorbell automations
+# Entities: binary_sensor.front_door_ding_3, binary_sensor.front_door_motion_3, camera.front_door_3
+
+- id: doorbell_ring_notification
+  alias: Doorbell - Ring Notification with Snapshot
+  description: Notify both phones with a camera snapshot when doorbell is pressed
+
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.front_door_ding_3
+      to: 'on'
+
+  action:
+    - service: camera.snapshot
+      target:
+        entity_id: camera.front_door_3
+      data:
+        filename: /tmp/doorbell_snapshot.jpg
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🔔 Doorbell"
+        message: "Someone is at the front door."
+        data:
+          image: /tmp/doorbell_snapshot.jpg
+          tag: doorbell
+          importance: high
+          ttl: 0
+          actions:
+            - action: "URI"
+              title: "View Camera"
+              uri: /lovelace/home
+
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🔔 Doorbell"
+        message: "Someone is at the front door."
+        data:
+          image: /tmp/doorbell_snapshot.jpg
+          tag: doorbell
+          importance: high
+          ttl: 0
+          actions:
+            - action: "URI"
+              title: "View Camera"
+              uri: /lovelace/home
+
+  mode: single
+
+- id: front_door_package_delivery
+  alias: Front Door - Possible Package Delivery
+  description: >
+    Notify when motion detected at front door during delivery hours
+    (weekdays 8 AM - 8 PM) but no doorbell ring.
+    Suppressed if someone is home (you'll see it yourself).
+
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.front_door_motion_3
+      to: 'on'
+
+  condition:
+    # Delivery hours: weekdays 8 AM - 8 PM
+    - condition: time
+      after: "08:00:00"
+      before: "20:00:00"
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    # Nobody home — if you're home you'll see it yourself
+    - condition: state
+      entity_id: person.tori_myers
+      state: 'not_home'
+    - condition: state
+      entity_id: person.bennett
+      state: 'not_home'
+    # Doorbell wasn't just rung (that has its own notification)
+    - condition: state
+      entity_id: binary_sensor.front_door_ding_3
+      state: 'off'
+
+  action:
+    - service: camera.snapshot
+      target:
+        entity_id: camera.front_door_3
+      data:
+        filename: /tmp/front_door_snapshot.jpg
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "📦 Motion at Front Door"
+        message: "Someone at the front door — possible delivery."
+        data:
+          image: /tmp/front_door_snapshot.jpg
+          tag: front_door_motion
+          actions:
+            - action: "URI"
+              title: "View Camera"
+              uri: /lovelace/home
+
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "📦 Motion at Front Door"
+        message: "Someone at the front door — possible delivery."
+        data:
+          image: /tmp/front_door_snapshot.jpg
+          tag: front_door_motion
+          actions:
+            - action: "URI"
+              title: "View Camera"
+              uri: /lovelace/home
+
+  mode: single
