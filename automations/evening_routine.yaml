@@ -35,5 +35,9 @@
       data:
         title: "Evening Mode"
         message: "Sunset approaching. Evening lights on, shades closed."
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "Evening Mode"
+        message: "Sunset approaching. Evening lights on, shades closed."
 
   mode: single

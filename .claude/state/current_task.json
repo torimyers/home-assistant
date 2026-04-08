@@ -1,1 +1,6 @@
-{"task": "p-cleanup-unavailable-entities", "branch": "cleanup/unavailable-entities", "services": ["entities", "dashboards", "automations"], "updated": "2025-09-22"}
+{
+  "task": "ha-config-cleanup",
+  "branch": "main",
+  "services": ["dashboards", "automations", "scripts", "scenes", "integrations", "assistants"],
+  "updated": "2026-02-22"
+}

@@ -43,8 +43,16 @@
               data:
                 title: "Good Morning"
                 message: "Sunrise! Shades open, office & kitchen lights on."
+            - service: notify.mobile_app_pixel_10
+              data:
+                title: "Good Morning"
+                message: "Sunrise! Shades open, office & kitchen lights on."
       default:
         - service: notify.mobile_app_tori_pixel_10_pro_xl
+          data:
+            title: "Good Morning"
+            message: "Sunrise! Shades are open."
+        - service: notify.mobile_app_pixel_10
           data:
             title: "Good Morning"
             message: "Sunrise! Shades are open."

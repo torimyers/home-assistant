@@ -16,6 +16,92 @@
 
   mode: restart
 
+- id: auto_lock_back_door
+  alias: Auto-Lock Back Door After 5 Minutes
+  description: Automatically lock back door 5 minutes after being unlocked
+
+  trigger:
+    - platform: state
+      entity_id: lock.back_door
+      to: 'unlocked'
+      for:
+        minutes: 5
+
+  action:
+    - service: lock.lock
+      target:
+        entity_id: lock.back_door
+
+  mode: restart
+
+- id: lock_doors_on_departure
+  alias: Lock All Doors When Everyone Leaves
+  description: Lock both doors when no one is home
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'not_home'
+
+  condition:
+    - condition: state
+      entity_id: person.tori_myers
+      state: 'not_home'
+    - condition: state
+      entity_id: person.bennett
+      state: 'not_home'
+
+  action:
+    - service: lock.lock
+      target:
+        entity_id:
+          - lock.front_door
+          - lock.back_door
+
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🔒 House Secured"
+        message: "All doors locked — everyone has left."
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🔒 House Secured"
+        message: "All doors locked — everyone has left."
+
+  mode: single
+
+- id: notify_back_door_unlocked
+  alias: Notify When Back Door Unlocked
+  description: Send alert when back door is unlocked (unexpected access)
+
+  trigger:
+    - platform: state
+      entity_id: lock.back_door
+      to: 'unlocked'
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🚪 Back Door Unlocked"
+        message: "The back door was unlocked at {{ now().strftime('%I:%M %p') }}."
+        data:
+          priority: high
+          actions:
+            - action: "LOCK_ALL_DOORS"
+              title: "Lock All Doors"
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🚪 Back Door Unlocked"
+        message: "The back door was unlocked at {{ now().strftime('%I:%M %p') }}."
+        data:
+          priority: high
+          actions:
+            - action: "LOCK_ALL_DOORS"
+              title: "Lock All Doors"
+
+  mode: single
+
 - id: auto_unlock_arriving_home
   alias: Auto-Unlock Front Door When Arriving Home
   description: Unlock front door when Tori or Bennett arrives home

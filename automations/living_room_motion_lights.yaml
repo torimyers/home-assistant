@@ -1,6 +1,10 @@
 - id: living_room_motion_lights
   alias: Living Room Motion Lights
-  description: Turn on living room lights when motion detected (100% + switches day, 30% late evening, disabled at night)
+  description: >
+    After sunset to 10:30 PM: full lights + switches.
+    After 10:30 PM and 12 AM-5 AM: disabled.
+    Cloudy/dark daytime: full lights + switches.
+    Clear daytime: disabled.
 
   trigger:
     - platform: state
@@ -9,35 +13,59 @@
 
   action:
     - choose:
-        # Sleep time (12 AM - 5 AM): Disabled completely
+        # Sleep time (12 AM - 5 AM): Disabled
         - conditions:
             - condition: time
               after: "00:00:00"
               before: "05:00:00"
           sequence: []
-        # Late evening (10 PM - 12 AM): Only ceiling lights at 30%, no switches
+
+        # Late evening (10:30 PM - 12 AM): Disabled
         - conditions:
             - condition: time
-              after: "22:00:00"
+              after: "22:30:00"
               before: "23:59:59"
+          sequence: []
+
+        # After sunset and before 10:30 PM: Full lights + switches
+        - conditions:
+            - condition: sun
+              after: sunset
+            - condition: time
+              before: "22:30:00"
           sequence:
             - service: light.turn_on
               target:
                 area_id: living_room
               data:
-                brightness_pct: 30
-      # Normal hours (5 AM - 10 PM): All lights at 100% + switches
-      default:
-        - service: light.turn_on
-          target:
-            area_id: living_room
-          data:
-            brightness_pct: 100
-        - service: switch.turn_on
-          target:
-            entity_id:
-              - switch.tp_link_power_strip_173b_couch_lamp
-              - switch.tp_link_power_strip_1446_lamp_by_door
+                brightness_pct: 100
+            - service: switch.turn_on
+              target:
+                entity_id:
+                  - switch.tp_link_power_strip_173b_couch_lamp
+                  - switch.tp_link_power_strip_1446_lamp_by_door
+
+        # Daytime but dark (lux below 50): Full lights + switches
+        - conditions:
+            - condition: sun
+              before: sunset
+            - condition: numeric_state
+              entity_id: sensor.living_room_motion_sensor_illuminance
+              below: 50
+          sequence:
+            - service: light.turn_on
+              target:
+                area_id: living_room
+              data:
+                brightness_pct: 100
+            - service: switch.turn_on
+              target:
+                entity_id:
+                  - switch.tp_link_power_strip_173b_couch_lamp
+                  - switch.tp_link_power_strip_1446_lamp_by_door
+
+      # Default (clear daytime): Don't turn on
+      default: []
 
   mode: restart
 

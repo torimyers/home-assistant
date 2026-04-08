@@ -135,6 +135,14 @@
           actions:
             - action: "CLOSE_ALL_SHADES"
               title: "Close All Shades"
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "☀️ Hot & Sunny"
+        message: "It's hot and sunny. Consider closing shades to reduce AC usage."
+        data:
+          actions:
+            - action: "CLOSE_ALL_SHADES"
+              title: "Close All Shades"
 
   mode: single
 
@@ -160,6 +168,10 @@
           - cover.bennett_roller_shade_cover
 
     - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🪟 Shades Closed"
+        message: "All shades closed to keep the house cool!"
+    - service: notify.mobile_app_pixel_10
       data:
         title: "🪟 Shades Closed"
         message: "All shades closed to keep the house cool!"

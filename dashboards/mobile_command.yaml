@@ -1,424 +1,294 @@
-# Mobile Command Dashboard - Pocket-Sized Sietch Control
-# Optimized for mobile devices with touch-friendly controls
+# Mobile Command Dashboard — Touch-Optimized House Dodson Control
+# Bubble Card bottom nav + pop-ups for mobile experience
 
 title: "📱 Mobile Command"
-theme: default
+theme: dune_theme
 
-# Mobile-specific global styling
 views:
+  # ================================================================
+  # HOME VIEW
+  # ================================================================
   - title: "Home"
     icon: mdi:home
     path: home
-    badges:
-      - entity: sensor.automation_success_rate
-        name: "Automation"
-      - entity: binary_sensor.kitchen_motion
-        name: "Activity"
+    badges: []
     cards:
-      # Mobile Header - Compact
-      - type: custom:mushroom-title-card
-        title: "🏜️ House Dodson"
-        subtitle: "Mobile Command Center (Pocket Sietch)"
-      # Quick Status - Single Row
+      # Header
+      - type: markdown
+        content: "## 🏜️ House Dodson"
+
+      # People
+      - type: glance
+        show_state: true
+        state_color: true
+        entities:
+          - entity: person.tori_myers
+            name: Tori
+          - entity: person.bennett
+            name: Bennett
+
+      # Weather button
+      - type: custom:bubble-card
+        card_type: button
+        entity: weather.forecast_home
+        name: Weather & Forecast
+        icon: mdi:weather-partly-cloudy
+        button_action:
+          tap_action:
+            action: navigate
+            navigation_path: "#weather"
+
+      # Quick toggles
       - type: horizontal-stack
         cards:
-          - type: custom:mushroom-entity-card
-            entity: sensor.automation_success_rate
-            name: "System Health"
-            secondary_info: "Automation Success"
-            icon: mdi:shield-check
-            layout: vertical
-
-          - type: custom:mushroom-entity-card
-            entity: sensor.energy_efficiency_rating
-            name: "Efficiency"
-            secondary_info: "Energy Rating"
-            icon: mdi:chart-line
-            layout: vertical
-            
-          - type: custom:mushroom-entity-card
-            entity: sensor.water_conservation_index
-            name: "Conservation"
-            secondary_info: "Water Management"
-            icon: mdi:water-percent
-            layout: vertical
-
-      # Essential Controls - Swipe Cards
-      - type: horizontal-stack
-        cards:
-          - type: custom:mushroom-entity-card
+          - type: button
             entity: input_boolean.notification_system_enabled
             name: "Notifications"
             icon: mdi:bell
             tap_action:
               action: toggle
-          - type: custom:mushroom-entity-card
+          - type: button
             entity: input_boolean.vacation_mode
             name: "Away Mode"
             icon: mdi:airplane
             tap_action:
               action: toggle
-      # Emergency Quick Access
+
+      # Quick access — all lights on/off + goodnight
       - type: horizontal-stack
         cards:
-          - type: custom:mushroom-entity-card
-            entity: switch.tp_link_power_strip_173b_couch_lamp
-            name: "Living Lamp"
-            icon: mdi:lamp
-          - type: custom:mushroom-entity-card
-            entity: scene.system_storm_mode
-            name: "Storm Mode"
-            icon: mdi:weather-lightning
-            tap_action:
-              action: call-service
-              service: scene.turn_on
-              service_data:
-                entity_id: scene.system_storm_mode
-  - title: "Control"
-    icon: mdi:tune
-    path: control
-    badges: []
-    cards:
-      # Mobile Controls Header
-      - type: custom:mushroom-title-card
-        title: "🏠 Room Lighting Controls"
-        subtitle: "Quick access to all room lights"
-      # Kitchen Lighting
-      - type: horizontal-stack
-        cards:
-          - type: custom:mushroom-entity-card
-            entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
-            name: "Kitchen Oven"
-            icon: mdi:chef-hat
-            tap_action:
-              action: toggle
-          - type: custom:mushroom-entity-card
-            entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
-            name: "Kitchen Sink"
-            icon: mdi:water-pump
-            tap_action:
-              action: toggle
-      # Office Lighting  
-      - type: horizontal-stack
-        cards:
-          - type: custom:mushroom-entity-card
-            entity: light.ledvance_a19_rgbw_light
-            name: "Office Right"
-            icon: mdi:desk-lamp
-            tap_action:
-              action: toggle
-          - type: custom:mushroom-entity-card
-            entity: light.ledvance_a19_rgbw_light_2
-            name: "Office Upper"
-            icon: mdi:ceiling-light
-            tap_action:
-              action: toggle
-      - type: horizontal-stack
-        cards:
-          - type: custom:mushroom-entity-card
-            entity: light.ledvance_a19_rgbw_light_3
-            name: "Office Left"
-            icon: mdi:floor-lamp
-            tap_action:
-              action: toggle
-          # Dining Room Button (All 4 lights)
-          - type: custom:mushroom-entity-card
-            entity: light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
-            name: "Dining Room"
-            icon: mdi:table-chair
-            tap_action:
-              action: call-service
-              service: script.toggle_dining_room_lights
-      # Living Areas
-      - type: horizontal-stack
-        cards:
-          - type: custom:mushroom-entity-card
-            entity: switch.tp_link_power_strip_173b_couch_lamp
-            name: "Living Room"
-            icon: mdi:sofa
-            tap_action:
-              action: toggle
-          - type: custom:mushroom-entity-card
-            entity: light.tori_light
-            name: "Bedroom"
-            icon: mdi:bed
-            tap_action:
-              action: toggle
-      # Entry & Outdoor
-      - type: horizontal-stack
-        cards:
-          - type: custom:mushroom-entity-card
-            entity: switch.tp_link_power_strip_1446_lamp_by_door
-            name: "Entry Door"
-            icon: mdi:door-open
-            tap_action:
-              action: toggle
-          - type: custom:mushroom-entity-card
-            entity: light.front_light
-            name: "Front Yard"
-            icon: mdi:home-outline
-            tap_action:
-              action: toggle
-      - type: horizontal-stack
-        cards:
-          - type: custom:mushroom-entity-card
-            entity: light.backyard_light
-            name: "Backyard"
-            icon: mdi:tree
-            tap_action:
-              action: toggle
-          # Group Controls
-          - type: custom:mushroom-entity-card
-            entity: script.office_lights_toggle
-            name: "Office (All 3)"
-            icon: mdi:desk
-            tap_action:
-              action: call-service
-              service: script.toggle
-              service_data:
-                entity_id: script.office_lights_toggle
-      # Group Controls Row 2
-      - type: horizontal-stack
-        cards:
-          - type: custom:mushroom-entity-card
-            entity: script.kitchen_lights_toggle
-            name: "Kitchen (Both)"
-            icon: mdi:chef-hat
-            tap_action:
-              action: call-service
-              service: script.toggle
-              service_data:
-                entity_id: script.kitchen_lights_toggle
-          # All Lights Control
           - type: button
-            name: "All Lights Off"
+            name: "All On"
+            icon: mdi:lightbulb-on
+            tap_action:
+              action: call-service
+              service: homeassistant.turn_on
+              target:
+                entity_id:
+                  - light.indoor_lights
+                  - switch.tp_link_power_strip_173b_couch_lamp
+                  - switch.tp_link_power_strip_1446_lamp_by_door
+          - type: button
+            name: "All Off"
             icon: mdi:lightbulb-off
             tap_action:
               action: call-service
-              service: light.turn_off
-              service_data:
-                entity_id: all
-      # Mobile Controls Header
-      - type: custom:mushroom-title-card
-        title: "⚙️ System Controls"
-        subtitle: "Essential system management"
-      # System Modes - Toggle Grid
-      - type: grid
-        columns: 2
+              service: homeassistant.turn_off
+              target:
+                entity_id:
+                  - light.indoor_lights
+                  - switch.tp_link_power_strip_173b_couch_lamp
+                  - switch.tp_link_power_strip_1446_lamp_by_door
+          - type: button
+            entity: script.goodnight_routine
+            name: "Goodnight"
+            icon: mdi:weather-night
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.goodnight_routine
+
+      # Lock status
+      - type: entities
+        state_color: true
+        entities:
+          - entity: lock.front_door
+            name: "Front Door"
+            icon: mdi:door-closed-lock
+          - entity: lock.back_door
+            name: "Back Door"
+            icon: mdi:door-closed-lock
+
+      # Bottom nav — numbered key syntax required for horizontal-buttons-stack
+      - type: custom:bubble-card
+        card_type: horizontal-buttons-stack
+        1_name: Home
+        1_icon: mdi:home
+        1_link: /lovelace-mobile-command/home
+        2_name: Lights
+        2_icon: mdi:lightbulb-group
+        2_link: "#lights"
+        3_name: Weather
+        3_icon: mdi:weather-partly-cloudy
+        3_link: "#weather"
+        4_name: Security
+        4_icon: mdi:shield-home
+        4_link: "#security-mobile"
+        5_name: System
+        5_icon: mdi:cog
+        5_link: "#system"
+
+      # ================================================================
+      # MOBILE POP-UPS
+      # vertical-stack: pop-up card first, content cards after
+      # ================================================================
+
+      # --- Weather ---
+      - type: vertical-stack
         cards:
-          - type: custom:mushroom-entity-card
-            entity: input_boolean.guest_mode
-            name: "Guest Mode"
-            icon: mdi:account-group
-            layout: vertical
-            tap_action:
-              action: toggle
-            
-          - type: custom:mushroom-entity-card
-            entity: input_boolean.maintenance_mode
-            name: "Maintenance"
-            icon: mdi:wrench
-            layout: vertical
-            tap_action:
-              action: toggle
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#weather"
+            name: Weather & Forecast
+            icon: mdi:weather-partly-cloudy
+          - type: weather-forecast
+            entity: weather.forecast_home
+            show_forecast: true
+            forecast_type: daily
+          - type: entities
+            title: Sun Schedule
+            entities:
+              - entity: sensor.sun_next_rising
+                name: Next Sunrise
+                icon: mdi:weather-sunset-up
+              - entity: sensor.sun_next_setting
+                name: Next Sunset
+                icon: mdi:weather-sunset-down
+              - entity: sensor.sun_next_dawn
+                name: Next Dawn
+              - entity: sensor.sun_next_dusk
+                name: Next Dusk
+          - type: entities
+            title: Room Temperatures
+            entities:
+              - entity: sensor.bedroom_temperature
+                name: Bedroom
+              - entity: sensor.kitchen_temperature
+                name: Kitchen
+              - entity: sensor.living_room_temperature
+                name: Living Room
+              - entity: sensor.office_temperature
+                name: Office
 
-          - type: custom:mushroom-entity-card
-            entity: input_boolean.motion_lighting_enabled
-            name: "Motion Lights"
-            icon: mdi:lightbulb-auto
-            layout: vertical
-            tap_action:
-              action: toggle
-              
-          - type: custom:mushroom-entity-card
-            entity: input_boolean.climate_automation_enabled
-            name: "Climate Auto"
-            icon: mdi:thermostat-auto
-            layout: vertical
-            tap_action:
-              action: toggle
-
-      # House Mode Selector
-      - type: entities
-        title: "🏠 House Mode"
-        entities:
-          - entity: input_select.house_mode
-            name: "Current Mode"
-          - entity: input_select.security_level
-            name: "Security Level"
-
-      # Quick Thresholds
-      - type: entities
-        title: "🎯 Quick Adjustments"
-        entities:
-          - entity: input_number.motion_timeout_minutes
-            name: "Motion Timeout"
-          - entity: input_number.spice_production_target
-            name: "Production Target"
-
-  - title: "Monitor"
-    icon: mdi:monitor-dashboard
-    path: monitor
-    badges: []
-    cards:
-      # Mobile Monitoring Header
-      - type: custom:mushroom-title-card
-        title: "📊 System Monitor"
-        subtitle: "Status and analytics"
-      # Key Metrics - Mobile Optimized
-      - type: grid
-        columns: 1
+      # --- Lights ---
+      - type: vertical-stack
         cards:
-          - type: gauge
-            entity: sensor.sietch_operational_intelligence
-            name: "Operational Intelligence"
-            unit: "%"
-            min: 0
-            max: 100
-            severity:
-              green: 90
-              yellow: 75
-              red: 60
-
-      # Status Indicators - Compact
-      - type: entities
-        title: "🚦 System Status"
-        entities:
-          - entity: binary_sensor.office_motion
-            name: "House Occupied"
-            secondary_info: last-changed
-          - entity: binary_sensor.all_systems_operational
-            name: "All Systems OK"
-            secondary_info: last-changed
-          - entity: binary_sensor.automation_system_healthy
-            name: "Automation Health"
-            secondary_info: last-changed
-
-      # Recent Activity - Mobile List
-      - type: entities
-        title: "📈 Recent Activity"
-        entities:
-          - entity: counter.atlas_daily_motion
-            name: "Motion Events Today"
-            secondary_info: last-changed
-          - entity: counter.spice_harvester_cycles
-            name: "Harvester Cycles"
-            secondary_info: last-changed
-          - entity: timer.motion_light_delay
-            name: "Motion Timer"
-            secondary_info: last-changed
-
-      # Quick Actions - Mobile Buttons
-      - type: entities
-        title: "🔧 Quick Actions"
-        entities:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#lights"
+            name: Lighting Controls
+            icon: mdi:lightbulb-group
+          - type: light
+            entity: light.kitchen_over_oven
+            name: Kitchen Over Oven
+          - type: light
+            entity: light.kitchen_over_sink
+            name: Kitchen Over Sink
+          - type: light
+            entity: light.ledvance_a19_rgbw_light
+            name: Office Right
+          - type: light
+            entity: light.ledvance_a19_rgbw_light_2
+            name: Office Upper
+          - type: light
+            entity: light.ledvance_a19_rgbw_light_3
+            name: Office Left
+          - type: entities
+            title: Switches
+            state_color: true
+            entities:
+              - entity: switch.tp_link_power_strip_173b_couch_lamp
+                name: Couch Lamp
+              - entity: switch.tp_link_power_strip_1446_lamp_by_door
+                name: Door Lamp
+          - type: light
+            entity: light.bedroom_tori_light
+            name: Bedroom Lamp
           - type: button
-            name: "System Health Check"
-            action_name: "Run"
-            service: script.system_health_monitor
-            
-          - type: button
-            name: "Reset Counters"
-            action_name: "Reset"
-            service: automation.daily_counter_reset
+            name: All Lights Off
+            icon: mdi:lightbulb-off
+            tap_action:
+              action: call-service
+              service: homeassistant.turn_off
+              target:
+                entity_id:
+                  - light.indoor_lights
+                  - switch.tp_link_power_strip_173b_couch_lamp
+                  - switch.tp_link_power_strip_1446_lamp_by_door
 
-  - title: "Settings"
-    icon: mdi:cog
-    path: settings
-    badges: []
-    cards:
-      # Mobile Settings Header
-      - type: custom:mushroom-title-card
-        title: "⚙️ Quick Settings"
-        subtitle: "Mobile configuration"
-      # Notification Settings
-      - type: entities
-        title: "🔔 Notifications"
-        entities:
-          - entity: input_boolean.daily_reports_enabled
-            name: "Daily Reports"
-          - entity: input_boolean.threshold_alerts_enabled
-            name: "Threshold Alerts"  
-          - entity: input_boolean.emergency_alerts_enabled
-            name: "Emergency Alerts"
-          - entity: input_boolean.night_mode_notifications
-            name: "Night Mode"
-
-      # System Preferences
-      - type: entities
-        title: "🎛️ Preferences"
-        entities:
-          - entity: input_select.climate_mode
-            name: "Climate Mode"
-          - entity: input_select.notification_priority
-            name: "Alert Priority"
-          - entity: input_number.temperature_threshold_high
-            name: "Temp High"
-          - entity: input_number.temperature_threshold_low
-            name: "Temp Low"
-
-      # Mobile Dashboard Settings
-      - type: entities
-        title: "📱 Dashboard"
-        entities:
-          - type: button
-            name: "Refresh Dashboard"
-            action_name: "Refresh"
-            service: homeassistant.reload_config_entry
-            
-          - type: button
-            name: "Clear Browser Cache"
-            action_name: "Clear"
-            service: browser_mod.lovelace_reload
-
-  # Navigation View - Switch between dashboards
-  - title: "Navigate"
-    icon: mdi:compass
-    path: navigate
-    badges: []
-    cards:
-      - type: custom:mushroom-title-card
-        title: "🧭 Dashboard Navigation"
-        subtitle: "Switch to other command centers"
-      # Dashboard Navigation Cards
-      - type: grid
-        columns: 1
+      # --- Security ---
+      - type: vertical-stack
         cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#security-mobile"
+            name: Security
+            icon: mdi:shield-home
+          - type: alarm-panel
+            entity: alarm_control_panel.alarm
+            name: Ring Alarm
+            states:
+              - arm_home
+              - arm_away
+          - type: entities
+            title: Door Locks
+            state_color: true
+            entities:
+              - lock.front_door
+              - lock.back_door
+          - type: entities
+            title: Water Leak
+            state_color: true
+            entities:
+              - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_2
+                name: Water Heater
+                icon: mdi:water-alert
+              - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
+                name: Laundry Room
+                icon: mdi:water-alert
+
+      # --- System ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#system"
+            name: System
+            icon: mdi:cog
+          - type: entities
+            title: Notifications
+            state_color: true
+            entities:
+              - entity: input_boolean.notification_system_enabled
+                name: Notifications Enabled
+                icon: mdi:bell
+              - entity: input_boolean.daily_reports_enabled
+                name: Daily Reports
+              - entity: input_boolean.emergency_alerts_enabled
+                name: Emergency Alerts
+                icon: mdi:alert
+          - type: entities
+            title: Automation Controls
+            state_color: true
+            entities:
+              - entity: input_boolean.motion_lighting_enabled
+                name: Motion Lighting
+                icon: mdi:lightbulb-auto
+              - entity: input_boolean.maintenance_mode
+                name: Maintenance Mode
+                icon: mdi:wrench
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Dune Theme
+                icon: mdi:palette
+                tap_action:
+                  action: call-service
+                  service: frontend.set_theme
+                  data:
+                    name: dune_theme
+              - type: button
+                name: Default Theme
+                icon: mdi:palette-outline
+                tap_action:
+                  action: call-service
+                  service: frontend.set_theme
+                  data:
+                    name: default
           - type: button
-            name: "🖥️ Desktop Command"
-            icon: mdi:monitor-dashboard
+            name: Primary Dashboard
+            icon: mdi:home
             tap_action:
               action: navigate
-              navigation_path: /lovelace-desktop-command
-          - type: custom:mushroom-entity-card
-            entity: sensor.automation_success_rate
-            name: "🏛️ Command Center"
-            secondary_info: "Advanced monitoring & analytics (Sietch Command)"
-            icon: mdi:console-network
-            tap_action:
-              action: navigate
-              navigation_path: /lovelace-dashboards-sietch-command
-          - type: custom:mushroom-entity-card
-            entity: sensor.system_response_time
-            name: "⚡ Performance Monitor"
-            secondary_info: "System diagnostics & metrics (Mentat Analysis)"
-            icon: mdi:speedometer
-            tap_action:
-              action: navigate
-              navigation_path: /lovelace-dashboards-performance-monitoring
-      # Quick Access Info
-      - type: markdown
-        content: |
-          ## 📋 **Dashboard Guide**
-          
-          **📱 Mobile Command** - You are here  
-          *Touch-optimized controls and quick access*
-          
-          **🖥️ Desktop Command** - Best for computers  
-          *Full analytics, detailed views, wide layouts*
-          
-          **🏛️ Sietch Command** - Advanced monitoring  
-          *Deep system analytics and AI insights*
-          
-          **⚡ Performance** - System diagnostics  
-          *Technical metrics and performance data*
+              navigation_path: /lovelace/home

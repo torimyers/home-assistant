@@ -89,6 +89,13 @@
           {% set person_name = 'Tori' if trigger.entity_id == 'person.tori_myers' else 'Bennett' %}
           {% set from_zone = trigger.from_state.state | replace('_', ' ') | title %}
           {{ person_name }} left {{ from_zone }} and is heading home
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "On the way home"
+        message: >
+          {% set person_name = 'Tori' if trigger.entity_id == 'person.tori_myers' else 'Bennett' %}
+          {% set from_zone = trigger.from_state.state | replace('_', ' ') | title %}
+          {{ person_name }} left {{ from_zone }} and is heading home
 
   mode: restart
 
@@ -126,4 +133,35 @@
             Tori is walking
           {% endif %}
 
+  mode: restart
+
+- id: notify_bennett_activity_near_home
+  alias: Notify Bennett Walking or Driving Near Home
+  description: Send notification when Bennett's activity detected while getting close to home
+  trigger:
+    - platform: state
+      entity_id: sensor.pixel_10_detected_activity
+      to:
+        - 'automotive'
+        - 'walking'
+  condition:
+    - condition: state
+      entity_id: person.bennett
+      state: 'not_home'
+    - condition: state
+      entity_id: person.tori_myers
+      state: 'home'
+  action:
+    - service: tts.google_translate_say
+      target:
+        entity_id:
+          - media_player.bedroom
+          - media_player.office
+      data:
+        message: >
+          {% if trigger.to_state.state == 'automotive' %}
+            Bennett is driving
+          {% else %}
+            Bennett is walking
+          {% endif %}
   mode: restart

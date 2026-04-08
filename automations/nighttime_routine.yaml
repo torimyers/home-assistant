@@ -25,8 +25,8 @@
     - service: light.turn_off
       target:
         entity_id:
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+          - light.dining_room_table_light_1
+          - light.dining_room_table_light_2
           - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
           - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
 
@@ -56,7 +56,7 @@
   action:
     - service: light.turn_off
       target:
-        entity_id: light.tori_light
+        entity_id: light.bedroom_tori_light
 
   mode: single
 
@@ -83,16 +83,16 @@
     - service: light.turn_off
       target:
         entity_id:
-          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
-          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+          - light.kitchen_over_oven
+          - light.kitchen_over_sink
+          - light.dining_room_table_light_1
+          - light.dining_room_table_light_2
           - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
           - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
           - light.ledvance_a19_rgbw_light
           - light.ledvance_a19_rgbw_light_2
           - light.ledvance_a19_rgbw_light_3
-          - light.tori_light
+          - light.bedroom_tori_light
     # Turn off living room switches
     - service: switch.turn_off
       target:
@@ -103,8 +103,8 @@
     - service: light.turn_on
       target:
         entity_id:
-          - light.front_light
-          - light.backyard_light
+          - light.front_770e
+          - light.backyard_f84a
 
   mode: single
 

@@ -34,6 +34,20 @@
               title: "Valve Closed"
             - action: "LEAK_FALSE_ALARM"
               title: "False Alarm"
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🚨 WATER LEAK DETECTED!"
+        message: "Water leak at {{ leak_location }}! Shut off water valve immediately!"
+        data:
+          tag: "water_leak_emergency"
+          priority: high
+          ttl: 0
+          importance: high
+          actions:
+            - action: "LEAK_SHUTOFF_DONE"
+              title: "Valve Closed"
+            - action: "LEAK_FALSE_ALARM"
+              title: "False Alarm"
 
     # Announce on speakers if someone is home
     - condition: or
@@ -96,6 +110,13 @@
               data:
                 tag: "water_leak_reminder"
                 priority: high
+          - service: notify.mobile_app_pixel_10
+            data:
+              title: "🚨 Water Leak Still Active"
+              message: "Water still leaking at {{ leak_location }}! Check water valve!"
+              data:
+                tag: "water_leak_reminder"
+                priority: high
 
   mode: restart
 
@@ -112,6 +133,12 @@
   action:
     # Send confirmation
     - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Water Leak Protocol"
+        message: "Acknowledged. Monitor the area and call plumber if needed."
+        data:
+          tag: "water_leak_emergency"
+    - service: notify.mobile_app_pixel_10
       data:
         title: "Water Leak Protocol"
         message: "Acknowledged. Monitor the area and call plumber if needed."
@@ -154,9 +181,18 @@
         message: "clear_notification"
         data:
           tag: "water_leak_emergency"
+    - service: notify.mobile_app_pixel_10
+      data:
+        message: "clear_notification"
+        data:
+          tag: "water_leak_emergency"
 
     # Log false alarm
     - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "Water Leak False Alarm"
+        message: "Leak alert cleared. Check sensor if this happens frequently."
+    - service: notify.mobile_app_pixel_10
       data:
         title: "Water Leak False Alarm"
         message: "Leak alert cleared. Check sensor if this happens frequently."

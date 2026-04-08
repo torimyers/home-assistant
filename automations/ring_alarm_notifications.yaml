@@ -30,6 +30,16 @@
           priority: high
           ttl: 0
           importance: high
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🚨 Door Opened While Away"
+        message: >
+          {{ trigger.to_state.attributes.friendly_name }} was opened while nobody is home!
+        data:
+          tag: "door_alert_{{ trigger.entity_id }}"
+          priority: high
+          ttl: 0
+          importance: high
 
   mode: queued
   max: 5
@@ -63,6 +73,14 @@
 
   action:
     - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "⚠️ Window Opened While Away"
+        message: >
+          {{ trigger.to_state.attributes.friendly_name }} was opened while nobody is home!
+        data:
+          tag: "window_alert_{{ trigger.entity_id }}"
+          priority: high
+    - service: notify.mobile_app_pixel_10
       data:
         title: "⚠️ Window Opened While Away"
         message: >
@@ -127,6 +145,10 @@
       data:
         title: "🔒 Ring Alarm Armed"
         message: "Ring Alarm automatically armed in Away mode since everyone left."
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🔒 Ring Alarm Armed"
+        message: "Ring Alarm automatically armed in Away mode since everyone left."
 
   mode: restart
 
@@ -141,6 +163,15 @@
 
   action:
     - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "📬 Mailbox Opened"
+        message: "The mailbox was just opened. You may have mail!"
+        data:
+          tag: "mailbox_alert"
+          actions:
+            - action: "MAILBOX_CHECKED"
+              title: "Mail Retrieved"
+    - service: notify.mobile_app_pixel_10
       data:
         title: "📬 Mailbox Opened"
         message: "The mailbox was just opened. You may have mail!"
@@ -164,6 +195,11 @@
 
   action:
     - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        message: "clear_notification"
+        data:
+          tag: "mailbox_alert"
+    - service: notify.mobile_app_pixel_10
       data:
         message: "clear_notification"
         data:

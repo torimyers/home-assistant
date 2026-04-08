@@ -12,6 +12,10 @@ rsync -av --progress \
   --exclude='__pycache__' \
   --exclude='.storage' \
   --exclude='home-assistant.log*' \
+  --exclude='custom_components' \
+  --exclude='zigbee.db' \
+  --exclude='zigbee.db-shm' \
+  --exclude='zigbee.db-wal' \
   "$LOCAL_PATH/" "$UNRAID_PATH/"
 
 echo "✅ Sync complete!"

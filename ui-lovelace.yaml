@@ -1,14 +1,25 @@
 ---
+# House Dodson Command — Primary Dashboard
+# Bubble Card single-view layout with pop-ups and bottom nav
+# Backup: ui-lovelace.yaml.pre-bubble-backup
+
 title: Home
 views:
-  # Overview Tab
   - title: Home
     path: home
     icon: mdi:home
     cards:
-      # People Status
+
+      # ================================================================
+      # HEADER
+      # ================================================================
+      - type: markdown
+        content: "## 🏜️ House Dodson"
+
+      # ================================================================
+      # PEOPLE
+      # ================================================================
       - type: glance
-        title: 👥 People
         show_state: true
         state_color: true
         entities:
@@ -16,696 +27,734 @@ views:
             name: Tori
           - entity: person.bennett
             name: Bennett
-        card_mod:
-          style: |
-            ha-card {
-              background: var(--card-background-color);
-              border: 2px solid var(--primary-color);
-              box-shadow: 0 4px 8px var(--divider-color);
-            }
 
-      # Theme Selector
-      - type: horizontal-stack
-        cards:
-          - type: button
-            name: Tori's Forest
-            icon: mdi:pine-tree
-            tap_action:
-              action: call-service
-              service: frontend.set_theme
-              data:
-                name: "Tori Forest"
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
-                  color: white;
-                }
-
-          - type: button
-            name: Bennett's Ember
-            icon: mdi:fire
-            tap_action:
-              action: call-service
-              service: frontend.set_theme
-              data:
-                name: "Bennett Ember"
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #D32F2F 0%, #EF5350 100%);
-                  color: white;
-                }
-
-          - type: button
-            name: Default
-            icon: mdi:palette
-            tap_action:
-              action: call-service
-              service: frontend.set_theme
-              data:
-                name: "default"
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, #607D8B 0%, #90A4AE 100%);
-                  color: white;
-                }
-
-      # Phone & Activity Status
-      - type: entities
-        title: 📱 Phone & Activity
-        show_header_toggle: false
-        entities:
-          - entity: sensor.tori_pixel_10_pro_xl_detected_activity
-            name: Tori Activity
-            icon: mdi:walk
-          - entity: binary_sensor.tori_pixel_10_pro_xl_is_charging
-            name: Tori Phone Charging
-          - entity: sensor.tori_pixel_10_pro_xl_battery_level
-            name: Tori Battery
-        card_mod:
-          style: |
-            ha-card {
-              border-left: 4px solid var(--primary-color);
-            }
-
-      # Locks & Security Card
-      - type: entities
-        title: 🔒 Locks & Security
-        show_header_toggle: false
-        entities:
-          - lock.front_door
-          - lock.back_door
-          - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_2
-            name: Water Leak - Water Heater
-          - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
-            name: Water Leak - Laundry Room
-        card_mod:
-          style: |
-            ha-card {
-              background: var(--card-background-color);
-              border-left: 4px solid var(--accent-color);
-              box-shadow: 0 2px 8px var(--divider-color);
-            }
-
-      # Quick Lighting Card
-      - type: light
-        entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
-        name: Kitchen Over Oven
-
-      - type: light
-        entity: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
-        name: Kitchen Over Sink
-
-      # Living Room Switches
-      - type: entities
-        title: Living Room
-        entities:
-          - switch.tp_link_power_strip_173b_couch_lamp
-          - switch.tp_link_power_strip_1446_lamp_by_door
-
-      # Bedroom Light
-      - type: light
-        entity: light.tori_light
-        name: Bedroom Lamp
-
-      # Weather Card
-      - type: weather-forecast
+      # ================================================================
+      # WEATHER SUMMARY BUTTON
+      # button_action wraps tap_action for bubble-card buttons
+      # ================================================================
+      - type: custom:bubble-card
+        card_type: button
         entity: weather.forecast_home
-        show_forecast: true
+        name: Weather & Forecast
+        icon: mdi:weather-partly-cloudy
+        button_action:
+          tap_action:
+            action: navigate
+            navigation_path: "#weather"
 
-      # Analytics - Phone Battery Trend
-      - type: custom:mini-graph-card
-        name: 📱 Phone Battery Trend
-        icon: mdi:battery-charging
-        entities:
-          - entity: sensor.tori_pixel_10_pro_xl_battery_level
-            name: Tori Phone
-            color: var(--accent-color)
-        hours_to_show: 24
-        points_per_hour: 2
-        line_width: 3
-        animate: true
-        show:
-          fill: fade
-          points: false
-          legend: false
-        card_mod:
-          style: |
-            ha-card {
-              background: var(--card-background-color);
-              border-left: 4px solid var(--primary-color);
-            }
+      # ================================================================
+      # QUICK ACTIONS
+      # ================================================================
+      - type: custom:bubble-card
+        card_type: separator
+        name: Quick Actions
 
-      # Analytics - Critical Device Batteries
-      - type: horizontal-stack
+      - type: grid
+        columns: 2
+        square: false
         cards:
-          - type: custom:mini-graph-card
-            name: 🔒 Front Lock
-            entities:
-              - sensor.front_door_battery
-            hours_to_show: 168
-            line_color: var(--accent-color)
-            line_width: 2
-            points_per_hour: 0.25
-            show:
-              fill: fade
-              points: false
-              legend: false
-
-          - type: custom:mini-graph-card
-            name: 🔒 Back Lock
-            entities:
-              - sensor.back_door_battery
-            hours_to_show: 168
-            line_color: var(--primary-color)
-            line_width: 2
-            points_per_hour: 0.25
-            show:
-              fill: fade
-              points: false
-              legend: false
-
-      # Quick Actions
-      - type: markdown
-        content: "### ⚡ Quick Actions"
-
-      - type: horizontal-stack
-        cards:
-          - type: button
+          - type: custom:bubble-card
+            card_type: button
+            entity: script.goodnight_routine
             name: Goodnight
             icon: mdi:weather-night
-            tap_action:
-              action: call-service
-              service: script.goodnight_routine
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-primary-color) 100%);
-                  color: white;
-                  border: 2px solid var(--light-primary-color);
-                }
-
-          - type: button
-            name: Leaving Home
-            icon: mdi:exit-run
-            tap_action:
-              action: call-service
-              service: script.leaving_home_routine
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, var(--accent-color) 0%, var(--dark-primary-color) 100%);
-                  color: white;
-                  border: 2px solid var(--accent-color);
-                }
-
-      - type: horizontal-stack
-        cards:
-          - type: button
+            button_action:
+              tap_action:
+                action: call-service
+                service: script.goodnight_routine
+          - type: custom:bubble-card
+            card_type: button
+            entity: lock.front_door
             name: Lock All
             icon: mdi:lock
-            tap_action:
-              action: call-service
-              service: lock.lock
-              data:
-                entity_id:
-                  - lock.front_door
-                  - lock.back_door
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, var(--state-icon-active-color) 0%, var(--primary-color) 100%);
-                  color: white;
-                  border: 2px solid var(--state-icon-active-color);
-                }
-
-          - type: button
+            button_action:
+              tap_action:
+                action: call-service
+                service: lock.lock
+                service_data:
+                  entity_id:
+                    - lock.front_door
+                    - lock.back_door
+          - type: custom:bubble-card
+            card_type: button
+            entity: light.indoor_lights
+            name: Lights On
+            icon: mdi:lightbulb-on
+            button_action:
+              tap_action:
+                action: call-service
+                service: homeassistant.turn_on
+                target:
+                  entity_id:
+                    - light.indoor_lights
+                    - switch.tp_link_power_strip_173b_couch_lamp
+                    - switch.tp_link_power_strip_1446_lamp_by_door
+          - type: custom:bubble-card
+            card_type: button
+            entity: light.indoor_lights
             name: Lights Off
             icon: mdi:lightbulb-off
+            button_action:
+              tap_action:
+                action: call-service
+                service: homeassistant.turn_off
+                target:
+                  entity_id:
+                    - light.indoor_lights
+                    - switch.tp_link_power_strip_173b_couch_lamp
+                    - switch.tp_link_power_strip_1446_lamp_by_door
+
+      # ================================================================
+      # ROOM GRID
+      # ================================================================
+      - type: custom:bubble-card
+        card_type: separator
+        name: Rooms
+
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: custom:bubble-card
+            card_type: button
+            entity: light.kitchen_over_oven
+            name: Kitchen
+            icon: mdi:chef-hat
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#kitchen"
+          - type: custom:bubble-card
+            card_type: button
+            entity: switch.tp_link_power_strip_173b_couch_lamp
+            name: Living Room
+            icon: mdi:sofa
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#living-room"
+          - type: custom:bubble-card
+            card_type: button
+            entity: light.ledvance_a19_rgbw_light
+            name: Office
+            icon: mdi:desk
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#office"
+          - type: custom:bubble-card
+            card_type: button
+            entity: light.bedroom_tori_light
+            name: Bedroom
+            icon: mdi:bed
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#bedroom"
+          - type: custom:bubble-card
+            card_type: button
+            entity: light.dining_room_table_light_1
+            name: Dining Room
+            icon: mdi:table-chair
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#dining-room"
+          - type: custom:bubble-card
+            card_type: button
+            entity: alarm_control_panel.alarm
+            name: Security
+            icon: mdi:shield-home
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#security"
+
+      # ================================================================
+      # SYSTEM & MORE
+      # ================================================================
+      - type: custom:bubble-card
+        card_type: separator
+        name: More
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: button
+            entity: input_boolean.notification_system_enabled
+            name: System
+            icon: mdi:cog
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#system"
+          - type: custom:bubble-card
+            card_type: button
+            entity: sensor.base_station_battery
+            name: Batteries
+            icon: mdi:battery-heart
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#batteries"
+
+      # ================================================================
+      # BOTTOM NAVIGATION BAR
+      # horizontal-buttons-stack uses numbered keys: N_name, N_icon, N_link
+      # ================================================================
+      - type: custom:bubble-card
+        card_type: horizontal-buttons-stack
+        1_name: Home
+        1_icon: mdi:home
+        1_link: /lovelace/home
+        2_name: Lights
+        2_icon: mdi:lightbulb-group
+        2_link: "#lights"
+        3_name: Weather
+        3_icon: mdi:weather-partly-cloudy
+        3_link: "#weather"
+        4_name: Security
+        4_icon: mdi:shield-home
+        4_link: "#security"
+        5_name: Routines
+        5_icon: mdi:robot
+        5_link: "#routines"
+
+      # ================================================================
+      # POP-UPS
+      # vertical-stack: bubble-card pop-up first, content cards after.
+      # The pop-up converts the entire stack into a modal overlay.
+      # ================================================================
+
+      # --- Weather ---
+      # --- Lights ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#lights"
+            name: All Lights
+            icon: mdi:lightbulb-group
+          - type: light
+            entity: light.kitchen_over_oven
+            name: Kitchen Over Oven
+          - type: light
+            entity: light.kitchen_over_sink
+            name: Kitchen Over Sink
+          - type: light
+            entity: light.ledvance_a19_rgbw_light
+            name: Office Right
+          - type: light
+            entity: light.ledvance_a19_rgbw_light_2
+            name: Office Upper
+          - type: light
+            entity: light.ledvance_a19_rgbw_light_3
+            name: Office Left
+          - type: light
+            entity: light.bedroom_tori_light
+            name: Bedroom
+          - type: entities
+            title: Switches
+            state_color: true
+            entities:
+              - entity: switch.tp_link_power_strip_173b_couch_lamp
+                name: Couch Lamp
+              - entity: switch.tp_link_power_strip_1446_lamp_by_door
+                name: Door Lamp
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: All On
+                icon: mdi:lightbulb-on
+                tap_action:
+                  action: call-service
+                  service: homeassistant.turn_on
+                  target:
+                    entity_id:
+                      - light.indoor_lights
+                      - switch.tp_link_power_strip_173b_couch_lamp
+                      - switch.tp_link_power_strip_1446_lamp_by_door
+              - type: button
+                name: All Off
+                icon: mdi:lightbulb-off
+                tap_action:
+                  action: call-service
+                  service: homeassistant.turn_off
+                  target:
+                    entity_id:
+                      - light.indoor_lights
+                      - switch.tp_link_power_strip_173b_couch_lamp
+                      - switch.tp_link_power_strip_1446_lamp_by_door
+
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#weather"
+            name: Weather & Forecast
+            icon: mdi:weather-partly-cloudy
+          - type: weather-forecast
+            entity: weather.forecast_home
+            show_forecast: true
+            forecast_type: daily
+          - type: entities
+            title: Sun Schedule
+            entities:
+              - entity: sensor.sun_next_rising
+                name: Next Sunrise
+                icon: mdi:weather-sunset-up
+              - entity: sensor.sun_next_setting
+                name: Next Sunset
+                icon: mdi:weather-sunset-down
+              - entity: sensor.sun_next_dawn
+                name: Next Dawn
+              - entity: sensor.sun_next_dusk
+                name: Next Dusk
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.home_current_temperature
+                name: Indoor Temp
+                icon: mdi:thermometer
+                layout: vertical
+              - type: custom:mushroom-entity-card
+                entity: sensor.home_current_humidity
+                name: Humidity
+                icon: mdi:water-percent
+                layout: vertical
+          - type: entities
+            title: Room Temperatures
+            entities:
+              - entity: sensor.bedroom_temperature
+                name: Bedroom
+                icon: mdi:bed
+              - entity: sensor.kitchen_temperature
+                name: Kitchen
+                icon: mdi:chef-hat
+              - entity: sensor.living_room_temperature
+                name: Living Room
+                icon: mdi:sofa
+              - entity: sensor.office_temperature
+                name: Office
+                icon: mdi:desk
+
+      # --- Kitchen ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#kitchen"
+            name: Kitchen
+            icon: mdi:chef-hat
+          - type: light
+            entity: light.kitchen_over_oven
+            name: Over Oven
+          - type: light
+            entity: light.kitchen_over_sink
+            name: Over Sink
+          - type: entities
+            title: Sensors
+            state_color: true
+            entities:
+              - entity: binary_sensor.kitchen_motion
+                name: Motion
+                icon: mdi:motion-sensor
+              - entity: sensor.kitchen_temperature
+                name: Temperature
+                icon: mdi:thermometer
+
+      # --- Living Room ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#living-room"
+            name: Living Room
+            icon: mdi:sofa
+          - type: entities
+            title: Lamps
+            state_color: true
+            entities:
+              - entity: switch.tp_link_power_strip_173b_couch_lamp
+                name: Couch Lamp
+                icon: mdi:lamp
+              - entity: switch.tp_link_power_strip_1446_lamp_by_door
+                name: Door Lamp
+                icon: mdi:lamp
+          - type: entities
+            title: Roller Shades
+            entities:
+              - cover.living_room_left_roller_shade_cover
+              - cover.right_living_room_roller_shade_cover
+          - type: entities
+            title: Sensors
+            state_color: true
+            entities:
+              - entity: binary_sensor.living_room_motion
+                name: Motion
+                icon: mdi:motion-sensor
+              - entity: sensor.living_room_temperature
+                name: Temperature
+                icon: mdi:thermometer
+              - entity: binary_sensor.left_window_2
+                name: Left Window
+                icon: mdi:window-closed
+              - entity: binary_sensor.right_window_2
+                name: Right Window
+                icon: mdi:window-closed
+
+      # --- Office ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#office"
+            name: Office
+            icon: mdi:desk
+          - type: light
+            entity: light.ledvance_a19_rgbw_light
+            name: Right Light
+          - type: light
+            entity: light.ledvance_a19_rgbw_light_2
+            name: Upper Light
+          - type: light
+            entity: light.ledvance_a19_rgbw_light_3
+            name: Left Light
+          - type: entities
+            title: Roller Shades
+            entities:
+              - cover.office_left_roller_shade_cover
+              - cover.office_right_roller_shade_cover
+          - type: entities
+            title: Sensors
+            state_color: true
+            entities:
+              - entity: binary_sensor.office_motion
+                name: Motion
+                icon: mdi:motion-sensor
+              - entity: sensor.office_temperature
+                name: Temperature
+                icon: mdi:thermometer
+              - entity: binary_sensor.left_window
+                name: Left Window
+                icon: mdi:window-closed
+              - entity: binary_sensor.right_window
+                name: Right Window
+                icon: mdi:window-closed
+
+      # --- Bedroom ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#bedroom"
+            name: Bedroom
+            icon: mdi:bed
+          - type: light
+            entity: light.bedroom_tori_light
+            name: Bedroom Lamp
+          - type: entities
+            title: Roller Shades
+            entities:
+              - cover.tori_roller_shade_cover
+              - cover.bennett_roller_shade_cover
+          - type: entities
+            title: Sensors
+            state_color: true
+            entities:
+              - entity: sensor.bedroom_temperature
+                name: Temperature
+                icon: mdi:thermometer
+              - entity: binary_sensor.tori_window
+                name: Tori's Window
+                icon: mdi:window-closed
+              - entity: binary_sensor.bennett_window
+                name: Bennett's Window
+                icon: mdi:window-closed
+
+      # --- Dining Room ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#dining-room"
+            name: Dining Room
+            icon: mdi:table-chair
+          - type: entities
+            title: Chandelier
+            show_header_toggle: true
+            state_color: true
+            entities:
+              - light.dining_room_table_light_1
+              - light.dining_room_table_light_2
+              - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+              - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+
+      # --- Security ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#security"
+            name: Security
+            icon: mdi:shield-home
+          - type: alarm-panel
+            entity: alarm_control_panel.alarm
+            name: Ring Alarm
+            states:
+              - arm_home
+              - arm_away
+          - type: entities
+            title: Door Locks
+            state_color: true
+            entities:
+              - lock.front_door
+              - lock.back_door
+          - type: horizontal-stack
+            cards:
+              - type: picture-entity
+                entity: camera.front_770e
+                name: Front
+                camera_view: auto
+              - type: picture-entity
+                entity: camera.front_yard_9747
+                name: Front Yard
+                camera_view: auto
+          - type: horizontal-stack
+            cards:
+              - type: picture-entity
+                entity: camera.front_door_4ae9
+                name: Front Door
+                camera_view: auto
+              - type: picture-entity
+                entity: camera.backyard_f84a
+                name: Backyard
+                camera_view: auto
+          - type: entities
+            title: Door & Window Sensors
+            state_color: true
+            entities:
+              - entity: binary_sensor.front_door
+                name: Front Door
+                icon: mdi:door
+              - entity: binary_sensor.back_door
+                name: Back Door
+                icon: mdi:door
+              - entity: binary_sensor.left_window
+                name: Office Left Window
+              - entity: binary_sensor.right_window
+                name: Office Right Window
+              - entity: binary_sensor.left_window_2
+                name: Living Room Left Window
+              - entity: binary_sensor.right_window_2
+                name: Living Room Right Window
+              - entity: binary_sensor.tori_window
+                name: Tori's Window
+              - entity: binary_sensor.bennett_window
+                name: Bennett's Window
+              - entity: binary_sensor.back_window
+                name: Kitchen Window
+              - entity: binary_sensor.mailbox_sensor
+                name: Mailbox
+                icon: mdi:mailbox
+          - type: entities
+            title: Water Leak Detection
+            state_color: true
+            entities:
+              - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_2
+                name: Water Heater
+                icon: mdi:water-alert
+              - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
+                name: Laundry Room
+                icon: mdi:water-alert
+
+      # --- Routines ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#routines"
+            name: Routines & Automations
+            icon: mdi:robot
+          - type: entities
+            title: Quick Routines
+            entities:
+              - entity: script.goodnight_routine
+                name: Goodnight
+                icon: mdi:weather-night
+              - entity: script.leaving_home_routine
+                name: Leaving Home
+                icon: mdi:exit-run
+          - type: entities
+            title: Motion Lighting
+            show_header_toggle: true
+            state_color: true
+            entities:
+              - automation.kitchen_motion_lights
+              - automation.office_motion_lights
+              - automation.living_room_motion_lights
+          - type: entities
+            title: Daily Routines
+            show_header_toggle: true
+            state_color: true
+            entities:
+              - automation.morning_sunrise_routine
+              - automation.evening_sunset_routine
+              - automation.nighttime_dimming_at_10_pm
+
+      # --- System ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#system"
+            name: System
+            icon: mdi:cog
+          - type: entities
+            title: Notifications
+            state_color: true
+            entities:
+              - entity: input_boolean.notification_system_enabled
+                name: Notifications Enabled
+                icon: mdi:bell
+              - entity: input_boolean.daily_reports_enabled
+                name: Daily Reports
+              - entity: input_boolean.emergency_alerts_enabled
+                name: Emergency Alerts
+                icon: mdi:alert
+          - type: entities
+            title: Automation Controls
+            state_color: true
+            entities:
+              - entity: input_boolean.motion_lighting_enabled
+                name: Motion Lighting
+                icon: mdi:lightbulb-auto
+              - entity: input_boolean.climate_automation_enabled
+                name: Climate Automation
+                icon: mdi:thermostat-auto
+              - entity: input_boolean.maintenance_mode
+                name: Maintenance Mode
+                icon: mdi:wrench
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Dune Theme
+                icon: mdi:palette
+                tap_action:
+                  action: call-service
+                  service: frontend.set_theme
+                  data:
+                    name: dune_theme
+              - type: button
+                name: Default Theme
+                icon: mdi:palette-outline
+                tap_action:
+                  action: call-service
+                  service: frontend.set_theme
+                  data:
+                    name: default
+          - type: button
+            name: Battery Status
+            icon: mdi:battery-heart
             tap_action:
-              action: call-service
-              service: light.turn_off
-              data:
-                entity_id: all
-            card_mod:
-              style: |
-                ha-card {
-                  background: linear-gradient(135deg, var(--disabled-text-color) 0%, var(--secondary-background-color) 100%);
-                  color: var(--primary-text-color);
-                  border: 2px solid var(--divider-color);
-                }
+              action: navigate
+              navigation_path: "#batteries"
 
-  # Lighting Tab
-  - title: Lights
-    path: lights
-    icon: mdi:lightbulb-group
-    cards:
-      # Kitchen Lights
-      - type: entities
-        title: Kitchen
-        show_header_toggle: true
-        entities:
-          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
-          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
-
-      # Dining Room Lights
-      - type: entities
-        title: Dining Room
-        show_header_toggle: true
-        entities:
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
-
-      # Office Lights
-      - type: entities
-        title: Office
-        show_header_toggle: true
-        entities:
-          - light.ledvance_a19_rgbw_light
-          - light.ledvance_a19_rgbw_light_2
-          - light.ledvance_a19_rgbw_light_3
-
-      # Living Room
-      - type: entities
-        title: Living Room
-        show_header_toggle: false
-        entities:
-          - switch.tp_link_power_strip_173b_couch_lamp
-          - switch.tp_link_power_strip_1446_lamp_by_door
-
-      # Bedroom
-      - type: entities
-        title: Bedroom
-        entities:
-          - light.tori_light
-
-  # Climate Tab
-  - title: Climate
-    path: climate
-    icon: mdi:home-thermometer
-    cards:
-      - type: entities
-        title: Living Room Shades
-        entities:
-          - cover.living_room_left_roller_shade_cover
-          - cover.right_living_room_roller_shade_cover
-
-      - type: entities
-        title: Office Shades
-        entities:
-          - cover.office_left_roller_shade_cover
-          - cover.office_right_roller_shade_cover
-
-      - type: entities
-        title: Bedroom Shades
-        entities:
-          - cover.tori_roller_shade_cover
-          - cover.bennett_roller_shade_cover
-
-  # Automations Tab
-  - title: Automations
-    path: automations
-    icon: mdi:robot
-    cards:
-      - type: markdown
-        content: |
-          ## 🤖 Automation Controls
-          Enable/disable automations and run quick routines
-
-      - type: entities
-        title: 📋 Quick Routines
-        show_header_toggle: false
-        entities:
-          - script.goodnight_routine
-          - script.leaving_home_routine
-
-      - type: entities
-        title: 💡 Motion Lighting
-        show_header_toggle: true
-        entities:
-          - automation.kitchen_motion_lights
-          - automation.office_motion_lights
-          - automation.living_room_motion_lights
-
-      - type: entities
-        title: 🌅 Daily Routines
-        show_header_toggle: true
-        entities:
-          - automation.morning_sunrise_routine
-          - automation.evening_sunset_routine
-          - automation.nighttime_dimming_at_10_pm
-
-  # Monitoring Tab
-  - title: Monitoring
-    path: monitoring
-    icon: mdi:gauge
-    cards:
-      - type: markdown
-        content: >
-          ## 🔋 Battery Monitor
-
-          Track all battery-powered devices. Devices below 40% are highlighted.
-
-          **🔴 Critical:** <20% | **🟡 Low:** 20-40% | **🟢 Good:** >40%
-
-      # Ring Alarm System
-      - type: entities
-        title: 🔔 Ring Alarm System
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.base_station_battery
-            name: Base Station
-          - entity: sensor.keypad_battery
-            name: Keypad
-          - entity: sensor.front_door_battery
-            name: Front Door Contact Sensor
-          - entity: sensor.back_door_battery
-            name: Back Door Contact Sensor
-
-      # Ring Alarm - Windows
-      - type: entities
-        title: 🪟 Ring Alarm - Windows
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.back_window_battery
-            name: Kitchen Back Window
-          - entity: sensor.left_window_battery
-            name: Office Left Window
-          - entity: sensor.right_window_battery
-            name: Office Right Window
-          - entity: sensor.left_window_battery_2
-            name: Living Room Left Window
-          - entity: sensor.right_window_battery_2
-            name: Living Room Right Window
-          - entity: sensor.tori_window_battery
-            name: Tori Bedroom Window
-          - entity: sensor.bennett_window_battery
-            name: Bennett Bedroom Window
-          - entity: sensor.window_battery
-            name: Atlas Room Window
-
-      # Ring Alarm - Other
-      - type: entities
-        title: 📬 Ring Alarm - Other
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.mailbox_sensor_battery
-            name: Mailbox Sensor
-
-      # Motion Sensors
-      - type: entities
-        title: 🚶 Motion Sensors
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.kitchen_battery
-            name: Kitchen Motion Sensor
-          - entity: sensor.bedroom_battery
-            name: Bedroom Motion Sensor
-          - entity: sensor.living_room_motion_sensor_battery
-            name: Living Room Motion Sensor
-          - entity: sensor.office_motion_sensor_battery
-            name: Office Motion Sensor
-          - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery
-            name: IKEA Motion Sensor 1
-          - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
-            name: IKEA Motion Sensor 2
-
-      # Roller Shades
-      - type: entities
-        title: 🪟 Roller Shades
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.bennett_roller_shade_battery
-            name: Bennett Bedroom Shade
-          - entity: sensor.tori_roller_shade_battery
-            name: Tori Bedroom Shade
-          - entity: sensor.left_living_room_roller_shade_battery
-            name: Living Room Left Shade
-          - entity: sensor.right_living_room_roller_shade_battery
-            name: Living Room Right Shade
-          - entity: sensor.left_office_roller_blind_battery
-            name: Office Left Shade
-          - entity: sensor.right_office_roller_blind_battery
-            name: Office Right Shade
-          - entity: sensor.bedroom_roller_shade_remote_battery
-            name: Bedroom Remote
-
-      # Pet Trackers
-      - type: entities
-        title: 🐾 Pet Trackers
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.atlas_tracker_battery
-            name: Atlas Tracker
-          - entity: sensor.ellie_tracker_battery
-            name: Ellie Tracker
-          - entity: sensor.shadow_tracker_battery
-            name: Shadow Tracker
-          - entity: sensor.lance_tracker_battery
-            name: Lance Tracker
-
-      # Remotes & Sensors
-      - type: entities
-        title: 🎛️ Remotes & Other Sensors
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: sensor.ikea_of_sweden_remote_control_n2_battery
-            name: IKEA Remote 1
-          - entity: sensor.ikea_of_sweden_remote_control_n2_battery_2
-            name: IKEA Remote 2
-          - entity: sensor.dishwasher_vibration_battery
-            name: Dishwasher Sensor
-
-  # Security Tab (includes Cameras, Alarm, Locks, Sensors)
-  - title: Security
-    path: security
-    icon: mdi:shield-home
-    cards:
-      - type: markdown
-        content: |
-          ## 🛡️ Security & Surveillance
-          Ring Alarm · Cameras · Locks · Door/Window Sensors
-
-      # Ring Alarm Panel - Enhanced Styling
-      - type: alarm-panel
-        entity: alarm_control_panel.alarm
-        name: Ring Alarm
-        states:
-          - arm_home
-          - arm_away
-          - disarmed
-        card_mod:
-          style: |
-            ha-card {
-              background: var(--card-background-color);
-              border: 3px solid var(--accent-color);
-              box-shadow: 0 4px 12px var(--divider-color);
-            }
-
-      # Door Locks - Enhanced Security Display
-      - type: entities
-        title: 🔒 Door Locks
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - lock.front_door
-          - lock.back_door
-        card_mod:
-          style: |
-            ha-card {
-              background: var(--card-background-color);
-              border-left: 4px solid var(--primary-color);
-              box-shadow: 0 2px 8px var(--divider-color);
-            }
-
-      # Ring Cameras - Enhanced with Card-mod Styling
-      - type: markdown
-        content: "### 📹 Ring Cameras"
-
-      - type: horizontal-stack
+      # --- Batteries ---
+      - type: vertical-stack
         cards:
-          - type: picture-entity
-            entity: camera.front_770e
-            show_name: true
-            name: Front Camera
-            camera_view: auto
-            card_mod:
-              style: |
-                ha-card {
-                  border: 2px solid var(--primary-color);
-                  box-shadow: 0 4px 8px var(--divider-color);
-                  transition: transform 0.2s, box-shadow 0.2s;
-                }
-                ha-card:hover {
-                  transform: scale(1.02);
-                  box-shadow: 0 6px 12px var(--accent-color);
-                }
-
-          - type: picture-entity
-            entity: camera.front_yard_9747
-            show_name: true
-            name: Front Yard
-            camera_view: auto
-            card_mod:
-              style: |
-                ha-card {
-                  border: 2px solid var(--primary-color);
-                  box-shadow: 0 4px 8px var(--divider-color);
-                  transition: transform 0.2s, box-shadow 0.2s;
-                }
-                ha-card:hover {
-                  transform: scale(1.02);
-                  box-shadow: 0 6px 12px var(--accent-color);
-                }
-
-      - type: horizontal-stack
-        cards:
-          - type: picture-entity
-            entity: camera.front_door_4ae9
-            show_name: true
-            name: Front Door
-            camera_view: auto
-            card_mod:
-              style: |
-                ha-card {
-                  border: 2px solid var(--primary-color);
-                  box-shadow: 0 4px 8px var(--divider-color);
-                  transition: transform 0.2s, box-shadow 0.2s;
-                }
-                ha-card:hover {
-                  transform: scale(1.02);
-                  box-shadow: 0 6px 12px var(--accent-color);
-                }
-
-          - type: picture-entity
-            entity: camera.backyard_f84a
-            show_name: true
-            name: Backyard
-            camera_view: auto
-            card_mod:
-              style: |
-                ha-card {
-                  border: 2px solid var(--primary-color);
-                  box-shadow: 0 4px 8px var(--divider-color);
-                  transition: transform 0.2s, box-shadow 0.2s;
-                }
-                ha-card:hover {
-                  transform: scale(1.02);
-                  box-shadow: 0 6px 12px var(--accent-color);
-                }
-
-      - type: picture-entity
-        entity: camera.guest_litterbox_b7e3
-        show_name: true
-        name: Litter Box Monitor
-        camera_view: auto
-        card_mod:
-          style: |
-            ha-card {
-              border: 2px solid var(--primary-color);
-              box-shadow: 0 4px 8px var(--divider-color);
-              transition: transform 0.2s, box-shadow 0.2s;
-            }
-            ha-card:hover {
-              transform: scale(1.02);
-              box-shadow: 0 6px 12px var(--accent-color);
-            }
-
-      # Door Contact Sensors
-      - type: entities
-        title: 🚪 Door Sensors
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: binary_sensor.front_door
-            name: Front Door
-            icon: mdi:door
-          - entity: binary_sensor.back_door
-            name: Back Door
-            icon: mdi:door
-
-      # Office Windows
-      - type: entities
-        title: 🪟 Office Windows
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: binary_sensor.left_window
-            name: Office Left Window
-            icon: mdi:window-closed
-          - entity: binary_sensor.right_window
-            name: Office Right Window
-            icon: mdi:window-closed
-
-      # Living Room Windows
-      - type: entities
-        title: 🪟 Living Room Windows
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: binary_sensor.left_window_2
-            name: Living Room Left Window
-            icon: mdi:window-closed
-          - entity: binary_sensor.right_window_2
-            name: Living Room Right Window
-            icon: mdi:window-closed
-
-      # Bedroom Windows
-      - type: entities
-        title: 🪟 Bedroom Windows
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: binary_sensor.tori_window
-            name: Tori's Window
-            icon: mdi:window-closed
-          - entity: binary_sensor.bennett_window
-            name: Bennett's Window
-            icon: mdi:window-closed
-
-      # Other Windows
-      - type: entities
-        title: 🪟 Other Windows
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: binary_sensor.back_window
-            name: Kitchen Back Window
-            icon: mdi:window-closed
-          - entity: binary_sensor.window
-            name: Atlas Room Window
-            icon: mdi:window-closed
-
-      # Mailbox
-      - type: entities
-        title: 📬 Mailbox
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: binary_sensor.mailbox_sensor
-            name: Mailbox
-            icon: mdi:mailbox
-
-      # Water Leak Detection
-      - type: entities
-        title: 💧 Water Leak Detection
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_2
-            name: Water Heater
-            icon: mdi:water-alert
-          - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
-            name: Laundry Room
-            icon: mdi:water-alert
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#batteries"
+            name: Battery Status
+            icon: mdi:battery-heart
+          - type: entities
+            title: Ring Alarm System
+            state_color: true
+            entities:
+              - entity: sensor.base_station_battery
+                name: Base Station
+              - entity: sensor.keypad_battery
+                name: Keypad
+              - entity: sensor.front_door_battery
+                name: Front Door Sensor
+              - entity: sensor.back_door_battery
+                name: Back Door Sensor
+          - type: entities
+            title: Window Sensors
+            state_color: true
+            entities:
+              - entity: sensor.back_window_battery
+                name: Kitchen Back Window
+              - entity: sensor.left_window_battery
+                name: Office Left Window
+              - entity: sensor.right_window_battery
+                name: Office Right Window
+              - entity: sensor.left_window_battery_2
+                name: Living Room Left Window
+              - entity: sensor.right_window_battery_2
+                name: Living Room Right Window
+              - entity: sensor.tori_window_battery
+                name: Tori Bedroom Window
+              - entity: sensor.bennett_window_battery
+                name: Bennett Bedroom Window
+              - entity: sensor.window_battery
+                name: Atlas Room Window
+              - entity: sensor.mailbox_sensor_battery
+                name: Mailbox Sensor
+          - type: entities
+            title: Motion Sensors
+            state_color: true
+            entities:
+              - entity: sensor.kitchen_battery
+                name: Kitchen
+              - entity: sensor.bedroom_battery
+                name: Bedroom
+              - entity: sensor.living_room_motion_sensor_battery
+                name: Living Room
+              - entity: sensor.office_motion_sensor_battery
+                name: Office
+              - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery
+                name: IKEA Motion 1
+              - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
+                name: IKEA Motion 2
+          - type: entities
+            title: Roller Shades
+            state_color: true
+            entities:
+              - entity: sensor.bennett_roller_shade_battery
+                name: Bennett's Shade
+              - entity: sensor.tori_roller_shade_battery
+                name: Tori's Shade
+              - entity: sensor.left_living_room_roller_shade_battery
+                name: Living Room Left
+              - entity: sensor.right_living_room_roller_shade_battery
+                name: Living Room Right
+              - entity: sensor.left_office_roller_blind_battery
+                name: Office Left
+              - entity: sensor.right_office_roller_blind_battery
+                name: Office Right
+              - entity: sensor.bedroom_roller_shade_remote_battery
+                name: Bedroom Remote
+          - type: entities
+            title: Pet Trackers
+            state_color: true
+            entities:
+              - entity: sensor.atlas_tracker_battery
+                name: Atlas
+              - entity: sensor.ellie_tracker_battery
+                name: Ellie
+              - entity: sensor.shadow_tracker_battery
+                name: Shadow
+              - entity: sensor.lance_tracker_battery
+                name: Lance
+          - type: entities
+            title: Remotes & Other
+            state_color: true
+            entities:
+              - entity: sensor.ikea_of_sweden_remote_control_n2_battery
+                name: IKEA Remote 1
+              - entity: sensor.ikea_of_sweden_remote_control_n2_battery_2
+                name: IKEA Remote 2
+              - entity: sensor.dishwasher_vibration_battery
+                name: Dishwasher Sensor

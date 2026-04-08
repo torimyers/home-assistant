@@ -65,6 +65,14 @@
         data:
           tag: "battery_{{ trigger.entity_id }}"
           priority: high
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🔋 Low Battery Alert"
+        message: >
+          {{ trigger.to_state.attributes.friendly_name }} is at {{ trigger.to_state.state }}%
+        data:
+          tag: "battery_{{ trigger.entity_id }}"
+          priority: high
 
   mode: queued
   max: 10
@@ -93,6 +101,16 @@
   action:
     # Send urgent notification
     - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🚨 CRITICAL: Battery Almost Dead"
+        message: >
+          {{ trigger.to_state.attributes.friendly_name }} is at {{ trigger.to_state.state }}%! Replace immediately.
+        data:
+          tag: "battery_critical_{{ trigger.entity_id }}"
+          priority: high
+          ttl: 0
+          importance: high
+    - service: notify.mobile_app_pixel_10
       data:
         title: "🚨 CRITICAL: Battery Almost Dead"
         message: >

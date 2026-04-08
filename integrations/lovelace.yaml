@@ -3,9 +3,10 @@
 # https://www.home-assistant.io/integrations/lovelace/
 
 lovelace:
-  mode: yaml
+  # Keep YAML mode for resources (can be managed via UI if you remove this line)
+  resource_mode: yaml
   resources:
-    - url: /hacsfiles/bubble-card/bubble-card.js
+    - url: /hacsfiles/Bubble-Card/bubble-card.js
       type: module
     - url: /hacsfiles/battery-state-card/battery-state-card.js
       type: module
@@ -15,9 +16,27 @@ lovelace:
       type: module
 
   dashboards:
-    lovelace-home:
+    # Main/default dashboard (replaces deprecated mode: yaml at root level)
+    # MUST be named 'lovelace' for the default dashboard
+    lovelace:
       mode: yaml
       title: Home
       icon: mdi:home
       show_in_sidebar: true
       filename: ui-lovelace.yaml
+
+    # Additional dashboards from /dashboards/ directory
+    lovelace-mobile-command:
+      mode: yaml
+      title: Mobile Command
+      icon: mdi:cellphone
+      show_in_sidebar: true
+      filename: dashboards/mobile_command.yaml
+
+    lovelace-performance:
+      mode: yaml
+      title: Performance Monitoring
+      icon: mdi:speedometer
+      show_in_sidebar: true
+      filename: dashboards/performance_monitoring.yaml
+

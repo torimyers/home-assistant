@@ -22,7 +22,7 @@ home-assistant/
 │   └── timer/               # Automation timing controls
 ├── integrations/            # Integration configurations
 ├── scenes/                  # Scene definitions by room
-├── scripts/                 # Script definitions by function
+├── scripts/                 # Script definitions (routines.yaml)
 └── themes/                  # Custom UI themes
 ```
 
@@ -80,25 +80,19 @@ home-assistant/
    - `!include_dir_list` for multiple entities per file
 
 ### Template Sensors
-Located in `entities/template/dune_analytics.yaml`:
-- **Sietch Health Score**: Overall system health (0-100%)
-- **Spice Production Level**: Activity metrics
-- **Water Conservation Index**: Resource efficiency
-- **Energy Shield Status**: Security system status
-- **Automation Success Rate**: System reliability
-- Additional analytics sensors for monitoring
+Placeholder directory exists at `entities/template/` for future template sensors. Currently no custom template sensors are defined — all sensors come from physical devices and HA integrations.
 
 ## Dashboard Management
 
-### Main Dashboards
-1. **dashboard.yaml**: Navigation hub with quick controls
-2. **responsive-dashboard.yaml**: Comprehensive control interface  
-3. **dashboards/sietch_command.yaml**: Advanced analytics and monitoring
+### Active Dashboards
+1. **ui-lovelace.yaml**: Primary desktop/tablet dashboard with Bubble Card pop-ups
+2. **dashboards/mobile_command.yaml**: Mobile-optimized single-view with Bubble Card pop-ups
+3. **dashboards/performance_monitoring.yaml**: System diagnostics
 
 ### Dashboard Optimization
 - Remove broken entity references immediately
 - Use template sensors for calculated values
-- Implement consistent card styling with card-mod
+- Implement consistent card styling via Bubble Card and dune_theme.yaml
 - Maintain 80% or better performance score
 
 ## Integration Configuration
@@ -154,7 +148,7 @@ Located in `entities/template/dune_analytics.yaml`:
 ## Troubleshooting
 
 ### Common Issues
-1. **Broken Entity References**: Check dashboard.yaml and responsive-dashboard.yaml
+1. **Broken Entity References**: Check ui-lovelace.yaml and dashboards/mobile_command.yaml
 2. **Blueprint Validation Errors**: Ensure entity defaults are not empty strings
 3. **Include Path Failures**: Verify directory structure and placeholder files
 4. **Template Sensor Errors**: Check entity availability in templates

@@ -1,9 +1,4 @@
 ---
-# MQTT Broker Configuration
+# MQTT entity definitions (sensors, switches, etc.)
+# Broker connection is configured via UI: Settings > Devices & Services > MQTT
 mqtt:
-  broker: 127.0.0.1  # localhost (same Unraid server)
-  port: 1883
-  # For basic setup, use anonymous auth
-  # To add authentication later, uncomment:
-  # username: !secret mqtt_username
-  # password: !secret mqtt_password

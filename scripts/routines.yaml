@@ -5,22 +5,15 @@ goodnight_routine:
   alias: Goodnight Routine
   description: Execute bedtime routine - locks doors, turns off lights, arms alarm
   sequence:
-    # Turn off indoor lights
-    - service: light.turn_off
+    # Turn off all indoor lights and lamp switches
+    - service: homeassistant.turn_off
       target:
         entity_id:
-          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
-          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
-          - light.tori_light
-
-    # Keep floodlights on for security (managed by schedules)
-
-    # Turn off living room lamp switches
-    - service: switch.turn_off
-      target:
-        entity_id:
+          - light.indoor_lights
           - switch.tp_link_power_strip_173b_couch_lamp
           - switch.tp_link_power_strip_1446_lamp_by_door
+
+    # Keep floodlights on for security (managed by schedules)
 
     # Lock all doors
     - service: lock.lock
@@ -39,19 +32,23 @@ goodnight_routine:
       data:
         title: "🌙 Goodnight"
         message: "Lights off, doors locked, alarm armed. Sleep well!"
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🌙 Goodnight"
+        message: "Lights off, doors locked, alarm armed. Sleep well!"
   mode: single
 
 leaving_home_routine:
   alias: Leaving Home Routine
   description: Secure home when leaving - locks doors, turns off lights/appliances, arms alarm
   sequence:
-    # Turn off indoor lights
-    - service: light.turn_off
+    # Turn off all indoor lights and lamp switches
+    - service: homeassistant.turn_off
       target:
         entity_id:
-          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light
-          - light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
-          - light.tori_light
+          - light.indoor_lights
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
 
     # Turn on floodlights for security
     - service: light.turn_on
@@ -59,13 +56,6 @@ leaving_home_routine:
         entity_id:
           - light.front_light
           - light.backyard_light
-
-    # Turn off living room lamp switches
-    - service: switch.turn_off
-      target:
-        entity_id:
-          - switch.tp_link_power_strip_173b_couch_lamp
-          - switch.tp_link_power_strip_1446_lamp_by_door
 
     # Close all shades for privacy
     - service: cover.close_cover
@@ -94,6 +84,10 @@ leaving_home_routine:
 
     # Send confirmation
     - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🏠 Leaving Home"
+        message: "Home secured! Lights off, doors locked, shades closed, alarm armed in Away mode."
+    - service: notify.mobile_app_pixel_10
       data:
         title: "🏠 Leaving Home"
         message: "Home secured! Lights off, doors locked, shades closed, alarm armed in Away mode."

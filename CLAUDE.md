@@ -5,10 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## System Overview
 
 This is a **Home Assistant configuration repository** running on Unraid (version 2025.8.0) with:
-- Dune-themed naming throughout (House Dodson Command, Sietch analytics, etc.)
-- Blueprint-based automation consolidation (85% of automations use blueprints)
-- Comprehensive template sensor analytics for system monitoring
-- Multiple dashboards optimized for different devices
+- Blueprint-based automation consolidation for common automation patterns
+- Multiple dashboards optimized for different devices (desktop, mobile)
 - Self-hosted GitHub Actions runner for automated deployment
 
 ## Commands
@@ -67,15 +65,7 @@ Home Assistant loads configuration through a **package-based architecture**:
    - `input_*.yaml` → loads helper entities from `/entities/input_*/`
    - Uses include directives: `!include_dir_merge_list`, `!include_dir_named`, etc.
 
-3. **Entity Organization** - Entities organized by type in `/entities/`:
-   - `binary_sensor/` - System status sensors
-   - `counter/` - Motion and activity counters
-   - `input_boolean/` - Toggle controls
-   - `input_datetime/` - Date/time tracking
-   - `input_number/` - Numeric thresholds
-   - `input_select/` - Dropdown selections
-   - `template/` - Calculated template sensors
-   - `timer/` - Automation timing controls
+3. **Entity Organization** - Placeholder directories exist in `/entities/` for future entity definitions by type (binary_sensor, counter, input_boolean, input_datetime, input_number, input_select, template, timer). Currently all entities are managed directly through the HA UI or integrations.
 
 ### Blueprint System
 
@@ -105,22 +95,22 @@ Blueprints eliminate duplicate automation patterns. Current blueprints:
 
 ### Dashboard Structure
 
-Multiple dashboards optimized for different use cases:
+Two active dashboards with Bubble Card pop-up navigation:
 
-- **responsive-dashboard.yaml** - Desktop-optimized ("House Dodson Command")
-  - Wide layouts, detailed entity displays, full analytics
-  - Primary control interface
+- **ui-lovelace.yaml** - Primary desktop/tablet dashboard ("House Dodson Command")
+  - Single-view Bubble Card layout with bottom nav + pop-ups
+  - Pop-ups: Weather, Lights, Kitchen, Living Room, Office, Bedroom, Dining Room, Security, Routines, System, Batteries
+  - URL: `/lovelace`
 
-- **dashboards/mobile_command.yaml** - Touch-optimized for phones/tablets
-  - Simplified layouts, essential controls only
+- **dashboards/mobile_command.yaml** - Touch-optimized for phones
+  - Simplified Bubble Card layout with bottom nav + pop-ups
+  - Pop-ups: Weather, Lights, Security, System
   - URL: `/lovelace-mobile-command`
 
-- **dashboards/sietch_command.yaml** - Advanced analytics dashboard
-  - System health metrics, automation success rates
-
 - **dashboards/performance_monitoring.yaml** - System diagnostics
+  - URL: `/lovelace-performance`
 
-All dashboards include cross-navigation cards for easy switching.
+No retired dashboards — old dashboards (overview, analytics, controls, sietch_command) have been deleted.
 
 ### Automation Organization
 
@@ -149,7 +139,7 @@ Located in `/custom_components/`:
 1. Push to `main` branch
 2. GitHub Actions runner (self-hosted on Unraid) validates config
 3. On success, rsync copies files to `/mnt/user/appdata/Home-Assistant-Container/`
-4. Excludes: `.git`, `__pycache__`, `.storage`, `home-assistant.log*`, secrets
+4. Excludes: `.git`, `*.pyc`, `__pycache__`, `.storage`, `home-assistant.log*`, `custom_components`, `zigbee.db`, `zigbee.db-shm`, `zigbee.db-wal`
 5. Optional: Container restart via workflow dispatch
 
 ## Naming Conventions

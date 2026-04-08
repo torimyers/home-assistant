@@ -1,6 +1,8 @@
 - id: kitchen_motion_lights
   alias: Kitchen Motion Lights
-  description: Turn on kitchen lights when motion detected (100% day, 30% late evening, 10% sink only at night)
+  description: >
+    After sunset to 10 PM: full brightness. 10 PM-12 AM: 30%.
+    12 AM-5 AM: sink only at 10%. Daytime: only if living room lux below 50.
 
   trigger:
     - platform: state
@@ -20,6 +22,7 @@
                 entity_id: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
               data:
                 brightness_pct: 10
+
         # Late evening (10 PM - 12 AM): All lights dimmed to 30%
         - conditions:
             - condition: time
@@ -31,13 +34,36 @@
                 area_id: kitchen
               data:
                 brightness_pct: 30
-      # Normal hours (5 AM - 10 PM): All kitchen lights at full brightness
-      default:
-        - service: light.turn_on
-          target:
-            area_id: kitchen
-          data:
-            brightness_pct: 100
+
+        # After sunset and before 10 PM: Full brightness
+        - conditions:
+            - condition: sun
+              after: sunset
+            - condition: time
+              before: "22:00:00"
+          sequence:
+            - service: light.turn_on
+              target:
+                area_id: kitchen
+              data:
+                brightness_pct: 100
+
+        # Daytime but dark (living room lux below 50): Full brightness
+        - conditions:
+            - condition: sun
+              before: sunset
+            - condition: numeric_state
+              entity_id: sensor.living_room_motion_sensor_illuminance
+              below: 50
+          sequence:
+            - service: light.turn_on
+              target:
+                area_id: kitchen
+              data:
+                brightness_pct: 100
+
+      # Default (clear daytime): Don't turn on
+      default: []
 
   mode: restart
 
