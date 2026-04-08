@@ -80,8 +80,7 @@
     - platform: state
       entity_id: binary_sensor.office_motion
       to: 'off'
-      for:
-        minutes: 10
+      for: "{{ '00:30:00' if is_state('input_boolean.guest_mode', 'on') else '00:10:00' }}"
 
   condition:
     - condition: state

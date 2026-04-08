@@ -8,6 +8,29 @@
       to: 'on'
 
   action:
+    # Welcome lighting — common areas full brightness
+    - service: light.turn_on
+      target:
+        area_id:
+          - living_room
+          - kitchen
+      data:
+        brightness_pct: 100
+    - service: light.turn_on
+      target:
+        entity_id:
+          - light.dining_room_table_light_1
+          - light.dining_room_table_light_2
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+      data:
+        brightness_pct: 100
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
     - service: notify.mobile_app_tori_pixel_10_pro_xl
       data:
         title: "Guest Mode On"
@@ -16,6 +39,24 @@
       data:
         title: "Guest Mode On"
         message: "Auto-lock disabled. Doors won't lock automatically while guests are here."
+
+  mode: single
+
+- id: guest_mode_auto_off
+  alias: Guest Mode - Auto Off After 12 Hours
+  description: Automatically disable guest mode after 12 hours in case it's forgotten
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.guest_mode
+      to: 'on'
+      for:
+        hours: 12
+
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.guest_mode
 
   mode: single
 
