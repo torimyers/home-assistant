@@ -1,7 +1,7 @@
 ---
 task: h-fix-broken-bathroom-automations
 branch: fix/broken-bathroom-automations
-status: pending
+status: completed
 created: 2025-09-22
 modules: [automations/bathroom]
 ---

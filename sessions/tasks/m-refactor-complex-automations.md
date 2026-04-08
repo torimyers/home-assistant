@@ -1,7 +1,7 @@
 ---
 task: m-refactor-complex-automations
 branch: refactor/complex-automations
-status: pending
+status: completed
 created: 2025-09-22
 modules: [automations/climate, automations/notifications]
 ---

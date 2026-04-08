@@ -1,7 +1,7 @@
 ---
 task: m-fix-template-entities
 branch: fix/template-entities
-status: pending
+status: completed
 created: 2025-09-22
 modules: [entities/template]
 ---

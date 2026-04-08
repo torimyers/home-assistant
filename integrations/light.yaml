@@ -1,0 +1,15 @@
+---
+# Light groups
+# https://www.home-assistant.io/integrations/light.group/
+
+light:
+  - platform: group
+    name: Indoor Lights
+    entities:
+      - light.kitchen_over_oven
+      - light.kitchen_over_sink
+      - light.ledvance_a19_rgbw_light
+      - light.ledvance_a19_rgbw_light_2
+      - light.ledvance_a19_rgbw_light_3
+      - light.bedroom_tori_light
+      - light.dining_room_table_light_1

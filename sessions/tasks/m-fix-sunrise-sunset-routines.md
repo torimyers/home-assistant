@@ -1,7 +1,7 @@
 ---
 task: m-fix-sunrise-sunset-routines
 branch: fix/sunrise-sunset-routines
-status: pending
+status: completed
 created: 2025-09-22
 modules: [automations/system, blueprints/automation]
 ---

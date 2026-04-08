@@ -1,7 +1,7 @@
 ---
 task: m-implement-blueprint-conversion
 branch: feature/blueprint-conversion
-status: pending
+status: completed
 created: 2025-09-22
 modules: [automations/bathroom, blueprints/automation]
 ---

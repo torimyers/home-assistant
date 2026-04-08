@@ -1,7 +1,7 @@
 ---
 task: h-fix-missing-scenes
 branch: fix/missing-scenes
-status: pending
+status: completed
 created: 2025-09-22
 modules: [automations/living_room, automations/system, scenes]
 ---

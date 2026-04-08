@@ -1,7 +1,7 @@
 ---
 task: h-fix-empty-entity-references
 branch: fix/empty-entity-references
-status: pending
+status: completed
 created: 2025-09-22
 modules: [automations/voice_control, automations/adaptive]
 ---
