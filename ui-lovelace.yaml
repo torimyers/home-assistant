@@ -27,6 +27,9 @@ views:
             name: Tori
           - entity: person.bennett
             name: Bennett
+          - entity: input_select.home_state
+            name: Home State
+            icon: mdi:home-account
 
       # ================================================================
       # WEATHER SUMMARY BUTTON
