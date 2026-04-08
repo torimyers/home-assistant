@@ -1,0 +1,106 @@
+# Ecobee thermostat automations
+# climate.home — Ecobee thermostat
+# Away: 76°F to keep pets comfortable while saving energy
+# Return: resume Ecobee's own schedule (preset_mode: none)
+# Hot office: alert when office runs 10°F+ above main thermostat
+
+- id: thermostat_away_setback
+  alias: Thermostat - Away Setback
+  description: Set to 76°F when everyone leaves — keeps pets comfortable while saving energy
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'not_home'
+
+  condition:
+    - condition: state
+      entity_id: person.tori_myers
+      state: 'not_home'
+    - condition: state
+      entity_id: person.bennett
+      state: 'not_home'
+    # Only when actively cooling
+    - condition: state
+      entity_id: climate.home
+      state: 'cool'
+
+  action:
+    - service: climate.set_temperature
+      target:
+        entity_id: climate.home
+      data:
+        temperature: 76
+
+  mode: single
+
+- id: thermostat_return_home
+  alias: Thermostat - Resume Schedule on Arrival
+  description: Resume Ecobee's own schedule when the first person arrives home
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'home'
+
+  condition:
+    # Only fire for the first person home — don't re-trigger when second arrives
+    - condition: template
+      value_template: >
+        {% if trigger.entity_id == 'person.tori_myers' %}
+          {{ not is_state('person.bennett', 'home') }}
+        {% else %}
+          {{ not is_state('person.tori_myers', 'home') }}
+        {% endif %}
+
+  action:
+    - service: climate.set_preset_mode
+      target:
+        entity_id: climate.home
+      data:
+        preset_mode: "none"
+
+  mode: single
+
+- id: hot_office_alert
+  alias: Thermostat - Hot Office Alert
+  description: Notify when office is 10°F+ above main thermostat for 5+ minutes
+
+  trigger:
+    - platform: template
+      value_template: >
+        {{ states('sensor.office_temperature') | float(0)
+           > states('sensor.home_current_temperature') | float(0) + 10 }}
+      for:
+        minutes: 5
+
+  condition:
+    # Only alert during the day — expected at night when AC cycles down
+    - condition: sun
+      after: sunrise
+      before: sunset
+    # Someone home to do something about it
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
+
+  action:
+    - service: script.notify_household
+      data:
+        title: "🌡️ Office Running Hot"
+        message: >
+          Office is {{ states('sensor.office_temperature') | float(0) | round(1) }}°F —
+          {{ (states('sensor.office_temperature') | float(0)
+              - states('sensor.home_current_temperature') | float(0)) | round(1) }}°F
+          above the rest of the house. Check the vent or fan.
+
+  mode: single
