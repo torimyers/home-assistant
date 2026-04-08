@@ -5,5 +5,8 @@ home_state:
     - both_home
     - tori_only
     - bennett_only
+    - tori_at_work
+    - bennett_at_work
+    - both_at_work
     - everyone_away
   initial: everyone_away

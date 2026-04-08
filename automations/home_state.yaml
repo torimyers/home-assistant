@@ -19,17 +19,17 @@
         entity_id: input_select.home_state
       data:
         option: >
-          {% set tori = is_state('person.tori_myers', 'home') %}
-          {% set bennett = is_state('person.bennett', 'home') %}
-          {% if tori and bennett %}
-            both_home
-          {% elif tori %}
-            tori_only
-          {% elif bennett %}
-            bennett_only
-          {% else %}
-            everyone_away
-          {% endif %}
+          {% set tori_home = is_state('person.tori_myers', 'home') %}
+          {% set bennett_home = is_state('person.bennett', 'home') %}
+          {% set tori_work = is_state('person.tori_myers', 'hou18') %}
+          {% set bennett_work = states('person.bennett') in ['da_office', 'waller_co_court', 'waller_co_court_annex'] %}
+          {% if tori_home and bennett_home %}both_home
+          {% elif tori_home %}tori_only
+          {% elif bennett_home %}bennett_only
+          {% elif tori_work and bennett_work %}both_at_work
+          {% elif tori_work %}tori_at_work
+          {% elif bennett_work %}bennett_at_work
+          {% else %}everyone_away{% endif %}
 
   mode: queued
   max: 5
