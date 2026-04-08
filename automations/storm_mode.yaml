@@ -112,7 +112,7 @@
     - service: spotcast.start
       data:
         entity_id: media_player.office
-        uri: "spotify:playlist:PLACEHOLDER_REPLACE_WITH_ATLAS_PLAYLIST_URI"
+        uri: "spotify:playlist:03DCKyhU7HAXnkXTB4FlHr"
         force_playback: true
 
     - service: notify.mobile_app_tori_pixel_10_pro_xl

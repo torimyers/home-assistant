@@ -1,0 +1,51 @@
+---
+# Smart notification routing — routes to the right phone(s) based on who's home
+# Security/emergency notifications should NOT use this — always notify both phones
+
+notify_household:
+  alias: Notify Household
+  description: >
+    Send a notification to whoever is home.
+    tori_only → Tori's phone only.
+    bennett_only → Bennett's phone only.
+    both_home or everyone_away → both phones.
+  fields:
+    title:
+      description: Notification title
+      example: "Good Morning"
+      required: true
+    message:
+      description: Notification message
+      example: "Sunrise! Shades are open."
+      required: true
+  sequence:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: input_select.home_state
+              state: 'tori_only'
+          sequence:
+            - service: notify.mobile_app_tori_pixel_10_pro_xl
+              data:
+                title: "{{ title }}"
+                message: "{{ message }}"
+        - conditions:
+            - condition: state
+              entity_id: input_select.home_state
+              state: 'bennett_only'
+          sequence:
+            - service: notify.mobile_app_pixel_10
+              data:
+                title: "{{ title }}"
+                message: "{{ message }}"
+      default:
+        - service: notify.mobile_app_tori_pixel_10_pro_xl
+          data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+        - service: notify.mobile_app_pixel_10
+          data:
+            title: "{{ title }}"
+            message: "{{ message }}"
+  mode: parallel
+  max: 10

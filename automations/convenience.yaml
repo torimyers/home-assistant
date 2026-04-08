@@ -26,50 +26,6 @@
   mode: queued
   max: 2
 
-- id: morning_welcome_announcement
-  alias: Morning Welcome Announcement
-  description: Friendly morning greeting when someone wakes up and phone is unplugged
-
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.tori_pixel_10_pro_xl_is_charging
-      from: 'on'
-      to: 'off'
-
-  condition:
-    # Only between 5 AM and 10 AM
-    - condition: time
-      after: "05:00:00"
-      before: "10:00:00"
-    # Only if at home
-    - condition: state
-      entity_id: person.tori_myers
-      state: 'home'
-    - condition: state
-      entity_id: input_boolean.nap_mode
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.do_not_disturb
-      state: 'off'
-
-  action:
-    - service: tts.google_translate_say
-      target:
-        entity_id:
-          - media_player.bedroom
-          - media_player.office
-      data:
-        message: >
-          Good morning! It's {{ now().strftime('%I:%M %p') }}.
-          {% if is_state('weather.forecast_home', 'sunny') %}
-          It's going to be a sunny day!
-          {% elif is_state('weather.forecast_home', 'rainy') %}
-          Don't forget an umbrella, it's rainy today.
-          {% else %}
-          Have a great day!
-          {% endif %}
-
-  mode: single
 
 - id: welcome_home_lights_daytime
   alias: Welcome Home Lights - Daytime
@@ -131,11 +87,7 @@
           - cover.office_right_roller_shade_cover
       data:
         position: 50
-    - service: notify.mobile_app_tori_pixel_10_pro_xl
-      data:
-        title: "☀️ Shades Half-Closed"
-        message: "Sunny day — shades at 50% to keep the house cool and let in light."
-    - service: notify.mobile_app_pixel_10
+    - service: script.notify_household
       data:
         title: "☀️ Shades Half-Closed"
         message: "Sunny day — shades at 50% to keep the house cool and let in light."

@@ -1,27 +1,53 @@
 - id: evening_sunset_routine
   alias: Evening Sunset Routine
-  description: Turn on lights 30 minutes before sunset
+  description: >
+    30 min before sunset: turn on evening lights, close shades.
+    Skips if vacation mode or party mode is active.
+    Bedroom shades only close if someone is home (plants).
+    Notification only sent if someone is home.
 
   trigger:
     - platform: sun
       event: sunset
       offset: "-00:30:00"
 
+  condition:
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.party_mode
+      state: 'off'
+
   action:
-    - service: light.turn_on
-      target:
-        entity_id:
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
-    - service: light.turn_on
-      target:
-        area_id:
-          - office
-          - bedroom
-    - service: switch.turn_on
-      target:
-        entity_id:
-          - switch.tp_link_power_strip_173b_couch_lamp
+    # Evening lights — only if someone is home
+    - choose:
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: person.tori_myers
+                  state: 'home'
+                - condition: state
+                  entity_id: person.bennett
+                  state: 'home'
+          sequence:
+            - service: light.turn_on
+              target:
+                entity_id:
+                  - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+                  - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+            - service: light.turn_on
+              target:
+                area_id:
+                  - office
+                  - bedroom
+            - service: switch.turn_on
+              target:
+                entity_id: switch.tp_link_power_strip_173b_couch_lamp
+      default: []
+
+    # Always close living room + office shades at sunset
     - service: cover.close_cover
       target:
         entity_id:
@@ -29,15 +55,45 @@
           - cover.right_living_room_roller_shade_cover
           - cover.office_left_roller_shade_cover
           - cover.office_right_roller_shade_cover
-          - cover.tori_roller_shade_cover
-          - cover.bennett_roller_shade_cover
-    - service: notify.mobile_app_tori_pixel_10_pro_xl
-      data:
-        title: "Evening Mode"
-        message: "Sunset approaching. Evening lights on, shades closed."
-    - service: notify.mobile_app_pixel_10
-      data:
-        title: "Evening Mode"
-        message: "Sunset approaching. Evening lights on, shades closed."
+
+    # Bedroom shades — only close if someone is home (plants need light when away)
+    - choose:
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: person.tori_myers
+                  state: 'home'
+                - condition: state
+                  entity_id: person.bennett
+                  state: 'home'
+          sequence:
+            - service: cover.close_cover
+              target:
+                entity_id:
+                  - cover.tori_roller_shade_cover
+                  - cover.bennett_roller_shade_cover
+      default: []
+
+    # Notify only if someone is home
+    - choose:
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: state
+                  entity_id: person.tori_myers
+                  state: 'home'
+                - condition: state
+                  entity_id: person.bennett
+                  state: 'home'
+          sequence:
+            - service: script.notify_household
+              data:
+                title: "🌇 Evening Mode"
+                message: >
+                  Sunset in 30 min. Evening lights on, shades closed.
+                  {% set temp = state_attr('weather.forecast_home', 'temperature') %}
+                  {% if temp %}{{ temp | round(0) }}° outside.{% endif %}
+      default: []
 
   mode: single

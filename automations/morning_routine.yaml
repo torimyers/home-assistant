@@ -1,14 +1,23 @@
 - id: morning_sunrise_routine
   alias: Morning Sunrise Routine
-  description: Open shades and turn on lights 30 minutes after sunrise
+  description: >
+    30 min after sunrise: open LR + office shades.
+    If someone is home and awake: turn on office + kitchen lights.
+    Skip notifications if nobody is home.
+    Respects vacation mode.
 
   trigger:
     - platform: sun
       event: sunrise
       offset: "+00:30:00"
 
+  condition:
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'off'
+
   action:
-    # Always open office and living room shades (not bedroom - different schedules)
+    # Always open living room and office shades (plants need the light)
     - service: cover.open_cover
       target:
         entity_id:
@@ -17,11 +26,13 @@
           - cover.office_left_roller_shade_cover
           - cover.office_right_roller_shade_cover
 
-    # If anyone is unplugged and home, turn on office and kitchen lights
     - choose:
+        # Someone is home and awake — lights on + notify
         - conditions:
-            - or:
-                - and:
+            - condition: or
+              conditions:
+                - condition: and
+                  conditions:
                     - condition: state
                       entity_id: binary_sensor.tori_pixel_10_pro_xl_is_charging
                       state: 'off'
@@ -39,22 +50,45 @@
                   - kitchen
               data:
                 brightness_pct: 100
-            - service: notify.mobile_app_tori_pixel_10_pro_xl
+            - service: script.notify_household
               data:
                 title: "Good Morning"
-                message: "Sunrise! Shades open, office & kitchen lights on."
-            - service: notify.mobile_app_pixel_10
-              data:
-                title: "Good Morning"
-                message: "Sunrise! Shades open, office & kitchen lights on."
+                message: >
+                  Sunrise! Shades open, lights on.
+                  {% set temp = state_attr('weather.forecast_home', 'temperature') %}
+                  {% if temp %}{{ temp | round(0) }}° outside. {% endif %}
+                  {% set w = states('weather.forecast_home') %}
+                  {% if w == 'sunny' %}Sunny day ahead!
+                  {% elif w == 'partlycloudy' %}Partly cloudy today.
+                  {% elif w in ['rainy', 'pouring'] %}Rainy day — grab an umbrella.
+                  {% elif w in ['lightning', 'lightning-rainy'] %}Storms possible today.
+                  {% elif w == 'snowy' %}Snow today — stay warm.
+                  {% else %}Have a great day!
+                  {% endif %}
+
+        # Nobody home — shades opened silently, no notification
+        - conditions:
+            - condition: state
+              entity_id: person.tori_myers
+              state: 'not_home'
+            - condition: state
+              entity_id: person.bennett
+              state: 'not_home'
+          sequence: []
+
+      # Someone home but still asleep (phone charging) — just shades, quiet notify
       default:
-        - service: notify.mobile_app_tori_pixel_10_pro_xl
+        - service: script.notify_household
           data:
             title: "Good Morning"
-            message: "Sunrise! Shades are open."
-        - service: notify.mobile_app_pixel_10
-          data:
-            title: "Good Morning"
-            message: "Sunrise! Shades are open."
+            message: >
+              Sunrise! Shades are open.
+              {% set temp = state_attr('weather.forecast_home', 'temperature') %}
+              {% if temp %}{{ temp | round(0) }}° outside. {% endif %}
+              {% set w = states('weather.forecast_home') %}
+              {% if w == 'sunny' %}Sunny day ahead!
+              {% elif w in ['rainy', 'pouring'] %}Rainy — umbrella weather.
+              {% elif w in ['lightning', 'lightning-rainy'] %}Storms possible today.
+              {% endif %}
 
   mode: single
