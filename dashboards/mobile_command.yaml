@@ -116,9 +116,9 @@ views:
         2_name: Lights
         2_icon: mdi:lightbulb-group
         2_link: "#lights"
-        3_name: Weather
-        3_icon: mdi:weather-partly-cloudy
-        3_link: "#weather"
+        3_name: Shades
+        3_icon: mdi:blinds
+        3_link: "#shades-mobile"
         4_name: Security
         4_icon: mdi:shield-home
         4_link: "#security-mobile"
@@ -306,6 +306,64 @@ views:
               - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
                 name: Laundry Room
                 icon: mdi:water-alert
+
+      # --- Shades ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#shades-mobile"
+            name: Roller Shades
+            icon: mdi:blinds
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Open All
+                icon: mdi:blinds-open
+                tap_action:
+                  action: call-service
+                  service: cover.open_cover
+                  target:
+                    entity_id:
+                      - cover.living_room_left_roller_shade_cover
+                      - cover.right_living_room_roller_shade_cover
+                      - cover.office_left_roller_shade_cover
+                      - cover.office_right_roller_shade_cover
+              - type: button
+                name: Close All
+                icon: mdi:blinds
+                tap_action:
+                  action: call-service
+                  service: cover.close_cover
+                  target:
+                    entity_id:
+                      - cover.living_room_left_roller_shade_cover
+                      - cover.right_living_room_roller_shade_cover
+                      - cover.office_left_roller_shade_cover
+                      - cover.office_right_roller_shade_cover
+                      - cover.tori_roller_shade_cover
+                      - cover.bennett_roller_shade_cover
+          - type: entities
+            title: Living Room
+            entities:
+              - entity: cover.living_room_left_roller_shade_cover
+                name: Left
+              - entity: cover.right_living_room_roller_shade_cover
+                name: Right
+          - type: entities
+            title: Office
+            entities:
+              - entity: cover.office_left_roller_shade_cover
+                name: Left
+              - entity: cover.office_right_roller_shade_cover
+                name: Right
+          - type: entities
+            title: Bedroom
+            entities:
+              - entity: cover.tori_roller_shade_cover
+                name: Tori
+              - entity: cover.bennett_roller_shade_cover
+                name: Bennett
 
       # --- System ---
       - type: vertical-stack

@@ -178,7 +178,7 @@ views:
         name: More
 
       - type: grid
-        columns: 3
+        columns: 2
         square: false
         cards:
           - type: custom:bubble-card
@@ -208,6 +208,15 @@ views:
               tap_action:
                 action: navigate
                 navigation_path: "#modes"
+          - type: custom:bubble-card
+            card_type: button
+            entity: cover.living_room_left_roller_shade_cover
+            name: Shades
+            icon: mdi:blinds
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#shades"
 
       # ================================================================
       # BOTTOM NAVIGATION BAR
@@ -752,6 +761,64 @@ views:
               - entity: input_boolean.storm_mode
                 name: Storm Mode
                 icon: mdi:weather-lightning
+
+      # --- Shades ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#shades"
+            name: Roller Shades
+            icon: mdi:blinds
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Open All
+                icon: mdi:blinds-open
+                tap_action:
+                  action: call-service
+                  service: cover.open_cover
+                  target:
+                    entity_id:
+                      - cover.living_room_left_roller_shade_cover
+                      - cover.right_living_room_roller_shade_cover
+                      - cover.office_left_roller_shade_cover
+                      - cover.office_right_roller_shade_cover
+              - type: button
+                name: Close All
+                icon: mdi:blinds
+                tap_action:
+                  action: call-service
+                  service: cover.close_cover
+                  target:
+                    entity_id:
+                      - cover.living_room_left_roller_shade_cover
+                      - cover.right_living_room_roller_shade_cover
+                      - cover.office_left_roller_shade_cover
+                      - cover.office_right_roller_shade_cover
+                      - cover.tori_roller_shade_cover
+                      - cover.bennett_roller_shade_cover
+          - type: entities
+            title: Living Room
+            entities:
+              - entity: cover.living_room_left_roller_shade_cover
+                name: Left
+              - entity: cover.right_living_room_roller_shade_cover
+                name: Right
+          - type: entities
+            title: Office
+            entities:
+              - entity: cover.office_left_roller_shade_cover
+                name: Left
+              - entity: cover.office_right_roller_shade_cover
+                name: Right
+          - type: entities
+            title: Bedroom
+            entities:
+              - entity: cover.tori_roller_shade_cover
+                name: Tori
+              - entity: cover.bennett_roller_shade_cover
+                name: Bennett
 
       # --- Batteries ---
       - type: vertical-stack

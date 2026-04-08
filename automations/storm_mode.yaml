@@ -151,8 +151,6 @@
                   - cover.right_living_room_roller_shade_cover
                   - cover.office_left_roller_shade_cover
                   - cover.office_right_roller_shade_cover
-                  - cover.tori_roller_shade_cover
-                  - cover.bennett_roller_shade_cover
       default: []
 
     - service: notify.mobile_app_tori_pixel_10_pro_xl
