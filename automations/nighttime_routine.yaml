@@ -118,7 +118,11 @@
 
 - id: welcome_home_after_10pm
   alias: Welcome Home After 10 PM
-  description: Turn on living room + kitchen when arriving home after 10PM. Bedroom only if nobody else home. Auto-off after 45min
+  description: >
+    Turn on living room + kitchen when arriving after 10 PM.
+    Bedroom only if nobody else was already home.
+    Auto-off after 20 min of no living room motion (max 2 hours).
+    Bedroom left to phone-charging automation.
 
   trigger:
     - platform: state
@@ -150,9 +154,8 @@
       data:
         brightness_pct: 100
 
-    # Smart bedroom logic: only turn on bedroom if nobody else was already home
+    # Bedroom only if the other person wasn't already home
     - choose:
-        # If the OTHER person was already home when you arrived, skip bedroom
         - conditions:
             - condition: template
               value_template: >
@@ -164,7 +167,6 @@
                   false
                 {% endif %}
           sequence: []
-      # Nobody else was home, turn on bedroom too
       default:
         - service: light.turn_on
           target:
@@ -172,17 +174,23 @@
           data:
             brightness_pct: 100
 
-    # Wait 45 minutes
-    - delay:
-        minutes: 45
+    # Wait for living room to go quiet — 20 min of no motion, or 2 hours max
+    - wait_for_trigger:
+        - platform: state
+          entity_id: binary_sensor.living_room_motion
+          to: 'off'
+          for:
+            minutes: 20
+      timeout:
+        hours: 2
+      continue_on_timeout: true
 
-    # Turn off all the lights after 45 minutes
+    # Turn off living room + kitchen; bedroom handled by phone-charging automation
     - service: light.turn_off
       target:
         area_id:
           - living_room
           - kitchen
-          - bedroom
     - service: switch.turn_off
       target:
         entity_id:

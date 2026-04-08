@@ -1,0 +1,9 @@
+home_state:
+  name: Home State
+  icon: mdi:home-account
+  options:
+    - both_home
+    - tori_only
+    - bennett_only
+    - everyone_away
+  initial: everyone_away

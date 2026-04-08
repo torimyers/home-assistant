@@ -1,0 +1,214 @@
+# Home state tracker — updates input_select.home_state whenever person presence changes
+# States: both_home | tori_only | bennett_only | everyone_away
+#
+# REQUIRES: input_select.home_state created in HA UI with those four options
+
+- id: home_state_update
+  alias: Home State - Update on Presence Change
+  description: Keep input_select.home_state in sync with who is actually home
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+
+  action:
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.home_state
+      data:
+        option: >
+          {% set tori = is_state('person.tori_myers', 'home') %}
+          {% set bennett = is_state('person.bennett', 'home') %}
+          {% if tori and bennett %}
+            both_home
+          {% elif tori %}
+            tori_only
+          {% elif bennett %}
+            bennett_only
+          {% else %}
+            everyone_away
+          {% endif %}
+
+  mode: queued
+  max: 5
+
+# ----------------------------------------------------------------
+# First person home vs second person home — context-aware arrivals
+# ----------------------------------------------------------------
+
+- id: home_state_first_arrival
+  alias: Home State - First Person Arrives
+  description: >
+    Welcome home when the house was empty.
+    Different behavior depending on time of day.
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'home'
+
+  condition:
+    # Only fires when the arriving person makes it no longer "everyone_away"
+    # i.e., the OTHER person was NOT home before this arrival
+    - condition: template
+      value_template: >
+        {% if trigger.entity_id == 'person.tori_myers' %}
+          {{ not is_state('person.bennett', 'home') }}
+        {% else %}
+          {{ not is_state('person.tori_myers', 'home') }}
+        {% endif %}
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'off'
+
+  action:
+    - choose:
+        # Evening/night arrival (after sunset, before midnight)
+        - conditions:
+            - condition: sun
+              after: sunset
+            - condition: time
+              before: "23:59:59"
+          sequence:
+            - service: notify.mobile_app_tori_pixel_10_pro_xl
+              data:
+                title: "🏠 Welcome Home"
+                message: >
+                  {{ ['Welcome back!', 'Good to have you home.', 'The house is all yours.'] | random }}
+                  {% if is_state('weather.forecast_home', 'rainy') %} Don't forget to dry off.{% endif %}
+
+        # Late night (after midnight)
+        - conditions:
+            - condition: time
+              after: "00:00:00"
+              before: "05:00:00"
+          sequence:
+            - service: notify.mobile_app_tori_pixel_10_pro_xl
+              data:
+                title: "🌙 Late Night Arrival"
+                message: "Made it home safely. Lights on in the living room."
+
+        # Morning/daytime arrival
+        - conditions:
+            - condition: sun
+              before: sunset
+          sequence:
+            - service: notify.mobile_app_tori_pixel_10_pro_xl
+              data:
+                title: "🏠 Welcome Home"
+                message: >
+                  {{ ['Welcome back!', 'Good to have you home.'] | random }}
+
+  mode: single
+
+- id: home_state_second_arrival
+  alias: Home State - Second Person Arrives
+  description: Notify the person already home that someone has arrived
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'home'
+
+  condition:
+    # Only fires when arriving person is NOT making it go from empty → occupied
+    # i.e., the OTHER person was already home
+    - condition: template
+      value_template: >
+        {% if trigger.entity_id == 'person.tori_myers' %}
+          {{ is_state('person.bennett', 'home') }}
+        {% else %}
+          {{ is_state('person.tori_myers', 'home') }}
+        {% endif %}
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.do_not_disturb
+      state: 'off'
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "👋 Home"
+        message: >
+          {% if trigger.entity_id == 'person.bennett' %}
+            Bennett just got home.
+          {% else %}
+            Tori just got home.
+          {% endif %}
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "👋 Home"
+        message: >
+          {% if trigger.entity_id == 'person.bennett' %}
+            Bennett just got home.
+          {% else %}
+            Tori just got home.
+          {% endif %}
+
+  mode: single
+
+- id: home_state_everyone_leaves
+  alias: Home State - Everyone Leaves
+  description: Actions when the last person leaves the house
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'not_home'
+
+  condition:
+    # Both people must now be away
+    - condition: state
+      entity_id: person.tori_myers
+      state: 'not_home'
+    - condition: state
+      entity_id: person.bennett
+      state: 'not_home'
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'off'
+
+  action:
+    # Turn off indoor lights
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.kitchen_over_oven
+          - light.kitchen_over_sink
+          - light.dining_room_table_light_1
+          - light.dining_room_table_light_2
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
+          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
+          - light.ledvance_a19_rgbw_light
+          - light.ledvance_a19_rgbw_light_2
+          - light.ledvance_a19_rgbw_light_3
+          - light.bedroom_tori_light
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+
+    # Notify on Tori's phone
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🚪 House Empty"
+        message: "Both of you are away. Lights off."
+        data:
+          actions:
+            - action: "LOCK_ALL_DOORS"
+              title: "Lock Doors"
+            - action: "CLOSE_ALL_SHADES"
+              title: "Close Shades"
+
+  mode: single
