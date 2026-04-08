@@ -45,6 +45,9 @@
     - condition: state
       entity_id: person.tori_myers
       state: 'home'
+    - condition: state
+      entity_id: input_boolean.nap_mode
+      state: 'off'
 
   action:
     - service: tts.google_translate_say

@@ -69,17 +69,23 @@
         {% endif %}
 
   action:
-    # Announce on speakers
-    - service: tts.google_translate_say
-      target:
-        entity_id:
-          - media_player.bedroom
-          - media_player.office
-      data:
-        message: >
-          {% set person_name = 'Tori' if trigger.entity_id == 'person.tori_myers' else 'Bennett' %}
-          {% set from_zone = trigger.from_state.state | replace('_', ' ') | title %}
-          {{ person_name }} left {{ from_zone }} and is heading home
+    # Announce on speakers (suppressed during nap mode)
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: input_boolean.nap_mode
+              state: 'off'
+          sequence:
+            - service: tts.google_translate_say
+              target:
+                entity_id:
+                  - media_player.bedroom
+                  - media_player.office
+              data:
+                message: >
+                  {% set person_name = 'Tori' if trigger.entity_id == 'person.tori_myers' else 'Bennett' %}
+                  {% set from_zone = trigger.from_state.state | replace('_', ' ') | title %}
+                  {{ person_name }} left {{ from_zone }} and is heading home
 
     # Also send phone notification
     - service: notify.mobile_app_tori_pixel_10_pro_xl
@@ -118,6 +124,9 @@
     - condition: state
       entity_id: person.bennett
       state: 'home'
+    - condition: state
+      entity_id: input_boolean.nap_mode
+      state: 'off'
 
   action:
     - service: tts.google_translate_say
@@ -151,6 +160,9 @@
     - condition: state
       entity_id: person.tori_myers
       state: 'home'
+    - condition: state
+      entity_id: input_boolean.nap_mode
+      state: 'off'
   action:
     - service: tts.google_translate_say
       target:

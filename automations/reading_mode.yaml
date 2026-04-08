@@ -1,0 +1,42 @@
+- id: reading_mode_living_room_activate
+  alias: Reading Mode Living Room - Activate
+  description: Set couch lamps and overhead to warm dim for reading on the couch
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.reading_mode_living_room
+      to: 'on'
+
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.tp_link_power_strip_173b_couch_lamp
+          - switch.tp_link_power_strip_1446_lamp_by_door
+    - service: light.turn_on
+      target:
+        area_id: living_room
+      data:
+        brightness_pct: 50
+        kelvin: 2700
+
+  mode: single
+
+- id: reading_mode_bedroom_activate
+  alias: Reading Mode Bedroom - Activate
+  description: Set bedroom lamp to warm dim for reading in bed
+
+  trigger:
+    - platform: state
+      entity_id: input_boolean.reading_mode_bedroom
+      to: 'on'
+
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.bedroom_tori_light
+      data:
+        brightness_pct: 50
+        kelvin: 2700
+
+  mode: single

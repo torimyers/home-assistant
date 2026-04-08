@@ -36,15 +36,20 @@
             - action: "WASHER_SNOOZE"
               title: "Remind in 10 min"
 
-    # Also announce on speakers if someone is home
-    - condition: or
+    # Also announce on speakers if someone is home and not in nap mode
+    - condition: and
       conditions:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: person.tori_myers
+              state: 'home'
+            - condition: state
+              entity_id: person.bennett
+              state: 'home'
         - condition: state
-          entity_id: person.tori_myers
-          state: 'home'
-        - condition: state
-          entity_id: person.bennett
-          state: 'home'
+          entity_id: input_boolean.nap_mode
+          state: 'off'
     - service: tts.google_translate_say
       target:
         entity_id:
@@ -155,15 +160,20 @@
             - action: "DRYER_SNOOZE"
               title: "Remind in 15 min"
 
-    # Also announce on speakers if someone is home
-    - condition: or
+    # Also announce on speakers if someone is home and not in nap mode
+    - condition: and
       conditions:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: person.tori_myers
+              state: 'home'
+            - condition: state
+              entity_id: person.bennett
+              state: 'home'
         - condition: state
-          entity_id: person.tori_myers
-          state: 'home'
-        - condition: state
-          entity_id: person.bennett
-          state: 'home'
+          entity_id: input_boolean.nap_mode
+          state: 'off'
     - service: tts.google_translate_say
       target:
         entity_id:
