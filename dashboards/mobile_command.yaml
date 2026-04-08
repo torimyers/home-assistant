@@ -53,6 +53,13 @@ views:
             icon: mdi:airplane
             tap_action:
               action: toggle
+          - type: button
+            entity: input_boolean.nap_mode
+            name: "Modes"
+            icon: mdi:tune
+            tap_action:
+              action: navigate
+              navigation_path: "#modes-mobile"
 
       # Quick access — all lights on/off + goodnight
       - type: horizontal-stack
@@ -123,6 +130,68 @@ views:
       # MOBILE POP-UPS
       # vertical-stack: pop-up card first, content cards after
       # ================================================================
+
+      # --- Modes ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#modes-mobile"
+            name: Modes
+            icon: mdi:tune
+          - type: entities
+            title: Rest & Comfort
+            state_color: true
+            entities:
+              - entity: input_boolean.nap_mode
+                name: Nap Mode
+                icon: mdi:sleep
+              - entity: input_boolean.reading_mode_living_room
+                name: Reading — Living Room
+                icon: mdi:book-open-variant
+              - entity: input_boolean.reading_mode_bedroom
+                name: Reading — Bedroom
+                icon: mdi:book-open-page-variant
+          - type: entities
+            title: Activity
+            state_color: true
+            entities:
+              - entity: input_boolean.cooking_mode
+                name: Cooking Mode
+                icon: mdi:chef-hat
+              - entity: input_boolean.movie_mode
+                name: Movie Mode
+                icon: mdi:television-play
+          - type: entities
+            title: Work & Focus
+            state_color: true
+            entities:
+              - entity: input_boolean.focus_mode
+                name: Focus Mode
+                icon: mdi:brain
+              - entity: input_boolean.do_not_disturb
+                name: Do Not Disturb
+                icon: mdi:bell-off
+          - type: entities
+            title: Social
+            state_color: true
+            entities:
+              - entity: input_boolean.party_mode
+                name: Party Mode
+                icon: mdi:party-popper
+              - entity: input_boolean.guest_mode
+                name: Guest Mode
+                icon: mdi:account-group
+          - type: entities
+            title: Home State
+            state_color: true
+            entities:
+              - entity: input_boolean.vacation_mode
+                name: Vacation Mode
+                icon: mdi:airplane
+              - entity: input_boolean.storm_mode
+                name: Storm Mode
+                icon: mdi:weather-lightning
 
       # --- Weather ---
       - type: vertical-stack

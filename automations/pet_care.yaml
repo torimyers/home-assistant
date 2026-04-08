@@ -1,0 +1,110 @@
+# Pet feeding reminders — Atlas, Ellie, Shadow, Lance
+# Sends actionable notification when someone is home; respects Do Not Disturb
+
+- id: pet_feeding_morning
+  alias: Pet Feeding - Morning Reminder
+  description: Daily 7:30 AM reminder to feed the pets
+
+  trigger:
+    - platform: time
+      at: "07:30:00"
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.do_not_disturb
+      state: 'off'
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🐾 Morning Feeding"
+        message: "Time to feed Atlas, Ellie, Shadow, and Lance!"
+        data:
+          actions:
+            - action: "PETS_FED_MORNING"
+              title: "All Fed"
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🐾 Morning Feeding"
+        message: "Time to feed Atlas, Ellie, Shadow, and Lance!"
+        data:
+          actions:
+            - action: "PETS_FED_MORNING"
+              title: "All Fed"
+
+  mode: single
+
+- id: pet_feeding_evening
+  alias: Pet Feeding - Evening Reminder
+  description: Daily 5:30 PM reminder to feed the pets
+
+  trigger:
+    - platform: time
+      at: "17:30:00"
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.do_not_disturb
+      state: 'off'
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🐾 Evening Feeding"
+        message: "Time to feed Atlas, Ellie, Shadow, and Lance!"
+        data:
+          actions:
+            - action: "PETS_FED_EVENING"
+              title: "All Fed"
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🐾 Evening Feeding"
+        message: "Time to feed Atlas, Ellie, Shadow, and Lance!"
+        data:
+          actions:
+            - action: "PETS_FED_EVENING"
+              title: "All Fed"
+
+  mode: single
+
+- id: pet_feeding_acknowledged
+  alias: Pet Feeding - Acknowledged
+  description: Handle confirmation that pets were fed
+
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "PETS_FED_MORNING"
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "PETS_FED_EVENING"
+
+  action:
+    - service: notify.mobile_app_tori_pixel_10_pro_xl
+      data:
+        title: "🐾 Pets Fed"
+        message: "Got it! Feeding logged."
+    - service: notify.mobile_app_pixel_10
+      data:
+        title: "🐾 Pets Fed"
+        message: "Got it! Feeding logged."
+
+  mode: single

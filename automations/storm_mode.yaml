@@ -79,15 +79,25 @@
             - condition: sun
               after: sunset
           sequence:
+            # Warm white for kitchen and living room
             - service: light.turn_on
               target:
                 area_id:
                   - living_room
                   - kitchen
-                  - office
               data:
                 brightness_pct: 80
                 kelvin: 2700
+            # Amber RGBW for office LEDVANCE lights — cozy storm atmosphere
+            - service: light.turn_on
+              target:
+                entity_id:
+                  - light.ledvance_a19_rgbw_light
+                  - light.ledvance_a19_rgbw_light_2
+                  - light.ledvance_a19_rgbw_light_3
+              data:
+                brightness_pct: 80
+                rgb_color: [255, 147, 41]
       default: []
 
     # Floodlights on for visibility
@@ -108,11 +118,13 @@
     - service: notify.mobile_app_tori_pixel_10_pro_xl
       data:
         title: "Storm Mode On"
-        message: "Stormy weather detected. All shades closed. Calming music on for Atlas."
+        message: >
+          {{ states('weather.forecast_home') | title }} detected. All shades closed. Calming music on for Atlas.
     - service: notify.mobile_app_pixel_10
       data:
         title: "Storm Mode On"
-        message: "Stormy weather detected. All shades closed. Calming music on for Atlas."
+        message: >
+          {{ states('weather.forecast_home') | title }} detected. All shades closed. Calming music on for Atlas.
 
   mode: single
 

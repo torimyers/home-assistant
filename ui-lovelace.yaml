@@ -177,7 +177,9 @@ views:
         card_type: separator
         name: More
 
-      - type: horizontal-stack
+      - type: grid
+        columns: 3
+        square: false
         cards:
           - type: custom:bubble-card
             card_type: button
@@ -197,6 +199,15 @@ views:
               tap_action:
                 action: navigate
                 navigation_path: "#batteries"
+          - type: custom:bubble-card
+            card_type: button
+            entity: input_boolean.nap_mode
+            name: Modes
+            icon: mdi:tune
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#modes"
 
       # ================================================================
       # BOTTOM NAVIGATION BAR
@@ -585,6 +596,12 @@ views:
               - entity: script.leaving_home_routine
                 name: Leaving Home
                 icon: mdi:exit-run
+              - entity: script.dinner_mode
+                name: Dinner Mode
+                icon: mdi:food-variant
+              - entity: script.cleaning_mode
+                name: Cleaning Mode
+                icon: mdi:broom
           - type: entities
             title: Motion Lighting
             show_header_toggle: true
@@ -659,6 +676,82 @@ views:
             tap_action:
               action: navigate
               navigation_path: "#batteries"
+
+      # --- Modes ---
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: "#modes"
+            name: Modes
+            icon: mdi:tune
+          - type: entities
+            title: Rest & Comfort
+            state_color: true
+            entities:
+              - entity: input_boolean.nap_mode
+                name: Nap Mode
+                icon: mdi:sleep
+              - entity: input_boolean.reading_mode_living_room
+                name: Reading — Living Room
+                icon: mdi:book-open-variant
+              - entity: input_boolean.reading_mode_bedroom
+                name: Reading — Bedroom
+                icon: mdi:book-open-page-variant
+          - type: entities
+            title: Activity
+            state_color: true
+            entities:
+              - entity: input_boolean.cooking_mode
+                name: Cooking Mode
+                icon: mdi:chef-hat
+              - entity: input_boolean.movie_mode
+                name: Movie Mode
+                icon: mdi:television-play
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Dinner
+                icon: mdi:food-variant
+                tap_action:
+                  action: call-service
+                  service: script.dinner_mode
+              - type: button
+                name: Cleaning
+                icon: mdi:broom
+                tap_action:
+                  action: call-service
+                  service: script.cleaning_mode
+          - type: entities
+            title: Work & Focus
+            state_color: true
+            entities:
+              - entity: input_boolean.focus_mode
+                name: Focus Mode
+                icon: mdi:brain
+              - entity: input_boolean.do_not_disturb
+                name: Do Not Disturb
+                icon: mdi:bell-off
+          - type: entities
+            title: Social
+            state_color: true
+            entities:
+              - entity: input_boolean.party_mode
+                name: Party Mode
+                icon: mdi:party-popper
+              - entity: input_boolean.guest_mode
+                name: Guest Mode
+                icon: mdi:account-group
+          - type: entities
+            title: Home State
+            state_color: true
+            entities:
+              - entity: input_boolean.vacation_mode
+                name: Vacation Mode
+                icon: mdi:airplane
+              - entity: input_boolean.storm_mode
+                name: Storm Mode
+                icon: mdi:weather-lightning
 
       # --- Batteries ---
       - type: vertical-stack

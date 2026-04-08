@@ -140,6 +140,36 @@
 
   mode: single
 
+- id: auto_close_shades_on_departure
+  alias: Auto-Close Shades When Everyone Leaves
+  description: Close living room and office shades when both people are away
+
+  trigger:
+    - platform: state
+      entity_id:
+        - person.tori_myers
+        - person.bennett
+      to: 'not_home'
+
+  condition:
+    - condition: state
+      entity_id: person.tori_myers
+      state: 'not_home'
+    - condition: state
+      entity_id: person.bennett
+      state: 'not_home'
+
+  action:
+    - service: cover.close_cover
+      target:
+        entity_id:
+          - cover.living_room_left_roller_shade_cover
+          - cover.right_living_room_roller_shade_cover
+          - cover.office_left_roller_shade_cover
+          - cover.office_right_roller_shade_cover
+
+  mode: single
+
 - id: close_all_shades_action
   alias: Close All Shades - Notification Action
   description: Close all shades when notification action is tapped

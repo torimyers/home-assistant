@@ -1,9 +1,36 @@
 # Google Assistant Voice Entities
 # Entities exposed to Google Assistant for voice control
 
-# Automation toggles
+# System toggles
 - input_boolean.notification_system_enabled
 - input_boolean.maintenance_mode
 - input_boolean.motion_lighting_enabled
 - input_boolean.climate_automation_enabled
 - input_boolean.security_monitoring_enabled
+
+# Modes — Rest & Comfort
+- input_boolean.nap_mode
+- input_boolean.reading_mode_living_room
+- input_boolean.reading_mode_bedroom
+
+# Modes — Activity
+- input_boolean.cooking_mode
+- input_boolean.movie_mode
+
+# Modes — Work & Focus
+- input_boolean.focus_mode
+- input_boolean.do_not_disturb
+
+# Modes — Social
+- input_boolean.party_mode
+- input_boolean.guest_mode
+
+# Modes — Home State
+- input_boolean.vacation_mode
+- input_boolean.storm_mode
+
+# Scripts (say "run dinner mode", "activate cleaning mode", etc.)
+- script.dinner_mode
+- script.cleaning_mode
+- script.goodnight_routine
+- script.leaving_home_routine
