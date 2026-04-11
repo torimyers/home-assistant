@@ -91,7 +91,8 @@
     - platform: state
       entity_id: binary_sensor.living_room_motion
       to: 'off'
-      for: "{{ '00:30:00' if is_state('input_boolean.guest_mode', 'on') else '00:10:00' }}"
+      for:
+        minutes: 10
 
   condition:
     - condition: state
@@ -108,6 +109,14 @@
       state: 'off'
 
   action:
+    # Guest mode: wait an extra 20 min (total 30 min) before turning off
+    - if:
+        - condition: state
+          entity_id: input_boolean.guest_mode
+          state: 'on'
+      then:
+        - delay:
+            minutes: 20
     - service: light.turn_off
       target:
         area_id: living_room
