@@ -74,11 +74,10 @@
         {% endif %}
 
   action:
-    - service: climate.set_preset_mode
-      target:
-        entity_id: climate.home
+    - service: ecobee.resume_program
       data:
-        preset_mode: "none"
+        entity_id: climate.home
+        resume_all: false
 
   mode: single
 
