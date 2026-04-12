@@ -1,0 +1,43 @@
+nap_mode:
+  name: Nap Mode
+  icon: mdi:sleep
+
+reading_mode_living_room:
+  name: Reading Mode - Living Room
+  icon: mdi:book-open-variant
+
+reading_mode_bedroom:
+  name: Reading Mode - Bedroom
+  icon: mdi:book-open-page-variant
+
+movie_mode:
+  name: Movie Mode
+  icon: mdi:television-play
+
+cooking_mode:
+  name: Cooking Mode
+  icon: mdi:chef-hat
+
+focus_mode:
+  name: Focus Mode
+  icon: mdi:brain
+
+do_not_disturb:
+  name: Do Not Disturb
+  icon: mdi:bell-off
+
+party_mode:
+  name: Party Mode
+  icon: mdi:party-popper
+
+guest_mode:
+  name: Guest Mode
+  icon: mdi:account-group
+
+storm_mode:
+  name: Storm Mode
+  icon: mdi:weather-lightning
+
+vacation_mode:
+  name: Vacation Mode
+  icon: mdi:airplane

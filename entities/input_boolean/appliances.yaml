@@ -1,0 +1,11 @@
+washer_cycle_active:
+  name: Washer Cycle Active
+  icon: mdi:washing-machine
+
+dryer_cycle_active:
+  name: Dryer Cycle Active
+  icon: mdi:tumble-dryer
+
+load_needs_transfer:
+  name: Load Needs Transfer
+  icon: mdi:transfer

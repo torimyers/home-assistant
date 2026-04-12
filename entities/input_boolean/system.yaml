@@ -1,0 +1,23 @@
+notification_system_enabled:
+  name: Notification System Enabled
+  icon: mdi:bell
+
+daily_reports_enabled:
+  name: Daily Reports Enabled
+  icon: mdi:chart-bar
+
+emergency_alerts_enabled:
+  name: Emergency Alerts Enabled
+  icon: mdi:alert
+
+motion_lighting_enabled:
+  name: Motion Lighting Enabled
+  icon: mdi:lightbulb-auto
+
+climate_automation_enabled:
+  name: Climate Automation Enabled
+  icon: mdi:thermostat-auto
+
+maintenance_mode:
+  name: Maintenance Mode
+  icon: mdi:wrench
