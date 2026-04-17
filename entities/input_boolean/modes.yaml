@@ -41,7 +41,3 @@ storm_mode:
 vacation_mode:
   name: Vacation Mode
   icon: mdi:airplane
-
-evening_lights_mode:
-  name: Evening Lights Mode
-  icon: mdi:weather-sunset

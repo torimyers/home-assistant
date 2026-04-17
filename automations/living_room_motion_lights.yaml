@@ -2,9 +2,8 @@
   alias: Living Room Motion Lights
   description: >
     After sunset to 10:30 PM: full lights + switches.
-    After 10:30 PM and 12 AM-5 AM: disabled.
     Cloudy/dark daytime: full lights + switches.
-    Clear daytime: disabled.
+    Clear daytime, late night: disabled.
 
   trigger:
     - platform: state
@@ -12,6 +11,9 @@
       to: 'on'
 
   condition:
+    - condition: time
+      after: "05:00:00"
+      before: "22:30:00"
     - condition: state
       entity_id: input_boolean.nap_mode
       state: 'off'
@@ -27,26 +29,10 @@
 
   action:
     - choose:
-        # Sleep time (12 AM - 5 AM): Disabled
-        - conditions:
-            - condition: time
-              after: "00:00:00"
-              before: "05:00:00"
-          sequence: []
-
-        # Late evening (10:30 PM - 12 AM): Disabled
-        - conditions:
-            - condition: time
-              after: "22:30:00"
-              before: "23:59:59"
-          sequence: []
-
         # After sunset and before 10:30 PM: Full lights + switches
         - conditions:
             - condition: sun
               after: sunset
-            - condition: time
-              before: "22:30:00"
           sequence:
             - service: light.turn_on
               target:
@@ -61,8 +47,6 @@
 
         # Daytime but dark (lux below 50): Full lights + switches
         - conditions:
-            - condition: sun
-              before: sunset
             - condition: numeric_state
               entity_id: sensor.living_room_motion_sensor_illuminance
               below: 50
@@ -95,6 +79,20 @@
         minutes: 10
 
   condition:
+    - condition: or
+      conditions:
+        - condition: and
+          conditions:
+            - condition: state
+              entity_id: person.tori_myers
+              state: 'not_home'
+            - condition: state
+              entity_id: person.bennett
+              state: 'not_home'
+        - condition: sun
+          before: sunset
+        - condition: time
+          after: "22:00:00"
     - condition: state
       entity_id: input_boolean.nap_mode
       state: 'off'
@@ -106,9 +104,6 @@
       state: 'off'
     - condition: state
       entity_id: input_boolean.party_mode
-      state: 'off'
-    - condition: state
-      entity_id: input_boolean.evening_lights_mode
       state: 'off'
 
   action:

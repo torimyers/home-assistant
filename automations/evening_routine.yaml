@@ -45,9 +45,6 @@
             - service: switch.turn_on
               target:
                 entity_id: switch.tp_link_power_strip_173b_couch_lamp
-            - service: input_boolean.turn_on
-              target:
-                entity_id: input_boolean.evening_lights_mode
       default: []
 
     # Always close living room + office shades at sunset
@@ -98,21 +95,5 @@
                   {% set temp = state_attr('weather.forecast_home', 'temperature') %}
                   {% if temp %}{{ temp | round(0) }}° outside.{% endif %}
       default: []
-
-  mode: single
-
-- id: evening_lights_mode_end
-  alias: Evening Lights Mode End
-  description: >
-    At 10pm, disable evening lights mode so motion sensing resumes.
-
-  trigger:
-    - platform: time
-      at: "22:00:00"
-
-  action:
-    - service: input_boolean.turn_off
-      target:
-        entity_id: input_boolean.evening_lights_mode
 
   mode: single
