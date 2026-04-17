@@ -107,6 +107,9 @@
     - condition: state
       entity_id: input_boolean.party_mode
       state: 'off'
+    - condition: state
+      entity_id: input_boolean.evening_lights_mode
+      state: 'off'
 
   action:
     # Guest mode: wait an extra 20 min (total 30 min) before turning off
