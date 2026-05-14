@@ -8,6 +8,10 @@
       from: 'on'
       to: 'off'
 
+  variables:
+    someone_home: >
+      {{ is_state('person.tori_myers', 'home') or is_state('person.bennett', 'home') }}
+
   action:
     # Set load needs transfer flag
     - service: input_boolean.turn_on
@@ -37,22 +41,11 @@
               title: "Remind in 10 min"
 
     # Also announce on speakers if someone is home and not in nap mode
-    - condition: and
-      conditions:
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: person.tori_myers
-              state: 'home'
-            - condition: state
-              entity_id: person.bennett
-              state: 'home'
-        - condition: state
-          entity_id: input_boolean.nap_mode
-          state: 'off'
-        - condition: state
-          entity_id: input_boolean.do_not_disturb
-          state: 'off'
+    - condition: template
+      value_template: >
+        {{ someone_home
+           and is_state('input_boolean.nap_mode', 'off')
+           and is_state('input_boolean.do_not_disturb', 'off') }}
     - service: tts.google_translate_say
       target:
         entity_id:
@@ -140,6 +133,10 @@
       from: 'on'
       to: 'off'
 
+  variables:
+    someone_home: >
+      {{ is_state('person.tori_myers', 'home') or is_state('person.bennett', 'home') }}
+
   action:
     # Send actionable notification
     - service: notify.mobile_app_tori_pixel_10_pro_xl
@@ -164,22 +161,11 @@
               title: "Remind in 15 min"
 
     # Also announce on speakers if someone is home and not in nap mode
-    - condition: and
-      conditions:
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: person.tori_myers
-              state: 'home'
-            - condition: state
-              entity_id: person.bennett
-              state: 'home'
-        - condition: state
-          entity_id: input_boolean.nap_mode
-          state: 'off'
-        - condition: state
-          entity_id: input_boolean.do_not_disturb
-          state: 'off'
+    - condition: template
+      value_template: >
+        {{ someone_home
+           and is_state('input_boolean.nap_mode', 'off')
+           and is_state('input_boolean.do_not_disturb', 'off') }}
     - service: tts.google_translate_say
       target:
         entity_id:

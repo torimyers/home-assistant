@@ -98,6 +98,10 @@
         - sensor.mailbox_sensor_battery
       below: 10
 
+  variables:
+    someone_home: >
+      {{ is_state('person.tori_myers', 'home') or is_state('person.bennett', 'home') }}
+
   action:
     # Send urgent notification
     - service: notify.mobile_app_tori_pixel_10_pro_xl
@@ -122,14 +126,8 @@
           importance: high
 
     # Announce on speakers if someone is home
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: person.tori_myers
-          state: 'home'
-        - condition: state
-          entity_id: person.bennett
-          state: 'home'
+    - condition: template
+      value_template: "{{ someone_home }}"
     - service: tts.google_translate_say
       target:
         entity_id:

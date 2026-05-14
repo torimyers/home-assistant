@@ -11,6 +11,10 @@
       event: sunset
       offset: "-00:30:00"
 
+  variables:
+    someone_home: >
+      {{ is_state('person.tori_myers', 'home') or is_state('person.bennett', 'home') }}
+
   condition:
     - condition: state
       entity_id: input_boolean.vacation_mode
@@ -21,31 +25,23 @@
 
   action:
     # Evening lights — only if someone is home
-    - choose:
-        - conditions:
-            - condition: or
-              conditions:
-                - condition: state
-                  entity_id: person.tori_myers
-                  state: 'home'
-                - condition: state
-                  entity_id: person.bennett
-                  state: 'home'
-          sequence:
-            - service: light.turn_on
-              target:
-                entity_id:
-                  - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
-                  - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
-            - service: light.turn_on
-              target:
-                area_id:
-                  - office
-                  - bedroom
-            - service: switch.turn_on
-              target:
-                entity_id: switch.tp_link_power_strip_173b_couch_lamp
-      default: []
+    - if:
+        - condition: template
+          value_template: "{{ someone_home }}"
+      then:
+        - service: light.turn_on
+          target:
+            entity_id:
+              - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light
+              - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_2
+        - service: light.turn_on
+          target:
+            area_id:
+              - office
+              - bedroom
+        - service: switch.turn_on
+          target:
+            entity_id: switch.tp_link_power_strip_173b_couch_lamp
 
     # Always close living room + office shades at sunset
     - service: cover.close_cover
@@ -57,43 +53,27 @@
           - cover.office_right_roller_shade_cover
 
     # Bedroom shades — only close if someone is home (plants need light when away)
-    - choose:
-        - conditions:
-            - condition: or
-              conditions:
-                - condition: state
-                  entity_id: person.tori_myers
-                  state: 'home'
-                - condition: state
-                  entity_id: person.bennett
-                  state: 'home'
-          sequence:
-            - service: cover.close_cover
-              target:
-                entity_id:
-                  - cover.tori_roller_shade_cover
-                  - cover.bennett_roller_shade_cover
-      default: []
+    - if:
+        - condition: template
+          value_template: "{{ someone_home }}"
+      then:
+        - service: cover.close_cover
+          target:
+            entity_id:
+              - cover.tori_roller_shade_cover
+              - cover.bennett_roller_shade_cover
 
     # Notify only if someone is home
-    - choose:
-        - conditions:
-            - condition: or
-              conditions:
-                - condition: state
-                  entity_id: person.tori_myers
-                  state: 'home'
-                - condition: state
-                  entity_id: person.bennett
-                  state: 'home'
-          sequence:
-            - service: script.notify_household
-              data:
-                title: "🌇 Evening Mode"
-                message: >
-                  Sunset in 30 min. Evening lights on, shades closed.
-                  {% set temp = state_attr('weather.forecast_home', 'temperature') %}
-                  {% if temp %}{{ temp | round(0) }}° outside.{% endif %}
-      default: []
+    - if:
+        - condition: template
+          value_template: "{{ someone_home }}"
+      then:
+        - service: script.notify_household
+          data:
+            title: "🌇 Evening Mode"
+            message: >
+              Sunset in 30 min. Evening lights on, shades closed.
+              {% set temp = state_attr('weather.forecast_home', 'temperature') %}
+              {% if temp %}{{ temp | round(0) }}° outside.{% endif %}
 
   mode: single

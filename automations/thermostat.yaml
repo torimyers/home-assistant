@@ -94,20 +94,18 @@
       for:
         minutes: 5
 
+  variables:
+    someone_home: >
+      {{ is_state('person.tori_myers', 'home') or is_state('person.bennett', 'home') }}
+
   condition:
     # Only alert during the day — expected at night when AC cycles down
     - condition: sun
       after: sunrise
       before: sunset
     # Someone home to do something about it
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: person.tori_myers
-          state: 'home'
-        - condition: state
-          entity_id: person.bennett
-          state: 'home'
+    - condition: template
+      value_template: "{{ someone_home }}"
 
   action:
     - service: script.notify_household

@@ -9,6 +9,10 @@
         - binary_sensor.lumi_lumi_sensor_wleak_aq1_3
       to: 'on'
 
+  variables:
+    someone_home: >
+      {{ is_state('person.tori_myers', 'home') or is_state('person.bennett', 'home') }}
+
   action:
     # Determine location
     - variables:
@@ -50,14 +54,8 @@
               title: "False Alarm"
 
     # Announce on speakers if someone is home
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: person.tori_myers
-          state: 'home'
-        - condition: state
-          entity_id: person.bennett
-          state: 'home'
+    - condition: template
+      value_template: "{{ someone_home }}"
     - service: tts.google_translate_say
       target:
         entity_id:
@@ -83,24 +81,17 @@
               minutes: 2
 
           # Check if someone is home for announcements
-          - choose:
-              - conditions:
-                  - condition: or
-                    conditions:
-                      - condition: state
-                        entity_id: person.tori_myers
-                        state: 'home'
-                      - condition: state
-                        entity_id: person.bennett
-                        state: 'home'
-                sequence:
-                  - service: tts.google_translate_say
-                    target:
-                      entity_id:
-                        - media_player.bedroom
-                        - media_player.office
-                    data:
-                      message: "Reminder: Water leak still detected at the {{ leak_location }}!"
+          - if:
+              - condition: template
+                value_template: "{{ someone_home }}"
+            then:
+              - service: tts.google_translate_say
+                target:
+                  entity_id:
+                    - media_player.bedroom
+                    - media_player.office
+                data:
+                  message: "Reminder: Water leak still detected at the {{ leak_location }}!"
 
           # Send another notification
           - service: notify.mobile_app_tori_pixel_10_pro_xl
@@ -130,6 +121,10 @@
       event_data:
         action: "LEAK_SHUTOFF_DONE"
 
+  variables:
+    someone_home: >
+      {{ is_state('person.tori_myers', 'home') or is_state('person.bennett', 'home') }}
+
   action:
     # Send confirmation
     - service: notify.mobile_app_tori_pixel_10_pro_xl
@@ -146,14 +141,8 @@
           tag: "water_leak_emergency"
 
     # Announce confirmation if home
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: person.tori_myers
-          state: 'home'
-        - condition: state
-          entity_id: person.bennett
-          state: 'home'
+    - condition: template
+      value_template: "{{ someone_home }}"
     - service: tts.google_translate_say
       target:
         entity_id:

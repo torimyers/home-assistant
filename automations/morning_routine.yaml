@@ -11,6 +11,15 @@
       event: sunrise
       offset: "+00:30:00"
 
+  variables:
+    tori_home: "{{ is_state('person.tori_myers', 'home') }}"
+    bennett_home: "{{ is_state('person.bennett', 'home') }}"
+    someone_home: "{{ tori_home or bennett_home }}"
+    # Bennett-home counts as awake (no charging sensor for him)
+    someone_awake: >
+      {{ bennett_home or
+         (tori_home and is_state('binary_sensor.tori_pixel_10_pro_xl_is_charging', 'off')) }}
+
   condition:
     - condition: state
       entity_id: input_boolean.vacation_mode
@@ -27,21 +36,10 @@
           - cover.office_right_roller_shade_cover
 
     - choose:
-        # Someone is home and awake — lights on + notify
+        # Someone is home and awake — lights on + verbose notify
         - conditions:
-            - condition: or
-              conditions:
-                - condition: and
-                  conditions:
-                    - condition: state
-                      entity_id: binary_sensor.tori_pixel_10_pro_xl_is_charging
-                      state: 'off'
-                    - condition: state
-                      entity_id: person.tori_myers
-                      state: 'home'
-                - condition: state
-                  entity_id: person.bennett
-                  state: 'home'
+            - condition: template
+              value_template: "{{ someone_awake }}"
           sequence:
             - service: light.turn_on
               target:
@@ -68,12 +66,8 @@
 
         # Nobody home — shades opened silently, no notification
         - conditions:
-            - condition: state
-              entity_id: person.tori_myers
-              state: 'not_home'
-            - condition: state
-              entity_id: person.bennett
-              state: 'not_home'
+            - condition: template
+              value_template: "{{ not someone_home }}"
           sequence: []
 
       # Someone home but still asleep (phone charging) — just shades, quiet notify

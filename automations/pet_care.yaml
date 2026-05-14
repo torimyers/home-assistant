@@ -9,18 +9,16 @@
     - platform: time
       at: "07:30:00"
 
+  variables:
+    someone_home: >
+      {{ is_state('person.tori_myers', 'home') or is_state('person.bennett', 'home') }}
+
   condition:
     - condition: state
       entity_id: input_boolean.do_not_disturb
       state: 'off'
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: person.tori_myers
-          state: 'home'
-        - condition: state
-          entity_id: person.bennett
-          state: 'home'
+    - condition: template
+      value_template: "{{ someone_home }}"
 
   action:
     - service: notify.mobile_app_tori_pixel_10_pro_xl
@@ -50,18 +48,16 @@
     - platform: time
       at: "17:30:00"
 
+  variables:
+    someone_home: >
+      {{ is_state('person.tori_myers', 'home') or is_state('person.bennett', 'home') }}
+
   condition:
     - condition: state
       entity_id: input_boolean.do_not_disturb
       state: 'off'
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: person.tori_myers
-          state: 'home'
-        - condition: state
-          entity_id: person.bennett
-          state: 'home'
+    - condition: template
+      value_template: "{{ someone_home }}"
 
   action:
     - service: notify.mobile_app_tori_pixel_10_pro_xl
