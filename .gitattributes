@@ -1,0 +1,26 @@
+# Normalize all text files to LF in the repo and on checkout.
+# Prevents the CRLF/LF churn that produced phantom diffs across the repo.
+* text=auto eol=lf
+
+# Explicit text types (defensive)
+*.yaml   text eol=lf
+*.yml    text eol=lf
+*.py     text eol=lf
+*.json   text eol=lf
+*.md     text eol=lf
+*.sh     text eol=lf
+*.js     text eol=lf
+*.txt    text eol=lf
+*.cmd    text eol=crlf
+
+# Binary files — never touch line endings
+*.db     binary
+*.pyc    binary
+*.tar    binary
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.ico    binary
+*.zip    binary
+*.gz     binary
