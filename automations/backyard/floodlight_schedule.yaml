@@ -12,7 +12,7 @@
   action:
     - service: light.turn_on
       target:
-        entity_id: light.backyard_light
+        entity_id: light.backyard_f84a
   mode: single
 
 - id: back_floodlight_off_10pm
@@ -24,5 +24,5 @@
   action:
     - service: light.turn_off
       target:
-        entity_id: light.backyard_light
+        entity_id: light.backyard_f84a
   mode: single

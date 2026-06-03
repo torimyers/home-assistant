@@ -6,6 +6,14 @@ ip_bans.yaml
 # Database and logs
 home-assistant_v2.db*
 *.log*
+zigbee.db
+zigbee.db-shm
+zigbee.db-wal
+.HA_VERSION
+
+# Editor/working backups
+*.backup
+ui-lovelace.yaml.backup
 
 # Runtime files
 .storage/

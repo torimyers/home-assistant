@@ -164,8 +164,8 @@
     - service: light.turn_on
       target:
         entity_id:
-          - light.front_light
-          - light.backyard_light
+          - light.front_770e
+          - light.backyard_f84a
 
     # Send critical notification
     - service: notify.mobile_app_tori_pixel_10_pro_xl

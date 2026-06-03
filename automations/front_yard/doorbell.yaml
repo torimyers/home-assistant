@@ -1,5 +1,7 @@
 # Ring Video Doorbell automations
-# Entities: binary_sensor.front_door_ding_3, binary_sensor.front_door_motion_3, camera.front_door_3
+# Entities (current): event.front_door_4ae9 (doorbell press), binary_sensor.front_door_4ae9 (motion), camera.front_door_4ae9
+# Note: modern Ring integration exposes button presses as an `event` entity whose state is the
+# timestamp of the last press; trigger on any state change of that entity.
 
 - id: doorbell_ring_notification
   alias: Doorbell - Ring Notification with Snapshot
@@ -7,13 +9,15 @@
 
   trigger:
     - platform: state
-      entity_id: binary_sensor.front_door_ding_3
-      to: 'on'
+      entity_id: event.front_door_4ae9
+      not_to:
+        - unavailable
+        - unknown
 
   action:
     - service: camera.snapshot
       target:
-        entity_id: camera.front_door_3
+        entity_id: camera.front_door_4ae9
       data:
         filename: /tmp/doorbell_snapshot.jpg
 
@@ -56,7 +60,7 @@
 
   trigger:
     - platform: state
-      entity_id: binary_sensor.front_door_motion_3
+      entity_id: binary_sensor.front_door_4ae9
       to: 'on'
 
   condition:
@@ -78,15 +82,15 @@
     - condition: state
       entity_id: person.bennett
       state: 'not_home'
-    # Doorbell wasn't just rung (that has its own notification)
-    - condition: state
-      entity_id: binary_sensor.front_door_ding_3
-      state: 'off'
+    # Doorbell wasn't just rung in the last 30s (that has its own notification)
+    - condition: template
+      value_template: >
+        {{ (now() - states.event.front_door_4ae9.last_changed).total_seconds() > 30 }}
 
   action:
     - service: camera.snapshot
       target:
-        entity_id: camera.front_door_3
+        entity_id: camera.front_door_4ae9
       data:
         filename: /tmp/front_door_snapshot.jpg
 

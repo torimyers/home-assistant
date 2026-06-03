@@ -12,7 +12,7 @@
   action:
     - service: light.turn_on
       target:
-        entity_id: light.front_light
+        entity_id: light.front_770e
   mode: single
 
 - id: front_floodlight_off_sunrise
@@ -25,5 +25,5 @@
   action:
     - service: light.turn_off
       target:
-        entity_id: light.front_light
+        entity_id: light.front_770e
   mode: single

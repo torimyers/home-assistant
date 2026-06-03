@@ -4,10 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## System Overview
 
-This is a **Home Assistant configuration repository** running on Unraid (version 2025.8.0) with:
-- Blueprint-based automation consolidation for common automation patterns
+This is a **Home Assistant configuration repository** running on Unraid (Home Assistant 2026.5.4) with:
+- Blueprint definitions available for common automation patterns (see note below)
 - Multiple dashboards optimized for different devices (desktop, mobile)
-- Self-hosted GitHub Actions runner for automated deployment
+- Manual deployment to Unraid via `deploy.sh` / `sync-to-unraid.sh` (the self-hosted GitHub Actions runner is currently dead)
 
 ## Commands
 
@@ -118,7 +118,7 @@ Automations are organized in `/automations/` by:
 - **Room** (e.g., `/automations/backyard/`)
 - **Function** (e.g., top-level convenience automations)
 
-Most automations (85%) use blueprints via `use_blueprint`. Only specialized automations have individual YAML files.
+All 29 repo automations are currently individual YAML files; **none use `use_blueprint`** despite 10 blueprints being defined in `/blueprints/automation/`. The blueprints are effectively unused — either adopt them (convert duplicate room/appliance automations to `use_blueprint` instances) or prune the unused blueprint files. (Note: the live instance also has many UI-created automations stored in `.storage` that are not in this repo.)
 
 ### Custom Components
 
