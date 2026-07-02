@@ -623,7 +623,7 @@ views:
             entities:
               - automation.morning_sunrise_routine
               - automation.evening_sunset_routine
-              - automation.nighttime_dimming_at_10_pm
+              - automation.nighttime_dimming_10pm
 
       # --- System ---
       - type: custom:bubble-card
