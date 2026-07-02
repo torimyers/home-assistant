@@ -255,14 +255,11 @@ views:
             entity: light.kitchen_over_sink
             name: Kitchen Over Sink
           - type: light
-            entity: light.ledvance_a19_rgbw_light
-            name: Office Right
-          - type: light
             entity: light.ledvance_a19_rgbw_light_2
             name: Office Upper
           - type: light
             entity: light.ledvance_a19_rgbw_light_3
-            name: Office Left
+            name: Office Lower
           - type: entities
             title: Switches
             state_color: true

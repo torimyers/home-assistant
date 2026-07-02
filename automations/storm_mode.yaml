@@ -92,7 +92,6 @@
             - service: light.turn_on
               target:
                 entity_id:
-                  - light.ledvance_a19_rgbw_light
                   - light.ledvance_a19_rgbw_light_2
                   - light.ledvance_a19_rgbw_light_3
               data:

@@ -8,7 +8,6 @@ light:
     entities:
       - light.kitchen_over_oven
       - light.kitchen_over_sink
-      - light.ledvance_a19_rgbw_light
       - light.ledvance_a19_rgbw_light_2
       - light.ledvance_a19_rgbw_light_3
       - light.bedroom_tori_light
