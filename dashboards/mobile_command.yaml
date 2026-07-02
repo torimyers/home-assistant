@@ -138,17 +138,16 @@ views:
 
       # ================================================================
       # MOBILE POP-UPS
-      # vertical-stack: pop-up card first, content cards after
+      # Bubble Card v3.2.0 standalone format: pop-up card with nested cards:
       # ================================================================
 
       # --- Modes ---
-      - type: vertical-stack
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#modes-mobile"
+        name: Modes
+        icon: mdi:tune
         cards:
-          - type: custom:bubble-card
-            card_type: pop-up
-            hash: "#modes-mobile"
-            name: Modes
-            icon: mdi:tune
           - type: entities
             title: Rest & Comfort
             state_color: true
@@ -204,13 +203,12 @@ views:
                 icon: mdi:weather-lightning
 
       # --- Weather ---
-      - type: vertical-stack
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#weather"
+        name: Weather & Forecast
+        icon: mdi:weather-partly-cloudy
         cards:
-          - type: custom:bubble-card
-            card_type: pop-up
-            hash: "#weather"
-            name: Weather & Forecast
-            icon: mdi:weather-partly-cloudy
           - type: weather-forecast
             entity: weather.forecast_home
             show_forecast: true
@@ -241,13 +239,12 @@ views:
                 name: Office
 
       # --- Lights ---
-      - type: vertical-stack
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#lights"
+        name: Lighting Controls
+        icon: mdi:lightbulb-group
         cards:
-          - type: custom:bubble-card
-            card_type: pop-up
-            hash: "#lights"
-            name: Lighting Controls
-            icon: mdi:lightbulb-group
           - type: light
             entity: light.kitchen_over_oven
             name: Kitchen Over Oven
@@ -284,13 +281,12 @@ views:
                   - switch.tp_link_power_strip_1446_lamp_by_door
 
       # --- Security ---
-      - type: vertical-stack
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#security-mobile"
+        name: Security
+        icon: mdi:shield-home
         cards:
-          - type: custom:bubble-card
-            card_type: pop-up
-            hash: "#security-mobile"
-            name: Security
-            icon: mdi:shield-home
           - type: alarm-panel
             entity: alarm_control_panel.alarm
             name: Ring Alarm
@@ -315,13 +311,12 @@ views:
                 icon: mdi:water-alert
 
       # --- Climate ---
-      - type: vertical-stack
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#climate-mobile"
+        name: Climate
+        icon: mdi:thermostat
         cards:
-          - type: custom:bubble-card
-            card_type: pop-up
-            hash: "#climate-mobile"
-            name: Climate
-            icon: mdi:thermostat
           - type: thermostat
             entity: climate.home
             name: Ecobee
@@ -345,13 +340,12 @@ views:
                 icon: mdi:chef-hat
 
       # --- Shades ---
-      - type: vertical-stack
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#shades-mobile"
+        name: Roller Shades
+        icon: mdi:blinds
         cards:
-          - type: custom:bubble-card
-            card_type: pop-up
-            hash: "#shades-mobile"
-            name: Roller Shades
-            icon: mdi:blinds
           - type: horizontal-stack
             cards:
               - type: button
@@ -403,13 +397,12 @@ views:
                 name: Bennett
 
       # --- System ---
-      - type: vertical-stack
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#system"
+        name: System
+        icon: mdi:cog
         cards:
-          - type: custom:bubble-card
-            card_type: pop-up
-            hash: "#system"
-            name: System
-            icon: mdi:cog
           - type: entities
             title: Notifications
             state_color: true
