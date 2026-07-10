@@ -73,10 +73,6 @@ cleaning_mode:
       target:
         entity_id:
           - light.indoor_lights
-          - light.dining_room_table_light_1
-          - light.dining_room_table_light_2
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_3
-          - light.ikea_of_sweden_tradfribulbe12wscandleopal450lm_light_4
       data:
         brightness_pct: 100
     - service: cover.open_cover

@@ -74,7 +74,7 @@ views:
               tap_action:
                 action: call-service
                 service: lock.lock
-                service_data:
+                target:
                   entity_id:
                     - lock.front_door
                     - lock.back_door
@@ -441,6 +441,14 @@ views:
           - type: light
             entity: light.ledvance_a19_rgbw_light_3
             name: Lower Light
+          - type: light
+            entity: light.simpleconnect_fan_m2_354a0a_hunter_light
+            name: Fan Light
+          - type: tile
+            entity: fan.simpleconnect_fan_m2_354a0a_hunter_fan
+            name: Ceiling Fan
+            features:
+              - type: fan-speed
           - type: entities
             title: Roller Shades
             entities:
