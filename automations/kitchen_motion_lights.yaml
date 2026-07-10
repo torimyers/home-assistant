@@ -24,7 +24,7 @@
           sequence:
             - service: light.turn_on
               target:
-                entity_id: light.ikea_of_sweden_stoftmoln_ceiling_wall_lamp_ww10_light_2
+                entity_id: light.kitchen_over_sink
               data:
                 brightness_pct: 10
 

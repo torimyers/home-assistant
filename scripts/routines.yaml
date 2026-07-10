@@ -104,8 +104,8 @@ leaving_home_routine:
     - service: light.turn_on
       target:
         entity_id:
-          - light.front_light
-          - light.backyard_light
+          - light.front_770e
+          - light.backyard_f84a
 
     # Lock all doors
     - service: lock.lock
