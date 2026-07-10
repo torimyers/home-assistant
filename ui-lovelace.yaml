@@ -229,6 +229,42 @@ views:
               tap_action:
                 action: navigate
                 navigation_path: "#climate"
+          - type: custom:bubble-card
+            card_type: button
+            entity: media_player.office
+            name: Media
+            icon: mdi:speaker
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#media"
+          - type: custom:bubble-card
+            card_type: button
+            entity: vacuum.s7_max_ultra
+            name: Cleaning
+            icon: mdi:robot-vacuum
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#cleaning"
+          - type: custom:bubble-card
+            card_type: button
+            entity: device_tracker.atlas_tracker
+            name: Pets
+            icon: mdi:paw
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#pets"
+          - type: custom:bubble-card
+            card_type: button
+            entity: water_heater.electric_water_heater
+            name: Household
+            icon: mdi:home-heart
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: "#household"
 
       # ================================================================
       # BOTTOM NAVIGATION BAR
@@ -555,6 +591,12 @@ views:
               - type: picture-entity
                 entity: camera.backyard_f84a
                 name: Backyard
+                camera_view: auto
+          - type: horizontal-stack
+            cards:
+              - type: picture-entity
+                entity: camera.guest_litterbox_b7e3
+                name: Litter Box
                 camera_view: auto
           - type: entities
             title: Door & Window Sensors
@@ -940,3 +982,167 @@ views:
                 name: IKEA Remote 1
               - entity: sensor.ikea_of_sweden_remote_control_n2_battery_2
                 name: IKEA Remote 2
+
+      # --- Media ---
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#media"
+        name: Media
+        icon: mdi:speaker
+        cards:
+          - type: media-control
+            entity: media_player.office
+          - type: media-control
+            entity: media_player.bedroom
+          - type: media-control
+            entity: media_player.denon_avr_x1500h
+          - type: media-control
+            entity: media_player.tv_samsung_led40
+          - type: media-control
+            entity: media_player.tori_s_bedroom_tv
+          - type: entities
+            title: Spotify
+            state_color: true
+            entities:
+              - entity: media_player.spotify_tori_myers
+                name: Tori
+              - entity: media_player.spotify_bennett_randle_dodson
+                name: Bennett
+              - entity: media_player.spotify_atlas
+                name: Atlas
+
+      # --- Cleaning (Vacuums) ---
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#cleaning"
+        name: Cleaning
+        icon: mdi:robot-vacuum
+        cards:
+          - type: tile
+            entity: vacuum.s7_max_ultra
+            name: Roborock S7
+            features:
+              - type: vacuum-commands
+                commands:
+                  - start_pause
+                  - stop
+                  - return_home
+                  - locate
+          - type: entities
+            title: Roborock Status
+            state_color: true
+            entities:
+              - entity: sensor.s7_max_ultra_status
+                name: Status
+              - entity: sensor.s7_max_ultra_battery
+                name: Battery
+              - entity: sensor.s7_max_ultra_cleaning_area
+                name: Last Clean Area
+              - entity: sensor.s7_max_ultra_main_brush_time_left
+                name: Main Brush Life
+              - entity: sensor.s7_max_ultra_filter_time_left
+                name: Filter Life
+          - type: tile
+            entity: vacuum.primary_bedroom_litter_box
+            name: Litter-Robot 4
+          - type: entities
+            title: Litter-Robot Status
+            state_color: true
+            entities:
+              - entity: sensor.primary_bedroom_status_code
+                name: Status
+              - entity: sensor.primary_bedroom_waste_drawer
+                name: Waste Drawer
+              - entity: sensor.primary_bedroom_litter_level
+                name: Litter Level
+
+      # --- Pets ---
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#pets"
+        name: Pets
+        icon: mdi:paw
+        cards:
+          - type: glance
+            title: Pet Trackers
+            show_state: true
+            state_color: true
+            entities:
+              - entity: device_tracker.atlas_tracker
+                name: Atlas
+              - entity: device_tracker.ellie_tracker
+                name: Ellie
+              - entity: device_tracker.shadow_tracker
+                name: Shadow
+              - entity: device_tracker.lance_tracker
+                name: Lance
+          - type: entities
+            title: Activity Today
+            entities:
+              - entity: sensor.atlas_activity_time
+                name: Atlas
+              - entity: sensor.ellie_activity_time
+                name: Ellie
+              - entity: sensor.shadow_activity_time
+                name: Shadow
+              - entity: sensor.lance_activity_time
+                name: Lance
+          - type: entities
+            title: Litter-Robot Weigh-Ins (Today)
+            entities:
+              - entity: sensor.charlie_weight
+                name: Charlie
+              - entity: sensor.shadow_weight
+                name: Shadow
+              - entity: sensor.lance_weight
+                name: Lance
+              - entity: sensor.ellie_weight
+                name: Ellie
+              - entity: sensor.charlie_visits_today
+                name: Charlie Visits
+              - entity: sensor.shadow_visits_today
+                name: Shadow Visits
+              - entity: sensor.lance_visits_today
+                name: Lance Visits
+              - entity: sensor.ellie_visits_today
+                name: Ellie Visits
+
+      # --- Household (Water Heater, Lists, Plugs) ---
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: "#household"
+        name: Household
+        icon: mdi:home-heart
+        cards:
+          - type: entities
+            title: Water Heater
+            state_color: true
+            entities:
+              - entity: water_heater.electric_water_heater
+                name: Water Heater
+              - entity: sensor.electric_water_heater_available_hot_water
+                name: Available Hot Water
+              - entity: sensor.electric_water_heater_tank_health
+                name: Tank Health
+              - entity: binary_sensor.electric_water_heater_running
+                name: Running
+              - entity: sensor.electric_water_heater_power_usage_today
+                name: Power Today
+          - type: entities
+            title: Smart Plugs
+            state_color: true
+            entities:
+              - entity: switch.tp_link_power_strip_173b_phone_charger
+                name: Phone Charger
+              - entity: switch.tp_link_power_strip_1446_cat_bed
+                name: Cat Bed
+          - type: todo-list
+            entity: todo.shopping_list
+          - type: todo-list
+            entity: todo.groceries
+          - type: todo-list
+            entity: todo.meal_planning
+          - type: todo-list
+            entity: todo.tasks
+          - type: todo-list
+            entity: todo.errands
