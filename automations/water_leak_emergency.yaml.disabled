@@ -1,3 +1,19 @@
+# ============================================================
+# DISABLED 2026-07-09 - Aqara water leak sensors removed.
+#
+# This file's automations triggered on:
+#   - binary_sensor.lumi_lumi_sensor_wleak_aq1_2  (Water Heater)
+#   - binary_sensor.lumi_lumi_sensor_wleak_aq1_3  (Laundry Room)
+# Both entities no longer exist in the live registry, so the emergency
+# leak-response flow (alert + repeat + valve-closed/false-alarm actions)
+# could never fire. Renamed to .disabled so Home Assistant ignores it.
+#
+# TO RESTORE after pairing new leak sensors:
+#   1. Update the trigger entity_id list and the repeat `while` conditions.
+#   2. Update the leak_location template to the new entity_ids.
+#   3. Rename this file back to water_leak_emergency.yaml.
+# ============================================================
+
 - id: water_leak_emergency
   alias: Water Leak Emergency Alert
   description: Critical alerts when water leak detected - repeated announcements and notifications

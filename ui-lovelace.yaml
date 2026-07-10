@@ -575,16 +575,6 @@ views:
               - entity: binary_sensor.mailbox_sensor
                 name: Mailbox
                 icon: mdi:mailbox
-          - type: entities
-            title: Water Leak Detection
-            state_color: true
-            entities:
-              - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_2
-                name: Water Heater
-                icon: mdi:water-alert
-              - entity: binary_sensor.lumi_lumi_sensor_wleak_aq1_3
-                name: Laundry Room
-                icon: mdi:water-alert
 
       # --- Routines ---
       - type: custom:bubble-card
@@ -902,8 +892,6 @@ views:
                 name: Living Room
               - entity: sensor.office_motion_sensor_battery
                 name: Office
-              - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery
-                name: IKEA Motion 1
               - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
                 name: IKEA Motion 2
           - type: entities
@@ -944,5 +932,3 @@ views:
                 name: IKEA Remote 1
               - entity: sensor.ikea_of_sweden_remote_control_n2_battery_2
                 name: IKEA Remote 2
-              - entity: sensor.dishwasher_vibration_battery
-                name: Dishwasher Sensor
