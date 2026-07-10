@@ -74,7 +74,7 @@ views:
               tap_action:
                 action: call-service
                 service: lock.lock
-                service_data:
+                target:
                   entity_id:
                     - lock.front_door
                     - lock.back_door
