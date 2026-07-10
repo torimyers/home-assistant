@@ -152,8 +152,6 @@ views:
             name: "Living Room"
           - entity: sensor.office_motion_sensor_battery
             name: "Office"
-          - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery
-            name: "IKEA Motion 1"
           - entity: sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
             name: "IKEA Motion 2"
 
@@ -200,5 +198,3 @@ views:
             name: "IKEA Remote 1"
           - entity: sensor.ikea_of_sweden_remote_control_n2_battery_2
             name: "IKEA Remote 2"
-          - entity: sensor.dishwasher_vibration_battery
-            name: "Dishwasher Sensor"
