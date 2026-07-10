@@ -106,24 +106,16 @@
           - light.front_770e
           - light.backyard_f84a
 
-    # Play calming music for Atlas on office speaker
-    # Replace the placeholder URI with your Spotify playlist URI
-    - service: spotcast.start
-      data:
-        entity_id: media_player.office
-        uri: "spotify:playlist:03DCKyhU7HAXnkXTB4FlHr"
-        force_playback: true
-
     - service: notify.mobile_app_tori_pixel_10_pro_xl
       data:
         title: "Storm Mode On"
         message: >
-          {{ states('weather.forecast_home') | title }} detected. All shades closed. Calming music on for Atlas.
+          {{ states('weather.forecast_home') | title }} detected. All shades closed.
     - service: notify.mobile_app_pixel_10
       data:
         title: "Storm Mode On"
         message: >
-          {{ states('weather.forecast_home') | title }} detected. All shades closed. Calming music on for Atlas.
+          {{ states('weather.forecast_home') | title }} detected. All shades closed.
 
   mode: single
 
@@ -155,17 +147,10 @@
     - service: notify.mobile_app_tori_pixel_10_pro_xl
       data:
         title: "Storm Mode Off"
-        message: "Weather cleared. Storm mode disabled. Music stops in 15 minutes."
+        message: "Weather cleared. Storm mode disabled."
     - service: notify.mobile_app_pixel_10
       data:
         title: "Storm Mode Off"
-        message: "Weather cleared. Storm mode disabled. Music stops in 15 minutes."
-
-    # Let the music wind down before stopping — gives Atlas time to settle
-    - delay:
-        minutes: 15
-    - service: media_player.media_stop
-      target:
-        entity_id: media_player.office
+        message: "Weather cleared. Storm mode disabled."
 
   mode: single

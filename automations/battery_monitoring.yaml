@@ -8,16 +8,9 @@
         # Doors & Locks
         - sensor.front_door_battery
         - sensor.back_door_battery
-        # Cameras
-        - sensor.front_battery
-        - sensor.backyard_battery
-        - sensor.garden_battery
-        - sensor.guest_litterbox_battery
-        - sensor.litter_robot_battery
         # Motion Sensors
         - sensor.kitchen_battery
         - sensor.bedroom_battery
-        - sensor.ikea_of_sweden_tradfri_motion_sensor_battery
         - sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
         # Roller Shades
         - sensor.bennett_roller_shade_battery
@@ -35,7 +28,6 @@
         # Remotes & Sensors
         - sensor.ikea_of_sweden_remote_control_n2_battery
         - sensor.ikea_of_sweden_remote_control_n2_battery_2
-        - sensor.dishwasher_vibration_battery
         # Ring Alarm System
         - sensor.base_station_battery
         - sensor.keypad_battery
@@ -90,7 +82,6 @@
         # Motion Sensors (Critical - affects automations)
         - sensor.kitchen_battery
         - sensor.bedroom_battery
-        - sensor.ikea_of_sweden_tradfri_motion_sensor_battery
         - sensor.ikea_of_sweden_tradfri_motion_sensor_battery_2
         # Ring Alarm (Critical - affects security)
         - sensor.base_station_battery
