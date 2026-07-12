@@ -31,8 +31,6 @@
         # Ring Alarm System
         - sensor.base_station_battery
         - sensor.keypad_battery
-        # Ring Alarm - Doors
-        - sensor.back_door_battery
         # Ring Alarm - Windows
         - sensor.back_window_battery
         - sensor.left_window_battery

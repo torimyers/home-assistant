@@ -112,24 +112,6 @@
 
   mode: single
 
-- id: auto_unlock_arriving_home
-  alias: Auto-Unlock Front Door When Arriving Home
-  description: Unlock front door when Tori or Bennett arrives home
-
-  trigger:
-    - platform: state
-      entity_id:
-        - person.tori_myers
-        - person.bennett
-      to: 'home'
-
-  action:
-    - service: lock.unlock
-      target:
-        entity_id: lock.front_door
-
-  mode: single
-
 - id: announce_arrival_home
   alias: Announce When Someone Arrives Home
   description: Announce "X is home" on speakers when arriving, only if someone else is already home
