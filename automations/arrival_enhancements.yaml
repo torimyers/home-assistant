@@ -34,29 +34,20 @@
   description: Send notification when someone leaves a known location and is traveling home
 
   trigger:
-    # Tori leaving known zones
+    # Either person leaving a location and starting to travel (now not_home)
     - platform: state
-      entity_id: person.tori_myers
-      from:
-        - zone.da_office
-        - zone.hou18
-        - zone.myers_parentals
-        - zone.daaboul_house
-        - zone.waller_co_court
-      to: 'not_home'
-
-    # Bennett leaving known zones
-    - platform: state
-      entity_id: person.bennett
-      from:
-        - zone.da_office
-        - zone.hou16
-        - zone.myers_parentals
-        - zone.daaboul_house
-        - zone.waller_co_court
+      entity_id:
+        - person.tori_myers
+        - person.bennett
       to: 'not_home'
 
   condition:
+    # Only when they left an actual named zone — a person's state inside a zone
+    # is the zone's friendly name, so anything that isn't home/not_home/unknown/
+    # unavailable means they were at a named location and are now heading out.
+    - condition: template
+      value_template: >
+        {{ trigger.from_state.state not in ['home', 'not_home', 'unknown', 'unavailable'] }}
     # Only notify if someone else is home to receive it
     - condition: template
       value_template: >
@@ -90,7 +81,7 @@
               data:
                 message: >
                   {% set person_name = 'Tori' if trigger.entity_id == 'person.tori_myers' else 'Bennett' %}
-                  {% set from_zone = trigger.from_state.state | replace('_', ' ') | title %}
+                  {% set from_zone = trigger.from_state.state | trim %}
                   {{ person_name }} left {{ from_zone }} and is heading home
 
     # Also send phone notification
@@ -99,14 +90,14 @@
         title: "On the way home"
         message: >
           {% set person_name = 'Tori' if trigger.entity_id == 'person.tori_myers' else 'Bennett' %}
-          {% set from_zone = trigger.from_state.state | replace('_', ' ') | title %}
+          {% set from_zone = trigger.from_state.state | trim %}
           {{ person_name }} left {{ from_zone }} and is heading home
     - service: notify.mobile_app_pixel_10
       data:
         title: "On the way home"
         message: >
           {% set person_name = 'Tori' if trigger.entity_id == 'person.tori_myers' else 'Bennett' %}
-          {% set from_zone = trigger.from_state.state | replace('_', ' ') | title %}
+          {% set from_zone = trigger.from_state.state | trim %}
           {{ person_name }} left {{ from_zone }} and is heading home
 
   mode: restart

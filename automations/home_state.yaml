@@ -22,8 +22,12 @@
         option: >
           {% set tori_home = is_state('person.tori_myers', 'home') %}
           {% set bennett_home = is_state('person.bennett', 'home') %}
-          {% set tori_work = is_state('person.tori_myers', 'hou18') %}
-          {% set bennett_work = states('person.bennett') in ['da_office', 'waller_co_court', 'waller_co_court_2'] %}
+          {# Match zone membership, not the person's state string — a person's state
+             in a zone is the zone's friendly name, not its entity_id. #}
+          {% set tori_work = 'person.tori_myers' in (state_attr('zone.hou18', 'persons') or []) %}
+          {% set bennett_work = 'person.bennett' in (state_attr('zone.da_office', 'persons') or [])
+             or 'person.bennett' in (state_attr('zone.waller_co_court', 'persons') or [])
+             or 'person.bennett' in (state_attr('zone.waller_co_court_2', 'persons') or []) %}
           {% if tori_home and bennett_home %}both_home
           {% elif tori_home %}tori_only
           {% elif bennett_home %}bennett_only
