@@ -39,7 +39,7 @@
       entity_id: person.tori_myers
       from:
         - zone.da_office
-        - zone.hou16
+        - zone.hou18
         - zone.myers_parentals
         - zone.daaboul_house
         - zone.waller_co_court

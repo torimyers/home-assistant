@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## System Overview
 
 This is a **Home Assistant configuration repository** running on Unraid (Home Assistant 2026.5.4) with:
-- Blueprint definitions available for common automation patterns (see note below)
+- All automations are standalone YAML files (blueprints were audited and removed as unused — see Automation Organization)
 - Multiple dashboards optimized for different devices (desktop, mobile)
 - Manual deployment to Unraid via `deploy.sh` / `sync-to-unraid.sh` (the self-hosted GitHub Actions runner is currently dead)
 
@@ -21,9 +21,6 @@ ha config validate
 
 # YAML syntax check
 yamllint .
-
-# Blueprint validation (if supported by your HA version)
-ha automation test --blueprint motion_lighting
 ```
 
 ### Deployment
@@ -69,29 +66,12 @@ Home Assistant loads configuration through a **package-based architecture**:
 
 ### Blueprint System
 
-Blueprints eliminate duplicate automation patterns. Current blueprints:
-
-1. **motion_lighting.yaml** - Motion-activated room lighting (8 automations → 1 blueprint)
-   - Configurable timeout, scenes/lights/areas, brightness levels
-   - Time-based behavior (day/evening/night modes)
-
-2. **appliance_cycle.yaml** - Appliance monitoring (washer, dryer, etc.)
-   - Configurable power thresholds and notification timing
-
-3. **pet_care.yaml** - Medication reminders and feeding schedules
-   - Multi-pet support with individual tracking
-
-4. **daily_routine.yaml** - Morning and evening routines
-   - Conditional execution based on presence
-
-5. **person_presence.yaml** - Arrival and departure automations
-   - Contextual scene activation
-
-6. **emergency_alert.yaml** - Critical system alerts
-   - Multi-channel notification support
-
-7. **simple_time_based_control.yaml** - Time/sun triggered automations
-   - Sunrise/sunset offsets, fixed schedules
+**No automation blueprints are in use.** The `/blueprints/automation/` tree previously held
+10 unused blueprint files (0 adoption — no automation ever referenced them via `use_blueprint`,
+and every one defaulted to a dead notify service). They were pruned during the automations audit.
+Only Home Assistant's built-in `blueprints/script/` and `blueprints/template/` defaults remain
+(HA regenerates those on startup). The hand-written automations intentionally carry their own
+per-room logic (time-of-day tiers, lux gating, mode suppression) rather than a shared blueprint.
 
 ### Dashboard Structure
 
@@ -118,7 +98,7 @@ Automations are organized in `/automations/` by:
 - **Room** (e.g., `/automations/backyard/`)
 - **Function** (e.g., top-level convenience automations)
 
-All 29 repo automations are currently individual YAML files; **none use `use_blueprint`** despite 10 blueprints being defined in `/blueprints/automation/`. The blueprints are effectively unused — either adopt them (convert duplicate room/appliance automations to `use_blueprint` instances) or prune the unused blueprint files. (Note: the live instance also has many UI-created automations stored in `.storage` that are not in this repo.)
+All repo automations are individual, standalone YAML files. There are **no automation blueprints** — the 10 previously-unused blueprint files were pruned during the automations audit (see Blueprint System). New automations should be written as individual files unless a genuinely duplicated pattern later justifies a blueprint. (Note: the live instance also has many UI-created automations stored in `.storage` that are not in this repo.)
 
 ### Custom Components
 
@@ -184,7 +164,6 @@ Located in `/custom_components/`:
 
 - Dashboard files: <600 lines each
 - Template sensors: <50ms render time
-- Blueprint adoption: >80% of automations
 - System health score: >85%
 - Automation success rate: >90%
 
@@ -235,7 +214,7 @@ git branch --show-current            # Current branch
 
 ---
 
-*This Home Assistant configuration emphasizes blueprint-based automation patterns, organized entity management, and automated deployment workflows.*
+*This Home Assistant configuration emphasizes standalone per-room automations, organized entity management, and automated deployment workflows.*
 
 ## Sessions System Behaviors
 

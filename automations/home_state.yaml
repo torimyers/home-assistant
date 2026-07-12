@@ -1,7 +1,8 @@
 # Home state tracker — updates input_select.home_state whenever person presence changes
-# States: both_home | tori_only | bennett_only | everyone_away
+# States: both_home | tori_only | bennett_only | tori_at_work | bennett_at_work
+#         | both_at_work | everyone_away
 #
-# REQUIRES: input_select.home_state created in HA UI with those four options
+# Options are defined in entities/input_select/home_state.yaml
 
 - id: home_state_update
   alias: Home State - Update on Presence Change
@@ -22,7 +23,7 @@
           {% set tori_home = is_state('person.tori_myers', 'home') %}
           {% set bennett_home = is_state('person.bennett', 'home') %}
           {% set tori_work = is_state('person.tori_myers', 'hou18') %}
-          {% set bennett_work = states('person.bennett') in ['da_office', 'waller_co_court', 'waller_co_court_annex'] %}
+          {% set bennett_work = states('person.bennett') in ['da_office', 'waller_co_court', 'waller_co_court_2'] %}
           {% if tori_home and bennett_home %}both_home
           {% elif tori_home %}tori_only
           {% elif bennett_home %}bennett_only
