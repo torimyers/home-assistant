@@ -4,6 +4,10 @@
 goodnight_routine:
   alias: Goodnight Routine
   description: Execute bedtime routine - locks doors, turns off lights, arms alarm
+  variables:
+    doors:
+      lock.front_door: Front Door
+      lock.back_door: Back Door
   sequence:
     # Turn off all indoor lights and lamp switches
     - service: homeassistant.turn_off
@@ -22,21 +26,79 @@ goodnight_routine:
           - lock.front_door
           - lock.back_door
 
-    # Arm alarm in Home mode
+    # Smart locks acknowledge the command, not the bolt. Wait for both to actually
+    # report locked so the confirmation below can't claim a door that jammed.
+    - wait_template: >-
+        {{ is_state('lock.front_door', 'locked')
+           and is_state('lock.back_door', 'locked') }}
+      timeout:
+        seconds: 30
+      continue_on_timeout: true
+
+    # Arm alarm in Home mode. Still arms even if a door failed to lock — armed is
+    # safer than unarmed — but the notification says so plainly.
     - service: alarm_control_panel.alarm_arm_home
       target:
         entity_id: alarm_control_panel.alarm
 
-    # Send confirmation
+    # Same two buckets as leaving_home_routine: unlocked/jammed definitely did not
+    # lock, unavailable/unknown means we simply cannot see it. Neither passes as secured.
+    - variables:
+        failed_doors: >-
+          {%- set ns = namespace(x=[]) -%}
+          {%- for entity, label in doors.items() -%}
+            {%- if states(entity) not in ['locked', 'unavailable', 'unknown'] -%}
+              {%- set ns.x = ns.x + [label] -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {{ ns.x | join(' and ') }}
+        unreachable_doors: >-
+          {%- set ns = namespace(x=[]) -%}
+          {%- for entity, label in doors.items() -%}
+            {%- if states(entity) in ['unavailable', 'unknown'] -%}
+              {%- set ns.x = ns.x + [label] -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {{ ns.x | join(' and ') }}
+        unreachable_noun: >-
+          {%- set ns = namespace(x=[]) -%}
+          {%- for entity, label in doors.items() -%}
+            {%- if states(entity) in ['unavailable', 'unknown'] -%}
+              {%- set ns.x = ns.x + [label] -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {{ 'lock states' if ns.x | count > 1 else 'lock state' }}
+    - variables:
+        goodnight_title: >-
+          {%- if failed_doors != '' -%}
+            ⚠️ Goodnight - Door Not Locked
+          {%- elif unreachable_doors != '' -%}
+            ⚠️ Goodnight - Lock Unreachable
+          {%- else -%}
+            🌙 Goodnight
+          {%- endif -%}
+        goodnight_message: >-
+          {%- if failed_doors != '' and unreachable_doors != '' -%}
+            {{ failed_doors }} did not lock, and no status from {{ unreachable_doors }} — {{ unreachable_noun }} unconfirmed. Alarm is armed in Home mode; the house is not secure.
+          {%- elif failed_doors != '' -%}
+            {{ failed_doors }} did not lock! Alarm is armed in Home mode, but the house is not secure.
+          {%- elif unreachable_doors != '' -%}
+            No status from {{ unreachable_doors }} — {{ unreachable_noun }} unconfirmed. Alarm is armed in Home mode.
+          {%- else -%}
+            Lights off, doors locked, alarm armed. Sleep well!
+          {%- endif -%}
+
+    # Send confirmation (always both phones — security notification)
     - service: notify.mobile_app_tori_pixel_10_pro_xl
       data:
-        title: "🌙 Goodnight"
-        message: "Lights off, doors locked, alarm armed. Sleep well!"
+        title: "{{ goodnight_title }}"
+        message: "{{ goodnight_message }}"
     - service: notify.mobile_app_pixel_10
       data:
-        title: "🌙 Goodnight"
-        message: "Lights off, doors locked, alarm armed. Sleep well!"
+        title: "{{ goodnight_title }}"
+        message: "{{ goodnight_message }}"
   mode: single
+  max_exceeded: silent
 
 dinner_mode:
   alias: Dinner Mode
@@ -100,11 +162,17 @@ leaving_home_routine:
           - switch.tp_link_power_strip_173b_couch_lamp
           - switch.tp_link_power_strip_1446_lamp_by_door
 
-    # Turn on floodlights for security, but only after dark. The floodlight_schedule
-    # automations own these sunset->sunrise; an unconditional turn_on here left them
-    # burning all day when leaving in the morning.
-    # (below_horizon, not `condition: sun` after/before — that ANDs against *today's*
-    # sunrise and so never evaluates true overnight.)
+    # Turn on floodlights for security, but only inside the window their own schedule
+    # would have them on. An unconditional turn_on here left them burning all day when
+    # leaving in the morning, because the next scheduled off-trigger was ~22 hours out.
+    #
+    # The two lights are on DIFFERENT schedules, so they need different gates:
+    #   front_770e   sunset-30m -> sunrise+15m
+    #   backyard_f84a sunset-30m -> 22:00
+    #
+    # Front: dark is the whole gate. Note below_horizon rather than `condition: sun`
+    # with after: sunset + before: sunrise — that pairing ANDs against *today's*
+    # sunrise, which has already passed, so it never evaluates true overnight.
     - if:
         - condition: state
           entity_id: sun.sun
@@ -112,9 +180,21 @@ leaving_home_routine:
       then:
         - service: light.turn_on
           target:
-            entity_id:
-              - light.front_770e
-              - light.backyard_f84a
+            entity_id: light.front_770e
+
+    # Backyard: sunset until 22:00 only. below_horizon alone would also match the small
+    # hours, and switching it on at 01:00 would leave it lit until 22:00 that evening.
+    # `after: sunset` is safe on its own here — it is false before sunset and after
+    # midnight, which is exactly the bound we want.
+    - if:
+        - condition: sun
+          after: sunset
+        - condition: time
+          before: "22:00:00"
+      then:
+        - service: light.turn_on
+          target:
+            entity_id: light.backyard_f84a
 
     # Lock all doors
     - service: lock.lock
