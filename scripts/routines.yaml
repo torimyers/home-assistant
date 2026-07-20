@@ -96,12 +96,21 @@ leaving_home_routine:
           - switch.tp_link_power_strip_173b_couch_lamp
           - switch.tp_link_power_strip_1446_lamp_by_door
 
-    # Turn on floodlights for security
-    - service: light.turn_on
-      target:
-        entity_id:
-          - light.front_770e
-          - light.backyard_f84a
+    # Turn on floodlights for security, but only after dark. The floodlight_schedule
+    # automations own these sunset->sunrise; an unconditional turn_on here left them
+    # burning all day when leaving in the morning.
+    # (below_horizon, not `condition: sun` after/before — that ANDs against *today's*
+    # sunrise and so never evaluates true overnight.)
+    - if:
+        - condition: state
+          entity_id: sun.sun
+          state: 'below_horizon'
+      then:
+        - service: light.turn_on
+          target:
+            entity_id:
+              - light.front_770e
+              - light.backyard_f84a
 
     # Lock all doors
     - service: lock.lock
@@ -110,6 +119,15 @@ leaving_home_routine:
           - lock.front_door
           - lock.back_door
 
+    # Smart locks acknowledge the command, not the bolt. Wait for both to actually
+    # report locked so the confirmation below can't claim a door that jammed.
+    - wait_template: >-
+        {{ is_state('lock.front_door', 'locked')
+           and is_state('lock.back_door', 'locked') }}
+      timeout:
+        seconds: 30
+      continue_on_timeout: true
+
     # Shades intentionally left open when away so the plants get light
     # (see auto_close_shades_on_departure note in automations/convenience.yaml)
 
@@ -117,18 +135,35 @@ leaving_home_routine:
     - delay:
         seconds: 30
 
-    # Arm alarm in Away mode
+    # Arm alarm in Away mode. Still arms even if a door failed to lock — armed is
+    # safer than unarmed — but the notification says so plainly.
     - service: alarm_control_panel.alarm_arm_away
       target:
         entity_id: alarm_control_panel.alarm
 
-    # Send confirmation
+    - variables:
+        unlocked_doors: >-
+          {{ expand('lock.front_door', 'lock.back_door')
+             | selectattr('state', 'ne', 'locked')
+             | map(attribute='name') | list | join(' and ') }}
+    - variables:
+        secure_title: >-
+          {{ '🏠 Leaving Home' if unlocked_doors == ''
+             else '⚠️ Leaving Home - Door Not Locked' }}
+        secure_message: >-
+          {% if unlocked_doors == '' -%}
+            Home secured! Lights off, doors locked, alarm armed in Away mode.
+          {%- else -%}
+            {{ unlocked_doors }} did not lock! Alarm is armed in Away mode, but check the door.
+          {%- endif %}
+
+    # Send confirmation (always both phones — security notification)
     - service: notify.mobile_app_tori_pixel_10_pro_xl
       data:
-        title: "🏠 Leaving Home"
-        message: "Home secured! Lights off, floodlights on, doors locked, alarm armed in Away mode."
+        title: "{{ secure_title }}"
+        message: "{{ secure_message }}"
     - service: notify.mobile_app_pixel_10
       data:
-        title: "🏠 Leaving Home"
-        message: "Home secured! Lights off, floodlights on, doors locked, alarm armed in Away mode."
+        title: "{{ secure_title }}"
+        message: "{{ secure_message }}"
   mode: single
