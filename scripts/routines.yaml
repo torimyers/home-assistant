@@ -166,6 +166,17 @@ leaving_home_routine:
             {%- endif -%}
           {%- endfor -%}
           {{ ns.x | join(' and ') }}
+        # Pluralised here rather than from a count variable — the comparison runs
+        # against a real list inside the template, so it does not depend on how the
+        # rendered variable gets typed on the way out.
+        unreachable_noun: >-
+          {%- set ns = namespace(x=[]) -%}
+          {%- for entity, label in doors.items() -%}
+            {%- if states(entity) in ['unavailable', 'unknown'] -%}
+              {%- set ns.x = ns.x + [label] -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {{ 'lock states' if ns.x | count > 1 else 'lock state' }}
     - variables:
         secure_title: >-
           {%- if failed_doors != '' -%}
@@ -177,11 +188,11 @@ leaving_home_routine:
           {%- endif -%}
         secure_message: >-
           {%- if failed_doors != '' and unreachable_doors != '' -%}
-            {{ failed_doors }} did not lock, and no status from {{ unreachable_doors }} — lock state unconfirmed. Alarm is armed in Away mode; the house is not secure.
+            {{ failed_doors }} did not lock, and no status from {{ unreachable_doors }} — {{ unreachable_noun }} unconfirmed. Alarm is armed in Away mode; the house is not secure.
           {%- elif failed_doors != '' -%}
             {{ failed_doors }} did not lock! Alarm is armed in Away mode, but the house is not secure.
           {%- elif unreachable_doors != '' -%}
-            No status from {{ unreachable_doors }} — lock state unconfirmed. Alarm is armed in Away mode.
+            No status from {{ unreachable_doors }} — {{ unreachable_noun }} unconfirmed. Alarm is armed in Away mode.
           {%- else -%}
             Home secured! Lights off, doors locked, alarm armed in Away mode.
           {%- endif -%}
