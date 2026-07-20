@@ -17,10 +17,22 @@
 
 - id: back_floodlight_off_10pm
   alias: "Back Floodlight - Turn Off at 10pm"
-  description: "Turn off back floodlight at 10pm"
+  description: "Turn off back floodlight at 10pm, unless nobody is home"
   trigger:
     - platform: time
       at: "22:00:00"  # 10:00 PM
+  # Only stand down if someone is actually here. turn_off_everything_10pm_away
+  # fires at this same instant and turns this light ON when the house is empty;
+  # without this condition the two race and the outcome is a coin flip.
+  condition:
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
   action:
     - service: light.turn_off
       target:

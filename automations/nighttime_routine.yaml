@@ -10,12 +10,29 @@
     - condition: state
       entity_id: input_boolean.party_mode
       state: 'off'
+    # Only dim if someone is here to see it. When the house is empty this fired
+    # anyway, turning office and kitchen ON at 30% at the same instant that
+    # turn_off_everything_10pm_away was turning things off.
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.tori_myers
+          state: 'home'
+        - condition: state
+          entity_id: person.bennett
+          state: 'home'
 
   action:
-    # Dim office lights to 30%
+    # Dim the office desk lamps to 30%. Entity-scoped, not area-scoped: the Hunter
+    # ceiling-fan light also lives in the office area, and light.turn_on switches on
+    # what was off — so an area target lit the fan light at 22:00 every night, and
+    # nothing turned it back off (office_motion_lights only handles these two lamps).
+    # Same entities office_motion_lights drives, so the two stay in agreement.
     - service: light.turn_on
       target:
-        area_id: office
+        entity_id:
+          - light.ledvance_a19_rgbw_light_2
+          - light.ledvance_a19_rgbw_light_3
       data:
         brightness_pct: 30
 
@@ -76,20 +93,30 @@
     - platform: time
       at: "22:00:00"
 
+  # "Nobody home" means neither person is home — NOT that both are 'not_home'.
+  # A person inside a named zone reports the zone's friendly name ("DA Office"),
+  # so a not_home comparison misses the most ordinary away case of all: at work.
+  # Written as the exact complement of nighttime_dimming_10pm's condition, so at
+  # 22:00 precisely one of the two automations runs and they can never race.
   condition:
-    - condition: and
+    - condition: not
       conditions:
         - condition: state
           entity_id: person.tori_myers
-          state: 'not_home'
+          state: 'home'
+    - condition: not
+      conditions:
         - condition: state
           entity_id: person.bennett
-          state: 'not_home'
+          state: 'home'
 
   action:
-    # Turn off indoor lights (excluding security lights)
+    # Turn off indoor lights (excluding security lights).
+    # Office goes by area — it was missing from this list entirely, so office
+    # lights stayed on overnight whenever the house was empty at 10 PM.
     - service: light.turn_off
       target:
+        area_id: office
         entity_id:
           - light.kitchen_over_oven
           - light.kitchen_over_sink
