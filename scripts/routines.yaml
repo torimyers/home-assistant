@@ -87,6 +87,10 @@ cleaning_mode:
 leaving_home_routine:
   alias: Leaving Home Routine
   description: Secure home when leaving - locks doors, turns off lights/appliances, arms alarm
+  variables:
+    doors:
+      lock.front_door: Front Door
+      lock.back_door: Back Door
   sequence:
     # Turn off all indoor lights and lamp switches
     - service: homeassistant.turn_off
@@ -141,30 +145,46 @@ leaving_home_routine:
       target:
         entity_id: alarm_control_panel.alarm
 
-    # Anything not reporting 'locked' counts as unlocked — including an entity that
-    # has gone missing, which states() renders as 'unknown'. Fails safe: a renamed
-    # lock gets called out rather than silently passing as secured.
+    # Two different failures, reported differently. A door reporting unlocked/jammed
+    # definitely did not lock. A door that is unavailable or missing (a renamed entity
+    # renders as 'unknown') may well be locked — we just can't see it, and calling that
+    # "did not lock" would cry wolf. Neither is allowed to pass as secured.
     - variables:
-        unlocked_doors: >-
-          {%- set doors = {'lock.front_door': 'Front Door',
-                           'lock.back_door': 'Back Door'} -%}
-          {%- set ns = namespace(unlocked=[]) -%}
+        failed_doors: >-
+          {%- set ns = namespace(x=[]) -%}
           {%- for entity, label in doors.items() -%}
-            {%- if states(entity) != 'locked' -%}
-              {%- set ns.unlocked = ns.unlocked + [label] -%}
+            {%- if states(entity) not in ['locked', 'unavailable', 'unknown'] -%}
+              {%- set ns.x = ns.x + [label] -%}
             {%- endif -%}
           {%- endfor -%}
-          {{ ns.unlocked | join(' and ') }}
+          {{ ns.x | join(' and ') }}
+        unreachable_doors: >-
+          {%- set ns = namespace(x=[]) -%}
+          {%- for entity, label in doors.items() -%}
+            {%- if states(entity) in ['unavailable', 'unknown'] -%}
+              {%- set ns.x = ns.x + [label] -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {{ ns.x | join(' and ') }}
     - variables:
         secure_title: >-
-          {{ '🏠 Leaving Home' if unlocked_doors == ''
-             else '⚠️ Leaving Home - Door Not Locked' }}
-        secure_message: >-
-          {% if unlocked_doors == '' -%}
-            Home secured! Lights off, doors locked, alarm armed in Away mode.
+          {%- if failed_doors != '' -%}
+            ⚠️ Leaving Home - Door Not Locked
+          {%- elif unreachable_doors != '' -%}
+            ⚠️ Leaving Home - Lock Unreachable
           {%- else -%}
-            {{ unlocked_doors }} did not lock! Alarm is armed in Away mode, but check the door.
-          {%- endif %}
+            🏠 Leaving Home
+          {%- endif -%}
+        secure_message: >-
+          {%- if failed_doors != '' and unreachable_doors != '' -%}
+            {{ failed_doors }} did not lock, and no status from {{ unreachable_doors }} — lock state unconfirmed. Alarm is armed in Away mode; the house is not secure.
+          {%- elif failed_doors != '' -%}
+            {{ failed_doors }} did not lock! Alarm is armed in Away mode, but the house is not secure.
+          {%- elif unreachable_doors != '' -%}
+            No status from {{ unreachable_doors }} — lock state unconfirmed. Alarm is armed in Away mode.
+          {%- else -%}
+            Home secured! Lights off, doors locked, alarm armed in Away mode.
+          {%- endif -%}
 
     # Send confirmation (always both phones — security notification)
     - service: notify.mobile_app_tori_pixel_10_pro_xl
