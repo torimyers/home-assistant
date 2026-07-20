@@ -4,6 +4,7 @@
 # https://www.home-assistant.io/integrations/scene
 #
 
-# Load scenes from organized folder structure
-# Note: Scene loading is now handled by scenes.yaml in the root directory
+# No YAML scenes are defined — nothing in this repo references a scene.* entity.
+# Scenes that do exist are UI-created and live in .storage.
+# To add YAML scenes: create a /scenes directory and uncomment the line below.
 # scene: !include_dir_named ../scenes
