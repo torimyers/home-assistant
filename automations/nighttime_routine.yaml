@@ -23,10 +23,16 @@
           state: 'home'
 
   action:
-    # Dim office lights to 30%
+    # Dim the office desk lamps to 30%. Entity-scoped, not area-scoped: the Hunter
+    # ceiling-fan light also lives in the office area, and light.turn_on switches on
+    # what was off — so an area target lit the fan light at 22:00 every night, and
+    # nothing turned it back off (office_motion_lights only handles these two lamps).
+    # Same entities office_motion_lights drives, so the two stay in agreement.
     - service: light.turn_on
       target:
-        area_id: office
+        entity_id:
+          - light.ledvance_a19_rgbw_light_2
+          - light.ledvance_a19_rgbw_light_3
       data:
         brightness_pct: 30
 
