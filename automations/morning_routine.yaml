@@ -41,11 +41,14 @@
             - condition: template
               value_template: "{{ someone_awake }}"
           sequence:
+            # Office is entity-scoped so the ceiling-fan light is not swept in;
+            # kitchen stays area-scoped as it has no equivalent stray fixture.
             - service: light.turn_on
               target:
-                area_id:
-                  - office
-                  - kitchen
+                area_id: kitchen
+                entity_id:
+                  - light.ledvance_a19_rgbw_light_2
+                  - light.ledvance_a19_rgbw_light_3
               data:
                 brightness_pct: 100
             - service: script.notify_household

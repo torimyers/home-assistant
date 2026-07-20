@@ -8,9 +8,14 @@
       to: 'on'
 
   action:
+    # Desk lamps only. The Hunter ceiling-fan light is also in the office area, and
+    # overhead glare is the opposite of what focus mode is for. Same two entities
+    # office_motion_lights and nighttime_dimming_10pm drive.
     - service: light.turn_on
       target:
-        area_id: office
+        entity_id:
+          - light.ledvance_a19_rgbw_light_2
+          - light.ledvance_a19_rgbw_light_3
       data:
         brightness_pct: 100
         kelvin: 4000
