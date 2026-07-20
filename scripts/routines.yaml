@@ -110,6 +110,9 @@ leaving_home_routine:
           - lock.front_door
           - lock.back_door
 
+    # Shades intentionally left open when away so the plants get light
+    # (see auto_close_shades_on_departure note in automations/convenience.yaml)
+
     # Wait 30 seconds to allow time to leave
     - delay:
         seconds: 30
@@ -123,9 +126,9 @@ leaving_home_routine:
     - service: notify.mobile_app_tori_pixel_10_pro_xl
       data:
         title: "🏠 Leaving Home"
-        message: "Home secured! Lights off, doors locked, shades closed, alarm armed in Away mode."
+        message: "Home secured! Lights off, floodlights on, doors locked, alarm armed in Away mode."
     - service: notify.mobile_app_pixel_10
       data:
         title: "🏠 Leaving Home"
-        message: "Home secured! Lights off, doors locked, shades closed, alarm armed in Away mode."
+        message: "Home secured! Lights off, floodlights on, doors locked, alarm armed in Away mode."
   mode: single
