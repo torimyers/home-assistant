@@ -141,11 +141,20 @@ leaving_home_routine:
       target:
         entity_id: alarm_control_panel.alarm
 
+    # Anything not reporting 'locked' counts as unlocked — including an entity that
+    # has gone missing, which states() renders as 'unknown'. Fails safe: a renamed
+    # lock gets called out rather than silently passing as secured.
     - variables:
         unlocked_doors: >-
-          {{ expand('lock.front_door', 'lock.back_door')
-             | selectattr('state', 'ne', 'locked')
-             | map(attribute='name') | list | join(' and ') }}
+          {%- set doors = {'lock.front_door': 'Front Door',
+                           'lock.back_door': 'Back Door'} -%}
+          {%- set ns = namespace(unlocked=[]) -%}
+          {%- for entity, label in doors.items() -%}
+            {%- if states(entity) != 'locked' -%}
+              {%- set ns.unlocked = ns.unlocked + [label] -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {{ ns.unlocked | join(' and ') }}
     - variables:
         secure_title: >-
           {{ '🏠 Leaving Home' if unlocked_doors == ''
@@ -166,4 +175,8 @@ leaving_home_routine:
       data:
         title: "{{ secure_title }}"
         message: "{{ secure_message }}"
+  # Dropping a duplicate run is intended — the script is unresponsive for ~30s and
+  # re-running the lock/arm sequence buys nothing. silent keeps a double-tap or an
+  # Alexa retry from logging a warning for expected behaviour.
   mode: single
+  max_exceeded: silent
